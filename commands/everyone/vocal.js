@@ -44,13 +44,13 @@ module.exports = new Command({
         
     }
     // members.clear();
-     let Embed = new discord.MessageEmbed()
-      //   .setTitle(`<:775296098356428801:781188223481282570> __${lang.vocal.title}__`)
-         .setDescription(`Vocal: \`${count}\`\nMute: \`${muteCount}\`\nDeafen; \`${muteHeadSetCount}\`\nStream: \`${streamingCount}\`\nUnmuted: \`${openMicCount}\``)
-         .setColor(`${color}`)
-      //   .setFooter(`${client.user.username}`, `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
+    // let Embed = new discord.MessageEmbed()
+    //     .setTitle(`<:775296098356428801:781188223481282570> __${lang.vocal.title}__`)
+    //     .setDescription(lang.vocal.description)
+    //     .setColor(`${color}`)
+    //     .setFooter(`${client.user.username}`, `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
     //     .setTimestamp()
-    message.channel.send(Embed)
+    message.channel.send(lang.vocal.msg(count, muteCount, streamingCount,muteHeadSetCount, openMicCount))
 });
 
 
