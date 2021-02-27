@@ -1,0 +1,14 @@
+const StateManager = require('../utils/StateManager');
+const {Event} = require('advanced-command-handler');
+module.exports = new Event(
+	{
+		name: '',
+		//optionnal :
+		once: true,
+	},
+	async (handler, ...EventArguments) => {
+		// Your code goes here.
+	}
+);
+
+
