@@ -14,7 +14,7 @@ module.exports = new Command({
     name: 'warn',
     description: 'Warn a member | Warn un membre',
     // Optionnals :
-    usage: '!warn [clear/list/remove] <mention/id/> [amountToClear Or all / numberOfTheWarnToRemove] [reason]',
+    usage: '!warn [clear/list/remove] <mention/id/> [amountToClear or all / numberOfTheWarnToRemove] [reason]',
     category: 'moderation',
     tags: ['guildOnly'],
     userPermissions: ['ADMINISTRATOR'],
