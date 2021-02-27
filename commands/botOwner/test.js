@@ -21,7 +21,7 @@ module.exports = new Command({
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
     const test = [ 'spammp', 'pubmp', 'dpid' ]
     test.splice(2, 1)
-    console.log(test)
+    console.log(client)
     
 });
 

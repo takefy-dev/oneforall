@@ -127,6 +127,9 @@ const manager = new GiveawayManagerWithOwnDatabase(CommandHandler.client, {
 });
 // We now have a giveawaysManager property to access the manager everywhere!
 CommandHandler.client.giveawaysManager = manager;
+CommandHandler.client.BotPerso = false
+
+
 
 const logs = require('discord-logs');
 logs(CommandHandler.client);

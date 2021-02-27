@@ -90,7 +90,11 @@ module.exports = new Command({
     if (config) {
     const sender = message.author.id;
     var isOwner = checkOwner(message.guild.id, sender);
-    const owner = message.guild.ownerID;
+    let owner = message.guild.ownerID;
+    
+    if(client.BotPerso){
+        owner = process.env.OWNER
+    }
     let owners = guildOwner.get(message.guild.id);
     const ownerTag = new Array();
     if(typeof owners != "object"){

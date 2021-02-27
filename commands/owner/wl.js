@@ -31,7 +31,11 @@ module.exports = new Command({
     var tempdata = ar1.concat(ar2);
     const color = guildEmbedColor.get(message.guild.id);
     const clear = args[0] == 'clear'
-    const owner = message.guild.ownerID;
+    let owner = message.guild.ownerID;
+
+    if (client.BotPerso) {
+        owner = process.env.OWNER
+    }
 
 
     const add = args[0] == "add";
@@ -39,7 +43,11 @@ module.exports = new Command({
     const list = args[0] == 'list';
     if (!add & !remove & !list & !clear) return message.channel.send(lang.wl.errorSyntax)
     if (add) {
-        const owner = message.guild.ownerID;
+        let owner = message.guild.ownerID;
+
+        if (client.BotPerso) {
+            owner = process.env.OWNER
+        }
 
         const sender = message.author.id;
         var isOwner = checkOwner(message.guild.id, sender);
@@ -52,7 +60,7 @@ module.exports = new Command({
         }
         for (var i = 0; i < owners.length - 1; i++) {
             let ownerSS
-            await message.guild.members.fetch().then((members) =>{
+            await message.guild.members.fetch().then((members) => {
                 ownerSS = members.get(owners[i])
             })
 
@@ -92,7 +100,11 @@ module.exports = new Command({
 
         })
     } else if (remove) {
-    const owner = message.guild.ownerID;
+        let owner = message.guild.ownerID;
+
+        if (client.BotPerso) {
+            owner = process.env.OWNER
+        }
 
         const sender = message.author.id;
         var isOwner = checkOwner(message.guild.id, sender);
@@ -105,7 +117,7 @@ module.exports = new Command({
         }
         for (var i = 0; i < owners.length - 1; i++) {
             let ownerSS
-            await message.guild.members.fetch().then((members) =>{
+            await message.guild.members.fetch().then((members) => {
                 ownerSS = members.get(owners[i])
             })
 
@@ -143,7 +155,11 @@ module.exports = new Command({
 
         })
     } else if (list) {
-        const owner = message.guild.ownerID;
+        let owner = message.guild.ownerID;
+
+        if (client.BotPerso) {
+            owner = process.env.OWNER
+        }
 
         try {
             let tdata = await message.channel.send(lang.loading)
@@ -245,7 +261,11 @@ module.exports = new Command({
             console.log(err)
         }
     } else if (clear) {
-        const owner = message.guild.ownerID;
+        let owner = message.guild.ownerID;
+
+        if (client.BotPerso) {
+            owner = process.env.OWNER
+        }
 
         const sender = message.author.id;
         var isOwner = checkOwner(message.guild.id, sender);
@@ -258,7 +278,7 @@ module.exports = new Command({
         }
         for (var i = 0; i < owners.length - 1; i++) {
             let ownerSS
-            await message.guild.members.fetch().then((members) =>{
+            await message.guild.members.fetch().then((members) => {
                 ownerSS = members.get(owners[i])
             })
             const ownerList = ownerSS.user.tag;

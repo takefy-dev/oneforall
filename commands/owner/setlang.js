@@ -21,7 +21,11 @@ module.exports = new Command({
     
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
-    const owner = message.guild.ownerID;
+    let owner = message.guild.ownerID;
+    
+    if(client.BotPerso){
+        owner = process.env.OWNER
+    }
     const sender = message.author.id;
     var isOwner = checkOwner(message.guild.id, sender);
     let owners = guildOwner.get(message.guild.id);

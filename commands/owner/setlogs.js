@@ -21,7 +21,11 @@ module.exports = new Command({
     let voiceLog = new Map();
     this.connection = StateManager.connection;
     const sender = message.author.id;
-    const owner = message.guild.ownerID;
+    let owner = message.guild.ownerID;
+    
+    if(client.BotPerso){
+        owner = process.env.OWNER
+    }
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
     const color = guildEmbedColor.get(message.guild.id);
 

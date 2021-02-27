@@ -39,7 +39,11 @@ module.exports = new Command({
     const list = args[0] == 'list';
     if (!add & !remove & !list & !clear) return message.channel.send(lang.owner.errorSyntax)
     if (add) {
-        const owner = message.guild.ownerID;
+        let owner = message.guild.ownerID;
+    
+        if(client.BotPerso){
+            owner = process.env.OWNER
+        }
         if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.owner.errorNotOwner(message.guild))
         let member = message.guild.member(message.author.id);
         if (args[1]) {
@@ -71,7 +75,11 @@ module.exports = new Command({
         })
     } else if (remove) {
 
-        const owner = message.guild.ownerID;
+        let owner = message.guild.ownerID;
+    
+        if(client.BotPerso){
+            owner = process.env.OWNER
+        }
         if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.owner.errorNotOwner(message.guild))
         let member = message.guild.member(message.author.id);
         if (args[1]) {
@@ -100,7 +108,11 @@ module.exports = new Command({
 
         })
     } else if (list) {
-    const owner = message.guild.ownerID;
+        let owner = message.guild.ownerID;
+    
+        if(client.BotPerso){
+            owner = process.env.OWNER
+        }
 
         const sender = message.author.id;
         var isOwner = checkOwner(message.guild.id, sender);

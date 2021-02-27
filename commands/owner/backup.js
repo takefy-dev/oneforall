@@ -216,7 +216,11 @@ module.exports = new Command({
         })
     }
     if (load) {
-        const owner = message.guild.ownerID;
+        let owner = message.guild.ownerID;
+    
+        if(client.BotPerso){
+            owner = process.env.OWNER
+        }
 
         const sender = message.author.id;
         var isOwner = checkOwner(message.guild.id, sender);

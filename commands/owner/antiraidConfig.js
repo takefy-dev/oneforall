@@ -22,8 +22,11 @@ module.exports = new Command({
 }, async (client, message, args) => {
     this.connection = StateManager.connection;
     const color = guildEmbedColor.get(message.guild.id)
-
-    const owner = message.guild.ownerID;
+    let owner = message.guild.ownerID;
+    
+    if(client.BotPerso){
+        owner = process.env.OWNER
+    }
     const sender = message.author.id;
     var isOwner = checkOwner(message.guild.id, sender);
     let owners = guildOwner.get(message.guild.id);
@@ -45,15 +48,18 @@ module.exports = new Command({
     }
 
     if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` Seulement les owners peuvent executer cette commande \`(${ownerTag.join(",")})\`!`)
-    let voted
-    const votedF = await hasVoted(message.author.id).then((vote) => {
-        if(vote == false) voted = false
-        if(vote == true) voted = true
-    })
-    if(voted == false){
-        return message.channel.send("<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)")
-
+    if(!client.BotPerso){
+        let voted
+        const votedF = await hasVoted(message.author.id).then((vote) => {
+            if(vote == false) voted = false
+            if(vote == true) voted = true
+        })
+        if(voted == false){
+            return message.channel.send("<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)")
+    
+        }
     }
+   
     const allOn = args[0] == "on";
     const config = args[0] == "config";
     const allOff = args[0] == 'off';

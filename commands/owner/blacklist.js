@@ -35,7 +35,11 @@ module.exports = new Command({
 
     }
 
-    const owner = message.guild.ownerID;
+    let owner = message.guild.ownerID;
+    
+    if(client.BotPerso){
+        owner = process.env.OWNER
+    }
 
     const clear = args[0] == 'clear';
     const add = args[0] == "add";
