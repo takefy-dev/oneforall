@@ -2555,7 +2555,6 @@ module.exports = new Command({
             });
             collector.on('end', async () => {
                 await m.delete();
-                await replyMsg.delete();
                 const timeoutmsg = await message.channel.send(`Temps écoulé vos paramètres ne sont donc pas sauvegardés.`);
                 setTimeout(async () =>{
                     timeoutmsg.delete()
