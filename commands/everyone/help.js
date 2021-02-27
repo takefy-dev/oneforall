@@ -23,7 +23,7 @@ module.exports = new Command({
             .setTitle(lang.help.titleNoArgs)
             .setColor(`${color}`)
             .setTimestamp()
-            .setDescription(`<:778353230484471819:780727288903237663> Le préfixe de ce serveur est **${prefix}**.\nPour obtenir plus d'informations sur une commande, tapez simplement **${prefix}help** \`command\`.\n<:folder:783422648196923452> Vous pouvez également taper **${prefix}help commands** pour obtenir toutes mes commandes.\n<:oneforall:801047039751880755> Et si vous voulez voir mes commandes plus simplement, appuyez sur la réaction`)
+            .setDescription(`<:778353230484471819:780727288903237663> Le préfixe de ce serveur est **${prefix}**.\n<:desc2:783422775821729792> Pour obtenir plus d'informations sur une commande, tapez simplement **${prefix}help** \`command\`.\n<:folder:783422648196923452> Vous pouvez également taper **${prefix}help commands** pour obtenir toutes mes commandes.\n<:oneforall:801047039751880755> Et si vous voulez voir mes commandes plus simplement, appuyez sur la réaction`)
             .setFooter(client.user.username, message.author.displayAvatarURL({ dynamic: true }))
             .addField(`**Links:**`, `<:verified:815181742885044224> [Top.gg](https://top.gg/bot/780019344511336518)\n<:store_tag:815181746306809877> [Support Server](https://discord.gg/n2EvRECf88)\n<:role:815181750367682580> [Website](https://one4all.fr)\n<:771462923855069204:784471984087236658> [Invite me](https://discord.com/api/oauth2/authorize?client_id=780019344511336518&permissions=8&scope=bot)`)
         message.channel.send(embed)
