@@ -1,2 +1,3 @@
 # OneForAll
-best bot!
+
+`best discord bot!`
