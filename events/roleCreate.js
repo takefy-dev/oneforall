@@ -100,10 +100,9 @@ module.exports = new Event(
 
 			let after = guildAntiraidConfig.get(role.guild.id);
 
-
 			let targetMember = guild.members.cache.get(action.executor.id);
             if (targetMember == undefined) {
-                await channel.guild.members.fetch().then((members) => {
+                await role.guild.members.fetch().then((members) => {
                     targetMember = members.get(action.executor.id)
                 })
             }

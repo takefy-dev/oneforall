@@ -17,10 +17,15 @@ module.exports = new Command({
     clientPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
     cooldown: 3
 }, async(client, message, args) => {
+    let owner = message.guild.ownerID;
+    
+    if(client.BotPerso){
+        owner = process.env.OWNER
+    }
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
     if(args[0] === 'add'){
-        client.isGuildOwner(message.guild.id, message.author.id)
+        if(!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) return message.channel.send()
     }
 });
 

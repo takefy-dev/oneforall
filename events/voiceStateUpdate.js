@@ -332,6 +332,8 @@ module.exports = new Event(
             const formatedActionTime = parseInt(actionTime.getHours()) + parseInt(actionTime.getMinutes()) + parseInt(actionTime.getSeconds())
             const formatedActualtime = parseInt(actualDate.getHours()) + parseInt(actualDate.getMinutes()) + parseInt(actualDate.getSeconds())
             if (formatedActualtime === formatedActionTime) {
+                console.log(action)
+
                 var isOwner = checkBotOwner(oldState.guild.id, action.executor.id);
 
                 const isWlOnFetched = await this.connection.query(`SELECT antiDeco FROM antiraidWlBp WHERE guildId = '${oldState.guild.id}'`);

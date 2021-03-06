@@ -129,7 +129,7 @@ const manager = new GiveawayManagerWithOwnDatabase(CommandHandler.client, {
 CommandHandler.client.giveawaysManager = manager;
 CommandHandler.client.BotPerso = false
 
-
+CommandHandler.client.isGuildOwner = require('./function/check/botOwner')
 
 const logs = require('discord-logs');
 logs(CommandHandler.client);

@@ -50,13 +50,16 @@ module.exports = new Command({
             await this.connection.query(`DELETE FROM statsVoc WHERE channelId = ${max.channelId}`)
         }
     })
-    const embed = new Discord.MessageEmbed()
-        .setDescription(lang.stats.desc(member))
-        .addField(lang.stats.totalVoiceChat, prettyMilliseconds(totalDuration), true)
-        .addField(lang.stats.voiceMostActive, mostActiveChannel === undefined ? lang.stats.noVoiceChannel : `**${mostActiveChannel.name}**  __${prettyMilliseconds(mostActiveChannelDuration)}__`, true)
-        .setColor(`${color}`)
-        .setFooter(client.user.username, member.user.displayAvatarURL({ dynamic: true }))
-    message.channel.send(embed)
+    if (totalDuration !== 0) {
+        const embed = new Discord.MessageEmbed()
+            .setDescription(lang.stats.desc(member))
+            .addField(lang.stats.totalVoiceChat, prettyMilliseconds(totalDuration), true)
+            .addField(lang.stats.voiceMostActive, mostActiveChannel === undefined ? lang.stats.noVoiceChannel : `**${mostActiveChannel.name}**  __${prettyMilliseconds(mostActiveChannelDuration)}__`, true)
+            .setColor(`${color}`)
+            .setFooter(client.user.username, member.user.displayAvatarURL({ dynamic: true }))
+        message.channel.send(embed)
+    }
+
 });
 
 embedsColor(guildEmbedColor);

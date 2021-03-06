@@ -81,5 +81,22 @@ module.exports = async(handler, guild) => {
 			
 
 		}).catch(error => console.error(error))
+    this.connection.query(`SELECT coinsOn, coinsLogs, streamBoost, muteDiviseur FROM guildConfig WHERE guildId = '${guild.id}'`).then(result => {
+      if(result[0].length === 0) return;
+      const enable = result[0][0].coinsOn === "1" ? true : false;
+      console.log(enable)
+      StateManager.emit('coinSettings', guild.id, {enable, logs : result[0][0].coinsLogs, streamBoost: result[0][0].streamBoost, muteDiviseur: result[0][0].muteDiviseur})
+      
+
+
+
+          // this.connection.query(`SELECT * FROM coins WHERE guildId = '${guild.id}'`).then(res =>{
+          // 	if(res[0].length === 0){
+              
+          // 	}
+          // })
+      
+      
+    })
 })
 

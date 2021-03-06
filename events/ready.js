@@ -72,18 +72,16 @@ module.exports = new Event(
 				} guilds, it sees ${handler.client.users.cache.size + Logger.setColor('#c0433f')
 				} users.`)
 		);
-		// setInterval(async() => {
-		// 	let guildArray;
+		setInterval(async() => {
+			let guildArray;
 
-		// 	await handler.client.shard.fetchClientValues("guilds.cache.size").then((res) => {
-		// 		guildArray = res
-		// 	});
+			await handler.client.shard.fetchClientValues("guilds.cache.size").then((res) => {
+				guildArray = res
+			});
 
-		// 	handler.client.user.setActivity(`${guildArray.reduce((prev, guildCount) => prev + guildCount, 0)} Servers | !help`, { type: 'WATCHING' })
-		// }, 60000); // Runs this every 60 seconds.
-		// console.log(handler.client.guilds.cache.Array().forEach(guild =>{
-		// 	console.log(guild.name)
-		// }))
+			handler.client.user.setActivity(`${guildArray.reduce((prev, guildCount) => prev + guildCount, 0)} Servers | !help`, { type: 'WATCHING' })
+		}, 60000); // Runs this every 60 seconds.
+	
 
 		handler.client.guilds.cache.forEach(async guild => {
 			if (guild.deleted) return guild.leave()
@@ -388,7 +386,31 @@ module.exports = new Event(
 				const warnSanction = { ban: result[0][0].warnBan, kick: result[0][0].warnKick, mute: result[0][0].warnMute }
 				StateManager.emit('warnSanction', guild.id, warnSanction)
 			})
+			this.connection.query(`SELECT coinsOn, coinsLogs, streamBoost, muteDiviseur FROM guildConfig WHERE guildId = '${guild.id}'`).then(result => {
+				if(result[0].length === 0) return;
+				const enable = result[0][0].coinsOn === "1" ? true : false;
+				StateManager.emit('coinSettings', guild.id, {enable, logs : result[0][0].coinsLogs, streamBoost: result[0][0].streamBoost, muteDiviseur: result[0][0].muteDiviseur})
+				
 
+
+
+						// this.connection.query(`SELECT * FROM coins WHERE guildId = '${guild.id}'`).then(res =>{
+						// 	if(res[0].length === 0){
+								
+						// 	}
+						// })
+				
+				
+			})
+			this.connection.query(`SELECT * FROM coins WHERE guildId = '${guild.id}'`).then(res =>{
+				if(res[0].length === 0) return;
+				let userArray = []
+				res[0].forEach(res => {
+					userArray.push({userId : res.userId, coins: res.coins})
+					
+				})
+				StateManager.emit('guildCoins', guild.id, userArray)
+			})
 
 		})
 

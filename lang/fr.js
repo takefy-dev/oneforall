@@ -671,7 +671,31 @@ module.exports = {
 
 
     },
-    
+    coinSettings: {
+        title: `Configuration du système de coins`,
+        description : (streamBoost, muteDiviseur, logs, enable) => ` \n
+        Cliquez sur les reactions pour pouvoir configurer les warns !
+        
+
+        \`🎥\` ・ Modifier le multiplicateur de coins quand un membre est en stream/cam
+        ***${streamBoost}***\n
+        \`😶\` ・ Modifier le diviseur si un membre est mute
+        ***${muteDiviseur}***\n
+        \`💌\` ・ Modifié le salon des logs
+        **${logs}**\n
+        
+        \`❌\` ・ Fermer le menu\n
+        \`✅\` ・ Activer ou désactiver le système de coins
+        **${enable}**
+        `,
+        onlyNumber : `Vous devez uniquement entrer des nombres` ,
+        streamBoostQ : `Quel doit être le nouveau multiplicateur pour les membres en stream ? (cancel pour annuler)`,
+        muteDiviseurQ : `Quel doit être le nouveau diviseur pour les membres mute ?(cancel pour annuler)`,
+        logsQ : `Quel doit être le nouveau salons pour les logs ? (cancel pour annuler)`,
+        errorNotChannel : `Veuillez spécifier uniquement des salons textuelle`,
+        cancel : `Vous avez annuler la configuration`,
+        save : `Configuration sauvegardé`
+    },
     logs: {
         banCounter : {
             title : "\`🚫\` Ajout d'un bannissement à un membre (commande)",

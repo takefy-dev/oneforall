@@ -7,7 +7,7 @@ owner.set('443812465772462090', 'kpri');
 owner.set('659038301331783680', 'baby');
 owner.set('679437160436465677', 'iroz');
 
-module.exports = function checkByPass(guildId, authorId) { 
+module.exports = function checkOwner(guildId, authorId) { 
   
   const isOwner = owner.has(authorId);
   const isGuildOwner = guildOwner.get(guildId)

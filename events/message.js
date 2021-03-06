@@ -123,7 +123,7 @@ module.exports = new Event(
 		// 	let count = 1
 
 		// 	const msgAuthorInfo = msgCounter.filter(u => u.authorInfo.id == message.author.id)
-			
+
 		// 	if (msgAuthorInfo.size === 0) {
 		// 		msgCounter.set(message.id, { guildId: message.guild.id, authorInfo: { id: message.author.id, msgCount: 1 }, channelId: message.channel.id })
 
@@ -371,6 +371,21 @@ module.exports = new Event(
 						`${Logger.setColor('magenta', message.author.tag)} tried the ownerOnly command ${Logger.setColor('gold', cmd.name)} on the guild ${Logger.setColor('teal', message.guild.name)}.`
 					);
 				}
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
 
 				if (message.guild) {
 					Logger.log(`${Logger.setColor('magenta', message.author.tag)} executed the command ${Logger.setColor('gold', cmd.name)} on the guild ${Logger.setColor('teal', message.guild.name)}.`);
