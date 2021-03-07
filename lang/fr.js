@@ -696,6 +696,13 @@ module.exports = {
         cancel : `Vous avez annuler la configuration`,
         save : `Configuration sauvegardé`
     },
+    ball : {
+        noQuestion :  `S'il vous plait, veuillez entrer une question.`,
+        reponseQuestion : ["Oui.","Non.","Oui Bien sûr","Oui définitivement !","Il ne vaut mieux pas en parler !","J'ai pas envie de répondre à cette question.","j'espère","J'imagine Bien"],
+        reponse : `Réponse`
+
+    },
+
     logs: {
         banCounter : {
             title : "\`🚫\` Ajout d'un bannissement à un membre (commande)",

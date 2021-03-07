@@ -12,8 +12,8 @@ module.exports = new Command({
     // Optionnals :
     usage: '',
     category: '',
-    tags: [],
-    aliases: [],
+    tags: ['guildOnly'],
+    aliases: [''],
     userPermissions: [],
     clientPermissions: [],
     cooldown: 10
