@@ -35,7 +35,7 @@ module.exports = {
         command : `Afficher toutes les commandes`,
         search : `Chercher une aide détaillé sur un commande`,
         noUsage : `Pas d'usage en particuler`,
-        requiredOrNot : `**< >** sont les arguments requis et **[ ]** sont les arguments optionnel`
+        requiredOrNot : `\`< >\` sont les arguments requis et \`[ ]\` sont les arguments optionnel`
         
     },
     helpall: {
