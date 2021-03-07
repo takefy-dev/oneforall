@@ -15,7 +15,6 @@ CommandHandler.create({
     prefix: '',
     owners: ['659038301331783680', '188356697482330122', '443812465772462090', "679437160436465677"]
 });
-
 CommandHandler.launch({
     token: process.env.TOKEN,
     clientOptions: {
