@@ -702,6 +702,12 @@ module.exports = {
         reponse : `Réponse`
 
     },
+    meme : {
+        reponse : `Ton meme a été trouver sur /r${random}`
+    },
+    gaydetector : {
+        title : `Machine de detecteur de gay`
+    }
 
     logs: {
         banCounter : {
