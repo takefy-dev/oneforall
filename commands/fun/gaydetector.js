@@ -15,7 +15,7 @@ module.exports = new Command({
     tags: ['guildOnly'],
     aliases: ['gay'],
     clientPermissions: ['EMBED_LINKS'],
-    cooldown: 10
+    cooldown: 5
 }, async(client, message, args) => {
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
@@ -23,9 +23,9 @@ module.exports = new Command({
     let member = message.mentions.users.first() || message.author
 
     let rng = Math.floor(Math.random() * 100)
-    const gaydetectorembed = new Discord.MessageEmbed
+    const gaydetectorembed = new Discord.MessageEmbed()
     .setTitle(lang.gaydetector.title)
-    .setDescription(`${member.username} is` + rng +"% Gay 🏳️‍🌈")
+    .setDescription(`**${member.username}** est gay à ${rng}% 🏳️‍🌈`)
     .setColor(`${color}`)
 
     message.channel.send(gaydetectorembed)

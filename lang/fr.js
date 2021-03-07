@@ -703,7 +703,7 @@ module.exports = {
 
     },
     meme : {
-        reponse : `Ton meme a été trouver sur /r${random}`
+        reponse :  (random) =>`Ton meme a été trouvé sur /r${random} (si l'image ne charge pas veuillez cliquer sur l'image)`
     },
     gaydetector : {
         title : `Machine de detecteur de gay`
