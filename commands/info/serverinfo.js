@@ -74,6 +74,7 @@ module.exports = new Command({
   let rolemap = message.guild.roles.cache
             .sort((a, b) => b.position - a.position)
             .map(r => r)
+            .slice(0, 10)
             .join(",");
             if (rolemap.length > 1024) rolemap = "To many roles to display";
             if (!rolemap) rolemap = "No roles";
@@ -91,12 +92,12 @@ module.exports = new Command({
         .addField(`**REGION:**`, `${regions[message.guild.region]}`, true)
         .addField(`**VERIFICATION LEVE:**`, `${verificationLevels[message.guild.verificationLevel]}`, true)
         .addField(`**BOOSTS:**`, `${message.guild.premiumSubscriptionCount || '0'} (${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : 'None'})`, true)
-        .addField(`**AFK CHANNEL:**`, `${message.guild.afkChannelID === null ? 'N/A' : client.channels.get(message.guild.afkChannelID).name}`, true)
+        .addField(`**AFK CHANNEL:**`, `${message.guild.afkChannelID === null ? 'N/A' : message.guild.channels.cache.get(message.guild.afkChannelID).name}`, true)
         .addField(`**CREATED:**`, `${moment(message.guild.createdTimestamp).format('LL')}\n${moment(message.guild.createdTimestamp).fromNow()}`, false)
         .addField(`**MEMBERS (${message.guild.memberCount}):**`, `<:online_il:786325180070625311> ${online} : <:charliewave_dnd:786331160744689704> ${dnd} : <:charliewave_idle:786331151144714291> ${idle} : <:charliewave_offline:786331156010106890> ${offline} : <:775305392787685378:780731436771573770> ${membersGuild.filter(member => member.user.bot).size}`, false)
         .addField(`**EMOJIS (${emojisGuild.size}):**`, `Normal Emojis: ${emojisGuild.filter(emoji => !emoji.animated).size}\nAnimated Emojis: ${emojisGuild.filter(emoji => emoji.animated).size}`, true)
         .addField(`**ROLES (${rolesGuild.length}):**`, `${rolemap}`, false)
-        .setThumbnail(message.guild.iconURL({ dynamic: true }))
+        .setThumbnail(message.guild.iconURL())
         /*.addField('<a:fleche:786340501531262977> **GENERAL:**', [
             `Nom: **${message.guild.name}**`,
             `ID: **${message.guild.id}**`,

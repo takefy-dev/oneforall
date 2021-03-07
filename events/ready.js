@@ -22,7 +22,6 @@ module.exports = new Event(
 	},
 	module.exports = async (handler) => {
 		this.connection = StateManager.connection;
-
 		const checkUnmutes = require("../function/check/tempmute.js");
 		checkUnmutes.init(handler.client);
 		setInterval(function () {
