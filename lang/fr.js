@@ -707,8 +707,11 @@ module.exports = {
     },
     gaydetector : {
         title : `Machine de detecteur de gay`
-    }
-
+    },
+    addShop : {
+        noItem : `Veuillez entrer un item en pour le shop`,
+        noPrice : `Veuillez entrer un prix pour ajouter l'item au shop`
+    },
     logs: {
         banCounter : {
             title : "\`🚫\` Ajout d'un bannissement à un membre (commande)",
