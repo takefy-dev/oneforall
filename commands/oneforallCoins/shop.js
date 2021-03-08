@@ -28,7 +28,7 @@ module.exports = new Command({
     if(args[0] === "create"){
         if(shop.has(message.guild.id)) return message.channel.send(lang.addShop.alreadyShop)
         return await this.connection.query(`INSERT INTO coinShop VALUES ('${message.guild.id}', '[${JSON.stringify({item: 'Rien dans le magasin', prix: undefined, role:undefined})}]')`).then(async() =>{
-            const createdShop =  [{item : 'Rien dans le magasin', price: undefined, role:undefined}]
+            const createdShop =  [{id: undefined,item : 'Rien dans le magasin', price: undefined, role:undefined}]
             shop.set(message.guild.id, createdShop);
 
             StateManager.emit('shopUpdate', message.guild.id, createdShop)
@@ -50,27 +50,33 @@ module.exports = new Command({
          * Shop...
          * @param args[1] {shop item}
          * @param args[2] {price}
-         * @param [{item, price, role}]
+         * @param [{id, item, price, role}]
         **/
-        let toAdd;
         if (!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) return message.channel.send(lang.error.notListOwner)
         if (!args[1]) return message.channel.send(lang.addShop.noItem).then(mp => mp.delete({ timeout: 4000 }))
         if (!args[2] || isNaN(args[2])) return message.channel.send(lang.addShop.noPrice).then(mp => mp.delete({ timeout: 4000 }))
-        if(parseInt(args[2]) > 0) return message.channel.send(lang.addShop.priceInf0).then(mp => mp.delete({ timeout: 4000 }))
+        if(parseInt(args[2]) === 0) return message.channel.send(lang.addShop.priceInf0).then(mp => mp.delete({ timeout: 4000 }))
         const isRl = message.mentions.roles.first() || isNaN(args[1]) ? undefined : message.guild.roles.cache.get(args[1]);
         if(isRl){
-            actualShop.push({item: `<@${isRl.id}>`, price: parseFloat(args[2]), role: true})
+            actualShop.push({id: actualShop.id + 1 ,item: `<@${isRl.id}>`, price: parseFloat(args[2]), role: true})
         }else{
-            actualShop.push({item: args[1], price: parseFloat(args[2]), role: false})
+            actualShop.push({id: actualShop.id + 1, item: args[1], price: parseFloat(args[2]), role: false})
 
 
         }
         shop.set(message.guild.id, actualShop)
         StateManager.emit('shopUpdate', message.guild.id, actualShop)
-        console.log(actualShop, shop)
         await this.connection.query(`UPDATE coinShop SET shop = '${JSON.stringify(actualShop)}'`).then(async() =>{
             return message.channel.send(lang.addShop.successAdd(args[1], args[2])).then(mp => mp.delete({timeout : 5000}))
         })
+
+    }else if(args[0] === "remove"){
+        if (!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) return message.channel.send(lang.error.notListOwner)
+        if (!args[1]) return message.channel.send(lang.addShop.noIdToDelete).then(mp => mp.delete({ timeout: 4000 }))
+        if (isNaN(args[1])) return message.channel.send(lang.addShop.onlyNumber).then(mp => mp.delete({ timeout: 4000 }))
+        if(!actualShop.find(shop => shop.id === parseInt(args[1]))) return message.channel.send(lang.addShop.notFoundItem).then(mp => mp.delete({ timeout: 4000 }))
+        const newShop = actualShop.filter(shop => shop.id !== parseInt(args[1]));
+        console.log(newShop)
 
     }
 });

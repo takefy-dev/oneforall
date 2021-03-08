@@ -717,7 +717,9 @@ module.exports = {
         alreadyShop : `Votre serveurs possède déjà un magasin pour le supprimé (shop delete)`,
         create : `Le magasin a bien été créé`,
         delete : `Le magasin a bien été supprimé`,
-
+        noIdToDelete: `Vous devez spécifié l'id du l'item a supprimer`,
+        onlyNumber: `Vous devez uniquement spécifié des nombres`,
+        notFoundItem : `L'item a supprimé n'a pas été trouvé veuillez en selectionner un correct`, 
     },
     logs: {
         banCounter : {
