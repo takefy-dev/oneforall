@@ -22,6 +22,7 @@ module.exports = {
     },
     help: {
         information2: (prefix) => `<:778353230484471819:780727288903237663> The prefix for this server is \`${prefix}\`.\n<:desc2:783422775821729792> To get more information about a command, just type \`${prefix}help\` \`command\`.\n<:folder:783422648196923452> You can also type \`${prefix}help commands\` or press on 📄 to get all my commands.`,
+        noCommand: (args) => `I don't find this command (${args}) in my commands`,
         information: `Information and commands`,
         noAliases : `No aliases`,
         cmdTitle :`Command help`,
