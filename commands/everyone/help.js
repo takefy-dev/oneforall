@@ -67,7 +67,7 @@ module.exports = new Command({
     }
     if (args[0] != 'commands' && args[0]) {
         const cmd = await getThing('command', args[0].toLowerCase().normalize());
-        if (cmd === null) return message.channel.send(`Je ne trouve pas la commande **__${args[0]}__** dans mes commandes`).then((mp) => mp.delete({ timeout: 4000 }))
+        if (cmd === null) return message.channel.send(message.channel.send(lang.help.noCommand(args[0])).then((mp) => mp.delete({ timeout: 4000 }))
 
         const embed = new Discord.MessageEmbed()
             .setTitle(`${cmd.name} command`)
