@@ -52,7 +52,7 @@ module.exports = new Command({
 
     }
 
-    if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` Seulement les owners peuvent executer cette commande \`(${ownerTag.join(",")})\`!`)
+    if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag.join(",")))
     if(!client.BotPerso){
         let voted
         const votedF = await hasVoted(message.author.id).then((vote) => {
@@ -60,7 +60,7 @@ module.exports = new Command({
             if(vote == true) voted = true
         })
         if(voted == false){
-            return message.channel.send("<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)")
+            return message.channel.send(lang.antiraidConfig.noVote)
     
         }
     }
@@ -89,14 +89,14 @@ module.exports = new Command({
 
         await this.connection.query(`INSERT INTO antiraid VALUES ('${message.guild.id}','1', '1' , '1' , '1' , '1' , '1' , '1' , '1', '1', '1', '1', '1','1','1','1','1','1','1') ON DUPLICATE KEY UPDATE webhookCreate=1,roleCreate=1, roleUpdate=1, roleDelete=1, channelCreate=1, channelUpdate=1,channelDelete=1,spam=1,ban=1, bot=1 , roleAdd =1, antilink = 1,antiDeco = 1,antiKick = 1,antiDc = 1,nameUpdate=1,regionUpdate=1, vanityUpdate=1`)
             .then((result) => {
-                message.channel.send("Tous les évênements ont été activés")
+                message.channel.send(lang.antiraidConfig.allOn)
             })
         StateManager.emit('spamUpdate', message.guild.id, "1")
 
 
     } else if (allOff) {
         await this.connection.query(`INSERT INTO antiraid VALUES ('${message.guild.id}', '0', '0' , '0' , '0' , '0' , '0' , '0' , '0', '0', '0', '0', '0','0','0','0','0','0','0') ON DUPLICATE KEY UPDATE webhookCreate=0, roleCreate=0, roleUpdate=0, roleDelete=0, channelCreate=0, channelUpdate=0,channelDelete=0,spam=0,ban=0, bot=0, roleAdd =0, antilink = 0,antiDeco = 0,antiKick = 0,antiDc = 0,nameUpdate=0,regionUpdate=0, vanityUpdate=0`)
-            .then(() => { message.channel.send("Tous les évênements ont été désactivé") })
+            .then(() => { message.channel.send(lang.antiraidConfig.allOff) })
         StateManager.emit('spamUpdate', message.guild.id, "0")
 
     } else if (opti) {
@@ -118,26 +118,26 @@ module.exports = new Command({
 
         await this.connection.query(`INSERT INTO antiraidWlBp VALUES ('${message.guild.id}','0', '1' , '1' , '0' , '1' , '0' , '1' , '1', '0', '1', '1', '1','1','1','1','0','0') ON DUPLICATE KEY UPDATE webhookCreate=0,roleCreate=1, roleUpdate=1, roleDelete=0, channelCreate=1, channelUpdate=0,channelDelete=1,spam=1,ban=0, bot=1 , roleAdd =1, antilink = 1, antiDeco=1, antiKick=1,regionUpdate='1',nameUpdate='0',vanityUpdate='0'`)
             .then(() => {
-                message.channel.send("L'antiraid est configuré avec les paramètres optimisés ")
+                message.channel.send(lang.antiraidConfig.opti)
                 StateManager.emit('spamUpdate', message.guild.id, "1")
             })
     } else if (antiSpamOn) {
         await this.connection.query(`UPDATE antiraid SET spam = '1' WHERE guildId = '${message.guild.id}'`)
             .then(() => {
-                message.channel.send("L'antispam a été activé !")
+                message.channel.send(lang.antiraidConfig.antiSpamOn)
             })
         StateManager.emit('spamUpdate', message.guild.id, "1")
 
     } else if (antiSpamOff) {
         await this.connection.query(`UPDATE antiraid SET spam = '0' WHERE guildId = '${message.guild.id}'`)
             .then(() => {
-                message.channel.send("L'antispam a été désactivé !")
+                message.channel.send(lang.antiraidConfig.antiSpamOff)
             })
         StateManager.emit('spamUpdate', message.guild.id, "0")
     } else if (antilinkOn) {
         await this.connection.query(`UPDATE antiraid SET antilink = '1' WHERE guildId = '${message.guild.id}'`)
             .then(() => {
-                message.channel.send("L'antilink a été activé !")
+                message.channel.send(lang.antiraidConfig.antilinkOn)
                 StateManager.emit('antilinkUpdate', message.guild.id, "1")
 
                 
@@ -147,7 +147,7 @@ module.exports = new Command({
     } else if (antilinkOff) {
         await this.connection.query(`UPDATE antiraid SET antilink = '0' WHERE guildId = '${message.guild.id}'`)
             .then(() => {
-                message.channel.send("L'antilink a été désactivé !")
+                message.channel.send(lang.antiraidConfig.antilinkOff)
                 StateManager.emit('antilinkUpdate', message.guild.id, "0")
             })
      
