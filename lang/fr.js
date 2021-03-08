@@ -28,6 +28,7 @@ module.exports = {
     },
     help: {
         information2: (prefix) => `<:778353230484471819:780727288903237663> Le préfixe de ce serveur est \`${prefix}\`.\n<:desc2:783422775821729792> Pour obtenir plus d'informations sur une commande, tapez simplement \`${prefix}help\` \`command\`.\n<:folder:783422648196923452> Vous pouvez également taper \`${prefix}help commands\` ou réagir avec 📄 pour obtenir toutes mes commandes.`,
+        noCommand: (args) => `Je ne trouve pas la commande **__${args}__** dans mes commandes`,
         information: `Information and commands`,
         noAliases : `Pas d'aliases`,
         cmdTitle :`Aide sur la commande`,
@@ -718,9 +719,7 @@ module.exports = {
         alreadyShop : `Votre serveurs possède déjà un magasin pour le supprimé (shop delete)`,
         create : `Le magasin a bien été créé`,
         delete : `Le magasin a bien été supprimé`,
-        noIdToDelete: `Vous devez spécifié l'id du l'item a supprimer`,
-        onlyNumber: `Vous devez uniquement spécifié des nombres`,
-        notFoundItem : `L'item a supprimé n'a pas été trouvé veuillez en selectionner un correct`, 
+
     },
     logs: {
         banCounter : {
