@@ -5,6 +5,9 @@ const StateManager = require('../../utils/StateManager');
 var embedsColor = require('../../function/embedsColor')
 var checkOwner = require('../../function/check/botOwner')
 const guildOwner = new Map();
+var langF = require('../../function/lang')
+const guildLang = new Map();
+
 const { Menu } = require('discord.js-menu')
 const { Command } = require('advanced-command-handler');
 const hasVoted = require('../../function/check/hasVoteTopGg')
@@ -21,6 +24,8 @@ module.exports = new Command({
     cooldown: 5
 }, async (client, message, args) => {
     this.connection = StateManager.connection;
+    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+
     const color = guildEmbedColor.get(message.guild.id)
     let owner = message.guild.ownerID;
     
@@ -2580,3 +2585,4 @@ StateManager.on('ownerFetched', (guildId, data) => {
     guildOwner.set(guildId, data);
 
 })
+langF(guildLang);
