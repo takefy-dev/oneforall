@@ -733,6 +733,10 @@ module.exports = {
         p1Title : `<a:3770_this_animated_right:783432503854759936>__Configuration des évènements__ (__15__)`,
         p2Title : `<a:3770_this_animated_right:783432503854759936>__Configuration des évènements__ (__15__)`,
         p3Title : `<a:3770_this_animated_right:783432503854759936>__Configuration des évènements__ (__15__)`,
+        timeoutmsg : `Temps écoulé vos paramètres ne sont donc pas sauvegardés.`,
+        savedmsg : `Les paramètres de l'antiraid ont été sauvegardés`,
+        reactsave : `Pour sauvegarder vos paramètres veuiller **réagir à ce message avec ✅**`,
+        anulee : `L'opération a été annulée`,
     },
     logs: {
         banCounter : {
