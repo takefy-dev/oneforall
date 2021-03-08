@@ -722,7 +722,14 @@ module.exports = {
 
     },
     antiraidConfig :{
-
+        noVote : `<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,
+        allOn : `Tous les évênements ont été activés`,
+        allOff : `Tous les évênements ont été désactivé`,
+        opti : `L'antiraid est configuré avec les paramètres optimisés`,
+        antiSpamOn : `L'antispam a été activé !`,
+        antiSpamOff : `L'antispam a été désactivé !`,
+        antilinkOn : `L'antilink a été activé !`,
+        antilinkOff : `L'antilink a été désactivé !`,
     },
     logs: {
         banCounter : {
