@@ -58,9 +58,18 @@ module.exports = new Command({
         if(parseInt(args[2]) === 0) return message.channel.send(lang.addShop.priceInf0).then(mp => mp.delete({ timeout: 4000 }))
         const isRl = message.mentions.roles.first() || isNaN(args[1]) ? undefined : message.guild.roles.cache.get(args[1]);
         if(isRl){
-            actualShop.push({id: actualShop.id + 1 ,item: `<@${isRl.id}>`, price: parseFloat(args[2]), role: true})
+            let lastItemId = 0;
+            
+            if(actualShop[actualShop.length - 1] !== undefined) lastItemId = actualShop[actualShop.length - 1].id
+            actualShop.push({id: lastItemId + 1 ,item: `<@${isRl.id}>`, price: parseFloat(args[2]), role: true})
         }else{
-            actualShop.push({id: actualShop.id + 1, item: args[1], price: parseFloat(args[2]), role: false})
+            
+            let lastItemId = 0;
+            
+            if(actualShop[actualShop.length - 1] !== undefined) lastItemId = actualShop[actualShop.length - 1].id
+
+    
+            actualShop.push({id:  lastItemId + 1, item: args[1], price: parseFloat(args[2]), role: false})
 
 
         }
