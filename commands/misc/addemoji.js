@@ -42,9 +42,6 @@ module.exports = new Command({
         message.guild.emojis.create(link, name, { reason: `emoji add par ${message.author.username}` }).then(()=>{
             message.channel.send(lang.addemoji.success(name))
             Logger.log(`${Logger.setColor('teal')}${member.user.tag} a ajouté un emoji`, 'Success add emoji')
-        }).catch(err => {
-            message.channel.send(lang.addemoji.error(name))
-            
         })
 
     }
