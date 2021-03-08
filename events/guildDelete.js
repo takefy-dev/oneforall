@@ -24,6 +24,8 @@ module.exports = async(handler, guild) => {
     await this.connection.query(
       `DELETE FROM antiraidWlBp WHERE guildId = '${guild.id}'`
     )
+    await this.connection.query(`DELETE FROM coinShop WHERE guildId = '${guild.id}')`)
+
     console.log(`Deleted from db.`)
   } catch(err) {
     console.log(err);

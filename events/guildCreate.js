@@ -25,7 +25,7 @@ module.exports = async(handler, guild) => {
     await this.connection.query(
       `INSERT INTO antiraidWlBp (guildId) VALUES ('${guild.id}')`
     )
-
+    await this.connection.query(`INSERT INTO coinShop VALUES ('${guild.id}', '[${JSON.stringify({item: 'Rien dans le magasin', prix: undefined, role:undefined})}]')`)
     console.log(`Added to db.`)
   } catch(err) {
     console.log(err);
@@ -86,17 +86,12 @@ module.exports = async(handler, guild) => {
       const enable = result[0][0].coinsOn === "1" ? true : false;
       console.log(enable)
       StateManager.emit('coinSettings', guild.id, {enable, logs : result[0][0].coinsLogs, streamBoost: result[0][0].streamBoost, muteDiviseur: result[0][0].muteDiviseur})
-      
-
-
-
-          // this.connection.query(`SELECT * FROM coins WHERE guildId = '${guild.id}'`).then(res =>{
-          // 	if(res[0].length === 0){
-              
-          // 	}
-          // })
-      
-      
+    })
+    this.connection.query(`SELECT shop FROM coinShop WHERE guildId = '${guild.id}'`).then(res =>{
+      if(res[0].length === 0) return;
+      const shopArray =JSON.parse(res[0][0].shop)
+      StateManager.emit('shopFetched', guild.id, shopArray)	
+        
     })
 })
 

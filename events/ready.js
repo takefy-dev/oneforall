@@ -411,6 +411,12 @@ module.exports = new Event(
 				StateManager.emit('guildCoins', guild.id, userArray)
 			})
 
+			this.connection.query(`SELECT shop FROM coinShop WHERE guildId = '${guild.id}'`).then(res =>{
+				if(res[0].length === 0) return;
+				const shopArray =JSON.parse(res[0][0].shop)
+				StateManager.emit('shopFetched', guild.id, shopArray)					
+			})
+
 		})
 
 		setInterval(() => {

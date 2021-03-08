@@ -703,14 +703,16 @@ module.exports = {
 
     },
     meme : {
-        reponse :  (random) =>`Ton meme a été trouvé sur /r${random} (si l'image ne charge pas veuillez cliquer sur l'image)`
+        reponse :  (random) =>`Ton meme a été trouvé sur /r${random} (si l'image ne charge pas veuillez cliquer sur le lien)`
     },
     gaydetector : {
         title : `Machine de detecteur de gay`
     },
     addShop : {
         noItem : `Veuillez entrer un item en pour le shop`,
-        noPrice : `Veuillez entrer un prix pour ajouter l'item au shop`
+        noPrice : `Veuillez entrer un prix correct pour ajouter l'item au shop`,
+        successAdd : (item, price) => `Vous avez ajouter l'item **${item}** au prix de ${price}`,
+        priceInf0 : `Vous devez entrer un prix suppérieur à 0`
     },
     logs: {
         banCounter : {

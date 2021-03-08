@@ -33,7 +33,6 @@ module.exports = new Command({
         .setURL(`https://reddit.com/r/${random}`)
 
     message.channel.send(embed)
-    console.log(img)
 });
 
 embedsColor(guildEmbedColor);

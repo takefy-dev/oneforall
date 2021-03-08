@@ -30,7 +30,6 @@ module.exports = new Command({
     .setColor(`${color}`)
     .addField("Question", question)
     .addField(lang.ball.reponse, replies[result])
-    console.log(replies.lenght,result)
 
     message.channel.send(ballembed)
 
