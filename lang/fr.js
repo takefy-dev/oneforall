@@ -721,6 +721,9 @@ module.exports = {
         delete : `Le magasin a bien été supprimé`,
 
     },
+    antiraidConfig :{
+
+    },
     logs: {
         banCounter : {
             title : "\`🚫\` Ajout d'un bannissement à un membre (commande)",

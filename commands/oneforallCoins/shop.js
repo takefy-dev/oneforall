@@ -27,8 +27,8 @@ module.exports = new Command({
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
     if(args[0] === "create"){
         if(shop.has(message.guild.id)) return message.channel.send(lang.addShop.alreadyShop)
-        return await this.connection.query(`INSERT INTO coinShop VALUES ('${message.guild.id}', '[${JSON.stringify({item: 'Rien dans le magasin', prix: undefined, role:undefined})}]')`).then(async() =>{
-            const createdShop =  [{id: undefined,item : 'Rien dans le magasin', price: undefined, role:undefined}]
+        return await this.connection.query(`INSERT INTO coinShop VALUES ('${message.guild.id}', '[${JSON.stringify({id: 0,item: 'Rien dans le magasin', prix: undefined, role:undefined})}]')`).then(async() =>{
+            const createdShop =  [{id: 0,item : 'Rien dans le magasin', price: undefined, role:undefined}]
             shop.set(message.guild.id, createdShop);
 
             StateManager.emit('shopUpdate', message.guild.id, createdShop)
