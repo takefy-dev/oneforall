@@ -712,7 +712,12 @@ module.exports = {
         noItem : `Veuillez entrer un item en pour le shop`,
         noPrice : `Veuillez entrer un prix correct pour ajouter l'item au shop`,
         successAdd : (item, price) => `Vous avez ajouter l'item **${item}** au prix de ${price}`,
-        priceInf0 : `Vous devez entrer un prix suppérieur à 0`
+        priceInf0 : `Vous devez entrer un prix suppérieur à 0`,
+        noShop : `Votre magasin n'est pas dans notre base de donné (shop create pour créer le shop)`,
+        alreadyShop : `Votre serveurs possède déjà un magasin pour le supprimé (shop delete)`,
+        create : `Le magasin a bien été créé`,
+        delete : `Le magasin a bien été supprimé`,
+
     },
     logs: {
         banCounter : {

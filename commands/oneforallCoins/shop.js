@@ -25,6 +25,25 @@ module.exports = new Command({
     }
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    if(args[0] === "create"){
+        if(shop.has(message.guild.id)) return message.channel.send(lang.addShop.alreadyShop)
+        return await this.connection.query(`INSERT INTO coinShop VALUES ('${message.guild.id}', '[${JSON.stringify({item: 'Rien dans le magasin', prix: undefined, role:undefined})}]')`).then(async() =>{
+            const createdShop =  [{item : 'Rien dans le magasin', price: undefined, role:undefined}]
+            shop.set(message.guild.id, createdShop);
+
+            StateManager.emit('shopUpdate', message.guild.id, createdShop)
+            return message.channel.send(lang.addShop.create).then(mp => mp.delete({timeout : 5000}))
+        })
+    }else if(args[0] === "delete"){
+        if(!shop.has(message.guild.id)) return message.channel.send(lang.addShop.noShop)
+        return await this.connection.query(`DELETE FROM coinShop WHERE guildId = '${message.guild.id}'`).then(async() =>{
+            shop.delete(message.guild.id)
+
+            StateManager.emit('shopDelete',shop)
+            return message.channel.send(lang.addShop.delete).then(mp => mp.delete({timeout : 5000}))
+        })
+    }
+    if(!shop.has(message.guild.id)) return message.channel.send(lang.addShop.noShop)
     const actualShop = shop.get(message.guild.id).filter(shop => shop.price !== undefined)
     if (args[0] === 'add') {
         /**

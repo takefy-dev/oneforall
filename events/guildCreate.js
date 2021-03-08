@@ -25,7 +25,6 @@ module.exports = async(handler, guild) => {
     await this.connection.query(
       `INSERT INTO antiraidWlBp (guildId) VALUES ('${guild.id}')`
     )
-    await this.connection.query(`INSERT INTO coinShop VALUES ('${guild.id}', '[${JSON.stringify({item: 'Rien dans le magasin', prix: undefined, role:undefined})}]')`)
     console.log(`Added to db.`)
   } catch(err) {
     console.log(err);
