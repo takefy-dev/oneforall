@@ -15,7 +15,7 @@ module.exports = new Command({
     usage: '!warn-config',
     category: 'moderation',
     tags: ['guildOnly'],
-    aliases: ['setwarn', 'warnconfig', 'warnsetup', 'warn-conf'],
+    aliases: ['setwarn', 'warnconfig', 'warnsetup', 'warn-conf', 'warn config'],
     userPermissions: ['ADMINISTRATOR'],
     clientPermissions: ['EMBED_LINKS'],
     cooldown: 3
