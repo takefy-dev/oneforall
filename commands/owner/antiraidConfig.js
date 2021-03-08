@@ -345,7 +345,7 @@ module.exports = new Command({
         // let tdata = await message.channel.send(`Chargement ... <a:2366_Loading_Pixels:784472554328555571>`)
 
         let p1 = new Discord.MessageEmbed();
-        p1.setTitle(`<a:3770_this_animated_right:783432503854759936>__Configuration des évènements__ (__15__)`)
+        p1.setTitle(lang.antiraidConfig.p1Title)
             .setColor(`${color}`)
             .setTimestamp()
             .setFooter("Antiraid Config", `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
@@ -420,7 +420,7 @@ module.exports = new Command({
                     
                     Page 2 / 3
                     `)
-            .setTitle(`<a:3770_this_animated_right:783432503854759936>__Configuration des évènements__ (__15__)`)
+            .setTitle(lang.antiraidConfig.p2Title)
             .setColor(`${color}`)
             .setTimestamp()
             .setFooter("Antiraid Config", `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
@@ -463,7 +463,7 @@ module.exports = new Command({
                         
                         Page 3 / 3
                         `)
-            .setTitle(`<a:3770_this_animated_right:783432503854759936>__Configuration des évènements__ (__15__)`)
+            .setTitle(lang.antiraidConfig.p3Title)
             .setColor(`${color}`)
             .setTimestamp()
             .setFooter("Antiraid Config", `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
