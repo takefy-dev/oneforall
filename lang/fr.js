@@ -730,6 +730,9 @@ module.exports = {
         antiSpamOff : `L'antispam a été désactivé !`,
         antilinkOn : `L'antilink a été activé !`,
         antilinkOff : `L'antilink a été désactivé !`,
+        p1Title : `<a:3770_this_animated_right:783432503854759936>__Configuration des évènements__ (__15__)`,
+        p2Title : `<a:3770_this_animated_right:783432503854759936>__Configuration des évènements__ (__15__)`,
+        p3Title : `<a:3770_this_animated_right:783432503854759936>__Configuration des évènements__ (__15__)`,
     },
     logs: {
         banCounter : {
