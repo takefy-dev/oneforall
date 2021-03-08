@@ -20,6 +20,12 @@ module.exports = new Command({
     cooldown: 4
 }, async (client, message, args) => {
     this.connection = StateManager.connection;
+    let owner = message.guild.ownerID;
+
+    if (client.BotPerso) {
+        owner = process.env.OWNER
+    }
+    if (!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) return message.channel.send(lang.error.notListOwner)
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
     const principalMsg = await message.channel.send(lang.loading)
@@ -29,7 +35,7 @@ module.exports = new Command({
     }
     const filter = (reaction, user) => emoji.includes(reaction.emoji.name) && user.id === message.author.id,
         dureefiltrer = response => { return response.author.id === message.author.id };
-    const config =  {enable: coinSettings.get(message.guild.id).enable, streamBoost : coinSettings.get(message.guild.id).streamBoost, muteDiviseur: coinSettings.get(message.guild.id).muteDiviseur, logs : coinSettings.get(message.guild.id).logs}
+    const config = { enable: coinSettings.get(message.guild.id).enable, streamBoost: coinSettings.get(message.guild.id).streamBoost, muteDiviseur: coinSettings.get(message.guild.id).muteDiviseur, logs: coinSettings.get(message.guild.id).logs }
     const embed = new Discord.MessageEmbed()
         .setTitle(lang.coinSettings.title)
         .setDescription(lang.coinSettings.description(config.streamBoost, config.muteDiviseur, config.logs, config.enable == false ? 'Désactiver' : 'Activer'))
@@ -98,16 +104,16 @@ module.exports = new Command({
                             }, 2000)
                         })
                 })
-            }else if(r.emoji.name === emoji[3]){
+            } else if (r.emoji.name === emoji[3]) {
                 message.channel.send(lang.coinSettings.cancel).then((mp) => {
-                   
+
                     collector.stop();
                     setTimeout(async () => { mp.delete() }, 2000)
                     return principalMsg.delete();
 
                 })
-            }else if(r.emoji.name === emoji[4]){
-                if(!config.enable){
+            } else if (r.emoji.name === emoji[4]) {
+                if (!config.enable) {
 
                     config.enable = true;
                     updateEmbed()
@@ -117,32 +123,32 @@ module.exports = new Command({
                     this.connection.query(`UPDATE guildConfig SET coinsLogs = '${config.logs}' WHERE guildId = '${message.guild.id}'`)
                     this.connection.query(`UPDATE guildConfig SET coinsOn = '1' WHERE guildId = '${message.guild.id}'`)
                     coinSettings.set(message.guild.id, config)
-                    message.channel.send(lang.coinSettings.save).then(mp =>{
-                        setTimeout(() =>{
+                    message.channel.send(lang.coinSettings.save).then(mp => {
+                        setTimeout(() => {
                             mp.delete()
                             principalMsg.delete()
-                        }, 2000 )
+                        }, 2000)
                     })
                     StateManager.emit('coinSettings', message.guild.id, config)
-                    
-                }else{
+
+                } else {
                     config.enable = false;
                     updateEmbed()
 
                     this.connection.query(`UPDATE guildConfig SET coinsOn = '0' WHERE guildId = '${message.guild.id}'`)
                     coinSettings.set(message.guild.id, config)
-                    message.channel.send(lang.coinSettings.save).then(mp =>{
-                        setTimeout(() =>{
+                    message.channel.send(lang.coinSettings.save).then(mp => {
+                        setTimeout(() => {
                             mp.delete()
                             principalMsg.delete()
-                        }, 2000 )
+                        }, 2000)
                     })
                     StateManager.emit('coinSettings', message.guild.id, config)
 
 
 
                 }
-               
+
             }
             function updateEmbed() {
                 embed.setDescription(lang.coinSettings.description(config.streamBoost, config.muteDiviseur, config.logs, config.enable == false ? 'Désactiver' : 'Activer'))

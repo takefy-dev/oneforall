@@ -85,7 +85,11 @@ module.exports = new Command({
         if (isNaN(args[1])) return message.channel.send(lang.addShop.onlyNumber).then(mp => mp.delete({ timeout: 4000 }))
         if(!actualShop.find(shop => shop.id === parseInt(args[1]))) return message.channel.send(lang.addShop.notFoundItem).then(mp => mp.delete({ timeout: 4000 }))
         const newShop = actualShop.filter(shop => shop.id !== parseInt(args[1]));
-        console.log(newShop)
+        await this.connection.query(`UPDATE coinShop SET shop = '${JSON.stringify(newShop)}' WHERE guildId = '${message.guild.id}'`).then(() =>{
+            shop.set(message.guild.id, newShop);
+            StateManager.emit('shopUpdate', message.guild.id, newShop)
+
+        })
 
     }
 });
