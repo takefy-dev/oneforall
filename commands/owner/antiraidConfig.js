@@ -2460,7 +2460,7 @@ module.exports = new Command({
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2485,7 +2485,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2517,7 +2517,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2541,7 +2541,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } 
@@ -2551,12 +2551,12 @@ module.exports = new Command({
         ])
         await antiraidConfigMenu.start();
         const filter = (reaction, user) => ['✅'].includes(reaction.emoji.name) && user.id === message.author.id;
-        const confirMsg = await message.channel.send(`Pour sauvegarder vos paramètres veuiller **réagir à ce message avec ✅**`).then(async (m) => {
+        const confirMsg = await message.channel.send(lang.antiraidConfig.timeoutmsg).then(async (m) => {
             const collector = m.createReactionCollector(filter, { time: 900000 });
             collector.on('collect', async r => {
                 if(r.emoji.name == '✅'){
                     StateManager.emit('antiraidConfU', message.guild.id, antiraidConfig);
-                    const replyMsg = message.channel.send(`Les paramètres de l'antiraid ont été sauvegardés`);
+                    const replyMsg = message.channel.send(lang.antiraidConfig.savedmsg);
                     setTimeout(async () =>{
                         await m.delete();
                         await collector.stop();
@@ -2566,7 +2566,7 @@ module.exports = new Command({
             });
             collector.on('end', async () => {
                 await m.delete();
-                const timeoutmsg = await message.channel.send(`Temps écoulé vos paramètres ne sont donc pas sauvegardés.`);
+                const timeoutmsg = await message.channel.send(lang.antiraidConfig.timeoutmsg);
                 setTimeout(async () =>{
                     timeoutmsg.delete()
                 }, 5000)
