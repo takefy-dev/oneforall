@@ -555,7 +555,19 @@ module.exports = {
         alreadyReact : `A reaction role already exists with this message`,
         success : `The reaction role has been perfectly saved and created !`,
     },
-
+    antiraidConfig :{
+        noVote : `<a:image0:789413382591348738> To unlock this feature you must vote on our page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,
+        allOn : `All events have been activated`,
+        allOff : `All events have been disabled`,
+        opti : `The antiraid is configured with the optimized parameters`,
+        antiSpamOn : `Antispam has been activated !`,
+        antiSpamOff : `Antispam has been disabled !`,
+        antilinkOn : `The antilink has been activated !`,
+        antilinkOff : `The antilink has been deactivated !`,
+        p1Title : `<a:3770_this_animated_right:783432503854759936>__Event configuration__ (__15__)`,
+        p2Title : `<a:3770_this_animated_right:783432503854759936>__Event configuration__ (__15__)`,
+        p3Title : `<a:3770_this_animated_right:783432503854759936>__Event configuration__ (__15__)`,
+    },
     tempvoc: {
         embedTitle: `Temporary voice creation menu`,
         embedDescription : (tempname, enable) => `
