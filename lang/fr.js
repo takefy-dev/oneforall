@@ -698,7 +698,7 @@ module.exports = {
     },
     ball : {
         noQuestion :  `S'il vous plait, veuillez entrer une question.`,
-        reponseQuestion : ["Oui.","Non.","Oui Bien sûr","Oui définitivement !","Il ne vaut mieux pas en parler !","J'ai pas envie de répondre à cette question.","j'espère","J'imagine Bien"],
+        reponseQuestion : ["Oui.","Non.","Oui bien sûr","Oui définitivement !","Il ne vaut mieux pas en parler !","J'ai pas envie de répondre à cette question.","j'espère","J'imagine bien"],
         reponse : `Réponse`
 
     },
