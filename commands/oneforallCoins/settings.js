@@ -25,7 +25,7 @@ module.exports = new Command({
     if (client.BotPerso) {
         owner = process.env.OWNER
     }
-    if (!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) return message.channel.send(lang.error.notListOwner)
+    if (!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id || !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
     const principalMsg = await message.channel.send(lang.loading)

@@ -719,7 +719,10 @@ module.exports = {
         alreadyShop : `Votre serveurs possède déjà un magasin pour le supprimé (shop delete)`,
         create : `Le magasin a bien été créé`,
         delete : `Le magasin a bien été supprimé`,
-
+        successRemove : (item) => `Vous avez enlevé l'item **${item}** du magasin`,
+        shopShowTitle : (guildName) => `Magasin sur le serveur ${guildName}`,
+        nothingInShop : `Rien dans la magasin`,
+    
     },
     antiraidConfig :{
         noVote : `<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,
