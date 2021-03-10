@@ -728,7 +728,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                     UPDATE antiraid SET webhookCreate = '1' WHERE guildId = '${message.guild.id}' 
                                 `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbCr.delete()
                             })
@@ -736,12 +736,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                     UPDATE antiraid SET webhookCreate = '0' WHERE guildId = '${message.guild.id}' 
                                 `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbCr.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -764,7 +764,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -796,7 +796,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -821,7 +821,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                 UPDATE antiraid SET roleCreate = '1' WHERE guildId = '${message.guild.id}' 
                             `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -829,12 +829,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                 UPDATE antiraid SET roleCreate = '0' WHERE guildId = '${message.guild.id}' 
                             `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -858,7 +858,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -890,7 +890,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -919,7 +919,7 @@ module.exports = new Command({
                                     UPDATE antiraid SET roleUpdate = '1' WHERE guildId = '${message.guild.id}' 
                                 `).then(() => {
 
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -927,12 +927,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                     UPDATE antiraid SET roleUpdate = '0' WHERE guildId = '${message.guild.id}' 
                                 `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -957,7 +957,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -989,7 +989,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1014,7 +1014,7 @@ module.exports = new Command({
                                     UPDATE antiraid SET roleDelete = '1' WHERE guildId = '${message.guild.id}' 
                                 `).then(() => {
 
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -1022,12 +1022,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                     UPDATE antiraid SET roleDelete = '0' WHERE guildId = '${message.guild.id}' 
                                 `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1052,7 +1052,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1085,7 +1085,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1109,7 +1109,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET ban = '1' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -1117,12 +1117,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET ban = '0' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1147,7 +1147,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1180,7 +1180,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1203,7 +1203,7 @@ module.exports = new Command({
                             });
                         }
                         else if (lowercase == "cancel") {
-                            let error = message.channel.send("L'opération a été annulée")
+                            let error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else if (isNaN(lowercase)) {
@@ -1227,7 +1227,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                     UPDATE antiraid SET roleAdd = '1' WHERE guildId = '${message.guild.id}' 
                                 `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -1235,12 +1235,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                     UPDATE antiraid SET roleAdd = '0' WHERE guildId = '${message.guild.id}' 
                                 `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1264,7 +1264,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1297,7 +1297,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1338,7 +1338,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                         UPDATE antiraid SET channelCreate = '1' WHERE guildId = '${message.guild.id}' 
                                                     `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbCr.delete()
                             })
@@ -1346,12 +1346,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                                         UPDATE antiraid SET channelCreate = '0' WHERE guildId = '${message.guild.id}' 
                                                     `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbCr.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1376,7 +1376,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1409,7 +1409,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1435,7 +1435,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET channelUpdate = '1' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbUp.delete()
                             })
@@ -1443,12 +1443,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET channelUpdate = '0' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbSanc.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1472,7 +1472,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1504,7 +1504,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1531,7 +1531,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET channelDelete = '1' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -1539,12 +1539,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET channelDelete = '0' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1569,7 +1569,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1601,7 +1601,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1625,7 +1625,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET spam = '1' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                                 StateManager.emit('spamUpdate', message.guild.id, '1')
@@ -1634,13 +1634,13 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET spam = '0' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                                 StateManager.emit('spamUpdate', message.guild.id, '0')
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1669,7 +1669,7 @@ module.exports = new Command({
                                 CollectedRole.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1702,7 +1702,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1726,7 +1726,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                         UPDATE antiraid SET bot = '1' WHERE guildId = '${message.guild.id}' 
                                                     `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -1734,12 +1734,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                                         UPDATE antiraid SET bot = '0' WHERE guildId = '${message.guild.id}' 
                                                     `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1763,7 +1763,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1796,7 +1796,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1823,7 +1823,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET antilink = '1' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -1831,12 +1831,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET antilink = '0' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1867,7 +1867,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1911,7 +1911,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET antiKick = '1' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -1919,12 +1919,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET antiKick = '0' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1949,7 +1949,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -1982,7 +1982,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2005,7 +2005,7 @@ module.exports = new Command({
                             });
                         }
                         else if (lowercase == "cancel") {
-                            let error = message.channel.send("L'opération a été annulée")
+                            let error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else if (isNaN(lowercase)) {
@@ -2029,7 +2029,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET antiDeco = '1' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 StateManager.emit('antiDecoUp', message.guild.id, '1')
                                 q.delete();
                                 CollectedWbDel.delete()
@@ -2038,14 +2038,14 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET antiDeco = '0' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 StateManager.emit('antiDecoUp', message.guild.id, '0')
 
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2070,7 +2070,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2106,7 +2106,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2133,7 +2133,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET antiDc = '1' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -2141,12 +2141,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET antiDc = '0' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2172,7 +2172,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2191,7 +2191,7 @@ module.exports = new Command({
 
                         let response;
                         if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         }
@@ -2235,7 +2235,7 @@ module.exports = new Command({
                         });
 
                         if (lowercase == "cancel") {
-                            let error = message.channel.send("L'opération a été annulée")
+                            let error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         }
@@ -2259,7 +2259,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET regionUpdate = '1' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -2267,12 +2267,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET regionUpdate = '0' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2297,7 +2297,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2329,7 +2329,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2353,7 +2353,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET nameUpdate = '1' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -2361,12 +2361,12 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET nameUpdate = '0' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2391,7 +2391,7 @@ module.exports = new Command({
                                 CollectedWbSanc.delete();
                             })
                         } else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2423,7 +2423,7 @@ module.exports = new Command({
                         }
 
                         else if (lowercase == "cancel") {
-                            error = message.channel.send("L'opération a été annulée")
+                            error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
                             return
                         } else {
@@ -2447,7 +2447,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET vanityUpdate = '1' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été activé")
+                                message.channel.send(lang.antiraidConfig.active)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -2455,7 +2455,7 @@ module.exports = new Command({
                             await this.connection.query(`
                                                 UPDATE antiraid SET vanityUpdate = '0' WHERE guildId = '${message.guild.id}' 
                                             `).then(() => {
-                                message.channel.send("L'évènement a été desactivé")
+                                message.channel.send(lang.antiraidConfig.deactive)
                                 q.delete();
                                 CollectedWbDel.delete()
                             })
@@ -2543,7 +2543,7 @@ module.exports = new Command({
                         else if (lowercase == "cancel") {
                             error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
-                            return
+								
                         } 
                     }
                 }
