@@ -16,7 +16,9 @@ const spamGuild = new Map();
 var checkWl = require('../function/check/checkWl');
 const guildAntiraidConfig = new Map();
 const statsOn = new Map();
-const msgCounter = new Discord.Collection();
+
+const guildLang = new Map();
+var langF = require('../../function/lang')
 /**
  * Verify if the user, and the client has all the permissions of the Command.
  * @param {Message} message - The message.
@@ -92,6 +94,7 @@ module.exports = new Event(
 
 		const color = guildEmbedColor.get(message.guild.id)
 		this.connection = StateManager.connection;
+		const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
 
 		function hasDiscordInvite(string) {
 			let discordInvite = /(https:\/\/)?(www\.)?(discord\.gg|discord\.me|discordapp\.com\/invite|discord\.com\/invite)\/([a-z0-9-.]+)?/i;
@@ -499,3 +502,4 @@ StateManager.on('statsOnU', (guildId, on) => {
 StateManager.on('statsOnF', (guildId, on) => {
 	statsOn.set(guildId, on)
 })
+langF(guildLang);
