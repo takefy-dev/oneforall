@@ -59,7 +59,6 @@ module.exports = new Command({
         const itemName = args.slice(1, args.length - 1).join(" ")
         const price = args[args.length - 1]
         if (!itemName) return message.channel.send(lang.addShop.noItem).then(mp => mp.delete({ timeout: 4000 }))
-        console.log(itemName, price)
         if (!price || isNaN(price)) return message.channel.send(lang.addShop.noPrice).then(mp => mp.delete({ timeout: 4000 }))
         if (parseInt(price) === 0) return message.channel.send(lang.addShop.priceInf0).then(mp => mp.delete({ timeout: 4000 }))
         const isRl = message.mentions.roles.first() || isNaN(args[1]) ? undefined : message.guild.roles.cache.get(args[1]);
