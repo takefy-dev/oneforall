@@ -18,6 +18,7 @@ module.exports = {
         errorNoOwner : (ownerTag) => `<:720681441670725645:780539422479351809> \`ERREUR\` Seulement les owners peuvent executer cette commande \`(${ownerTag.join(",")})\`!`,
         NoYes : "Vous devez répondre uniquement avec oui ou non !",
         timeout : `Temps écoulé !`,
+        notListOwner : `Vous n'êtes pas dans la liste des owners`,
         notGuildOwner : `Seulement la couronne du serveur peut`,
         MissingPermission : `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
         includesEveryoneMention : `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`
@@ -720,6 +721,7 @@ module.exports = {
         create : `Le magasin a bien été créé`,
         delete : `Le magasin a bien été supprimé`,
         successRemove : (item) => `Vous avez enlevé l'item **${item}** du magasin`,
+        successAdd : (item, price) => `Vous avez ajouté l'item **${item}** au prix de ${price}`,
         shopShowTitle : (guildName) => `Magasin sur le serveur ${guildName}`,
         nothingInShop : `Rien dans la magasin`,
         notFoundItem : `Je ne trouve pas l'item associé avec cet id essayé un autre id`,

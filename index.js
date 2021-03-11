@@ -13,7 +13,7 @@ CommandHandler.create({
     commandsDir: 'commands',
     eventsDir: 'events',
     prefix: '',
-    owners: ['659038301331783680', '188356697482330122', '443812465772462090', "679437160436465677"]
+    owners: ['659038301331783680', '188356697482330122', '443812465772462090']
 });
 CommandHandler.launch({
     token: process.env.TOKEN,

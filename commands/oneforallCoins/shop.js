@@ -4,6 +4,8 @@ const StateManager = require('../../utils/StateManager');
 var embedsColor = require('../../function/embedsColor');
 const { Command } = require('advanced-command-handler');
 const guildLang = new Map();
+const SqlString = require('sqlstring');
+
 var langF = require('../../function/lang');
 const ms = require('ms');
 const shop = new Map();
@@ -53,16 +55,19 @@ module.exports = new Command({
          * @param args[2] {price}
          * @param [{id, item, price, role}]
         **/
-        if (!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id || !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
-        if (!args[1]) return message.channel.send(lang.addShop.noItem).then(mp => mp.delete({ timeout: 4000 }))
-        if (!args[2] || isNaN(args[2])) return message.channel.send(lang.addShop.noPrice).then(mp => mp.delete({ timeout: 4000 }))
-        if (parseInt(args[2]) === 0) return message.channel.send(lang.addShop.priceInf0).then(mp => mp.delete({ timeout: 4000 }))
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+        const itemName = args.slice(1, args.length - 1).join(" ").replace(/'/, "\'");
+        const price = args[args.length - 1]
+        if (!itemName) return message.channel.send(lang.addShop.noItem).then(mp => mp.delete({ timeout: 4000 }))
+        console.log(itemName, price)
+        if (!price || isNaN(price)) return message.channel.send(lang.addShop.noPrice).then(mp => mp.delete({ timeout: 4000 }))
+        if (parseInt(price) === 0) return message.channel.send(lang.addShop.priceInf0).then(mp => mp.delete({ timeout: 4000 }))
         const isRl = message.mentions.roles.first() || isNaN(args[1]) ? undefined : message.guild.roles.cache.get(args[1]);
         if (isRl) {
             let lastItemId = 0;
 
             if (actualShop[actualShop.length - 1] !== undefined) lastItemId = actualShop[actualShop.length - 1].id
-            actualShop.push({ id: lastItemId + 1, item: `<@${isRl.id}>`, price: parseFloat(args[2]), role: true })
+            actualShop.push({ id: lastItemId + 1, item: `<@${isRl.id}>`, price: parseFloat(price), role: true })
             ajustShopId(actualShop);
 
         } else {
@@ -70,13 +75,13 @@ module.exports = new Command({
             let lastItemId = 0;
 
             if (actualShop[actualShop.length - 1] !== undefined) lastItemId = actualShop[actualShop.length - 1].id
-            actualShop.push({ id: lastItemId + 1, item: args[1], price: parseFloat(args[2]), role: false })
+            actualShop.push({ id: lastItemId + 1, item: itemName, price: parseFloat(price), role: false })
             ajustShopId(actualShop);
-
+            console.log( itemName.replace(/'/, "\'"))
         }
         shop.set(message.guild.id, actualShop)
         StateManager.emit('shopUpdate', message.guild.id, actualShop)
-        await this.connection.query(`UPDATE coinShop SET shop = '${JSON.stringify(actualShop)}'`).then(async () => {
+        await this.connection.query(`UPDATE coinShop SET shop = '${JSON.stringify(actualShop)}' WHERE guildId = '${message.guild.id}'`).then(async () => {
 
             return message.channel.send(lang.addShop.successAdd(args[1], args[2])).then(mp => mp.delete({ timeout: 5000 })).then(() =>{
                 showShop(actualShop)

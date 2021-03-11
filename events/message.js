@@ -89,7 +89,7 @@ module.exports = new Event(
 	{
 		name: 'message',
 	},
-	module.exports = async (handler, message) => {
+	async (handler, message) => {
 		if (message.guild == null) return;
 
 		const color = guildEmbedColor.get(message.guild.id)
@@ -424,7 +424,7 @@ module.exports = new Event(
 					}, cmd.cooldown * 1000);
 				}
 
-				cmd.run(handler.client, message, args).catch(warning => {
+				cmd.run(handler.client, message, args).catch(async warning => {
 					Logger.warn(`A small error was made somewhere with the command ${Logger.setColor('gold', cmd.name)}.
 			Date : ${Logger.setColor('yellow', DateTime.local().toFormat('TT'))}${Logger.setColor('red', '\nError : ' + warning.stack)}`);
 
@@ -446,8 +446,22 @@ module.exports = new Event(
 							name: 'Message :',
 							value: messageToString,
 						});
+						// for(const own of handler.owners){
+						// 	let cache = handler.client.users.cache
+						// 	let user;
+						// 	if(cache.has(own)){
+						// 		user = cache.get(own)
+						// 	}else{
+						// 		user = await handler.client.users.fetch(own) 
+						// 	}
+						// 	try{
+						// 		user.send(embedLog)
 
-						return message.channel.send(embedLog.build());
+						// 	}catch(err){
+						// 		return;
+						// 	}
+						// }
+						// return 
 					}
 				});
 			}
