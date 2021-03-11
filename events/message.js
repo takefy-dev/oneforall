@@ -18,7 +18,7 @@ const guildAntiraidConfig = new Map();
 const statsOn = new Map();
 
 const guildLang = new Map();
-var langF = require('../../function/lang')
+var langF = require('../function/lang')
 /**
  * Verify if the user, and the client has all the permissions of the Command.
  * @param {Message} message - The message.
