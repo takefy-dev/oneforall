@@ -94,7 +94,7 @@ module.exports = new Event(
 
 		const color = guildEmbedColor.get(message.guild.id)
 		this.connection = StateManager.connection;
-		const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+		const lang = require(`../lang/${guildLang.get(message.guild.id)}`);
 
 		function hasDiscordInvite(string) {
 			let discordInvite = /(https:\/\/)?(www\.)?(discord\.gg|discord\.me|discordapp\.com\/invite|discord\.com\/invite)\/([a-z0-9-.]+)?/i;
