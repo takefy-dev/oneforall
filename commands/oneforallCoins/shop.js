@@ -235,11 +235,12 @@ module.exports = new Command({
     }
     function showShop(shop) {
         const embed = new Discord.MessageEmbed()
-            .setTitle(lang.addShop.shopShowTitle(message.guild.name))
-            .setDescription(shop.map(shop => !shop.price ? lang.addShop.nothingInShop : `${shop.id} . ${shop.item} . ${shop.price.toLocaleString()} coin(s)\n`))
+            .setAuthor(message.author.tag, message.author.displayAvatarURL)
+            .setDescription(`:shopping_cart: Magasin sur le serveur **${message.guild.name}**.\n<a:coinsoneforall:819646518180446228> Achetez un item avec le \`buy [number]\` command.`)
+            .setDescription(shop.map(shop => !shop.price ? lang.addShop.nothingInShop : `${shop.id} — ${shop.item} — [⏣ ${shop.price.toLocaleString()}](https://discord.gg/n2EvRECf88) coin(s)\n`))
             .setColor(`${color}`)
             .setTimestamp()
-            .setFooter(`OneForAll coins`)
+            .setFooter(`⏣ OneForAll coins`)
         return message.channel.send(embed)
     }
 });
