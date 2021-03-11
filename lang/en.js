@@ -571,6 +571,8 @@ module.exports = {
         savedmsg : `Anti raid parameters have been saved `,
         reactsave : `To save your settings, please **react** to this message with **✅ ** `,
         anulee : `The operation was canceled `,
+        active : `The event has been activated`,
+        deactive : `The event has been deactivated`,
     },
     tempvoc: {
         embedTitle: `Temporary voice creation menu`,

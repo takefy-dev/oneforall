@@ -751,6 +751,8 @@ module.exports = {
         savedmsg : `Les paramètres de l'antiraid ont été sauvegardés`,
         reactsave : `Pour sauvegarder vos paramètres veuiller **réagir à ce message avec ✅**`,
         anulee : `L'opération a été annulée`,
+        active : `L'évènement a été activé`,
+        deactive : `L'évènement a été desactivé`,
     },
     logs: {
         banCounter : {
