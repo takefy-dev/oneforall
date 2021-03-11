@@ -56,7 +56,7 @@ module.exports = new Command({
          * @param [{id, item, price, role}]
         **/
         if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
-        const itemName = args.slice(1, args.length - 1).join(" ").replace(/'/, "\'");
+        const itemName = args.slice(1, args.length - 1).join(" ")
         const price = args[args.length - 1]
         if (!itemName) return message.channel.send(lang.addShop.noItem).then(mp => mp.delete({ timeout: 4000 }))
         console.log(itemName, price)
@@ -77,13 +77,13 @@ module.exports = new Command({
             if (actualShop[actualShop.length - 1] !== undefined) lastItemId = actualShop[actualShop.length - 1].id
             actualShop.push({ id: lastItemId + 1, item: itemName, price: parseFloat(price), role: false })
             ajustShopId(actualShop);
-            console.log( itemName.replace(/'/, "\'"))
+          
         }
         shop.set(message.guild.id, actualShop)
         StateManager.emit('shopUpdate', message.guild.id, actualShop)
-        await this.connection.query(`UPDATE coinShop SET shop = '${JSON.stringify(actualShop)}' WHERE guildId = '${message.guild.id}'`).then(async () => {
+        await this.connection.query(`UPDATE coinShop SET shop = ? WHERE guildId = '${message.guild.id}'`, [JSON.stringify(actualShop)]).then(async () => {
 
-            return message.channel.send(lang.addShop.successAdd(args[1], args[2])).then(mp => mp.delete({ timeout: 5000 })).then(() =>{
+            return message.channel.send(lang.addShop.successAdd(itemName, price)).then(mp => mp.delete({ timeout: 5000 })).then(() =>{
                 showShop(actualShop)
 
             })
@@ -212,7 +212,7 @@ module.exports = new Command({
                     if(actualShop.filter(shop => shop.id === parseInt(args[1])) == itemToEdit) return message.channel.send(lang.addShop.noModification);
                     actualShop[itemToEdit[0].id - 1] = itemToEdit[0];
              
-                    await this.connection.query(`UPDATE coinShop SET shop ='${JSON.stringify(actualShop)}' WHERE guildId = '${message.guild.id}'`).then(() =>{
+                    await this.connection.query(`UPDATE coinShop SET shop = ? WHERE guildId = '${message.guild.id}'`, [actualShop]).then(() =>{
                         message.channel.send(lang.addShop.successEdit).then(() =>{
                             shop.get(message.guild.id, actualShop);
                             StateManager.emit('shopUpdate', message.guild.id, shop.get(message.guild.id));
