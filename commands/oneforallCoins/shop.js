@@ -4,13 +4,14 @@ const StateManager = require('../../utils/StateManager');
 var embedsColor = require('../../function/embedsColor');
 const { Command } = require('advanced-command-handler');
 const guildLang = new Map();
-var langF = require('../../function/lang')
+var langF = require('../../function/lang');
+const ms = require('ms');
 const shop = new Map();
 module.exports = new Command({
     name: 'shop',
-    description: 'Show the shop / Add or remove item to the shop | Afficher le magasin / Ajouter ou supprimer des objet dans le shop',
+    description: 'Show the shop / Manage item to the shop | Afficher le magasin / Montrer le shop / Gerer les objets dans le shop',
     // Optionnals :
-    usage: '!shop [add/remove] [item] [prix]',
+    usage: '!shop [create/delete/add/edit/remove] [item/itemId] [prix]',
     category: 'coins',
     tags: ['guildOnly'],
     aliases: ['store', 'magasin'],
@@ -76,9 +77,11 @@ module.exports = new Command({
         shop.set(message.guild.id, actualShop)
         StateManager.emit('shopUpdate', message.guild.id, actualShop)
         await this.connection.query(`UPDATE coinShop SET shop = '${JSON.stringify(actualShop)}'`).then(async () => {
-            showShop(newShop)
 
-            return message.channel.send(lang.addShop.successAdd(args[1], args[2])).then(mp => mp.delete({ timeout: 5000 }))
+            return message.channel.send(lang.addShop.successAdd(args[1], args[2])).then(mp => mp.delete({ timeout: 5000 })).then(() =>{
+                showShop(actualShop)
+
+            })
         })
 
     } else if (args[0] === "remove") {
@@ -103,22 +106,140 @@ module.exports = new Command({
 
 
             }
-            showShop(newShop)
-            return await message.channel.send(lang.addShop.successRemove(itemRemove[0].item)).then(mp => mp.delete({ timeout: 4000 }))
+            return await message.channel.send(lang.addShop.successRemove(itemRemove[0].item)).then(mp => mp.delete({ timeout: 4000 })).then(() =>{
+                showShop(newShop)
+
+            })
         })
 
-    }else if(!args[0]){
+    } else if (!args[0]) {
         showShop(shop.get(message.guild.id))
-    }else if(args[0] === 'edit'){
+    } else if (args[0] === 'edit') {
         if (!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id || !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
-    }
-    function showShop(shop){
+        if(!args[1]) return message.channel.send(lang.addShop.syntaxEdit).then(mp => mp.delete({ timeout: 4000 }))
+        if (isNaN(args[1])) return message.channel.send(lang.addShop.onlyNumber).then(mp => mp.delete({ timeout: 4000 }))
+        if (!actualShop.find(shop => shop.id === parseInt(args[1]))) return message.channel.send(lang.addShop.notFoundItem).then(mp => mp.delete({ timeout: 4000 }))
+        const itemToEdit = actualShop.filter(shop => shop.id === parseInt(args[1]));
+        const editMsg = await message.channel.send(lang.loading)
+        const emoji = ['🎫','💰', '❌','✅']
+        for (const em of emoji) await editMsg.react(em) // react to msg with emoji list
+        const filter = (reaction, user) => emoji.includes(reaction.emoji.name) && user.id === message.author.id,
+            dureefiltrer = response => { return response.author.id === message.author.id };
         const embed = new Discord.MessageEmbed()
-        .setTitle(lang.addShop.shopShowTitle(message.guild.name))
-        .setDescription(shop.map(shop => !shop.price ? lang.addShop.nothingInShop : `${shop.id} . ${shop.item} . ${shop.price} coin(s)\n`))
-        .setColor(`${color}`)
-        .setTimestamp()
-        .setFooter(`OneForAll coins`)
+            .setTitle(itemToEdit[0].item)
+            .setDescription(`
+            ${lang.addShop.editCondition}
+
+            ID : ${itemToEdit[0].id}\n
+            ${emoji[0]} NAME : ${itemToEdit[0].item}\n
+            ${emoji[1]} PRICE : ${itemToEdit[0].price.toLocaleString()}\n
+            ROLE : ${itemToEdit[0].role}
+
+            ${emoji[3]} : SAVE
+        `)
+            .setTimestamp()
+            .setColor(`${color}`)
+            .setFooter(`OneForAll Shop`, client.user.displayAvatarURL())
+        editMsg.edit('', embed).then(async m => {
+            const collector = m.createReactionCollector(filter, { time: 900000 });
+            collector.on('collect', async r => {
+                r.users.remove(message.author);
+                if (r.emoji.name === emoji[0]) {
+                    message.channel.send(lang.addShop.newNameQ).then(mp => {
+                        mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
+                            .then(cld => {
+                                var msg = cld.first();
+                                if(msg.content === "cancel") return message.channel.send(lang.cancel).then(mps =>{
+                                    setTimeout(() =>{
+                                        msWriteProfilerMark.delete();
+                                        msg.delete();
+                                        mp.delete();
+                                    }, 4000)
+                                })
+                                const isRl = msg.mentions.roles.first() || isNaN(msg.content) ? undefined : message.guild.roles.cache.get(msg.content);
+                                if(isRl){
+                                    itemToEdit[0].item = `<@&${isRl.id}>`;
+                                    itemToEdit[0].role = true;
+                                }else{
+                                    itemToEdit[0].item = msg.content;
+                                    itemToEdit[0].role = false;
+                                }
+                                message.channel.send(lang.addShop.successEditItemName(msg.content)).then((mps) =>{
+                                    updateEmbed()
+                                    setTimeout(() =>{
+                                        mps.delete();
+                                        msg.delete();
+                                        mp.delete();
+                                    }, 4000)
+                                })
+
+                            });
+                    })
+                }else if(r.emoji.name === emoji[1]){
+                    message.channel.send(lang.addShop.newPriceQ).then(mp => {
+                        mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
+                            .then(cld => {
+                                var msg = cld.first();
+                                if (isNaN(msg.content)) return message.channel.send(lang.addShop.noPrice).then(mp => mp.delete({ timeout: 4000 }))
+                                if (parseInt(msg.content) === 0) return message.channel.send(lang.addShop.priceInf0).then(mp => mp.delete({ timeout: 4000 }))
+                                message.channel.send(lang.addShop.successEditItemPrice(msg.content)).then((mps) =>{
+                                    itemToEdit[0].price = parseFloat(msg.content);
+                                    updateEmbed()
+                                    setTimeout(() =>{
+                                        mps.delete();
+                                        msg.delete();
+                                        mp.delete();
+                                    }, 4000)
+                                })
+
+                            });
+                    })
+                }else if(r.emoji.name === emoji[2]){
+                    message.channel.send(lang.addShop.cancel).then((mps) =>{
+                        collector.stop();
+                        setTimeout(() =>{
+                            mps.delete();
+                            editMsg.delete();
+                            itemToEdit[0] = actualShop.filter(shop => shop.id === parseInt(args[1])); // reassociate item to edit to the actual shop because cancel
+                        }, 2000)
+                    })
+                }else if(r.emoji.name === emoji[3]){
+                    if(actualShop.filter(shop => shop.id === parseInt(args[1])) == itemToEdit) return message.channel.send(lang.addShop.noModification);
+                    actualShop[itemToEdit[0].id - 1] = itemToEdit[0];
+             
+                    await this.connection.query(`UPDATE coinShop SET shop ='${JSON.stringify(actualShop)}' WHERE guildId = '${message.guild.id}'`).then(() =>{
+                        message.channel.send(lang.addShop.successEdit).then(() =>{
+                            shop.get(message.guild.id, actualShop);
+                            StateManager.emit('shopUpdate', message.guild.id, shop.get(message.guild.id));
+                            ajustShopId(actualShop);
+                            showShop(actualShop);
+                        })
+                    })
+                }
+            })
+            function updateEmbed() {
+                embed .setDescription(`
+                ${lang.addShop.editCondition}
+    
+                ID : ${itemToEdit[0].id}\n
+                ${emoji[0]} NAME : ${itemToEdit[0].item}\n
+                ${emoji[1]} PRICE : ${itemToEdit[0].price.toLocaleString()}\n
+                ROLE : ${itemToEdit[0].role}
+    
+                ${emoji[3]} : SAVE
+            `)
+                editMsg.edit(embed)
+
+            }
+        })
+    }
+    function showShop(shop) {
+        const embed = new Discord.MessageEmbed()
+            .setTitle(lang.addShop.shopShowTitle(message.guild.name))
+            .setDescription(shop.map(shop => !shop.price ? lang.addShop.nothingInShop : `${shop.id} . ${shop.item} . ${shop.price.toLocaleString()} coin(s)\n`))
+            .setColor(`${color}`)
+            .setTimestamp()
+            .setFooter(`OneForAll coins`)
         return message.channel.send(embed)
     }
 });

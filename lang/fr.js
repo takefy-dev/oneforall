@@ -722,6 +722,17 @@ module.exports = {
         successRemove : (item) => `Vous avez enlevé l'item **${item}** du magasin`,
         shopShowTitle : (guildName) => `Magasin sur le serveur ${guildName}`,
         nothingInShop : `Rien dans la magasin`,
+        notFoundItem : `Je ne trouve pas l'item associé avec cet id essayé un autre id`,
+        editCondition : `Seulement le prix et le nom de l'item est éditable`,
+        newNameQ : `Quel doit être le nouveau nom de l'item ? (cancel pour annuler)`,
+        successEditItemName : (name) => `Vous avez changer le nom de l'item pour ${name}`,
+        newPriceQ : `Quel doit être le nouveau prix pour l'item ? (cancel pour annuler)`,
+        successEditItemPrice : (price) => `Vous avez changer le prix de l'item pour ${price}`,
+        cancel : `Vous avez annulé la modification de l'item`,
+        onlyNumber : `Vous devez entrer uniquement des nombres`,
+        syntaxEdit : `Erreur de syntax : (!shop edit <itemId>)`,
+        noModification : `Vous n'avez rien modifié dans l'item`,
+        successEdit : `L'item a bien été modifié`
     
     },
     antiraidConfig :{
