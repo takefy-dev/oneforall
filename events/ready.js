@@ -33,29 +33,29 @@ module.exports = new Event(
 		setInterval(function () {
 			StateManager.emit('kickCountReset')
 		}, 4, 32 * 10 ** 7);
-		setInterval(async function () {
-			this.botperso = BotPerso.botperso;
-			let guildArray;
-			let guildCount;
-			let channelArray;
-			let userArray;
-			await handler.client.shard.fetchClientValues("guilds.cache.size").then((res) => {
-				guildArray = res
-			});
-			await handler.client.shard.fetchClientValues("channels.cache.size").then((res) => {
-				channelArray = res
-			});
-			await handler.client.shard.broadcastEval('this.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)')
-				.then(results => {
-					userArray = results.reduce((acc, memberCount) => acc + memberCount, 0).toLocaleString()
-				})
-			// await this.botperso.query(`UPDATE stats SET guildCount = '${guildArray.reduce((acc, guildCount) => acc + guildCount, 0).toLocaleString()}'`)
-			// await this.botperso.query(`UPDATE stats SET channelCount = '${channelArray.reduce((acc, channelCount) => acc + channelCount, 0).toLocaleString()}'`)
-			// await this.botperso.query(`UPDATE stats SET userCount = '${userArray}'`)
-			// await this.botperso.query(`UPDATE stats SET guildCount = '${handler.client.guilds.cache.size.toLocaleString()}'`)
-			// await this.botperso.query(`UPDATE stats SET channelCount = '${handler.client.channels.cache.size.toLocaleString()}'`)
-			// await this.botperso.query(`UPDATE stats SET userCount = '${handler.client.guilds.cache.filter(g => g.available).reduce((a, b) => a + b.memberCount, 0).toLocaleString()}'`)
-		}, 20000)
+		// setInterval(async function () {
+		// 	this.botperso = BotPerso.botperso;
+		// 	let guildArray;
+		// 	let guildCount;
+		// 	let channelArray;
+		// 	let userArray;
+		// 	await handler.client.shard.fetchClientValues("guilds.cache.size").then((res) => {
+		// 		guildArray = res
+		// 	});
+		// 	await handler.client.shard.fetchClientValues("channels.cache.size").then((res) => {
+		// 		channelArray = res
+		// 	});
+		// 	await handler.client.shard.broadcastEval('this.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)')
+		// 		.then(results => {
+		// 			userArray = results.reduce((acc, memberCount) => acc + memberCount, 0).toLocaleString()
+		// 		})
+		// 	// await this.botperso.query(`UPDATE stats SET guildCount = '${guildArray.reduce((acc, guildCount) => acc + guildCount, 0).toLocaleString()}'`)
+		// 	// await this.botperso.query(`UPDATE stats SET channelCount = '${channelArray.reduce((acc, channelCount) => acc + channelCount, 0).toLocaleString()}'`)
+		// 	// await this.botperso.query(`UPDATE stats SET userCount = '${userArray}'`)
+		// 	// await this.botperso.query(`UPDATE stats SET guildCount = '${handler.client.guilds.cache.size.toLocaleString()}'`)
+		// 	// await this.botperso.query(`UPDATE stats SET channelCount = '${handler.client.channels.cache.size.toLocaleString()}'`)
+		// 	// await this.botperso.query(`UPDATE stats SET userCount = '${handler.client.guilds.cache.filter(g => g.available).reduce((a, b) => a + b.memberCount, 0).toLocaleString()}'`)
+		// }, 20000)
 
 		/**
 		 * Log information of the bot in the console.
@@ -71,15 +71,15 @@ module.exports = new Event(
 				} guilds, it sees ${handler.client.users.cache.size + Logger.setColor('#c0433f')
 				} users.`)
 		);
-		setInterval(async() => {
-			let guildArray;
+		// setInterval(async() => {
+		// 	let guildArray;
 
-			await handler.client.shard.fetchClientValues("guilds.cache.size").then((res) => {
-				guildArray = res
-			});
+		// 	await handler.client.shard.fetchClientValues("guilds.cache.size").then((res) => {
+		// 		guildArray = res
+		// 	});
 
-			handler.client.user.setActivity(`${guildArray.reduce((prev, guildCount) => prev + guildCount, 0)} Servers | !help`, { type: 'WATCHING' })
-		}, 60000); // Runs this every 60 seconds.
+		// 	handler.client.user.setActivity(`${guildArray.reduce((prev, guildCount) => prev + guildCount, 0)} Servers | !help`, { type: 'WATCHING' })
+		// }, 60000); // Runs this every 60 seconds.
 	
 
 		handler.client.guilds.cache.forEach(async guild => {

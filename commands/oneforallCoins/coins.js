@@ -7,16 +7,15 @@ const guildLang = new Map();
 var langF = require('../../function/lang')
 
 module.exports = new Command({
-    name: '',
-    description: '',
+    name: 'coins',
+    description: 'Show how many coins you have | Affiche le nombre de coins que vous avez',
     // Optionnals :
-    usage: '',
-    category: '',
+    usage: '!coins [mention/id]',
+    category: 'coins',
     tags: ['guildOnly'],
-    aliases: [''],
-    userPermissions: [],
-    clientPermissions: [],
-    cooldown: 10
+    aliases: ['balance', 'argent', 'money'],
+    clientPermissions: ['EMBED_LINKS'],
+    cooldown: 4
 }, async(client, message, args) => {
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);

@@ -40,9 +40,9 @@ module.exports = new Command({
     } else if (args[0] === "delete") {
         if (!shop.has(message.guild.id)) return message.channel.send(lang.addShop.noShop)
         return await this.connection.query(`DELETE FROM coinShop WHERE guildId = '${message.guild.id}'`).then(async () => {
-            shop.delete(message.guild.id)
+            
 
-            StateManager.emit('shopDelete', shop)
+            StateManager.emit('shopDelete', message.guild.id)
             return message.channel.send(lang.addShop.delete).then(mp => mp.delete({ timeout: 5000 }))
         })
     }
@@ -61,12 +61,13 @@ module.exports = new Command({
         if (!itemName) return message.channel.send(lang.addShop.noItem).then(mp => mp.delete({ timeout: 4000 }))
         if (!price || isNaN(price)) return message.channel.send(lang.addShop.noPrice).then(mp => mp.delete({ timeout: 4000 }))
         if (parseInt(price) === 0) return message.channel.send(lang.addShop.priceInf0).then(mp => mp.delete({ timeout: 4000 }))
-        const isRl = message.mentions.roles.first() || isNaN(args[1]) ? undefined : message.guild.roles.cache.get(args[1]);
+        const isRl = !message.mentions.roles.first() ? undefined : !isNaN(args[1]) ? message.guild.roles.cache.get(args[1]) : message.mentions.roles.first();
         if (isRl) {
             let lastItemId = 0;
 
             if (actualShop[actualShop.length - 1] !== undefined) lastItemId = actualShop[actualShop.length - 1].id
-            actualShop.push({ id: lastItemId + 1, item: `<@${isRl.id}>`, price: parseInt(price), role: true })
+            actualShop.push({ id: lastItemId + 1, item: `<@&${isRl.id}>`, price: parseInt(price), role: true })
+            
             ajustShopId(actualShop);
 
         } else {
@@ -97,13 +98,12 @@ module.exports = new Command({
         const itemRemove = actualShop.filter(shop => shop.id === parseInt(args[1]));
         if (newShop.length === 0) {
             newShop = [{ id: 0, item: lang.addShop.nothingInShop, prix: undefined, role: undefined }]
-            shop.delete(message.guild.id);
-            StateManager.emit('shopDelete', shop)
+            StateManager.emit('shopDelete', message.guild.id)
         } else {
             newShop = ajustShopId(newShop)
         }
 
-        this.connection.query(`UPDATE coinShop SET shop = '${JSON.stringify(newShop)}' WHERE guildId = '${message.guild.id}'`).then(async () => {
+        this.connection.query(`UPDATE coinShop SET shop = ? WHERE guildId = '${message.guild.id}'`, [JSON.stringify(newShop)]).then(async () => {
             if (newShop.length !== 0) {
                 shop.set(message.guild.id, newShop);
                 StateManager.emit('shopUpdate', message.guild.id, newShop)
