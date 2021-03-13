@@ -750,6 +750,9 @@ module.exports = {
         buyLog : (memberPing, itemName, price) => `${memberPing} a acheté ${itemName} pour ${price} coins`
 
     },
+    coins : {
+        userNotFound : `Je ne trouve pas ce membre. Essayez un autre.`
+    },
     antiraidConfig :{
         noVote : `<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,
         allOn : `Tous les évênements ont été activés`,

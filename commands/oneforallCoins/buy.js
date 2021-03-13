@@ -70,6 +70,7 @@ module.exports = new Command({
         const embed = new Discord.MessageEmbed()
         .setDescription(lang.buy.buyLog(message.member, !roleCol ? item : roleCol.name, price))
         .setTimestamp()
+        .setColor(`${color}`)
         logsChannel.send(embed)
     }
     
