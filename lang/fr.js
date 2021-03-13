@@ -738,6 +738,16 @@ module.exports = {
         shopDesc : (guildName) => `:shopping_cart: Magasin sur le serveur **${guildName}**.\n<a:coinsoneforall:819646518180446228> Achetez un item avec le \`buy [number]\` command.`
     
     },
+    buy : {
+        shoDisable : `Le magasin est désactivé`,
+        syntaxError : `Error de syntaxe : !buy <itemId>`,
+        noCoins : `Vous avez aucun coins`,
+        nothingInShop : `Il n'y a rien dans le magasin`,
+        notEnoughCoins : `Vous n'avez pas assé d'argent pour acheter cet item`,
+        itemNotInShop : `L'item n'est pas dans le magasin`,
+        success : (name, price) => `Vous avez acheté ${name} pour ${price} coins`
+
+    },
     antiraidConfig :{
         noVote : `<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,
         allOn : `Tous les évênements ont été activés`,

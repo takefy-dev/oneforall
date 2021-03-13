@@ -114,7 +114,7 @@ module.exports = new Event(
                             const coins = parseInt(durationMin);
                             const newUserCoins = { userId: oldState.id, coins };
                             guildUserCoins.push(newUserCoins);
-                            await this.connection.query(`INSERT INTO coins (guildId, userId, coins)VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `)
+                            await this.connection.query(`INSERT INTO coins (userId, guildId,  coins)VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `)
 
                         }
                     } else {
@@ -160,7 +160,7 @@ module.exports = new Event(
                             const coins = parseInt(durationMin);
                             const newUserCoins = { userId: oldState.id, coins };
                             guildUserCoins.push(newUserCoins);
-                            await this.connection.query(`INSERT INTO coins (guildId, userId, coins)VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `)
+                            await this.connection.query(`INSERT INTO coins (userId, guildId,  coins)VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `)
 
                         }
                     } else {
