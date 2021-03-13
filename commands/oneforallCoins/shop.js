@@ -241,7 +241,7 @@ module.exports = new Command({
         const embed = new Discord.MessageEmbed()
             .setAuthor(message.author.tag, message.author.displayAvatarURL)
             .setDescription(`:shopping_cart: Magasin sur le serveur **${message.guild.name}**.\n<a:coinsoneforall:819646518180446228> Achetez un item avec le \`buy [number]\` command.`)
-            .addField('\u200b', shop.map(shop => !shop.price ? lang.addShop.nothingInShop : `**${shop.id} ${shop.item}** — [⏣ ${shop.price.toLocaleString()}](https://discord.gg/n2EvRECf88) coins\n`))
+            .addField('\u200b', shop.map(shop => !shop.price ? lang.addShop.nothingInShop : `\`${shop.id}\` **${shop.item}** — [⏣ ${shop.price.toLocaleString()}](https://discord.gg/n2EvRECf88) coins`))
             .setColor(`${color}`)
             .setTimestamp()
             .setFooter(`⏣ OneForAll coins`);
