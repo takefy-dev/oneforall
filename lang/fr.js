@@ -734,7 +734,8 @@ module.exports = {
         onlyNumber : `Vous devez entrer uniquement des nombres`,
         syntaxEdit : `Erreur de syntax : (!shop edit <itemId>)`,
         noModification : `Vous n'avez rien modifié dans l'item`,
-        successEdit : `L'item a bien été modifié`
+        successEdit : `L'item a bien été modifié`,
+        shopDesc : (guildName) => `:shopping_cart: Magasin sur le serveur **${guildName}**.\n<a:coinsoneforall:819646518180446228> Achetez un item avec le \`buy [number]\` command.`
     
     },
     antiraidConfig :{

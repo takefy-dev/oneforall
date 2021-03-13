@@ -16,56 +16,53 @@ const tempVocOn = new Map();
 const tempVocInfo = new Map();
 const statsOn = new Map();
 const activeMemberInVoice = new Map();
+const activeMemberInVoiceCoins = new Map();
+const coinSettings = new Map();
+const userCoins = new Map();
 module.exports = new Event(
     {
         name: 'voiceStateUpdate',
     },
     module.exports = async (handler, oldState, newState) => {
         this.connection = StateManager.connection;
-        // if(newState.streaming == true){
-        //     oldState.guild.members.cache.get(oldState.id).roles.add("802621590248357888", "Stream lancé")
-        // }else if(newState.streaming == false){
-        //     oldState.guild.members.cache.get(oldState.id).roles.remove("802621590248357888", "Stream terminé")
 
-
-        // }
         const color = guildEmbedColor.get(oldState.guild.id);
         //#region voiceState
-        if(statsOn.get(oldState.guild.id) == '1'){
-            if((oldState.member && oldState.member.user.bot) || (newState.member && newState.member.user.bot)) return;
-            if(!oldState.channelID && newState.channelID) { // This user has join the channel.
+        if (statsOn.get(oldState.guild.id) == '1') {
+            if ((oldState.member && oldState.member.user.bot) || (newState.member && newState.member.user.bot)) return;
+            if (!oldState.channelID && newState.channelID) { // This user has join the channel.
                 activeMemberInVoice.set(oldState.id, Date.now());
             }
             let data;
-            if(!activeMemberInVoice.has(oldState.id)){
+            if (!activeMemberInVoice.has(oldState.id)) {
                 data = Date.now();
                 activeMemberInVoice.set(oldState.id, data); // check current data for the existence of
             }
-            else{
+            else {
                 data = activeMemberInVoice.get(oldState.id);
 
             }
             let duration = Date.now() - data;
-            if(oldState.channelID && !newState.channelID) { // This user has left the channel.
+            if (oldState.channelID && !newState.channelID) { // This user has left the channel.
                 activeMemberInVoice.delete(oldState.id);
-                await this.connection.query(`SELECT duration FROM statsVoc WHERE channelId = '${oldState.channelID}' AND userId = '${oldState.id}'`).then(async (res) =>{
-                    if(res[0].length != 0){
+                await this.connection.query(`SELECT duration FROM statsVoc WHERE channelId = '${oldState.channelID}' AND userId = '${oldState.id}'`).then(async (res) => {
+                    if (res[0].length != 0) {
                         duration = parseInt(duration) + res[0][0].duration;
                         await this.connection.query(`UPDATE statsVoc SET duration = '${duration}', disconnectDate=NOW()  WHERE channelId = '${oldState.channelID}' AND userId = '${oldState.id}'`)
-                    }else{
+                    } else {
                         await this.connection.query(`INSERT INTO statsVoc (userId, guildId, channelId, duration, disconnectDate) VALUES ('${oldState.id}', '${oldState.guild.id}', '${oldState.channelID}' ,'${duration}', NOW()) `)
 
                     }
 
                 })
             }
-            else if(oldState.channelID && newState.channelID){ // This user has changes the channel.
+            else if (oldState.channelID && newState.channelID) { // This user has changes the channel.
                 activeMemberInVoice.set(oldState.id, Date.now());
-                await this.connection.query(`SELECT duration FROM statsVoc WHERE channelId = '${oldState.channelID}' AND userId = '${oldState.id}'`).then(async(res) =>{
-                    if(res[0].length != 0){
+                await this.connection.query(`SELECT duration FROM statsVoc WHERE channelId = '${oldState.channelID}' AND userId = '${oldState.id}'`).then(async (res) => {
+                    if (res[0].length != 0) {
                         duration = parseInt(duration) + res[0][0].duration;
                         await this.connection.query(`UPDATE statsVoc SET duration = '${duration}', disconnectDate=NOW()  WHERE channelId = '${oldState.channelID}' AND userId = '${oldState.id}'`)
-                    }else{
+                    } else {
                         await this.connection.query(`INSERT INTO statsVoc (userId, guildId, channelId, duration, disconnectDate) VALUES ('${oldState.id}', '${oldState.guild.id}', '${oldState.channelID}' ,'${duration}', NOW()) `)
 
                     }
@@ -75,7 +72,88 @@ module.exports = new Event(
             }
         }
         //#endregion voiceState
+        //#region coins
+        const guildCoinsSettings = coinSettings.get(oldState.guild.id);
+        if (guildCoinsSettings.enable) {
+            const guildUserCoins = userCoins.get(oldState.guild.id);
+            const streamBoost = parseInt(guildCoinsSettings.streamBoost);
+            const muteDiviseur = parseInt(guildCoinsSettings.muteDiviseur);
+            if ((oldState.member && oldState.member.user.bot) || (newState.member && newState.member.user.bot)) return;
+            if (!oldState.channelID && newState.channelID) { // This user has join the channel.
+                activeMemberInVoiceCoins.set(oldState.id, Date.now());
+            }
+            let data;
+            if (!activeMemberInVoiceCoins.has(oldState.id)) {
+                data = Date.now();
+                activeMemberInVoiceCoins.set(oldState.id, data); // check current data for the existence of
+            }
+            else {
+                data = activeMemberInVoiceCoins.get(oldState.id);
 
+            }
+            let duration = Date.now() - data;
+            if (oldState.channelID && !newState.channelID) { // This user has left the channel.
+                activeMemberInVoiceCoins.delete(oldState.id);
+                let durationMin = duration * 1.66667e-5;
+                if (durationMin >= 1) {
+                    if (oldState.serverDeaf || oldState.serverMute || oldState.selfDeaf || oldState.selfMute) {
+                        durationMin = (duration * 1.66667e-5) / muteDiviseur;
+                    } else if (oldState.selfVideo || oldState.streaming) {
+                        durationMin = (duration * 1.66667e-5) * streamBoost
+                    }
+                    const userCoinsInfo = guildUserCoins.filter(coins => coins.userId === oldState.id);
+                    if(userCoinsInfo.length !== 0){
+                        const coins = parseInt(userCoinsInfo[0].coins) + durationMin;
+                        console.log(coins)
+                        const index = guildUserCoins.indexOf(userCoinsInfo[0])
+                        guildUserCoins[index].coins = coins;
+                        StateManager.emit('guildCoins', oldState.guild.id, guildUserCoins)
+                        await this.connection.query(`UPDATE coins SET coins = '${coins}' WHERE guildId = '${oldState.guild.id}' AND userId = '${oldState.id}'`);
+                    }else {
+                        const coins = parseInt(durationMin);
+                        const newUserCoins = {userId : oldState.id, coins};
+                        guildUserCoins.push(newUserCoins);
+                        await this.connection.query(`INSERT INTO coins (guildId, userId, coins)VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `)
+
+                    }
+                          
+                        
+
+                }
+
+            }
+            else if (oldState.channelID && newState.channelID) { // This user has changes the channel.
+                activeMemberInVoiceCoins.set(oldState.id, Date.now());
+                let durationMin = duration * 1.66667e-5;
+
+                if (durationMin >= 1) {
+                    if (oldState.serverDeaf || oldState.serverMute || oldState.selfDeaf || oldState.selfMute) {
+                        durationMin = (duration * 1.66667e-5) / muteDiviseur;
+                    } else if (oldState.selfVideo || oldState.streaming) {
+                        durationMin = (duration * 1.66667e-5)  * streamBoost;
+                    }
+                    if(userCoinsInfo.length !== 0){
+                        const coins = parseInt(userCoinsInfo[0].coins) + durationMin;
+                        const index = guildUserCoins.indexOf(userCoinsInfo[0])
+                        guildUserCoins[index].coins = coins;
+                        StateManager.emit('guildCoins', oldState.guild.id, guildUserCoins)
+                        await this.connection.query(`UPDATE coins SET coins = '${coins}' WHERE guildId = '${oldState.guild.id}' AND userId = '${oldState.id}'`);
+                    }else {
+                        const coins = parseInt(durationMin);
+                        const newUserCoins = {userId : oldState.id, coins};
+                        guildUserCoins.push(newUserCoins);
+                        await this.connection.query(`INSERT INTO coins (guildId, userId, coins)VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `)
+
+                    }
+                }
+
+            }
+            console.log(guildUserCoins);
+            console.log(guildCoinsSettings)
+        }
+
+
+        //#endregion coins
 
 
         //#region tempvoc
@@ -132,7 +210,7 @@ module.exports = new Event(
                         }
 
                         // -- Ou alors vérifie que l'ancien salon appartient a la catégorie, que l'ancien salon n'est pas celui de la création de salon et que le nouveau salon est le salon de création
-                    } else if (oldState.channel.parentID ===  tempVocINFO.catId && oldState.channelID !== tempVocINFO.chId && newState.channelID === tempVocINFO.chId) {
+                    } else if (oldState.channel.parentID === tempVocINFO.catId && oldState.channelID !== tempVocINFO.chId && newState.channelID === tempVocINFO.chId) {
                         // -- Vérifie que l'ancien salon est vide
                         if (oldState.channel.members.size === 0) {
                             // -- Supprime le salon
@@ -315,117 +393,120 @@ module.exports = new Event(
 
         }
         //#endregion log
+
+
+
         //#region  anti deco
-        const isOn = antiDecoOn.get(oldState.guild.id)
-        if (isOn == '1') {
-            // if(newState) return;
+        // const isOn = antiDecoOn.get(oldState.guild.id)
+        // if (isOn == '1') {
+        //     // if(newState) return;
 
-            let logChannelId = logsChannelId.get(oldState.guild.id);
-            let logChannel = handler.client.guilds.cache.get(oldState.guild.id).channels.cache.get(logChannelId)
+        //     let logChannelId = logsChannelId.get(oldState.guild.id);
+        //     let logChannel = handler.client.guilds.cache.get(oldState.guild.id).channels.cache.get(logChannelId)
 
-            let action = await oldState.guild.fetchAuditLogs({ type: "MEMBER_DISCONNECT" }).then(async (audit) => audit.entries.first());
-            if(action == undefined) return;
-            if (action.executor == undefined) return;
-            if (action.executor.id === handler.client.user.id) return;
-            const actionTime = new Date(action.createdTimestamp);
-            const actualDate = new Date(Date.now());
-            const formatedActionTime = parseInt(actionTime.getHours()) + parseInt(actionTime.getMinutes()) + parseInt(actionTime.getSeconds())
-            const formatedActualtime = parseInt(actualDate.getHours()) + parseInt(actualDate.getMinutes()) + parseInt(actualDate.getSeconds())
-            if (formatedActualtime === formatedActionTime) {
-                console.log(action)
+        //     let action = await oldState.guild.fetchAuditLogs({ type: "MEMBER_DISCONNECT" }).then(async (audit) => audit.entries.first());
+        //     if(action == undefined) return;
+        //     if (action.executor == undefined) return;
+        //     if (action.executor.id === handler.client.user.id) return;
+        //     const actionTime = new Date(action.createdTimestamp);
+        //     const actualDate = new Date(Date.now());
+        //     const formatedActionTime = parseInt(actionTime.getHours()) + parseInt(actionTime.getMinutes()) + parseInt(actionTime.getSeconds())
+        //     const formatedActualtime = parseInt(actualDate.getHours()) + parseInt(actualDate.getMinutes()) + parseInt(actualDate.getSeconds())
+        //     if (formatedActualtime === formatedActionTime) {
+        //         console.log(action)
 
-                var isOwner = checkBotOwner(oldState.guild.id, action.executor.id);
+        //         var isOwner = checkBotOwner(oldState.guild.id, action.executor.id);
 
-                const isWlOnFetched = await this.connection.query(`SELECT antiDeco FROM antiraidWlBp WHERE guildId = '${oldState.guild.id}'`);
-                const isWlOnfetched = isWlOnFetched[0][0].antiDeco;
-                let isOnWl;
-                if (isWlOnfetched == "1") { isOnWl = true };
-                if (isWlOnfetched == "0") { isOnWl = false };
+        //         const isWlOnFetched = await this.connection.query(`SELECT antiDeco FROM antiraidWlBp WHERE guildId = '${oldState.guild.id}'`);
+        //         const isWlOnfetched = isWlOnFetched[0][0].antiDeco;
+        //         let isOnWl;
+        //         if (isWlOnfetched == "1") { isOnWl = true };
+        //         if (isWlOnfetched == "0") { isOnWl = false };
 
-                let isWlFetched = await this.connection.query(`SELECT whitelisted FROM guildConfig WHERE guildId = '${oldState.guild.id}'`);
-                let isWlfetched = isWlFetched[0][0].whitelisted.toString();
-                let isWl1 = isWlfetched.split(",");
-                let isWl;
-                if (isWl1.includes(action.executor.id)) { isWl = true };
-                if (!isWl1.includes(action.executor.id)) { isWl = false };
-
-
-                if (isOwner == true || oldState.guild.ownerID == action.executor.id || isOn == false) {
-                    return;
-                } else if (isOwner == true || oldState.guild.ownerID == action.executor.id || isOn == false || isOnWl == true && isWl == true) {
-
-                    return;
-                } else if (isOn == true && isOwner == false || oldState.guild.owner.id !== action.executor.id || isOnWl == true && isWl == false || isOnWl == false) {
-                    let guild = handler.client.guilds.cache.find(guild => guild.id === oldState.guild.id);
-
-                    let after = await this.connection.query(`SELECT antideco FROM antiraidconfig WHERE guildId = '${oldState.guild.id}'`)
-
-                    let targetMember = guild.members.cache.get(action.executor.id);
-                    if (targetMember == undefined) {
-                        await oldState.guild.members.fetch().then((members) => {
-                            targetMember = members.get(action.executor.id)
-                        })
-                    }
-                    if (targetMember.roles.highest.comparePositionTo(guild.me.roles.highest) <= 0) {
-                        if (after[0][0].antideco === 'ban') {
-                            guild.members.ban(action.executor.id)
-                        } else if (after[0][0].antideco === 'kick') {
-                            guild.member(action.executor.id).kick(
-                                `OneForAll - Type: antideco `
-                            )
-                        } else if (after[0][0].antideco === 'unrank') {
-                            let roles = []
-                            let role = await guild.member(action.executor.id).roles.cache
-                                .map(role => roles.push(role.id))
-                            role
-                            guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: antideco`)
-                            if (action.executor.bot) {
-                                let botRole = targetMember.roles.cache.filter(r => r.managed)
-						// let r = guild.roles.cache.get(botRole.id)
-						
-                                for(const[id] of botRole){
-                                    botRole = guild.roles.cache.get(id)
-                                }
-                                botRole.setPermissions(0, `OneForAll - Type: antideco`)
-                                    }
-                        }
-                       
-
-                        const logsEmbed = new Discord.MessageEmbed()
-                            .setTitle(`\`🔈\`Déconnection d'un membre `)
-                            .setDescription(`
-                            \`👨‍💻\`Auteur : **${guild.members.cache.get(action.executor.id).user.tag}** \`(${action.executor.id})\` a déconnecté :\n
-                            \`\`\`un membre\`\`\`
-                            \`🧾\`Sanction : ${after[0][0].antideco}`)
-                            .setTimestamp()
-                            .setFooter('🕙')
-                            .setColor(`${color}`);
-                            if (logChannel != undefined){
-                                logChannel.send(logsEmbed);
-    
-                            }
-                    } else {
-                       
-
-                        const logsEmbed = new Discord.MessageEmbed()
-                            .setTitle(`\`🔈\`Déconnection d'un membre `)
-                            .setDescription(`
-                            \`👨‍💻\`Auteur : **${guild.members.cache.get(action.executor.id).user.tag}** \`(${action.executor.id})\` a déconnecté :\n
-                            \`\`\`un membre\`\`\`
-                            \`🧾\`Sanction : Aucune car il possède  plus de permissions que moi`)
-                            .setTimestamp()
-                            .setFooter('🕙')
-                            .setColor(`${color}`);
-                            if (logChannel != undefined){
-                                logChannel.send(logsEmbed);
-    
-                            }
-                    }
-                }
-            }
+        //         let isWlFetched = await this.connection.query(`SELECT whitelisted FROM guildConfig WHERE guildId = '${oldState.guild.id}'`);
+        //         let isWlfetched = isWlFetched[0][0].whitelisted.toString();
+        //         let isWl1 = isWlfetched.split(",");
+        //         let isWl;
+        //         if (isWl1.includes(action.executor.id)) { isWl = true };
+        //         if (!isWl1.includes(action.executor.id)) { isWl = false };
 
 
-        }
+        //         if (isOwner == true || oldState.guild.ownerID == action.executor.id || isOn == false) {
+        //             return;
+        //         } else if (isOwner == true || oldState.guild.ownerID == action.executor.id || isOn == false || isOnWl == true && isWl == true) {
+
+        //             return;
+        //         } else if (isOn == true && isOwner == false || oldState.guild.owner.id !== action.executor.id || isOnWl == true && isWl == false || isOnWl == false) {
+        //             let guild = handler.client.guilds.cache.find(guild => guild.id === oldState.guild.id);
+
+        //             let after = await this.connection.query(`SELECT antideco FROM antiraidconfig WHERE guildId = '${oldState.guild.id}'`)
+
+        //             let targetMember = guild.members.cache.get(action.executor.id);
+        //             if (targetMember == undefined) {
+        //                 await oldState.guild.members.fetch().then((members) => {
+        //                     targetMember = members.get(action.executor.id)
+        //                 })
+        //             }
+        //             if (targetMember.roles.highest.comparePositionTo(guild.me.roles.highest) <= 0) {
+        //                 if (after[0][0].antideco === 'ban') {
+        //                     guild.members.ban(action.executor.id)
+        //                 } else if (after[0][0].antideco === 'kick') {
+        //                     guild.member(action.executor.id).kick(
+        //                         `OneForAll - Type: antideco `
+        //                     )
+        //                 } else if (after[0][0].antideco === 'unrank') {
+        //                     let roles = []
+        //                     let role = await guild.member(action.executor.id).roles.cache
+        //                         .map(role => roles.push(role.id))
+        //                     role
+        //                     guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: antideco`)
+        //                     if (action.executor.bot) {
+        //                         let botRole = targetMember.roles.cache.filter(r => r.managed)
+        // 				// let r = guild.roles.cache.get(botRole.id)
+
+        //                         for(const[id] of botRole){
+        //                             botRole = guild.roles.cache.get(id)
+        //                         }
+        //                         botRole.setPermissions(0, `OneForAll - Type: antideco`)
+        //                             }
+        //                 }
+
+
+        //                 const logsEmbed = new Discord.MessageEmbed()
+        //                     .setTitle(`\`🔈\`Déconnection d'un membre `)
+        //                     .setDescription(`
+        //                     \`👨‍💻\`Auteur : **${guild.members.cache.get(action.executor.id).user.tag}** \`(${action.executor.id})\` a déconnecté :\n
+        //                     \`\`\`un membre\`\`\`
+        //                     \`🧾\`Sanction : ${after[0][0].antideco}`)
+        //                     .setTimestamp()
+        //                     .setFooter('🕙')
+        //                     .setColor(`${color}`);
+        //                     if (logChannel != undefined){
+        //                         logChannel.send(logsEmbed);
+
+        //                     }
+        //             } else {
+
+
+        //                 const logsEmbed = new Discord.MessageEmbed()
+        //                     .setTitle(`\`🔈\`Déconnection d'un membre `)
+        //                     .setDescription(`
+        //                     \`👨‍💻\`Auteur : **${guild.members.cache.get(action.executor.id).user.tag}** \`(${action.executor.id})\` a déconnecté :\n
+        //                     \`\`\`un membre\`\`\`
+        //                     \`🧾\`Sanction : Aucune car il possède  plus de permissions que moi`)
+        //                     .setTimestamp()
+        //                     .setFooter('🕙')
+        //                     .setColor(`${color}`);
+        //                     if (logChannel != undefined){
+        //                         logChannel.send(logsEmbed);
+
+        //                     }
+        //             }
+        //         }
+        //     }
+
+
+        // }
         //#endregion anti deco
 
 
@@ -448,7 +529,7 @@ StateManager.on('antiraidConfF', (guildId, config) => {
 StateManager.on('antiraidConfU', (guildId, config) => {
     guildAntiraidConfig.set(guildId, config)
 })
-StateManager.on('tempvocDel', guildId =>{
+StateManager.on('tempvocDel', guildId => {
     tempVocOn.delete(guildId)
     tempVocInfo.delete(guildId)
 })
@@ -456,9 +537,9 @@ StateManager.on('tempVocOnUp', (guildId, isOn) => {
     tempVocOn.set(guildId, isOn)
 })
 StateManager.on('tempVocOnFetched', (guildId, isOn) => {
-    if(isOn == 'Activé') tempVocOn.set(guildId, "1")
-    if(isOn == 'Désactivé') tempVocOn.set(guildId, "0")
-    
+    if (isOn == 'Activé') tempVocOn.set(guildId, "1")
+    if (isOn == 'Désactivé') tempVocOn.set(guildId, "0")
+
 })
 
 StateManager.on('tempVocInfoUp', (guildId, info) => {
@@ -474,4 +555,11 @@ StateManager.on('statsOnU', (guildId, on) => {
 })
 StateManager.on('statsOnF', (guildId, on) => {
     statsOn.set(guildId, on)
+})
+
+StateManager.on('coinSettings', (guildId, settings) => {
+    coinSettings.set(guildId, settings)
+})
+StateManager.on('guildCoins', (guildId, coins) => {
+    userCoins.set(guildId, coins)
 })
