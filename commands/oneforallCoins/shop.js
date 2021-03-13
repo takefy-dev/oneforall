@@ -241,7 +241,7 @@ module.exports = new Command({
         const embed = new Discord.MessageEmbed()
             .setAuthor(message.author.tag, message.author.displayAvatarURL)
             .setDescription(lang.addShop.shopDesc(message.guild.name))
-            .addField('\u200b', shop.map(shop => !shop.price ? lang.addShop.nothingInShop : `**${shop.id} ${shop.item}** — [⏣ ${shop.price.toLocaleString()}](https://discord.gg/n2EvRECf88) coins\n`))
+            .addField('\u200b', shop.map(shop => !shop.price ? lang.addShop.nothingInShop : `\`${shop.id}\` **${shop.item}** — [⏣ ${shop.price.toLocaleString()}](https://discord.gg/n2EvRECf88) coins`))
             .setColor(`${color}`)
             .setTimestamp()
             .setFooter(`⏣ OneForAll coins`);
