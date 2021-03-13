@@ -66,7 +66,7 @@ module.exports = new Command({
             let lastItemId = 0;
 
             if (actualShop[actualShop.length - 1] !== undefined) lastItemId = actualShop[actualShop.length - 1].id
-            actualShop.push({ id: lastItemId + 1, item: `<@${isRl.id}>`, price: parseFloat(price), role: true })
+            actualShop.push({ id: lastItemId + 1, item: `<@${isRl.id}>`, price: parseInt(price), role: true })
             ajustShopId(actualShop);
 
         } else {
@@ -74,7 +74,7 @@ module.exports = new Command({
             let lastItemId = 0;
 
             if (actualShop[actualShop.length - 1] !== undefined) lastItemId = actualShop[actualShop.length - 1].id
-            actualShop.push({ id: lastItemId + 1, item: itemName, price: parseFloat(price), role: false })
+            actualShop.push({ id: lastItemId + 1, item: itemName, price: parseInt(price), role: false })
             ajustShopId(actualShop);
           
         }
@@ -187,7 +187,7 @@ module.exports = new Command({
                                 if (isNaN(msg.content)) return message.channel.send(lang.addShop.noPrice).then(mp => mp.delete({ timeout: 4000 }))
                                 if (parseInt(msg.content) === 0) return message.channel.send(lang.addShop.priceInf0).then(mp => mp.delete({ timeout: 4000 }))
                                 message.channel.send(lang.addShop.successEditItemPrice(msg.content)).then((mps) =>{
-                                    itemToEdit[0].price = parseFloat(msg.content);
+                                    itemToEdit[0].price = parseInt(msg.content);
                                     updateEmbed()
                                     setTimeout(() =>{
                                         mps.delete();
@@ -241,10 +241,14 @@ module.exports = new Command({
         const embed = new Discord.MessageEmbed()
             .setAuthor(message.author.tag, message.author.displayAvatarURL)
             .setDescription(`:shopping_cart: Magasin sur le serveur **${message.guild.name}**.\n<a:coinsoneforall:819646518180446228> Achetez un item avec le \`buy [number]\` command.`)
-            .setDescription(shop.map(shop => !shop.price ? lang.addShop.nothingInShop : `${shop.id} — ${shop.item} — [⏣ ${shop.price.toLocaleString()}](https://discord.gg/n2EvRECf88) coin(s)\n`))
+            .addField('\u200b', shop.map(shop => !shop.price ? lang.addShop.nothingInShop : `${shop.id} — ${shop.item} — [⏣ ${shop.price.toLocaleString()}](https://discord.gg/n2EvRECf88) coin(s)\n`))
             .setColor(`${color}`)
             .setTimestamp()
-            .setFooter(`⏣ OneForAll coins`)
+            .setFooter(`⏣ OneForAll coins`);
+
+        
+        
+        
         return message.channel.send(embed)
     }
 });
