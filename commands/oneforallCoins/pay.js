@@ -42,7 +42,10 @@ module.exports = new Command({
     let giverCoin = 0;
     if (giverCoinsInfo) giverCoin = giverCoinsInfo.coins;
     if(giverCoin < 1) return message.channel.send(lang.pay.giverNoCoins).then(mp => mp.delete({ timeout: 4000 }))
-    console.log(giverCoin)
+    const receiverCoinsInfo = guildCoins.find(coins => coins.userId === member.user.id);
+    let receiverCoin = 0;
+    if (receiverCoinsInfo) receiverCoin = receiverCoinsInfo.coins;
+    giverCoin = 
 });
 
 embedsColor(guildEmbedColor);
