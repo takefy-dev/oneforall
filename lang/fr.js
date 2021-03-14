@@ -753,6 +753,12 @@ module.exports = {
     coins : {
         userNotFound : `Je ne trouve pas ce membre. Essayez un autre.`
     },
+    pay: {
+        noMember : `Vous devez spécifier une mention ou un id a donner l'argent`,
+        noCoinToGive : `Vous devez spécifier un montant à donner`,
+        giverNoCoins : `Vous avez aucun coins à donner`,
+        giverAndReceiverSame : `Vous ne  pouvez pas vous donner vous même de l'argent`,
+    },
     antiraidConfig :{
         noVote : `<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,
         allOn : `Tous les évênements ont été activés`,
