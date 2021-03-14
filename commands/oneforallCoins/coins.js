@@ -43,10 +43,10 @@ module.exports = new Command({
     const memberCoin = guildCoins.find(coins => coins.userId === member.user.id);
     if(memberCoin) coins = memberCoin.coins;
     const embed = new Discord.MessageEmbed()
-    .setAuthor(`Coins of ${member.user.tag}`, member.user.displayAvatarURL({dynamic: true}))
-    .setDescription(`__${coins === 0 ? `Aucun`: coins.toLocaleString()}__ coins`)
+    .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL({dynamic: true}))
+    .setDescription(`**${member.user.tag}** a <a:coinsoneforall:819646518180446228> __${coins === 0 ? `0`: coins.toLocaleString()}__ coins.`)
     .setColor(`${color}`)
-    .setFooter(`OneForall coins`)
+    .setFooter(`© OneForAll Coins`)
     message.channel.send(embed)
 
 });
