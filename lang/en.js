@@ -672,6 +672,9 @@ module.exports = {
         successPay : (receiver, amount) =>`<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez donné <a:coinsoneforall:819646518180446228> **${amount}** coins a ${receiver}`,
         payLog : (giver, receiver, amount) => `${giver} a donné ${amount} coins à ${receiver}`, 
     },
+    lb :{
+        title : `Top des 10 membres ayant le plus de coins`
+    },
     logs: {
         banCounter : {
             title : "\`🚫\` Adding a ban to a member (command)",

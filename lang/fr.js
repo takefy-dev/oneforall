@@ -762,6 +762,9 @@ module.exports = {
         successPay : (receiver, amount) =>`<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez donné <a:coinsoneforall:819646518180446228> **${amount}** coins a ${receiver}`,
         payLog : (giver, receiver, amount) => `${giver} a donné ${amount} coins à ${receiver}`, 
     },
+    lb :{
+        title : `Top des 10 membres ayant le plus de coins`
+    },
     antiraidConfig :{
         noVote : `<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,
         allOn : `Tous les évênements ont été activés`,
