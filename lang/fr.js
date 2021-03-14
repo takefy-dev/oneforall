@@ -758,6 +758,7 @@ module.exports = {
         noCoinToGive : `Vous devez spécifier un montant à donner`,
         giverNoCoins : `Vous avez aucun coins à donner`,
         giverAndReceiverSame : `Vous ne  pouvez pas vous donner vous même de l'argent`,
+        infZero : `Vous ne pouvez pas donner une somme inférieur à 1`,
     },
     antiraidConfig :{
         noVote : `<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,

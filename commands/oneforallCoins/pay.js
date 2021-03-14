@@ -23,9 +23,9 @@ module.exports = new Command({
     let member;
     let memberId = args[0];
     const amountToGive = args[1];
-    if (!memberId) return message.channel.send(lang.pay.noMember);
-    if (!amountToGive) return message.channel.send(lang.pay.noCoinToGive);
-
+    if (!memberId) return message.channel.send(lang.pay.noMember).then(mp => mp.delete({ timeout: 4000 }));
+    if (!amountToGive) return message.channel.send(lang.pay.noCoinToGive).then(mp => mp.delete({ timeout: 4000 }));
+    if(parseInt(amountToGive) < 1) return message.channel.send(lang.pay.infZero).then(mp => mp.delete({ timeout: 4000 }))
     member = message.mentions.members.first()
     if (!member && !isNaN(memberId)) {
         if (message.guild.members.cache.has(memberId)) {
@@ -45,7 +45,9 @@ module.exports = new Command({
     const receiverCoinsInfo = guildCoins.find(coins => coins.userId === member.user.id);
     let receiverCoin = 0;
     if (receiverCoinsInfo) receiverCoin = receiverCoinsInfo.coins;
-    giverCoin = 
+    giverCoin -= parseInt(amountToGive);
+    receiverCoin += parseInt(amountToGive);
+    console.log(giverCoin, receiverCoin)
 });
 
 embedsColor(guildEmbedColor);
