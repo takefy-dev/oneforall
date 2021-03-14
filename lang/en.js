@@ -609,6 +609,69 @@ module.exports = {
         leave : `To remove the bot from a guild do !serverlist <the number associate to the guild>`, 
         success: (name) => `The bot has left **${name}**`
     },
+    ball : {
+        noQuestion :  `S'il vous plait, veuillez entrer une question.`,
+        reponseQuestion : ["Oui.","Non.","Oui bien sûr","Oui définitivement !","Il ne vaut mieux pas en parler !","J'ai pas envie de répondre à cette question.","j'espère","J'imagine bien"],
+        reponse : `Réponse`
+
+    },
+    meme : {
+        reponse :  (random) =>`Ton meme a été trouvé sur /r${random} (si l'image ne charge pas veuillez cliquer sur le lien)`
+    },
+    gaydetector : {
+        title : `Machine de detecteur de gay`
+    },
+    addShop : {
+        noItem : `Veuillez entrer un item en pour le shop`,
+        noPrice : `Veuillez entrer un prix correct pour ajouter l'item au shop`,
+        successAdd : (item, price) => `Vous avez ajouter l'item **${item}** au prix de ${price}`,
+        priceInf0 : `Vous devez entrer un prix suppérieur à 0`,
+        noShop : `<:720681441670725645:780539422479351809> \`ERREUR\` Votre magasin n'est pas dans notre base de donné (shop create pour créer le shop)`,
+        alreadyShop : `<:720681441670725645:780539422479351809> \`ERREUR\` Votre serveurs possède déjà un magasin pour le supprimé (shop delete)`,
+        create : `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été créé`,
+        delete : `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été supprimé`,
+        successRemove : (item) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez enlevé l'item **${item}** du magasin`,
+        successAdd : (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${item}** au prix de ${price}`,
+        shopShowTitle : (guildName) => `Magasin sur le serveur ${guildName}`,
+        nothingInShop : `Rien dans la magasin`,
+        notFoundItem : `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas l'item associé avec cet id essayé un autre id`,
+        editCondition : `Seulement le prix et le nom de l'item est éditable`,
+        newNameQ : `Quel doit être le nouveau nom de l'item ? (cancel pour annuler)`,
+        successEditItemName : (name) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez changer le nom de l'item pour ${name}`,
+        newPriceQ : `Quel doit être le nouveau prix pour l'item ? (cancel pour annuler)`,
+        successEditItemPrice : (price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez changer le prix de l'item pour ${price}`,
+        cancel : `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez annulé la modification de l'item`,
+        onlyNumber : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez entrer uniquement des nombres`,
+        syntaxEdit : `<:720681441670725645:780539422479351809> \`ERREUR\` Erreur de syntax : (!shop edit <itemId>)`,
+        noModification : `Vous n'avez rien modifié dans l'item`,
+        successEdit : `<:720681705219817534:780540043033837622> \`SUCCÈS\` L'item a bien été modifié`,
+        shopDesc : (guildName) => `:shopping_cart: Magasin sur le serveur **${guildName}**.\n<a:coinsoneforall:819646518180446228> Achetez un item avec le \`buy [number]\` command.`
+    
+    },
+    buy : {
+        shoDisable : `<:720681441670725645:780539422479351809> \`ERREUR\` Le magasin est désactivé`,
+        syntaxError : `<:720681441670725645:780539422479351809> \`ERREUR\` Error de syntaxe : !buy <itemId>`,
+        noCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous avez aucun coins`,
+        nothingInShop : `<:720681441670725645:780539422479351809> \`ERREUR\` Il n'y a rien dans le magasin`,
+        notEnoughCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas assé d'argent pour acheter cet item`,
+        itemNotInShop : `<:720681441670725645:780539422479351809> \`ERREUR\` L'item n'est pas dans le magasin`,
+        success : (name, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez acheté **${name}** pour <a:coinsoneforall:819646518180446228> **${price}** coins.`,
+        alreadyRole : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous possédez déjà ce rôle vous ne pouvez donc pas acheter cet item.`,
+        buyLog : (memberPing, itemName, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${memberPing} a acheté **${itemName}** pour <a:coinsoneforall:819646518180446228> **${price}** coins.`
+
+    },
+    coins : {
+        userNotFound : `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas ce membre. Essayez un autre.`
+    },
+    pay: {
+        noMember : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez spécifier une mention ou un id a donner l'argent`,
+        noCoinToGive : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez spécifier un montant à donner`,
+        giverNoCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous avez aucun coins à donner`,
+        giverAndReceiverSame : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne  pouvez pas vous donner vous même de l'argent`,
+        infZero : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas donner une somme inférieur à 1 coins`,
+        successPay : (receiver, amount) =>`<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez donné <a:coinsoneforall:819646518180446228> **${amount}** coins a ${receiver}`,
+        payLog : (giver, receiver, amount) => `${giver} a donné ${amount} coins à ${receiver}`, 
+    },
     logs: {
         banCounter : {
             title : "\`🚫\` Adding a ban to a member (command)",
