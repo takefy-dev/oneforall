@@ -758,7 +758,9 @@ module.exports = {
         noCoinToGive : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez spécifier un montant à donner`,
         giverNoCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous avez aucun coins à donner`,
         giverAndReceiverSame : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne  pouvez pas vous donner vous même de l'argent`,
-        infZero : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas donner une somme inférieur à 1 coins`
+        infZero : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas donner une somme inférieur à 1 coins`,
+        successPay : (receiver, amount) =>`<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez donné ${amount} coins a ${receiver}`,
+        payLog : (giver, receiver, amount) => `${giver} a donné ${amount} coins à ${receiver}`, 
     },
     antiraidConfig :{
         noVote : `<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,
