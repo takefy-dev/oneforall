@@ -39,59 +39,65 @@ module.exports = new Command({
     if (!member) return message.channel.send(lang.coins.userNotFound).then(mp => mp.delete({ timeout: 4000 }))
     if (member.user.id === message.author.id) return message.channel.send(lang.pay.giverAndReceiverSame).then(mp => mp.delete({ timeout: 4000 }))
     const guildCoins = userCoins.get(message.guild.id);
-    const giverCoinsInfo = guildCoins.find(coins => coins.userId === message.author.id);
-    let giverCoin = 0;
-    if (giverCoinsInfo) giverCoin = giverCoinsInfo.coins;
-    if (giverCoin < 1) return message.channel.send(lang.pay.giverNoCoins).then(mp => mp.delete({ timeout: 4000 }))
-    const receiverCoinsInfo = guildCoins.find(coins => coins.userId === member.user.id);
-    let receiverCoin = 0;
-    if (receiverCoinsInfo) receiverCoin = receiverCoinsInfo.coins;
-    
-    // remove  money to giver
-    giverCoin -= parseInt(amountToGive);
-
-    const giverUserCoins = guildCoins.indexOf(giverCoinsInfo)
-    guildCoins[giverUserCoins].coins = giverCoin;
-
-    // add  money to giver
-    receiverCoin += parseInt(amountToGive);
-    const receiverUserCoins = guildCoins.indexOf(receiverCoinsInfo);
-    let newUser = false;
-    if(receiverUserCoins !== -1){
-        guildCoins[receiverUserCoins].coins = receiverCoin;
-    }else{
-        const newReceiverArray = {userId : member.user.id, coins : receiverCoin}
-        guildCoins.push(newReceiverArray)
-        newUser = true;
-    }
-
-    
-
-    await this.connection.query(`UPDATE coins SET coins = '${giverCoin}' WHERE guildId = '${message.guild.id}' AND userId = '${message.author.id}'`).then(async () => {
-        if(!newUser){
-            await this.connection.query(`UPDATE coins SET coins = '${receiverCoin}' WHERE guildId = '${message.guild.id}' AND userId = '${member.user.id}'`).then(() => {
-                message.channel.send(lang.pay.successPay(member, amountToGive)).then(() => {
-                    StateManager.emit('guildCoins', message.guild.id, userCoins.get(message.guild.id))
-                })
-            })
-        }else{
-            await this.connection.query(`INSERT INTO coins (userId, guildId, coins) VALUES('${member.user.id}', '${message.guild.id}', '${receiverCoin}')`).then(() => {
-                message.channel.send(lang.pay.successPay(member, amountToGive)).then(() => {
-                    StateManager.emit('guildCoins', message.guild.id, userCoins.get(message.guild.id))
-                })
-            })
-        }
+    if(guildCoins){
+        const giverCoinsInfo = guildCoins.find(coins => coins.userId === message.author.id);
+        let giverCoin = 0;
+        if (giverCoinsInfo) giverCoin = giverCoinsInfo.coins;
+        if (giverCoin < 1) return message.channel.send(lang.pay.giverNoCoins).then(mp => mp.delete({ timeout: 4000 }))
+        const receiverCoinsInfo = guildCoins.find(coins => coins.userId === member.user.id);
+        let receiverCoin = 0;
+        if (receiverCoinsInfo) receiverCoin = receiverCoinsInfo.coins;
         
- 
-    })
-    const logsChannel = message.guild.channels.cache.get(shopSettings.logs);
-    if (logsChannel && logsChannel.manageable) {
-        const embed = new Discord.MessageEmbed()
-            .setDescription(lang.pay.payLog(message.member, member, amountToGive))
-            .setTimestamp()
-            .setColor(`${color}`)
-        logsChannel.send(embed)
+        // remove  money to giver
+        giverCoin -= parseInt(amountToGive);
+    
+        const giverUserCoins = guildCoins.indexOf(giverCoinsInfo)
+        guildCoins[giverUserCoins].coins = giverCoin;
+    
+        // add  money to giver
+        receiverCoin += parseInt(amountToGive);
+        const receiverUserCoins = guildCoins.indexOf(receiverCoinsInfo);
+        let newUser = false;
+        if(receiverUserCoins !== -1){
+            guildCoins[receiverUserCoins].coins = receiverCoin;
+        }else{
+            const newReceiverArray = {userId : member.user.id, coins : receiverCoin}
+            guildCoins.push(newReceiverArray)
+            newUser = true;
+        }
+    
+        
+    
+        await this.connection.query(`UPDATE coins SET coins = '${giverCoin}' WHERE guildId = '${message.guild.id}' AND userId = '${message.author.id}'`).then(async () => {
+            if(!newUser){
+                await this.connection.query(`UPDATE coins SET coins = '${receiverCoin}' WHERE guildId = '${message.guild.id}' AND userId = '${member.user.id}'`).then(() => {
+                    message.channel.send(lang.pay.successPay(member, amountToGive)).then(() => {
+                        StateManager.emit('guildCoins', message.guild.id, userCoins.get(message.guild.id))
+                    })
+                })
+            }else{
+                await this.connection.query(`INSERT INTO coins (userId, guildId, coins) VALUES('${member.user.id}', '${message.guild.id}', '${receiverCoin}')`).then(() => {
+                    message.channel.send(lang.pay.successPay(member, amountToGive)).then(() => {
+                        StateManager.emit('guildCoins', message.guild.id, userCoins.get(message.guild.id))
+                    })
+                })
+            }
+            
+     
+        })
+        const logsChannel = message.guild.channels.cache.get(shopSettings.logs);
+        if (logsChannel && logsChannel.manageable) {
+            const embed = new Discord.MessageEmbed()
+                .setDescription(lang.pay.payLog(message.member, member, amountToGive))
+                .setTimestamp()
+                .setColor(`${color}`)
+            logsChannel.send(embed)
+        }
+    }else{
+        message.channel.send(lang.lb.noCoins)
+
     }
+    
 });
 
 embedsColor(guildEmbedColor);

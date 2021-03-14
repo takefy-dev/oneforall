@@ -20,14 +20,19 @@ module.exports = new Command({
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
     const guildTotalCoins = userCoins.get(message.guild.id);
-    const sortedTotalCoins = Object.entries(guildTotalCoins).sort((a, b) => b[1].coins - a[1].coins);
-    const lb = sortedTotalCoins.slice(0, 10)
-    const embed = new Discord.MessageEmbed()
-    .setTitle(lang.lb.title)
-    .setDescription(lb.map((user, i) => `${i++} . <@${user[1].userId}> : ${user[1].coins}`))
-    .setFooter(`OneForAll coins`)
-    .setColor(`${color}`)
-    message.channel.send(embed)
+    if(guildTotalCoins){
+        const sortedTotalCoins = Object.entries(guildTotalCoins).sort((a, b) => b[1].coins - a[1].coins);
+        const lb = sortedTotalCoins.slice(0, 10)
+        const embed = new Discord.MessageEmbed()
+        .setTitle(lang.lb.title)
+        .setDescription(lb.map((user, i) => `${i++} . <@${user[1].userId}> : ${user[1].coins}`))
+        .setFooter(`OneForAll coins`)
+        .setColor(`${color}`)
+        message.channel.send(embed)
+    }else{
+        message.channel.send(lang.lb.noCoins)
+    }
+  
 });
 
 embedsColor(guildEmbedColor);

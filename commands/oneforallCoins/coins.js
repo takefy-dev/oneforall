@@ -40,15 +40,21 @@ module.exports = new Command({
     if(!memberId) member = message.member
     if(!member) return message.channel.send(lang.coins.userNotFound).then(mp => mp.delete({timeout : 4000}))
     const guildCoins = userCoins.get(message.guild.id);
-    const memberCoin = guildCoins.find(coins => coins.userId === member.user.id);
-    if(memberCoin) coins = memberCoin.coins;
-    const embed = new Discord.MessageEmbed()
-    .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL({dynamic: true}))
-    .setDescription(`**${member.user.tag}** a <a:coinsoneforall:819646518180446228> __${coins === 0 ? `0`: coins.toLocaleString()}__ coins.`)
-    .setColor(`${color}`)
-    .setFooter(`© OneForAll Coins`)
-    message.channel.send(embed)
+    if(guildCoins){
+        const memberCoin = guildCoins.find(coins => coins.userId === member.user.id);
+        if(memberCoin) coins = memberCoin.coins;
+        const embed = new Discord.MessageEmbed()
+        .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL({dynamic: true}))
+        .setDescription(`**${member.user.tag}** a <a:coinsoneforall:819646518180446228> __${coins === 0 ? `0`: coins.toLocaleString()}__ coins.`)
+        .setColor(`${color}`)
+        .setFooter(`© OneForAll Coins`)
+        message.channel.send(embed)
+    
+    }else{
+        message.channel.send(lang.lb.noCoins)
 
+    }
+  
 });
 
 embedsColor(guildEmbedColor);

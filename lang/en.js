@@ -673,7 +673,8 @@ module.exports = {
         payLog : (giver, receiver, amount) => `${giver} a donné ${amount} coins à ${receiver}`, 
     },
     lb :{
-        title : `Top des 10 membres ayant le plus de coins`
+        title : `Top des 10 membres ayant le plus de coins`,
+        noCoins : `Personne a de coins sur le serveur.`
     },
     logs: {
         banCounter : {
