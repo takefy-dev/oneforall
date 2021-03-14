@@ -622,13 +622,13 @@ module.exports = {
         errorNobodyToNick : `Il y a personne à renommer sur ce serveur`
     },
     say:{
-        cantSendEmptyMsg: `Je ne peux pas envoyer un message vide`
+        cantSendEmptyMsg: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne peux pas envoyer un message vide`
     },
     stats:{
         enable: `Les statistiques on été activé !`,
         disable: `Les statistiques on été désactivé !`,
-        memberNotFound : `Le membre souhaité n'est pas présent dans le serveur`,
-        noStatsFound : `Aucune statisique a été trouvé pour ce membre`,
+        memberNotFound : `<:720681441670725645:780539422479351809> \`ERREUR\` Le membre souhaité n'est pas présent dans le serveur`,
+        noStatsFound : `<:720681441670725645:780539422479351809> \`ERREUR\` Aucune statisique a été trouvé pour ce membre`,
         totalVoiceChat : `Temps passé en vocal`,
         desc : (member) => `Statistique de **${member.user.username}**`,
         voiceMostActive : `Salon le plus actif en vocal`,
@@ -695,7 +695,7 @@ module.exports = {
         streamBoostQ : `Quel doit être le nouveau multiplicateur pour les membres en stream ? (cancel pour annuler)`,
         muteDiviseurQ : `Quel doit être le nouveau diviseur pour les membres mute ?(cancel pour annuler)`,
         logsQ : `Quel doit être le nouveau salons pour les logs ? (cancel pour annuler)`,
-        errorNotChannel : `Veuillez spécifier uniquement des salons textuelle`,
+        errorNotChannel : `<:720681441670725645:780539422479351809> \`ERREUR\` Veuillez spécifier uniquement des salons textuelle`,
         cancel : `Vous avez annuler la configuration`,
         save : `Configuration sauvegardé`
     },
@@ -716,49 +716,48 @@ module.exports = {
         noPrice : `Veuillez entrer un prix correct pour ajouter l'item au shop`,
         successAdd : (item, price) => `Vous avez ajouter l'item **${item}** au prix de ${price}`,
         priceInf0 : `Vous devez entrer un prix suppérieur à 0`,
-        noShop : `Votre magasin n'est pas dans notre base de donné (shop create pour créer le shop)`,
-        alreadyShop : `Votre serveurs possède déjà un magasin pour le supprimé (shop delete)`,
-        create : `Le magasin a bien été créé`,
-        delete : `Le magasin a bien été supprimé`,
-        successRemove : (item) => `Vous avez enlevé l'item **${item}** du magasin`,
-        successAdd : (item, price) => `Vous avez ajouté l'item **${item}** au prix de ${price}`,
+        noShop : `<:720681441670725645:780539422479351809> \`ERREUR\` Votre magasin n'est pas dans notre base de donné (shop create pour créer le shop)`,
+        alreadyShop : `<:720681441670725645:780539422479351809> \`ERREUR\` Votre serveurs possède déjà un magasin pour le supprimé (shop delete)`,
+        create : `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été créé`,
+        delete : `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été supprimé`,
+        successRemove : (item) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez enlevé l'item **${item}** du magasin`,
+        successAdd : (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${item}** au prix de ${price}`,
         shopShowTitle : (guildName) => `Magasin sur le serveur ${guildName}`,
         nothingInShop : `Rien dans la magasin`,
-        notFoundItem : `Je ne trouve pas l'item associé avec cet id essayé un autre id`,
+        notFoundItem : `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas l'item associé avec cet id essayé un autre id`,
         editCondition : `Seulement le prix et le nom de l'item est éditable`,
         newNameQ : `Quel doit être le nouveau nom de l'item ? (cancel pour annuler)`,
-        successEditItemName : (name) => `Vous avez changer le nom de l'item pour ${name}`,
+        successEditItemName : (name) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez changer le nom de l'item pour ${name}`,
         newPriceQ : `Quel doit être le nouveau prix pour l'item ? (cancel pour annuler)`,
-        successEditItemPrice : (price) => `Vous avez changer le prix de l'item pour ${price}`,
-        cancel : `Vous avez annulé la modification de l'item`,
-        onlyNumber : `Vous devez entrer uniquement des nombres`,
-        syntaxEdit : `Erreur de syntax : (!shop edit <itemId>)`,
+        successEditItemPrice : (price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez changer le prix de l'item pour ${price}`,
+        cancel : `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez annulé la modification de l'item`,
+        onlyNumber : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez entrer uniquement des nombres`,
+        syntaxEdit : `<:720681441670725645:780539422479351809> \`ERREUR\` Erreur de syntax : (!shop edit <itemId>)`,
         noModification : `Vous n'avez rien modifié dans l'item`,
-        successEdit : `L'item a bien été modifié`,
+        successEdit : `<:720681705219817534:780540043033837622> \`SUCCÈS\` L'item a bien été modifié`,
         shopDesc : (guildName) => `:shopping_cart: Magasin sur le serveur **${guildName}**.\n<a:coinsoneforall:819646518180446228> Achetez un item avec le \`buy [number]\` command.`
     
     },
     buy : {
-        shoDisable : `Le magasin est désactivé`,
-        syntaxError : `Error de syntaxe : !buy <itemId>`,
-        noCoins : `Vous avez aucun coins`,
-        nothingInShop : `Il n'y a rien dans le magasin`,
-        notEnoughCoins : `Vous n'avez pas assé d'argent pour acheter cet item`,
-        itemNotInShop : `L'item n'est pas dans le magasin`,
-        success : (name, price) => `Vous avez acheté ${name} pour ${price} coins`,
-        alreadyRole : `Vous possédez déjà ce rôle vous ne pouvez donc pas acheter cet item.`,
-        buyLog : (memberPing, itemName, price) => `${memberPing} a acheté ${itemName} pour ${price} coins`
+        shoDisable : `<:720681441670725645:780539422479351809> \`ERREUR\` Le magasin est désactivé`,
+        syntaxError : `<:720681441670725645:780539422479351809> \`ERREUR\` Error de syntaxe : !buy <itemId>`,
+        noCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous avez aucun coins`,
+        nothingInShop : `<:720681441670725645:780539422479351809> \`ERREUR\` Il n'y a rien dans le magasin`,
+        notEnoughCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas assé d'argent pour acheter cet item`,
+        itemNotInShop : `<:720681441670725645:780539422479351809> \`ERREUR\` L'item n'est pas dans le magasin`,
+        success : (name, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez acheté **${name}** pour <a:coinsoneforall:819646518180446228> **${price}** coins.`,
+        alreadyRole : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous possédez déjà ce rôle vous ne pouvez donc pas acheter cet item.`,
+        buyLog : (memberPing, itemName, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${memberPing} a acheté **${itemName}** pour <a:coinsoneforall:819646518180446228> **${price}** coins.`
 
     },
     coins : {
-        userNotFound : `Je ne trouve pas ce membre. Essayez un autre.`
+        userNotFound : `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas ce membre. Essayez un autre.`
     },
     pay: {
-        noMember : `Vous devez spécifier une mention ou un id a donner l'argent`,
-        noCoinToGive : `Vous devez spécifier un montant à donner`,
-        giverNoCoins : `Vous avez aucun coins à donner`,
-        giverAndReceiverSame : `Vous ne  pouvez pas vous donner vous même de l'argent`,
-        infZero : `Vous ne pouvez pas donner une somme inférieur à 1`,
+        noMember : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez spécifier une mention ou un id a donner l'argent`,
+        noCoinToGive : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez spécifier un montant à donner`,
+        giverNoCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous avez aucun coins à donner`,
+        giverAndReceiverSame : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne  pouvez pas vous donner vous même de l'argent`,
     },
     antiraidConfig :{
         noVote : `<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,
