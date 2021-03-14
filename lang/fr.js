@@ -759,7 +759,7 @@ module.exports = {
         giverNoCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous avez aucun coins à donner`,
         giverAndReceiverSame : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne  pouvez pas vous donner vous même de l'argent`,
         infZero : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas donner une somme inférieur à 1 coins`,
-        successPay : (receiver, amount) =>`<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez donné ${amount} coins a ${receiver}`,
+        successPay : (receiver, amount) =>`<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez donné <a:coinsoneforall:819646518180446228> **${amount}** coins a ${receiver}`,
         payLog : (giver, receiver, amount) => `${giver} a donné ${amount} coins à ${receiver}`, 
     },
     antiraidConfig :{
