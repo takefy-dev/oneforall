@@ -417,6 +417,14 @@ module.exports = new Event(
 				const shopArray =JSON.parse(res[0][0].shop)
 				StateManager.emit('shopFetched', guild.id, shopArray)					
 			})
+			this.connection.query(`SELECT * FROM inventory WHERE guildId = '${guild.id}'`).then(res =>{
+				if(res[0].length === 0) return;
+				const inventory = new Map();
+				res[0].forEach(res => {
+					inventory.set(res.userId, JSON.parse(res.inventory))
+				})
+				StateManager.emit('inventory', guild.id, inventory);
+			})
 
 		})
 

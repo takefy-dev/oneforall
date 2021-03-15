@@ -41,7 +41,7 @@ module.exports = new Command({
         if (!shop.has(message.guild.id)) return message.channel.send(lang.addShop.noShop)
         return await this.connection.query(`DELETE FROM coinShop WHERE guildId = '${message.guild.id}'`).then(async () => {
             
-
+            shop.delete(message.guild.id);
             StateManager.emit('shopDelete', message.guild.id)
             return message.channel.send(lang.addShop.delete).then(mp => mp.delete({ timeout: 5000 }))
         })
@@ -66,7 +66,7 @@ module.exports = new Command({
             let lastItemId = 0;
 
             if (actualShop[actualShop.length - 1] !== undefined) lastItemId = actualShop[actualShop.length - 1].id
-            actualShop.push({ id: lastItemId + 1, item: `<@&${isRl.id}>`, price: parseInt(price), role: true })
+            actualShop.push({ id: lastItemId + 1, item: `<@&${isRl.id}>`, price: parseInt(price), role: true, amount: 1 })
             
             ajustShopId(actualShop);
 
@@ -75,7 +75,7 @@ module.exports = new Command({
             let lastItemId = 0;
 
             if (actualShop[actualShop.length - 1] !== undefined) lastItemId = actualShop[actualShop.length - 1].id
-            actualShop.push({ id: lastItemId + 1, item: itemName, price: parseInt(price), role: false })
+            actualShop.push({ id: lastItemId + 1, item: itemName, price: parseInt(price), role: false, amount: 1 })
             ajustShopId(actualShop);
           
         }
