@@ -686,10 +686,11 @@ module.exports = {
         ***${muteDiviseur}***\n
         \`💌\` ・ Modifié le salon des logs
         **${logs}**\n
-        
-        \`❌\` ・ Fermer le menu\n
-        \`✅\` ・ Activer ou désactiver le système de coins
+        \`🌀\` ・Activer ou désactiver le système de coins
         **${enable}**
+
+        \`❌\` ・ Fermer le menu\n
+        \`✅\` ・ Sauvegarder la configuration
         `,
         onlyNumber : `Vous devez uniquement entrer des nombres` ,
         streamBoostQ : `Quel doit être le nouveau multiplicateur pour les membres en stream ? (cancel pour annuler)`,

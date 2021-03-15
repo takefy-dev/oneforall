@@ -30,7 +30,7 @@ module.exports = new Command({
     if (!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id || !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
     const color = guildEmbedColor.get(message.guild.id);
     const principalMsg = await message.channel.send(lang.loading)
-    const emoji = ['🎥', '😶', '💌', '❌', '✅']
+    const emoji = ['🎥', '😶', '💌', '❌', '🌀','✅']
     for (const em of emoji) {
         await principalMsg.react(em)
     }
@@ -113,16 +113,25 @@ module.exports = new Command({
                     return principalMsg.delete();
 
                 })
-            } else if (r.emoji.name === emoji[4]) {
-                if (!config.enable) {
-
+            }else if(r.emoji.name === emoji[4]){
+                if(!config.enable){
                     config.enable = true;
-                    updateEmbed()
+
+                }else{
+                    config.enable = false;
+                }
+                updateEmbed()
+
+            } 
+            
+            
+            else if (r.emoji.name === emoji[5]) {
+           
 
                     this.connection.query(`UPDATE guildConfig SET streamBoost ='${config.streamBoost}' WHERE guildId = '${message.guild.id}'`)
                     this.connection.query(`UPDATE guildConfig SET muteDiviseur = '${config.muteDiviseur}' WHERE guildId = '${message.guild.id}'`)
                     this.connection.query(`UPDATE guildConfig SET coinsLogs = '${config.logs}' WHERE guildId = '${message.guild.id}'`)
-                    this.connection.query(`UPDATE guildConfig SET coinsOn = '1' WHERE guildId = '${message.guild.id}'`)
+                    this.connection.query(`UPDATE guildConfig SET coinsOn = '${config.enable ? '1' : '0'}' WHERE guildId = '${message.guild.id}'`)
                     coinSettings.set(message.guild.id, config)
                     message.channel.send(lang.coinSettings.save).then(mp => {
                         setTimeout(() => {
@@ -132,23 +141,11 @@ module.exports = new Command({
                     })
                     StateManager.emit('coinSettings', message.guild.id, config)
 
-                } else {
-                    config.enable = false;
-                    updateEmbed()
-
-                    this.connection.query(`UPDATE guildConfig SET coinsOn = '0' WHERE guildId = '${message.guild.id}'`)
-                    coinSettings.set(message.guild.id, config)
-                    message.channel.send(lang.coinSettings.save).then(mp => {
-                        setTimeout(() => {
-                            mp.delete()
-                            principalMsg.delete()
-                        }, 2000)
-                    })
-                    StateManager.emit('coinSettings', message.guild.id, config)
+                
 
 
 
-                }
+                
 
             }
             function updateEmbed() {
