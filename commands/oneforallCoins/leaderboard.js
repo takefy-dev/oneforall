@@ -30,7 +30,7 @@ module.exports = new Command({
         .setColor(`${color}`)
         message.channel.send(embed)
     }else{
-        message.channel.send(lang.lb.noCoins)
+        return message.channel.send(lang.lb.noCoins)
     }
   
 });
