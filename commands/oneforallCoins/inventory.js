@@ -27,13 +27,14 @@ module.exports = new Command({
         if (!guildCoins) return message.channel.send(lang.lb.noCoins)
         const memberCoin = guildCoins.find(coins => coins.userId === message.author.id)[0].coins; // amount of coins
         const memberInvetory = membersGuildInv.get(message.author.id);
-        const formatedInventory = memberInvetory.map((inv) => `${inv.item} - x${inv.amount}`); // inv.item == itemName and inv.amount = number of 1 item
+        const formatedInventory = memberInvetory.map((inv) => `**${inv.item}**  •  \`${inv.amount} coins\``); // inv.item == itemName and inv.amount = number of 1 item
         const embed = new Discord.MessageEmbed()
             .setAuthor(`Inventory of ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }))
             .setDescription(formatedInventory)
+            .setThumbnail(`https://media.discordapp.net/attachments/747028239884615751/821044567833968710/706473362813091931.gif`)
             .setColor(`${color}`)
-            .setFooter(`OneForAll coins`)
-        message.channel.send(embed)
+            .setFooter(`© OneForAll Coins`)
+        message.channel.send(`> **Viewing server inventory • [**  ${message.author.tag} **] •** `, {embed: embed})
     }
 
 });
