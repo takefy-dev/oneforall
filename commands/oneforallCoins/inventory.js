@@ -25,9 +25,8 @@ module.exports = new Command({
     if (membersGuildInv) {
         const guildCoins = userCoins.get(message.guild.id);
         if (!guildCoins) return message.channel.send(lang.lb.noCoins)
-        const memberCoin = guildCoins.find(coins => coins.userId === message.author.id)[0].coins; // amount of coins
         const memberInvetory = membersGuildInv.get(message.author.id);
-        const formatedInventory = memberInvetory.map((inv) => `**${inv.item}**  •  \`${inv.amount} coins\``); // inv.item == itemName and inv.amount = number of 1 item
+        const formatedInventory = memberInvetory === undefined ?`Inventaire vide` : memberInvetory.map((inv) => `**${inv.item}**  •  x\`${inv.amount}\``)  ; // inv.item == itemName and inv.amount = number of 1 item
         const embed = new Discord.MessageEmbed()
             .setAuthor(`Inventory of ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }))
             .setDescription(formatedInventory)
