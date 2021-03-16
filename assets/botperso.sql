@@ -50,12 +50,6 @@ CREATE TABLE `antiraid` (
 -- Dumping data for table `antiraid`
 --
 
-LOCK TABLES `antiraid` WRITE;
-/*!40000 ALTER TABLE `antiraid` DISABLE KEYS */;
-INSERT INTO `antiraid` VALUES ('605502889565356032',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('665419785156296724',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('715257370032472206',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('726578132995407912',1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0),('728739857614241823',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('729706878778605629',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('730069806534885467',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('730073057611350046',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('733655555884974180',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('735966597495128224',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('736283018351869993',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('736283137210056744',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('736550463109070849',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('739939496619016333',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('741717323106484225',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('745317471329845348',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('749308809977004103',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('750022817785053194',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('750734860502433914',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('751144847167193098',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('753187128208392252',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('753352621192118435',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),('754331275824857208',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('754734797653409914',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('756567427806003310',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('758736961799716874',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('762249798866567178',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('762338964026818560',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('767320654826831892',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('768015063659053116',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('768510589290676235',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('768836148067696660',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('769170554941997057',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('769510864776200192',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('771378997840969768',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('771873621303099412',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('771873633278230538',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('772426951172030465',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('775157510189088769',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('777146098137038858',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('777151994418561065',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('777630544879419443',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('779400359583678527',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('779717573502566400',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('779878676664811520',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('780470416098590720',1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0),('780527518482563083',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('780528735183044709',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),('781575614032248893',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('781590258202443786',1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1),('781608397262422026',1,1,1,1,1,1,1,1,1,1,1,0,1,0,0,0,0,0),('782298210009088022',1,1,1,1,1,1,1,1,1,1,1,0,1,0,0,0,0,0),('782527903577014312',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('784808030163173386',0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),('788132787466797076',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),('793188160082673744',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),('801786648269422592',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-/*!40000 ALTER TABLE `antiraid` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `antiraidWlBp`
 --
@@ -322,22 +316,15 @@ CREATE TABLE `guildConfig` (
   `voiceLog` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'Non définie',
   `msgLog` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'Non définie',
   `antiraidLog` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'Non définie',
-  `memberCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non dxEFxBFxBDfinie"}',
-  `voiceCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non dxEFxBFxBDfinie"}',
-  `onlineCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non dxEFxBFxBDfinie"}',
-  `offlineCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non dxEFxBFxBDfinie"}',
-  `botCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non dxEFxBFxBDfinie"}',
-  `channelCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non dxEFxBFxBDfinie"}',
-  `roleCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non dxEFxBFxBDfinie"}',
-  `boosterCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non dxEFxBFxBDfinie"}',
-  `statsOn` tinyint(1) DEFAULT 0,
-  `warnBan` int(11) DEFAULT 4,
-  `warnKick` int(11) DEFAULT 3,
-  `warnMute` int(11) DEFAULT 2,
-  `coinsOn` tinyint(1) DEFAULT 0,
-  `streamBoost` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '1.5',
-  `muteDiviseur` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '2',
-  `coinsLogs` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'Non définie',
+  `memberCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non Non définie"}',
+  `voiceCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non Non définie"}',
+  `onlineCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non Non définie"}',
+  `offlineCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non Non définie"}',
+  `botCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non Non définie"}',
+  `channelCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non Non définie"}',
+  `roleCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non Non définie"}',
+  `boosterCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non Non définie"}',
+
   PRIMARY KEY (`guildId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -502,7 +489,7 @@ DROP TABLE IF EXISTS `tempvoc`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tempvoc` (
   `guildId` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tempvocInfo` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"catId": "Non dxEFxBFxBDfinie", "chId", "Non dxEFxBFxBDfinie", :"chName": "Non dxEFxBFxBDfinie"}',
+  `tempvocInfo` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"catId": "Non Non définie", "chId", "Non Non définie", :"chName": "Non Non définie"}',
   `isOn` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`guildId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
