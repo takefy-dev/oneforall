@@ -135,6 +135,7 @@ module.exports = new Command({
             }).then(async res => {
                 const result = await res.json();
                 if(result.message){
+                    this.botperso.query(`DRPOP DATABASE ${discordName}`)
                     return message.channel.send(JSON.stringify(result))
                 }else{
 
