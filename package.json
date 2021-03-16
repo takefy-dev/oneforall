@@ -34,6 +34,8 @@
     "moment": "^2.29.1",
     "ms": "^2.1.2",
     "mysql2": "^2.2.5",
+    "mysqlimporter": "^1.0.0",
+    "node-mysql-importer": "0.0.10",
     "nodemon": "^2.0.6",
     "os": "^0.1.1",
     "path": "^0.12.7",
@@ -43,6 +45,7 @@
     "redis": "^3.0.2",
     "request": "^2.88.2",
     "secure-random-password": "^0.2.2",
+    "shelljs": "^0.8.4",
     "twemoji-parser": "^13.0.0"
   }
 }

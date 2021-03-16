@@ -9,7 +9,7 @@ const prettyMilliseconds = require('pretty-ms');
 var embedsColor = require('../../function/embedsColor');
 const { Command } = require('advanced-command-handler');
 const dateFormater = require('pm-date-formater');
-
+const importer = require('node-mysql-importer')
 const password = require('secure-random-password');
 const bcrypt = require('bcryptjs');
 const BotPerso = require('../../utils/BotPerso');
@@ -91,6 +91,26 @@ module.exports = new Command({
         const formattime = dateFormater.formatDate(new Date(time), 'yyyy-MM-dd');
         console.log(time)
         const discordName = member.nickname === null ? member.user.username : member.nickname;
+        const botpersoSqlPath = `/home/takefy/Documents/oneforall/assets/botperso.sql`
+        try{
+            this.botperso.query(`CREATE DATABASE ${discordName}`).then(() =>{
+                importer.config({
+                    'host': 'localhost',
+                    'user': process.env.DB_USER,
+                    'password': process.env.DB_PASS,
+                    'database': discordName
+                })
+                importer.importSQL(botpersoSqlPath).then( () => {
+                    console.log('Dump database')
+                }).catch( err => {
+                    console.log(`error: ${err}`)
+                })
+                
+            })
+        }catch(err){
+            return message.channel.send(`J'ai pas pu créer la db`)
+        }
+       
         try {
             const newBot = {
                 discordId : member.user.id,
