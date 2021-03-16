@@ -162,19 +162,47 @@ module.exports = new Command({
             message.channel.send("<:720681705219817534:780540043033837622> \`SUCCÈS\` Mentionne le client !(timeout dans 30s & \`cancel\` pour annuler)")
             const responseClient = await message.channel.awaitMessages(m => m.author.id === message.author.id, { max: 1, timeout: 30000 }).catch(() => { message.channel.send("Opération annulée pas de réponse après 30s") })
             const CollectedClient = responseClient.first();
-            const member = CollectedClient.mentions.members.first();
             if (CollectedClient.content.toLowerCase() == "cancel") return message.channel.send("L'opération a été annulée")
+    
+            const member = CollectedClient.mentions.members.first() || await message.guild.members.fetch(CollectedClient.content);
 
-            const order = execFile('python', ['D:\\Github\\DiscordBot\\OneForAll\\assets\\deleteOrder.py', `${member.user.id}`])
-            order.stdout.on('data', (data) => {
-                console.log(`Bot deleted`)
-            })
-
-
-            order.stderr.on('data', (data) => {
-                console.log(`err ${data}`)
-            });
-
+            try{
+                await fetch(`http://localhost:3000/api/client/${member.user.id}`, {
+                    "credentials": "include",
+                    "headers": {
+                        "content-type": "application/json",
+                        "referrerPolicy": "no-referrer-when-downgrade",
+                        "accept": "*/*",
+                        "authorization": `${moderatorAuthorisation[message.author.id].auth}`,
+                    },
+                    "referrerPolicy": "no-referrer-when-downgrade",
+                    "method": "DELETE",
+    
+    
+    
+                }).then(async res => {
+                    const result = await res.json();
+                    if(result.message){
+                        return message.channel.send(JSON.stringify(result))
+                    }else{
+    
+                        return message.channel.send(`Le bot pour ${member} a été supprimé`).then(() =>{
+                            const owners = ['659038301331783680', '188356697482330122', '443812465772462090']
+                            for(const owner of owners){
+                                const user = message.guild.members.cache.get(owner);
+                                const embed = new Discord.MessageEmbed()
+                                .setTitle(`Nouvelle suppressions de bot pour ${member.user.tag}`)
+                                .setDescription(JSON.stringify(result, null, "  "))
+                                .setTimestamp()
+                                user.send(embed)
+                            }
+                        })
+                    }
+                })
+            }catch(err){
+                console.log(err)
+            }
+           
 
             return message.channel.send(`J'ai supprimé le bot de ${member.user.tag}`)
         } catch (err) {
