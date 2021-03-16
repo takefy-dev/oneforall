@@ -27,7 +27,7 @@ module.exports = function detectExpire() {
                     const users = await clientReminder.users.cache.get(client.discordId) || await clientReminder.users.fetch(client.discordId);
                     const timeLeftPretty = prettyMilliseconds(dateToDeleteBot.getTime() - todayDate.getTime())
 
-                    if (dateToDeleteBot >= todayDate) {
+                    if (dateToDeleteBot <= todayDate) {
 
                         await client.remove().then(async () => {
                             await shell.exec(`pm2 delete ${client.discordName} `, { async: true }, function (code, output) {
