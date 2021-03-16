@@ -6,6 +6,8 @@ const shell = require('shelljs');
 const fs = require('fs')
 const unzipper = require('unzipper');
 // Get all
+const StateManager = require('../utils/StateManager');
+
 
 const moderatorAuthorisation = {
     'WkvYaAWBW7t6ZN3U': {
@@ -64,7 +66,8 @@ router.post('/', async (req, res) => {
                 returnOriginal: true
             })
             if (bot === null) return res.status(501).json({ message: 'No token available left' })
-            const token = bot.token;
+            const botToken = bot.token;
+            console.log(botToken)
             const id = bot.id;
 
 
@@ -76,7 +79,7 @@ router.post('/', async (req, res) => {
 
 
             await fs.createReadStream('/home/takefy/Documents/BotPerso.zip').pipe(unzipper.Extract({ path: `${path}/${discordId}` })).on('close', async () => {
-                const env = `TOKEN=${token}\nOWNER=${discordId}\nDB_USER=${process.env.DB_USER}\nDB_PASS=${process.env.DB_PASSWD}\nDB_NAME=${discordName}`;
+                const varEnv = `TOKEN=${botToken}\nOWNER=${discordId}\nDB_USER=${process.env.DB_USER}\nDB_PASS=${process.env.DB_PASSWD}\nDB_NAME=${discordName}`;
                 const pm2JSON =
                 {
                     apps: [
@@ -86,7 +89,14 @@ router.post('/', async (req, res) => {
                         }
                     ]
                 }
-                await fs.writeFile(`${path}/${discordId}/.env`, env, (err) => {
+                const configJson = {
+                    token : botToken,
+                    owner : id,
+                    dbuser : process.env.DB_USER,
+                    dbPass: process.env.DB_PASSWD,
+                    dbName : discordName
+                }
+                await fs.writeFile(`${path}/${discordId}/config.json`, JSON.stringify(configJson), (err) => {
 
                 });
                 await fs.writeFile(`${path}/${discordId}/pm2.json`, JSON.stringify(pm2JSON), (err) => {
@@ -103,7 +113,7 @@ router.post('/', async (req, res) => {
                         discordName: discordName,
                         password: req.body.password,
                         botId: id,
-                        botToken: token,
+                        botToken,
                     })
                     await client.save()
 
@@ -136,7 +146,7 @@ router.patch('/:id', getClient, async (req, res) => {
 
     } catch (err) {
         res.status(500).json({ messsage: err.message })
-    }
+    }   
 
 })
 
@@ -145,11 +155,14 @@ router.patch('/:id', getClient, async (req, res) => {
 router.delete('/:id', getClient, async (req, res) => {
     const authorisation = req.headers.authorization;
     if (!moderatorAuthorisation.hasOwnProperty(authorisation)) return res.status(401).json({ message: 'Unauthorized' })
+    const path = `/home/takefy/Documents/BotPerso`;
+    
     try {
         await res.client.remove().then(async () => {
 
 
 
+            this.connection = StateManager.connection;
 
             await shell.exec(`pm2 delete ${res.client.discordName} `, { async: true }, function (code, output) {
                 console.log('Exit code:', code);
@@ -161,7 +174,7 @@ router.delete('/:id', getClient, async (req, res) => {
 
             await shell.rm('-rf', `${path}/${res.client.discordId}`)
 
-
+            await this.connection.query(`DROP DATABASE ${res.client.discordName}`)
             await Tokens.findOneAndUpdate({ token: res.client.botToken }, { isUse: false })
         })
         res.json({ message: 'Deleted' })
