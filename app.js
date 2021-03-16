@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+const detectEpire = require('./cron/detectExpireBot')
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -15,4 +15,9 @@ const clientRouter = require('./routes/client.js');
 app.use('/api/client', clientRouter);
 
 
-app.listen(3000, () => console.log("Server start on http://localhost:3000/api"))
+app.listen(3000, () => {
+    detectEpire()
+    console.log("Server start on http://localhost:3000/api")
+    
+    
+})

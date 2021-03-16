@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-
+const todayDate = new Date();
+const now = new Date()
+const days = 1;
 const clientSchema = new mongoose.Schema({
     discordId : {
         type : String,
@@ -21,7 +23,7 @@ const clientSchema = new mongoose.Schema({
     expireAt :{
         type : Date,
         require: false,
-        default : Date.now() 
+        default : now.setDate(now.getDate() + 30)
     },
     password: {
         type : String,
@@ -31,6 +33,11 @@ const clientSchema = new mongoose.Schema({
         type : String,
         require: false
     },
+    deleteBotAt :{
+        type: Date,
+        require: true,
+        default : todayDate.setDate(todayDate.getDate() + days)
+    }
     
 })
 
