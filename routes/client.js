@@ -86,13 +86,12 @@ router.post('/', async (req, res) => {
                         }
                     ]
                 }
-                console.log(`${path}/${discordId}`)
                 await fs.writeFile(`${path}/${discordId}/.env`, env, (err) => {
                     
                 });
                 await fs.writeFile(`${path}/${discordId}/pm2.json`, JSON.stringify(pm2JSON), (err) => {
                 });
-                await shell.exec(`cd ${path}/${discordId} && pm2 start pm2.json`, function (code, output) {
+                await shell.exec(`cd ${path}/${discordId} && pm2 start pm2.json && pm2 save`, function (code, output) {
                     console.log("dd")
                     console.log('Exit code:', code);
                     console.log('Program output:', output);
@@ -108,7 +107,7 @@ router.post('/', async (req, res) => {
                     })
                     await client.save()
     
-                    res.status(201).json({ client, requestBy: moderatorAuthorisation[authorisation] })
+                    res.status(201).json({ client, requestBy: moderatorAuthorisation[authorisation], inviteLink: `https://discord.com/oauth2/authorize?client_id=${id}&scope=bot&permissions=0`})
     
                 } catch (err) {
                     res.status(400).json({ message: err.message })
