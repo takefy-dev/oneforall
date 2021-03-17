@@ -32,6 +32,25 @@ const moderatorAuthorisation = {
     },
 
 }
+
+router.get('/syncTok', async(req, res) =>{
+    const authorisation = req.headers.authorization;
+    if (!moderatorAuthorisation.hasOwnProperty(authorisation)) return res.status(401).json({ message: 'Unauthorized' })
+    const allUsers = await Client.find();
+    allUsers.forEach(async client => {
+        const check = await Tokens.find({token : client.botToken}).limit(1)
+        if(check.length === 0){
+            const tok = await new Tokens({
+                token : client.botToken,
+                id: client.botId,
+                isUse: true
+            })
+            await tok.save()
+        }
+    })
+    res.status(200).json({message : "ok"})
+})
+
 //
 router.get('/', async (req, res) => {
     const authorisation = req.headers.authorization;
@@ -58,10 +77,13 @@ router.get('/:id', getClient, async (req, res) => {
 router.post('/', async (req, res) => {
     const authorisation = req.headers.authorization;
     if (!moderatorAuthorisation.hasOwnProperty(authorisation)) return res.status(401).json({ message: 'Unauthorized' })
-    const path = `/home/takefy/Documents/BotPerso`;
+
+    const path = `/home/BotPerso`;
     const discordId = req.body.discordId;
     fs.access(`${path}/${discordId}`, async (err) => {
         if (err) {
+            const all = await Tokens.find();
+            console.log(all)
             const bot = await Tokens.findOneAndUpdate({ isUse: false }, { isUse: true }, {
                 returnOriginal: true
             })
@@ -78,7 +100,7 @@ router.post('/', async (req, res) => {
             })
 
 
-            await fs.createReadStream('/home/takefy/Documents/BotPerso.zip').pipe(unzipper.Extract({ path: `${path}/${discordId}` })).on('close', async () => {
+            await fs.createReadStream('/home/BotPerso.zip').pipe(unzipper.Extract({ path: `${path}/${discordId}` })).on('close', async () => {
                 const varEnv = `TOKEN=${botToken}\nOWNER=${discordId}\nDB_USER=${process.env.DB_USER}\nDB_PASS=${process.env.DB_PASSWD}\nDB_NAME=${discordName}`;
                 const pm2JSON =
                 {
@@ -91,7 +113,7 @@ router.post('/', async (req, res) => {
                 }
                 const configJson = {
                     token : botToken,
-                    owner : id,
+                    owner : discordId,
                     dbuser : process.env.DB_USER,
                     dbPass: process.env.DB_PASSWD,
                     dbName : discordName
@@ -155,7 +177,7 @@ router.patch('/:id', getClient, async (req, res) => {
 router.delete('/:id', getClient, async (req, res) => {
     const authorisation = req.headers.authorization;
     if (!moderatorAuthorisation.hasOwnProperty(authorisation)) return res.status(401).json({ message: 'Unauthorized' })
-    const path = `/home/takefy/Documents/BotPerso`;
+    const path = `/home/BotPerso`;
     
     try {
         await res.client.remove().then(async () => {
@@ -192,18 +214,27 @@ router.post('/tokens', async (req, res) => {
     const botIds = req.body.id;
     for (let i = 0; i < tokens.length; i++) {
 
+        try{
+            const newTok = await new Tokens({
+                token: tokens[i],
+                id: botIds[i]
+            })
+            newTok.save();
 
-        const newTok = await new Tokens({
-            token: tokens[i],
-            id: botIds[i]
-        })
-        newTok.save();
+        }catch(err){
+            console.log(err)
+
+            return res.status(500).json({ message: err.message})
+        }
+        res.status(200).json({ message: 'OK' })
+        
     }
-    res.status(200).json({ message: 'OK' })
 
 })
 
+
 async function getClient(req, res, next) {
+    if(isNaN(req.params.id)) return;
     try {
         client = await Client.findOne({ discordId: req.params.id })
         if (client === null) return res.status(404).json({ message: 'Cannot find that client' })
