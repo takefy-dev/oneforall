@@ -43,7 +43,7 @@ module.exports = new Command(
             },
         
         }
-        await fetch(`http://localhost:3000/api/client/${message.author.id}`, {
+        await fetch(`http://46.4.251.37:3000/api/client/${message.author.id}`, {
             "credentials": "include",
             "headers": {
                 "content-type": "application/json",
@@ -74,7 +74,7 @@ module.exports = new Command(
 
                 let now = Date.now();
                 now = new Date(now)
-                const expireAt = new Date(result.expireAt)
+                const expireAt = new Date(result.client.expireAt)
                 const timeLeft = prettyMilliseconds(expireAt.getTime() - now.getTime())
                 const msg = await message.channel.send(lang.loading)
                 const avatar = message.author.displayAvatarURL({ dynamic: true })
