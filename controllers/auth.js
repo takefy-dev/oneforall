@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs');
 const jwt_decode = require('jwt-decode');
 const fetch = require('node-fetch');
-c
 require('dotenv').config();
 exports.login = async (req, res) => {
 
@@ -28,8 +27,8 @@ exports.login = async (req, res) => {
 
 
 
-        }).then(async res => {
-            const result = await res.json();
+        }).then(async client => {
+            const result = await client.json();
             const validPassword = result.client.password;
             if (!result || result.client == undefined || (!await bcrypt.compare(password, validPassword))) {
                 res.status(401).render('login', {
