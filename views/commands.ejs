@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+    <link rel="stylesheet" href="css/commands.css" type="text/css">
+    <link rel="stylesheet" href="css/now-ui-kit.css" type="text/css">
+    <link rel="shortcut icon" href="./assets/logo.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,600,700,800,900&display=swap" rel="stylesheet">
+  
+    <title>OneForAll - Antiraid</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-transparent">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <img src="assets/menuIcon.svg" width="20px" height="20px" style="max-width: none !important;">
+        </button>
+        <img src="assets/circle-cropped.png" width="50" height="50">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 20px !important">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Accueil <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/commands">Commandes</a>
+                    <!-- </li <li class="nav-item">
+                <a class="nav-link" href="mybot">Mes bots</a>
+                </li> -->
+            </ul>
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Documentation
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/commands">Commandes</a>
+                    <a class="dropdown-item" href="/tutorials">Tutoriels</a>
+                </div>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="/about">A propos de nous</a>
+            </div>
+            <!-- <a class="btn login-btn btn-outline-accent my-2 my-sm-0"
+                style="font-size: 10px !important;font-family: poppins !important;" href="/login">LOGIN</a> -->
+        </div>
+    </nav>
+    <div class="heading">
+        <h1 class="display-5 title">C'est le moment de protéger votre serveur.</h1>
+        <p class="subtitle">OneForAll est un des seul bot à proposé un antiraid totalement configurable.<br />En plus
+            notre bot excel dans l'auto-moderation, administration et autre!</p>
+        <a class="btn btn-primary btn-lg" href="https://discord.gg/raa6mXBdxb" target="_blank" role="button">Notre
+            discord</a>
+        <a class="btn btn-secondary btn-lg"
+            href="https://discord.com/api/oauth2/authorize?client_id=780019344511336518&permissions=8&scope=bot"
+            target="_blank" role="button">Ajouter à votre serveur</a>
+        <br /><br /><br /><br /><br /><br />
+    </div>
+    <div class="features">
+        <div class="title">A propos des commandes</div>
+        <div class="subtitle">En dessous vous pourrez trouver toutes les commandes du bots!</div>
+
+        <!-- <button class="card" style="width: 19rem; bottom: 200px;" type="button"
+            onclick="location.href='https://discord.gg/raa6mXBdxb'" aria-expanded="false">
+            <div class="card-body">
+                <h5 class="card-title">Notre discord<br></h5>
+                <p class="card-text">Un moyen pratique et facile pour communiquer avec nous pour toutes demande
+                    d'aide.<br><br><br><br><br><br>
+                </p>
+            </div>
+        </button> -->
+        <div class="table-responsive">
+            <table class="table color-bordered-table red-bordered-table">
+                <thead>
+                    <tr style="background-color: #2C2F33;">
+                        <th class="commandInfo">Commande</th>
+                        <th class="commandInfo">Detail</th>
+                        <th class="commandInfo">Utilisation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            help
+                        </td>
+                        <td>
+                            Toutes les commandes du bot
+                        </td>
+                        <td>
+                            prefix + help
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            owner
+                        </td>
+                        <td>
+                            Permet d'effectuer les commandes liées aux owner
+                        </td>
+                        <td>
+                            prefix + owner + add/remove/list/clear + mention/id
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            wl
+                        </td>
+                        <td>
+                            Permet d'effectuer les commandes liées aux whitelistes
+                        </td>
+                        <td>
+                            prefix + wl + add/remove/list/clear + mention/id
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            embed
+                        </td>
+                        <td>
+                            Permet de créer des embeds et les envoyer
+                        </td>
+                        <td>
+                            prefix + embed
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            gcreate
+                        </td>
+                        <td>
+                            Permet de créer des giveaway
+                        </td>
+                        <td>
+                            prefix + gcreate
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            greroll
+                        </td>
+                        <td>
+                            Permet de reroll univeaway
+                        </td>
+                        <td>
+                            prefix + gcreate
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            reactrole
+                        </td>
+                        <td>
+                            Permet de creer un reactrole
+                        </td>
+                        <td>
+                            prefix + reactrole
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            snipe
+                        </td>
+                        <td>
+                            Permet de voir le dernier message supprimer sur le salon
+                        </td>
+                        <td>
+                            prefix + snipe
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            antiraid
+                        </td>
+                        <td>
+                            Permet de configurer l'antiraid
+                        </td>
+                        <td>
+                            prefix + antiraid
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>soutien config</td>
+                        <td>
+                            Permet de configurer le message de soutien.
+                        </td>
+                        <td>
+                            prefix + soutien config</td>
+                    </tr>
+                    <tr>
+                        <td>soutien count</td>
+                        <td>
+                            Permet d'afficher le nombre de personne qui soutiennent votre serveur
+                        </td>
+                        <td>
+                            prefix + soutien count
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>invite config</td>
+                        <td>
+                            Permet de configurer le message de bienvenue.
+                        </td>
+                        <td>
+                            prefix + invite config
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>allbans</td>
+                        <td>
+                            Permert d'afficher tout les joueurs bannis de votre serveur.
+                        </td>
+                        <td>
+                            prefix + allbans
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>alladmins</td>
+                        <td>
+                            Permert d'afficher tout les joueurs ayant la permission administrateur
+                        </td>
+                        <td>
+                            prefix + alladmins
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>lock on</td>
+                        <td>
+                            Permet de fermer le salon dans lequel la commande est effectué.
+                        </td>
+                        <td>
+                            prefix + lock on
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>lock off</td>
+                        <td>
+                            Permet d'ouvrir le salon dans lequel la commande est effectué.r
+                        </td>
+                        <td>
+                            prefix + lock off
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>lock all on</td>
+                        <td>
+                            Permet de fermer tout les salons du serveur.
+                        </td>
+                        <td>
+                            prefix + lock all on
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>lock all off</td>
+                        <td>
+                            Permet d'ouvrir tout les salons du serveur.
+                        </td>
+                        <td>
+                            prefix + lock all off
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>clear</td>
+                        <td>
+                            Permet d'effacer un certain nombre de message.
+                        </td>
+                        <td>
+                            prefix + clear + nombre
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>kick</td>
+                        <td>
+                            Permet d'expulser un membre du serveur.
+                        </td>
+                        <td>
+                            prefix + kick + mention/id
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ban</td>
+                        <td>
+                            Permet de bannir un membre du serveur.
+                        </td>
+                        <td>
+                            prefix + ban + mention/id
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>unban</td>
+                        <td>
+                            Permet de débannir un membre du serveur.
+                        </td>
+                        <td>
+                            prefix + unban + mention/id
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>role add</td>
+                        <td>
+                            Permet d'ajouter un rôle à un membre du serveur.
+                        </td>
+                        <td>
+                            prefix + role add + mention/id + roleMention/roleId
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>role remove</td>
+                        <td>
+                            Permet d'enlever un rôle à un membre du serveur.
+                        </td>
+                        <td>
+                            prefix + role remove + mention/id + roleMention/roleId
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>webhook size</td>
+                        <td>
+                            Permet d'afficher le nombre de webhook dans le serveur.
+                        </td>
+                        <td>
+                            prefix + webhook size
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>webhook delete</td>
+                        <td>
+                            Permet de supprimer tout les webhooks du serveur.
+                        </td>
+                        <td>
+                            prefix + webhook delete
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>nuke</td>
+                        <td>
+                            Permet de supprimer tout les messages du salon où la commande a été éxécuté.
+                        </td>
+                        <td>
+                            prefix + nuke
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>setcolor</td>
+                        <td>
+                            Permet de modifier la couleur des embeds.
+                        </td>
+                        <td>
+                            prefix + setcolor + HEXCOLOR
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>setup</td>
+                        <td>
+                            Permet de configurer le bot.
+                        </td>
+                        <td>
+                            prefix + setup
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>support</td>
+                        <td>
+                            Permet d'afficher le serveur discord support du bot.
+                        </td>
+                        <td>
+                            prefix + support
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>invitebot</td>
+                        <td>
+                            Permet d'afficher l'invite du bot.
+                        </td>
+                        <td>
+                            prefix + invitebot
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>vocal</td>
+                        <td>
+                            Permet d'afficher le nombre de membres en vocal sur le serveur.
+                        </td>
+                        <td>
+                            prefix + vocal
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>authorinfo</td>
+                        <td>
+                            Permet d'afficher des informations sur les créateurs du bot.
+                        </td>
+                        <td>
+                            prefix + authorinfo
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ping</td>
+                        <td>
+                            Permet d'afficher la latence du bot.
+                        </td>
+                        <td>
+                            prefix + ping
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>botinfo</td>
+                        <td>
+                            Permet d'afficher des informations sur le bot.
+                        </td>
+                        <td>
+                            prefix + botinfo
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>serverinfo</td>
+                        <td>
+                            Permet d'afficher des informations sur le serveur.
+                        </td>
+                        <td>
+                            prefix + serverinfo
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>userinfo</td>
+                        <td>
+                            Permet d'afficher des informations un membre en particulier.
+                        </td>
+                        <td>
+                            prefix + userinfo + mention/id
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- <div class="card" style="width: 19rem; top: 50px;">
+           
+
+        </div> -->
+    </div>
+
+    <div class="page_end">
+
+        <div class="footer">
+            <div class="bot-footer">
+                <!-- <img src="assets/BotLogoWord.svg" width="150"><br /> -->
+                Copyright © [TakeFy, qzzz, Baby] - 2020
+            </div><br />
+            <!-- <div class="nouridio">design by <a href="https://twitter.com/Nouridio"> nouridio</a></div> -->
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="/js/now-ui-kit.min.js"></script>
+
+</body>
+
+</html>

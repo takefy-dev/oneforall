@@ -1,0 +1,52 @@
+.commandInfo{
+    text-align : center;
+}
+
+.table-responsive {
+    margin-bottom : 5%;
+    background-color :  #2C2F33;
+    border-radius : 10px;
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+    table {
+    border-collapse: collapse;
+}
+.table {
+    width: 100%;
+    max-width: 100%;
+    height: 50%;
+    max-height: 50%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    }
+    .color-bordered-table.red-bordered-table {
+    border: 2px solid none;
+    }
+    th {
+    text-align: left;
+    }
+    table th {
+    font-weight: 400;
+    }
+    .table td, .table th {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid  #2C2F33;
+    }
+
+    .table td{
+        font-family: 'Poppins', sans-serif !important;
+        font-size: 15px;
+        color : #ffffff
+    }
+
+    .table td, .table th {
+    border-color:  #2C2F33;
+    }
+    .color-bordered-table.red-bordered-table thead th {
+    background-color:  #2C2F33;
+    color: #ffffff;
+    }

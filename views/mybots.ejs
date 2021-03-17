@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+    <link rel="stylesheet" href="css/now-ui-kit.css" type="text/css">
+    <link rel="shortcut icon" href="./assets/logo.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <title>OneForAll - Antiraid</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-transparent">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <img src="assets/menuIcon.svg" width="20px" height="20px" style="max-width: none !important;">
+        </button>
+        <img src="assets/circle-cropped.png" width="50" height="50">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 20px !important">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Accueil <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/commands">Commandes</a>
+                </li <li class="nav-item">
+                <a class="nav-link" href="/mybots">Mes bots</a>
+                </li>
+            </ul>
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Documentation
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/commands">Commandes</a>
+                    <a class="dropdown-item" href="/tutorials">Tutoriels</a>
+                </div>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="/about">A propos de nous</a>
+            </div>
+
+            <form class="box" action="/auth/logout" method="POST">
+                <button class="btn login-btn btn-outline-accent my-2 my-sm-0"
+                    style="font-size: 10px !important;font-family: poppins !important;" action="/auth/logout"
+                    method="POST">LOGOUT
+                </button>
+            </form>
+
+    </nav>
+ 
+
+    <div class="heading">
+        <h1 class="display-5 title">Voici votre bot personnalisé.</h1>
+        <p class="subtitle">Bonjour <%= discordName%>,<br />
+            Voici votre dashboard pour votre bot personnalisé!</p>
+        <a class="btn btn-secondary btn-lg"
+            href= <%= discordInv %>
+            target="_blank" role="button">Ajouter votre bot à votre serveur</a>
+        <br /><br /><br /><br /><br /><br />
+    </div>
+    <div class="features">
+        <div class="title">A propos de votre bot</div>
+        <div class="subtitle">Quelque informations sur votre bot personnalisé!</div>
+
+        <div class="card" id='subleft' style="width: 19rem; top: 50px;"
+           aria-expanded="false">
+            <div class="card-body">
+                <h5 class="card-title">Abonnement restant<br></h5>
+                <p class="card-text">Il vous reste actuellement <%= timeLeft %> pour continuer à profiter de votre bot personnalisé.<br><br><br><br><br><br>
+                </p>
+            </div>
+        </div>
+
+        <!-- <div class="card" style="width: 19rem; top: 50px;">
+            <div class="card-body">
+                <h5 class="card-title">Centre de controle</h5>
+                <p class="card-text">En clicant ici vous aurez accès à un centre de controle qui vous permettra de contrôler votre bot à distance. <br>Notre but est donc de protéger votre serveur avec de
+                    l'automodération ainsi qu'une protection</p>
+            </div>
+        </div> -->
+        <button class="card" id='dashboard' style="width: 19rem; bottom:230px" type="button" onclick="location.href='/dashboard'"
+            aria-expanded="false">
+            <div class="card-body">
+                <h5 class="card-title">Centre de controle</h5>
+                <p class="card-text">En cliquant ici vous aurez accès à un centre de controle qui vous permettra de contrôler votre bot à distance.<br><br><br><br><br></p>
+            </div>
+        </button>
+    </div>
+    </div>
+   
+    <div class="page_end">
+        <div class="start">
+            <div class="card">
+                <div class="card-body gs-card">
+                    <div class="title">Êtes vous prêt à essayer le bot?</div>
+                    <div class="subtitle">Invitez le bot et sentez vous protégé!</div>
+                    <br />
+                    <a class="btn btn-primary btn-lg"
+                        href="https://discord.com/api/oauth2/authorize?client_id=780019344511336518&permissions=8&scope=bot"
+                        target='blank' role="button">Commencer</a>
+                </div><br />
+            </div>
+        </div>
+        <div class="footer">
+            <div class="bot-footer">
+                <!-- <img src="assets/BotLogoWord.svg" width="150"><br /> -->
+                Copyright © [TakeFy, qzzz, Baby] - 2021
+            </div><br />
+            <!-- <div class="nouridio">design by <a href="https://twitter.com/Nouridio"> nouridio</a></div> -->
+        </div>
+    </div>
+   
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="/js/now-ui-kit.min.js"></script>
+
+</body>
+
+</html>

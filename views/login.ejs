@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap.min.css"type="text/css">
+    <link rel="stylesheet" href="/css/main.css"type="text/css">
+    <link rel="stylesheet" href="/css/now-ui-kit.css"type="text/css">
+    <link rel="shortcut icon" href="/assets/logo.ico" />
+    <link rel="stylesheet" href="/css/login.css" type="text/css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-transparent">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <img src="/assets/menuIcon.svg" width="20px" height="20px" style="max-width: none !important;">
+        </button>
+        <img src="/assets/circle-cropped.png" width="50" height="50">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 20px !important">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/#">Accueil <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    
+
+    </nav>
+
+
+    <form class="box" action="/auth/login" method="POST">
+        <h5 id='errMsg'><%= message %></h5>
+        <h1>Login</h1>
+        <input type="text" name="discordId" placeholder="Identifiant discord">
+        <input type="password" name="password" placeholder="Password">
+        <input type="submit" name="confirm" id='confirm' value="Login">
+    </form>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="/js/now-ui-kit.min.js"></script>
+  
+
+
+</body>
+
+
+
+</html>
