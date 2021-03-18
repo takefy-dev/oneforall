@@ -788,9 +788,19 @@ module.exports = {
         active : `L'évènement a été activé`,
         deactive : `L'évènement a été desactivé`,
     },
-    play:{
-        noMusic: `Vous devez entrer une url ou une music à chercher !`
+    music:{
+        playing : `Entrain de jouer`,
+        nothingInQueue : `Il n'y a rien dans la queue pour le moment`,
+        play:{
+            noMusic: `Vous devez entrer une url ou une music à chercher !`
+        },
+        pause:{
+            unPause : `La music n'est plus en pause`,
+            pause : `La music est maintenant en pause`,
+        },
+        queue : `**Serveur Queue**`
     },
+    
     logs: {
         banCounter : {
             title : "\`🚫\` Ajout d'un bannissement à un membre (commande)",

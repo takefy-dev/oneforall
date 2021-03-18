@@ -7,28 +7,25 @@ const guildLang = new Map();
 var langF = require('../../function/lang')
 
 module.exports = new Command({
-    name: 'play',
-    description: 'Play a song | Jouer une music',
+    name: 'pause',
+    description: 'Pause the current music | Mettre en pause la music',
     // Optionnals :
-    usage: '!play <url/title>',
+    usage: '!pause',
     category: 'music',
-    tags: ['guildOnly', "voiceOnly"],
-    aliases: ['p'],
+    tags: ['guildOnly', 'voiceOnly'],
     clientPermissions: ['EMBED_LINKS'],
     cooldown: 4
 }, async(client, message, args) => {
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
-    const musicName = args.join(" ");
-    console.log(musicName)
-    if(!musicName) return message.channel.send(lang.music.play.noMusic);
-    try{
-        await client.music.play(message, musicName).catch(err => console.log(err))
-
-    }catch(e){
-        console.error(e)
-        message.channel.send(`Error ${e}`)
+    const queue = client.music.getQueue(message)
+    if (!queue) return message.channel.send(lang.music.nothingInQueue)
+    if (queue.pause) {
+        client.music.resume(message)
+        return message.channel.send(lang.music.pause.unPause)
     }
+    client.music.pause(message)
+    message.channel.send(lang.music.pause.pause)
 });
 
 embedsColor(guildEmbedColor);

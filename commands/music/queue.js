@@ -7,28 +7,22 @@ const guildLang = new Map();
 var langF = require('../../function/lang')
 
 module.exports = new Command({
-    name: 'play',
-    description: 'Play a song | Jouer une music',
+    name: 'queue',
+    description: 'Get the queue of music in the server | Afficher la liste des music sur le serveur',
     // Optionnals :
-    usage: '!play <url/title>',
+    usage: '!queue',
     category: 'music',
-    tags: ['guildOnly', "voiceOnly"],
-    aliases: ['p'],
+    aliases: ['q'],
+    tags: ['guildOnly', 'voiceOnly'],
     clientPermissions: ['EMBED_LINKS'],
     cooldown: 4
 }, async(client, message, args) => {
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
-    const musicName = args.join(" ");
-    console.log(musicName)
-    if(!musicName) return message.channel.send(lang.music.play.noMusic);
-    try{
-        await client.music.play(message, musicName).catch(err => console.log(err))
-
-    }catch(e){
-        console.error(e)
-        message.channel.send(`Error ${e}`)
-    }
+    const queue = client.music.getQueue(message)
+    if (!queue) return message.channel.send(lang.music.nothingInQueue)
+    const q = queue.songs.map((song, i) => `${i === 0 ? lang.music.playing : `${i}.`} ${song.name} - \`${song.formattedDuration}\``).join("\n")
+    message.channel.send(`${lang.music.queue}\n${q}`)
 });
 
 embedsColor(guildEmbedColor);
