@@ -375,22 +375,10 @@ module.exports = new Event(
 					);
 				}
 
-
-
-
-
-
-
-		
-
-
-
-
-
-
-
-
 				if (message.guild) {
+					if(cmd.tags.includes("voiceOnly") && !message.member.voice.channel){
+						return await message.channel.send(lang.error.voiceChat)
+					}
 					Logger.log(`${Logger.setColor('magenta', message.author.tag)} executed the command ${Logger.setColor('gold', cmd.name)} on the guild ${Logger.setColor('teal', message.guild.name)}.`);
 
 					const verified = verifyPerms(message, cmd);
@@ -413,6 +401,7 @@ module.exports = new Event(
 						await message.channel.send('Cette commande est uniquement disponible sur un serveur.');
 						return Logger.log(`${Logger.setColor('magenta', message.author.tag)} tried the command ${Logger.setColor('gold', cmd.name)} only available on guild but in private.`);
 					}
+					
 				}
 
 				if (handler.cooldowns.has(message.author.id)) {

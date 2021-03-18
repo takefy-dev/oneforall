@@ -20,6 +20,7 @@ module.exports = {
         timeout : `Temps écoulé !`,
         notListOwner : `Vous n'êtes pas dans la liste des owners`,
         notGuildOwner : `Seulement la couronne du serveur peut`,
+        voiceChat : `Vous devez être dans un salon vocal pour executer cette commande`,
         MissingPermission : `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
         includesEveryoneMention : `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`
     },
@@ -786,6 +787,9 @@ module.exports = {
         anulee : `L'opération a été annulée`,
         active : `L'évènement a été activé`,
         deactive : `L'évènement a été desactivé`,
+    },
+    play:{
+        noMusic: `Vous devez entrer une url ou une music à chercher !`
     },
     logs: {
         banCounter : {

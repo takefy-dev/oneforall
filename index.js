@@ -1,13 +1,10 @@
 require('dotenv').config();
 const StateManager = require('./utils/StateManager');
 const guildCommandPrefixes = new Map();
-const onlineId = new Map();
-const onlineName = new Map();
-const { execFile } = require('child_process');
 require('events').EventEmitter.defaultMaxListeners = 0;
 const { CommandHandler } = require('advanced-command-handler');
-const counter = new Map();
-const fetchCounter = require('./function/fetchCounter')
+const Distube = require('distube');
+
 
 CommandHandler.create({
     commandsDir: 'commands',
@@ -54,7 +51,6 @@ sql.query(`
 });
 
 const { GiveawaysManager } = require('discord-giveaways');
-const { cpuUsage } = require('process');
 
 const GiveawayManagerWithOwnDatabase = class extends GiveawaysManager {
     async refreshStorage() {
@@ -126,50 +122,17 @@ const manager = new GiveawayManagerWithOwnDatabase(CommandHandler.client, {
 });
 // We now have a giveawaysManager property to access the manager everywhere!
 CommandHandler.client.giveawaysManager = manager;
+
+const distube= new Distube(CommandHandler.client, { searchSongs: true, leaveOnEmpty: true});
+CommandHandler.client.music = distube;
 CommandHandler.client.BotPerso = false
 
 CommandHandler.client.isGuildOwner = require('./function/check/botOwner')
 
 const logs = require('discord-logs');
 logs(CommandHandler.client);
-// CommandHandler.client.on("guildMemberRoleAdd", (member, role) => {
-//     console.log(member.user.tag+" acquired the role: "+role.name);
-//   });
-// const detectExpire = execFile('python', ['D:\\Github\\DiscordBot\\OneForAll\\assets\\detectExpire.py'])
-// detectExpire.stdout.on('data', (data) =>{
-//     console.log(`run ${data}`)
-// })
-// detectExpire.stderr.on('data', (data) =>{
-//     console.log(`err ${data}`)
-// })
+// Crea
 
-// client.guilds.cache.forEach(guild => {
-//     setInterval(function () {
-//         console.log("ee")
-//         var onlineCount = guild.members.filter(m => m.presence.status === 'online' && m.presence.status === "dnd").size;
-//         let name = onlineName.get(guild.id);
-//         let onlineCh = client.guilds.cache.get(onlineId.get(guild.id));
-//         onlineCh.setName(`${name} ${onlineCount}`).then((res) => {
-//             console.log(res)
-//         })
-//     }, 5000)
-// });
-
-
-
-
-// StateManager.on('onlineCountChannelUpdate', (guildId, count) => {
-//     onlineId.set(guildId, count)
-// })
-// StateManager.on('onlineCountChannelFetched', (guildId, count) => {
-//     onlineId.set(guildId, count)
-// })
-// StateManager.on('memberOnlineNameUpdate', (guildId, name) => {
-//     onlineName.set(guildId, name)
-// })
-// StateManager.on('memberOnlineNameFetched', (guildId, name) => {
-//     onlineName.set(guildId, name)
-// })
 StateManager.on('prefixFetched', (guildId, prefix) => {
     guildCommandPrefixes.set(guildId, prefix)
 })

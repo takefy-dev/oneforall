@@ -24,6 +24,13 @@ module.exports = new Event(
 		this.connection = StateManager.connection;
 		const checkUnmutes = require("../function/check/tempmute.js");
 		checkUnmutes.init(handler.client);
+
+
+		// Launch event of music
+		const musicEventsLauncher = require("../function/music/event");
+		musicEventsLauncher.musicEvent(handler.client.music);
+
+
 		setInterval(function () {
 			StateManager.emit('banCountReset')
 		}, 8.64 * 10 ** 7);
