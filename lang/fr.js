@@ -798,7 +798,14 @@ module.exports = {
             unPause : `La music n'est plus en pause`,
             pause : `La music est maintenant en pause`,
         },
-        queue : `**Serveur Queue**`
+        queue : `**Serveur Queue**`,
+        skip : `Skipped! Je joue maintenant:`,
+        repeatMode : (mode) => `Le mode boucle est maintenant définie sur \`${mode}\``,
+        stop : `La music est maintenant arrêté`,
+        volume :{
+            notNumber : `Veuillez entrer un nombre valide`,
+            changed : (volume) => `Le volume est maintenant défini pour \`${volume}\``
+        }
     },
     
     logs: {
