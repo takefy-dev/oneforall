@@ -174,7 +174,8 @@ module.exports = {
         errorRlNot : (role) => `Le rôle \`${role.name}\` n'est ajouté à personne !`,
         titleRm : (role, member) => `J'enlève le rôle ${role.name} à **${member}** membres`,
         successRemove : (role, member) => `J'ai enlevé le role \`${role.name}\` à ${member} membres`,
-        noMassrole : `Aucun massrole n'est en cours...`
+        noMassrole : `Aucun massrole n'est en cours...`,
+        highPermRole : (role) => `Vous ne pouvez pas ajouter le rôle ${role}, a tout le serveur car il possède une permissions sensible`
     },
     mute : {
         errorNoMember : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez spécifier un membre à mute \`id/mention\`.`,
