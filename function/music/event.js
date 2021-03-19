@@ -19,7 +19,8 @@ module.exports = {
             const requestedBy = song.user; // the user who play the song
             const queueStatus = status(queue); //
             const color = guildColor(message)
-            message.channel.send(`Playing \`${nameOfSong}\` - \`${timeOfSong}\`\nRequested by: ${requestedBy}\n${queueStatus}`)
+            const embed = new Discord.MessageEmbed()
+            .setDescription()
         })
 
 
