@@ -5,7 +5,7 @@ var embedsColor = require('../../function/embedsColor');
 const {Command} = require('advanced-command-handler');
 const guildLang = new Map();
 var langF = require('../../function/lang')
-
+const createBar = require("string-progressbar");
 module.exports = new Command({
     name: 'nowplaying',
     description: 'show the current playing music | Affiche la music qui joue',
@@ -33,13 +33,13 @@ module.exports = new Command({
     const seek = (queue.connection.dispatcher.streamTime - queue.connection.dispatcher.pausedTime) / 1000;
     //define left duration
     const left = ms - seek;
-    //define embed
+
     let nowPlaying = new Discord.MessageEmbed()
           .setAuthor('♪Now playing♪','https://cdn.discordapp.com/attachments/778600026280558617/781024479623118878/ezgif.com-gif-maker_1.gif','https://harmonymusic.tk')
           .setDescription(`[**${song.title}**](${song.url})`)
           .setThumbnail(song.thumbnail.url)
-          .setColor("#F0EAD6")
-          .setFooter(`Requested by: ${message.author.username}#${message.author.discriminator}`, message.member.user.displayAvatarURL({ dynamic: true }))
+          .setColor(`${color}`)
+          .setFooter(`${lang.music.requestedBy} ${message.author.username}#${message.author.discriminator}`, message.member.user.displayAvatarURL({ dynamic: true }))
       //if its a stream
       if(ms >= 10000) {
         nowPlaying.addField("\u200b", "🔴 LIVE", false);
@@ -48,7 +48,7 @@ module.exports = new Command({
       }
       //If its not a stream 
       if (ms > 0 && ms<10000) {
-        nowPlaying.addField("\u200b", "**``[" + createBar((ms == 0 ? seek : ms), seek, 25, "▬", "🔘")[0] + "]``**\n**" + "\n[" + new Date(seek * 1000).toISOString().substr(11, 8) + " / " + (ms == 0 ? " ◉ LIVE" : new Date(ms * 1000).toISOString().substr(11, 8))+ "]**" + "\n" + "\n **Time Remaining:**" + "``" + new Date(left * 1000).toISOString().substr(11, 8) + "``", false );
+        nowPlaying.addField("\u200b", "**``[" + createBar((ms == 0 ? seek : ms), seek, 25, "▬", "🔘")[0] + "]``**\n**" + "\n[" + new Date(seek * 1000).toISOString().substr(11, 8) + " / " + (ms == 0 ? " ◉ LIVE" : new Date(ms * 1000).toISOString().substr(11, 8))+ "]**" + "\n" + `\n **${lang.music.currentPlaying.timeLeft}**` + "``" + new Date(left * 1000).toISOString().substr(11, 8) + "``", false );
         //send approve msg
         return message.channel.send(nowPlaying);
       }

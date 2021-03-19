@@ -790,6 +790,7 @@ module.exports = {
         deactive : `L'évènement a été desactivé`,
     },
     music:{
+        requestedBy:`Demandé par:`,
         playing : `Entrain de jouer`,
         nothingInQueue : `Il n'y a rien dans la queue pour le moment`,
         play:{
@@ -809,6 +810,9 @@ module.exports = {
         },
         lyrics :{
             notFound : `Aucun parole trouvé pour: `
+        },
+        currentPlaying: {
+            timeLeft : `Temps restant:`,
         },
         autoplay: {
             missingArgs : `Veuillez entrer \`on\` ou \`off\`.`,
