@@ -34,6 +34,7 @@
     "gdate": "^1.1.4",
     "hex-color-regex": "^1.1.0",
     "luxon": "^1.25.0",
+    "lyrics-finder": "^21.7.0",
     "moment": "^2.29.1",
     "ms": "^2.1.2",
     "mysql2": "^2.2.5",

@@ -19,8 +19,7 @@ module.exports = {
             const requestedBy = song.user; // the user who play the song
             const queueStatus = status(queue); //
             const color = guildColor(message)
-            const embed = new Discord.MessageEmbed()
-            .setDescription()
+      
         })
 
 

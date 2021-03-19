@@ -807,12 +807,20 @@ module.exports = {
             notNumber : `Veuillez entrer un nombre valide`,
             changed : (volume) => `Le volume est maintenant défini pour \`${volume}\``
         },
+        lyrics :{
+            notFound : `Aucun parole trouvé pour: `
+        },
         autoplay: {
             missingArgs : `Veuillez entrer \`on\` ou \`off\`.`,
             on : `L'autoplay est maintenant activé`,
             off : `L'autoplay est maintenant désactivé`,
             alreadyOn : `L'autoplay est déjà activé`,
             alreadyOff : `L'autoplay est déjà désactivé`,
+        },
+        events :{
+            play : {
+
+            }
         },
         search : {
             searching : `Browsing the web ...`,
