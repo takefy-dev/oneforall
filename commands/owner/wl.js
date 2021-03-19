@@ -35,7 +35,7 @@ module.exports = new Command({
 
     if (client.BotPerso) {
         const config = require('../../config.json')
-owner = config.owner
+        owner = config.owner
     }
 
 
@@ -44,34 +44,9 @@ owner = config.owner
     const list = args[0] == 'list';
     if (!add & !remove & !list & !clear) return message.channel.send(lang.wl.errorSyntax)
     if (add) {
-        let owner = message.guild.ownerID;
+       
 
-        if (client.BotPerso) {
-            const config = require('../../config.json')
-owner = config.owner
-        }
-
-        const sender = message.author.id;
-        var isOwner = checkOwner(message.guild.id, sender);
-        let owners = guildOwner.get(message.guild.id);
-        const ownerTag = new Array();
-        if (typeof owners != "object") {
-            owners = owners.split(',')
-        } else {
-            owners = owners
-        }
-        for (var i = 0; i < owners.length - 1; i++) {
-            let ownerSS
-            await message.guild.members.fetch().then((members) => {
-                ownerSS = members.get(owners[i])
-            })
-
-            const ownerList = ownerSS.user.tag;
-            ownerTag.push(ownerList);
-
-        }
-
-        if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag))
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
         let member = message.guild.member(message.author.id);
         if (args[1]) {
             member = message.guild.member(args[1]);
@@ -102,34 +77,9 @@ owner = config.owner
 
         })
     } else if (remove) {
-        let owner = message.guild.ownerID;
+     
 
-        if (client.BotPerso) {
-            const config = require('../../config.json')
-owner = config.owner
-        }
-
-        const sender = message.author.id;
-        var isOwner = checkOwner(message.guild.id, sender);
-        let owners = guildOwner.get(message.guild.id);
-        const ownerTag = new Array();
-        if (typeof owners != "object") {
-            owners = owners.split(',')
-        } else {
-            owners = owners
-        }
-        for (var i = 0; i < owners.length - 1; i++) {
-            let ownerSS
-            await message.guild.members.fetch().then((members) => {
-                ownerSS = members.get(owners[i])
-            })
-
-            const ownerList = ownerSS.user.tag;
-            ownerTag.push(ownerList);
-
-        }
-
-        if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag));
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
         let member = message.guild.member(message.author.id);
         if (args[1]) {
             member = message.guild.member(args[1]);
@@ -162,7 +112,7 @@ owner = config.owner
 
         if (client.BotPerso) {
             const config = require('../../config.json')
-owner = config.owner
+            owner = config.owner
         }
 
         try {
@@ -265,33 +215,9 @@ owner = config.owner
             console.log(err)
         }
     } else if (clear) {
-        let owner = message.guild.ownerID;
 
-        if (client.BotPerso) {
-            const config = require('../../config.json')
-owner = config.owner
-        }
 
-        const sender = message.author.id;
-        var isOwner = checkOwner(message.guild.id, sender);
-        let owners = guildOwner.get(message.guild.id);
-        const ownerTag = new Array();
-        if (typeof owners != "object") {
-            owners = owners.split(',')
-        } else {
-            owners = owners
-        }
-        for (var i = 0; i < owners.length - 1; i++) {
-            let ownerSS
-            await message.guild.members.fetch().then((members) => {
-                ownerSS = members.get(owners[i])
-            })
-            const ownerList = ownerSS.user.tag;
-            ownerTag.push(ownerList);
-
-        }
-
-        if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag))
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
         const embed = new Discord.MessageEmbed()
             .setTitle(`Confirmation`)
             .setDescription(lang.wl.clearWl)

@@ -19,6 +19,7 @@ module.exports = new Command({
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
     const toSay = args.slice(0).join(' ')
+    await message.delete()
     if(toSay.length < 1) return message.channel.send(lang.say.cantSendEmptyMsg).then(mp => mp.delete({timeout: 4000}))
     message.channel.send(toSay)
 });

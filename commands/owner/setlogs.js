@@ -20,7 +20,6 @@ module.exports = new Command({
     let raidLog = new Map();
     let voiceLog = new Map();
     this.connection = StateManager.connection;
-    const sender = message.author.id;
     let owner = message.guild.ownerID;
     
     if(client.BotPerso){
@@ -30,25 +29,7 @@ owner = config.owner
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
     const color = guildEmbedColor.get(message.guild.id);
 
-    var isOwner = checkOwner(message.guild.id, sender);
-    let owners = guildOwner.get(message.guild.id);
-    const ownerTag = new Array();
-    if (typeof owners != "object") {
-        owners = owners.split(',')
-    } else {
-        owners = owners
-    }
-    for (var i = 0; i < owners.length - 1; i++) {
-        let ownerSS
-        await message.guild.members.fetch().then((members) => {
-            ownerSS = members.get(owners[i])
-        })
-
-        const ownerList = ownerSS.user.tag;
-        ownerTag.push(ownerList);
-
-    }
-    if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag))
+    if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
     await this.connection.query(`SELECT modLog, msgLog, voiceLog, antiraidLog FROM guildConfig WHERE guildId = '${message.guild.id}'`).then((result) => {
         modLog.set(message.guild.id, result[0][0].modLog)

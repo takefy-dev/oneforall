@@ -26,9 +26,9 @@ module.exports = new Command({
 
     if (client.BotPerso) {
         const config = require('../../config.json')
-owner = config.owner
+        owner = config.owner
     }
-    if (!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id || !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
+    if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
     const color = guildEmbedColor.get(message.guild.id);
     const principalMsg = await message.channel.send(lang.loading)
     const emoji = ['🎥', '😶', '💌', '❌', '🌀','✅']

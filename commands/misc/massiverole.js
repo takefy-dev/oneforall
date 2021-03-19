@@ -25,6 +25,14 @@ module.exports = new Command({
 }, async (client, message, args) => {
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
     const color = guildEmbedColor.get(message.guild.id)
+    let owner = message.guild.ownerID;
+
+    if (client.BotPerso) {
+        const config = require('../../config.json')
+        owner = config.owner
+    }
+
+    if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
     let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[1]);
     if (role.permissions.has("KICK_MEMBERS") || role.permissions.has("BAN_MEMBERS") || role.permissions.has("ADMINISTRATOR") || role.permissions.has("MANAGE_CHANNELS") || role.permissions.has("MANAGE_GUILD") || role.permissions.has("MANAGE_ROLES")) return message.channel.send(lang.massrole.highPermRole(role.name))
     const add = args[0] == 'add';

@@ -40,8 +40,8 @@ module.exports = new Command({
     const url = song.url;
     const thumbnail = song.thumbnail;
     const requestedBy = song.user;
-    const averageRate = parseFloat(song.videoDetails.averageRating).toFixed(1);
-    const category = song.videoDetails.category;
+    const averageRate = parseFloat(song.info.videoDetails.averageRating).toFixed(1);
+    const category = song.info.videoDetails.category;
     let nowPlaying = new Discord.MessageEmbed()
           .setAuthor('♪Now playing♪','https://cdn.discordapp.com/attachments/820031925389230110/822494236007596082/3dgifmaker81211.gif','https://www.one4all.fr')
           .setDescription(`[**${song.name}**](${song.url})`)

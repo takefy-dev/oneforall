@@ -39,7 +39,7 @@ module.exports = new Command({
     
     if(client.BotPerso){
         const config = require('../../config.json')
-owner = config.owner
+        owner = config.owner
     }
 
     const clear = args[0] == 'clear';
@@ -84,29 +84,8 @@ owner = config.owner
         StateManager.emit('blacklistIsOn', message.guild.ownerID, '0')
     }
     if (add) {
-        const owner = message.guild.ownerID;
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
 
-        const sender = message.author.id;
-        var isOwner = checkOwner(message.guild.id, sender);
-        let owners = guildOwner.get(message.guild.id);
-        const ownerTag = new Array();
-        if (typeof owners != "object") {
-            owners = owners.split(',')
-        } else {
-            owners = owners
-        }
-        for (var i = 0; i < owners.length - 1; i++) {
-            let ownerSS
-            await message.guild.members.fetch().then((members) => {
-                ownerSS = members.get(owners[i])
-            })
-
-            const ownerList = ownerSS.user.tag;
-            ownerTag.push(ownerList);
-
-        }
-
-        if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag))
 
         let memberUser;
         try{

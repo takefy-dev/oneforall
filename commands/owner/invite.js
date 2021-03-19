@@ -88,34 +88,15 @@ module.exports = new Command({
     }
    
     if (config) {
-    const sender = message.author.id;
-    var isOwner = checkOwner(message.guild.id, sender);
-    let owner = message.guild.ownerID;
+        let owner = message.guild.ownerID;
     
-    if(client.BotPerso){
-        const config = require('../../config.json')
-owner = config.owner
-    }
-    let owners = guildOwner.get(message.guild.id);
-    const ownerTag = new Array();
-    if(typeof owners != "object"){
-        owners = owners.split(',')
-    }else {
-        owners = owners
-    }
-    for(var i = 0; i < owners.length - 1; i++){
-        let ownerSS
-        await message.guild.members.fetch().then((members) =>{
-            ownerSS = members.get(owners[i])
-        })
-        // if(ownerSS == undefined) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve aucun owner dans la liste...`)
-
-        const ownerList = ownerSS.user.tag;
-        ownerTag.push(ownerList);
-
-    }
+        if(client.BotPerso){
+            const config = require('../../config.json')
+            owner = config.owner
+        }
     
-    if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag))
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
+
 
         const msg = await message.channel.send(lang.loading)
         let reac1

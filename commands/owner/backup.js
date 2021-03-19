@@ -114,7 +114,7 @@ module.exports = new Command({
                     }
                     updateEmbed(ignoreCh, ignoreRl, ignoreEmo, ignoreBans)
                 } else if (r.emoji.name == '3️⃣') {
-      
+
                     if (doNotBackup.has(message.author.id) && doNotBackup.get(message.author.id).includes("emojis")) {
                         let bn = doNotBackup.get(message.author.id)
                         bn = bn.filter(x => x != "emojis")
@@ -164,7 +164,7 @@ module.exports = new Command({
                 else if (r.emoji.name == '✅') {
                     const doing = await message.channel.send(lang.loading)
                     const guildName = new Map();
-                    if(message.guild.name.includes(`'`)){
+                    if (message.guild.name.includes(`'`)) {
                         guildName.set(message.guild.id, message.guild.name)
                         const newg = message.guild.name.replace(`'`, ' ')
                         message.guild.edit({
@@ -184,7 +184,7 @@ module.exports = new Command({
                                 doing.edit(lang.backup.successCreate(backupData.id))
                                 guildName.delete(message.guild.id)
                             })
-                          
+
                         })
                     })
                 }
@@ -203,7 +203,7 @@ module.exports = new Command({
                 backupsId.push(backup.backupId);
 
             }
-     
+
             if (backupsName.length == 0 && backupsId.length == 0) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` **${message.member.tag}**, vous ne posséder pas de backup`)
             const embed = new Discord.MessageEmbed()
                 .setTitle(`Liste des backup de __${message.author.username}__:`)
@@ -217,40 +217,21 @@ module.exports = new Command({
     }
     if (load) {
         let owner = message.guild.ownerID;
-    
-        if(client.BotPerso){
+
+        if (client.BotPerso) {
             const config = require('../../config.json')
-owner = config.owner
+            owner = config.owner
         }
 
-        const sender = message.author.id;
-        var isOwner = checkOwner(message.guild.id, sender);
-        let owners = guildOwner.get(message.guild.id);
-        const ownerTag = new Array();
-        if (typeof owners != "object") {
-            owners = owners.split(',')
-        } else {
-            owners = owners
-        }
-        for (var i = 0; i < owners.length - 1; i++) {
-            let ownerSS
-            await message.guild.members.fetch().then((members) =>{
-                ownerSS = members.get(owners[i])
-            })
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
-            const ownerList = ownerSS.user.tag;
-            ownerTag.push(ownerList);
-
-        }
-
-        if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag))
         if (loadTimeout.has(message.author.id)) return message.channel.send(lang.backup.timeout)
         const backupId = args[1];
         if (!backupId) return message.channel.send(lang.backup.noLoadId)
 
         this.connection.query(`SELECT guildData, userId FROM backup WHERE backupId = '${backupId}'`).then((result) => {
             if (result[0].length == 0) return message.channel.send(lang.backup.backupNoFound)
-            if(result[0][0].userId != message.author.id) return message.channel.send(lang.backup.notBackupOwner)
+            if (result[0][0].userId != message.author.id) return message.channel.send(lang.backup.notBackupOwner)
             loadTimeout.set(message.member.id, 'true')
             backup.load(JSON.parse(result[0][0].guildData), message.guild, {
                 clearGuildBeforeRestore: true
@@ -275,7 +256,7 @@ owner = config.owner
         const backupId = args[1];
         if (!backupId) return message.channel.send(lang.backup.noLoadId)
         this.connection.query(`SELECT guildData, userId FROM backup WHERE backupId = ${backupId}`).then(async (result) => {
-            if(result[0][0].userId != message.author.id) return message.channel.send(lang.backup.notBackupOwner)
+            if (result[0][0].userId != message.author.id) return message.channel.send(lang.backup.notBackupOwner)
 
             const guildData = JSON.parse(result[0][0].guildData)
             const rolesSize = guildData.roles.length;
@@ -329,14 +310,14 @@ owner = config.owner
                             \`\`\`${childName.join('\n')}\`\`\`
                             `)
 
-                          
-                            msg.edit(' ', embed).catch((err) =>{
-                                if(err.toString().includes('Invalid Form Body')){
-                                    return message.channel.send("Il y a trop de salons à visualiser sur cette backup")
-                                }
-                            })
-                       
-                     
+
+                        msg.edit(' ', embed).catch((err) => {
+                            if (err.toString().includes('Invalid Form Body')) {
+                                return message.channel.send("Il y a trop de salons à visualiser sur cette backup")
+                            }
+                        })
+
+
                     }
                     if (r.emoji.name == rlEmo.name) {
                         const roles = guildData.roles;
@@ -347,11 +328,11 @@ owner = config.owner
                         embed.setDescription(`<:color:783422848630521857> Nombres de roles - **${rolesSize}**\n<:778353230484471819:780727288903237663> Nombres d'emojis - **${emojisSize}**\n<:folder:783422648196923452> Nombres de catégories - **${categories.length}**\n<:channels:783422874748584007> Nombres de channels - **${channelsSize.reduce((a, b) => a + b, 0)}**\n<:720681441670725645:780539422479351809> Nombres de bannis - **${bansSize}**\n<:away2:801064579358392320> Backup crée le - **${dateFormat.format(new Date(guildData.createdTimestamp))}**
                             \`\`\`${rolesName.join('\n')}\`\`\`
                         `)
-                       
-                        try{
+
+                        try {
                             msg.edit(' ', embed)
-                        }catch(err){
-                            if(err.toString().includes('Invalid Form Body')){
+                        } catch (err) {
+                            if (err.toString().includes('Invalid Form Body')) {
                                 return message.channel.send("Il y a trop de roles à visualiser sur cette backup")
                             }
                         }
@@ -372,8 +353,8 @@ owner = config.owner
         if (!backupId) return message.channel.send(lang.backup.noLoadId)
         const backupCheck = await this.connection.query(`SELECT backupId, userId FROM backup WHERE backupId = '${backupId}'`)
         if (backupCheck[0].length == 0) return message.channel.send(lang.backup.backupNoFound)
-        if(backupCheck[0][0].userId != message.author.id) return message.channel.send(lang.backup.notBackupOwner)
-       
+        if (backupCheck[0][0].userId != message.author.id) return message.channel.send(lang.backup.notBackupOwner)
+
         await this.connection.query(`DELETE FROM backup WHERE backupId = '${backupId}'`).then(result => {
             return message.channel.send(lang.backup.successDelete(backupId))
         })

@@ -18,36 +18,17 @@ module.exports = new Command({
     cooldown: 2
 }, async (client, message, args) => {
     this.connection = StateManager.connection
-    const sender = message.author.id;
+ 
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
 
     let owner = message.guild.ownerID;
-    
-    if(client.BotPerso){
+
+    if (client.BotPerso) {
         const config = require('../../config.json')
-owner = config.owner
+        owner = config.owner
     };
 
-    var isOwner = checkOwner(message.guild.id, sender);
-    let owners = guildOwner.get(message.guild.id);
-    const ownerTag = new Array();
-    if (typeof owners != "object") {
-        owners = owners.split(',')
-    } else {
-        owners = owners
-    }
-    for (var i = 0; i < owners.length - 1; i++) {
-        let ownerSS
-        await message.guild.members.fetch().then((members) => {
-            ownerSS = members.get(owners[i])
-        })
-
-        const ownerList = ownerSS.user.tag;
-        ownerTag.push(ownerList);
-
-    }
-
-    if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag))
+    if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
     message.channel.send(lang.setup.muteQ)
     const responseMuteRole = await message.channel.awaitMessages(m => m.author.id === message.author.id, { max: 1, timeout: 30000, errors: ['time'] }).catch(() => { message.channel.send("Opération annulée pas de réponse après 30s") })
@@ -63,17 +44,17 @@ owner = config.owner
 
     let muteRole = CollectedMuteRole.mentions.roles.first();
     let mureRoleId;
-    if(!muteRole){
+    if (!muteRole) {
         mureRoleId = CollectedMuteRole.content.toLowerCase();
-    }else{
+    } else {
         mureRoleId = muteRole.id;
     }
-    
+
     let memberRole = CollectedMembreRole.mentions.roles.first();
     let memberRoleId;
-    if(!memberRole){
+    if (!memberRole) {
         memberRoleId = CollectedMembreRole.content.toLowerCase();
-    }else{
+    } else {
         memberRoleId = memberRole.id;
     }
 
@@ -102,15 +83,15 @@ owner = config.owner
         StateManager.emit('addMuteRole', guildId, mureRoleId);
         StateManager.emit('addMemberRole', guildId, memberRoleId)
         StateManager.emit('setupDone', guildId, setup);
-        message.guild.channels.cache.forEach(channel =>{
-            if(channel.type == 'text'){
-                channel.updateOverwrite(muteRole,{
+        message.guild.channels.cache.forEach(channel => {
+            if (channel.type == 'text') {
+                channel.updateOverwrite(muteRole, {
                     SEND_MESSAGES: false,
                     ADD_REACTIONS: false
                 }, `Setup par ${message.author.tag}`)
             }
-            if(channel.type == 'voice'){
-                channel.updateOverwrite(muteRole,{
+            if (channel.type == 'voice') {
+                channel.updateOverwrite(muteRole, {
                     SPEAK: false
                 }, `Setup par ${message.author.tag}`)
             }

@@ -28,32 +28,13 @@ module.exports = new Command({
     const count = args[0] == "count"
     const sender = message.author.id;
     let owner = message.guild.ownerID;
-    
-    if(client.BotPerso){
+
+    if (client.BotPerso) {
         const config = require('../../config.json')
-owner = config.owner
+        owner = config.owner
     }
 
-    var isOwner = checkOwner(message.guild.id, sender);
-    let owners = guildOwner.get(message.guild.id);
-    const ownerTag = new Array();
-    if (typeof owners != "object") {
-        owners = owners.split(',')
-    } else {
-        owners = owners
-    }
-    for (var i = 0; i < owners.length - 1; i++) {
-        let ownerSS
-        await message.guild.members.fetch().then((members) => {
-            ownerSS = members.get(owners[i])
-        })
-
-        const ownerList = ownerSS.user.tag;
-        ownerTag.push(ownerList);
-
-    }
-
-    if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag));
+    if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
     await this.connection.query(`SELECT soutienId FROM guildConfig WHERE guildId = '${message.guild.id}'`).then((result) => {
         soutienId.set(message.guild.id, result[0][0].soutienId);

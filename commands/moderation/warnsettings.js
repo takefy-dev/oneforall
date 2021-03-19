@@ -23,6 +23,13 @@ module.exports = new Command({
     this.connection = StateManager.connection;
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    let owner = message.guild.ownerID;
+
+    if (client.BotPerso) {
+        const config = require('../../config.json')
+        owner = config.owner
+    }
+    if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
     const warnBan = warnSanction.get(message.guild.id).ban
     const warnKick = warnSanction.get(message.guild.id).kick
     const warnMute = warnSanction.get(message.guild.id).mute

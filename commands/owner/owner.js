@@ -8,7 +8,7 @@ const { cpus } = require('os');
 const guildId = new Map();
 let ar1 = new Array();
 var checkOwner = require('../../function/check/botOwner');
-const {Command} = require('advanced-command-handler');
+const { Command } = require('advanced-command-handler');
 const guildOwner = new Map();
 const guildLang = new Map();
 var langF = require('../../function/lang')
@@ -16,35 +16,35 @@ module.exports = new Command({
     name: 'owner',
     description: 'Manage the owner of the server | Gérer les owner du serveur',
     usage: '!owner <add/ remove /list> < mention / id >',
-    tags : ['guildOnly'],
+    tags: ['guildOnly'],
     category: 'owners',
     cooldown: 2
-}, async(client, message, args) => {
+}, async (client, message, args) => {
     this.connection = StateManager.connection;
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
 
     const sender = message.author.id;
     var isOwner = checkOwner(sender);
+    let owner = message.guild.ownerID;
 
+    if (client.BotPerso) {
+        const config = require('../../config.json')
+        owner = config.owner
+    }
     const result = await this.connection.query(`SELECT owner FROM guildConfig WHERE guildId = '${message.guild.id}'`)
     const whitelisted = result[0][0].owner;
     const strWhitelisted = whitelisted.toString();
     var ar2 = whitelisted.split(",")
     var tempdata = ar1.concat(ar2);
     const color = guildEmbedColor.get(message.guild.id);
-    
+
     const add = args[0] == "add";
     const remove = args[0] == 'remove';
     const clear = args[0] == 'clear';
     const list = args[0] == 'list';
     if (!add & !remove & !list & !clear) return message.channel.send(lang.owner.errorSyntax)
     if (add) {
-        let owner = message.guild.ownerID;
     
-        if(client.BotPerso){
-            const config = require('../../config.json')
-owner = config.owner
-        }
         if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.owner.errorNotOwner(message.guild))
         let member = message.guild.member(message.author.id);
         if (args[1]) {
@@ -76,12 +76,6 @@ owner = config.owner
         })
     } else if (remove) {
 
-        let owner = message.guild.ownerID;
-    
-        if(client.BotPerso){
-            const config = require('../../config.json')
-owner = config.owner
-        }
         if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.owner.errorNotOwner(message.guild))
         let member = message.guild.member(message.author.id);
         if (args[1]) {
@@ -96,7 +90,7 @@ owner = config.owner
         while (tempdata[0] == '==' || tempdata[0] == '') {
             tempdata.shift()
         }
-      
+
 
         if (tempdata.includes(member.user.id) == false) return message.channel.send(lang.owner.errorNotOwner(member))
 
@@ -110,34 +104,10 @@ owner = config.owner
 
         })
     } else if (list) {
-        let owner = message.guild.ownerID;
-    
-        if(client.BotPerso){
-            const config = require('../../config.json')
-owner = config.owner
-        }
+     
 
-        const sender = message.author.id;
-        var isOwner = checkOwner(message.guild.id, sender);
-        let owners = guildOwner.get(message.guild.id);
-        const ownerTag = new Array();
-        if (typeof owners != "object") {
-            owners = owners.split(',')
-        } else {
-            owners = owners
-        }
-        for (var i = 0; i < owners.length - 1; i++) {
-            let ownerSS
-            await message.guild.members.fetch().then((members) =>{
-                ownerSS = members.get(owners[i])
-            })
-            const ownerList = ownerSS.user.tag;
-            ownerTag.push(ownerList);
-
-        }
-
-        if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` Seulement les owners peuvent executer cette commande \`(${ownerTag.join(",")})\`!`)
-        try{
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+        try {
             let tdata = await message.channel.send(lang.loading)
 
             let p0 = 0;
@@ -234,12 +204,12 @@ owner = config.owner
 
             })
 
-        } catch(err){
+        } catch (err) {
             console.log(err)
         }
-    }else if (clear) {
+    } else if (clear) {
 
-        const owner = message.guild.ownerID;
+
         if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` Seulement le membre qui possède la couronne peux executer cette commande (${message.guild.owner.user.username})!`)
         const embed = new Discord.MessageEmbed()
             .setTitle(`Confirmation`)
@@ -278,13 +248,13 @@ owner = config.owner
 
 
 
-StateManager.on('ownerUpdate', (guildId, data) =>{
+StateManager.on('ownerUpdate', (guildId, data) => {
     guildOwner.set(guildId, data);
-  })
-  StateManager.on('ownerFetched', (guildId, data) =>{
+})
+StateManager.on('ownerFetched', (guildId, data) => {
     guildOwner.set(guildId, data);
-  
-  })
+
+})
 
 
 embedsColor(guildEmbedColor);

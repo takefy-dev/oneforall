@@ -28,42 +28,39 @@ module.exports = new Command({
             owner = config.owner
         }
 
-        const sender = message.author.id;
-        var isOwner = checkOwner(message.guild.id, sender);
-        let owners = guildOwner.get(message.guild.id);
-        console.log(owners)
-        const ownerTag = new Array();
-        if (typeof owners != "object") {
-            owners = owners.split(',')
-        } else {
-            owners = owners
-        }
-        for (var i = 0; i < owners.length - 1; i++) {
-            let ownerSS
-            await message.guild.members.fetch().then((members) => {
-                ownerSS = members.get(owners[i])
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+        if(args[0].toLowerCase() !== 'off'){
+            const channels = message.guild.channels.cache
+            channels.forEach(channel => {
+                channel.edit({
+                    permissionOverwrites: [{
+                        id: message.guild.id,
+                        deny: 805379089
+                    }]
+                })
+    
             })
-
-            const ownerList = ownerSS.user.tag;
-            ownerTag.push(ownerList);
-
-        }
-
-        if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag));
-        const channels = message.guild.channels.cache
-        channels.forEach(channel => {
-            channel.edit({
-                permissionOverwrites: [{
-                    id: message.guild.id,
-                    deny: 805379089
-                }]
+            success = await message.channel.send(lang.dero.success);
+            setTimeout(() => {
+                success.delete();
+            }, 5000)
+        }else if(args[0].toLowerCase() === "off"){
+            const channels = message.guild.channels.cache
+            channels.forEach(channel => {
+                channel.edit({
+                    permissionOverwrites: [{
+                        id: message.guild.id,
+                        allow: 'VIEW_CHANNEL'
+                    }]
+                })
+    
             })
-
-        })
-        success = await message.channel.send(lang.dero.success);
-        setTimeout(() => {
-            success.delete();
-        }, 5000)
+            success = await message.channel.send(lang.dero.success);
+            setTimeout(() => {
+                success.delete();
+            }, 5000)
+        }
+        
     });
 
 

@@ -28,44 +28,25 @@ module.exports = new Command({
 
     const color = guildEmbedColor.get(message.guild.id)
     let owner = message.guild.ownerID;
-    
-    if(client.BotPerso){
+
+    if (client.BotPerso) {
         const config = require('../../config.json')
-owner = config.owner
+        owner = config.owner
     }
-    const sender = message.author.id;
-    var isOwner = checkOwner(message.guild.id, sender);
-    let owners = guildOwner.get(message.guild.id);
-    const ownerTag = new Array();
-    if (typeof owners != "object") {
-        owners = owners.split(',')
-    } else {
-        owners = owners
-    }
-    for (var i = 0; i < owners.length - 1; i++) {
-        let ownerSS
-        await message.guild.members.fetch().then((members) => {
-            ownerSS = members.get(owners[i])
-        })
+    if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
-        const ownerList = ownerSS.user.tag;
-        ownerTag.push(ownerList);
-
-    }
-
-    if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag.join(",")))
-    if(!client.BotPerso){
+    if (!client.BotPerso) {
         let voted
         const votedF = await hasVoted(message.author.id).then((vote) => {
-            if(vote == false) voted = false
-            if(vote == true) voted = true
+            if (vote == false) voted = false
+            if (vote == true) voted = true
         })
-        if(voted == false){
+        if (voted == false) {
             return message.channel.send(lang.antiraidConfig.noVote)
-    
+
         }
     }
-   
+
     const allOn = args[0] == "on";
     const config = args[0] == "config";
     const allOff = args[0] == 'off';
@@ -101,21 +82,21 @@ owner = config.owner
         StateManager.emit('spamUpdate', message.guild.id, "0")
 
     } else if (opti) {
-        await this.connection.query(`INSERT INTO antiraid VALUES ('${message.guild.id}','1', '1' , '1' , '1' , '1' , '1' , '1' , '1', '1', '1', '1', '1','1','1','1','1','1','1') ON DUPLICATE KEY UPDATE webhookCreate=1,roleCreate=1, roleUpdate=1, roleDelete=1, channelCreate=1, channelUpdate=1,channelDelete=1,spam=1,ban=1, bot=1 , roleAdd =1, antilink = 1,antiDeco = 1,antiKick = 1,antiDc = 1, regionUpdate=1,nameUpdate= 1,vanityUpdate=1 `).catch(err => console.log("d",err))
+        await this.connection.query(`INSERT INTO antiraid VALUES ('${message.guild.id}','1', '1' , '1' , '1' , '1' , '1' , '1' , '1', '1', '1', '1', '1','1','1','1','1','1','1') ON DUPLICATE KEY UPDATE webhookCreate=1,roleCreate=1, roleUpdate=1, roleDelete=1, channelCreate=1, channelUpdate=1,channelDelete=1,spam=1,ban=1, bot=1 , roleAdd =1, antilink = 1,antiDeco = 1,antiKick = 1,antiDc = 1, regionUpdate=1,nameUpdate= 1,vanityUpdate=1 `).catch(err => console.log("d", err))
         StateManager.emit('spamUpdate', message.guild.id, "1")
 
 
         await this.connection.query(`INSERT INTO antiraidconfig VALUES ('${message.guild.id}','ban', 'unrank' , 'unrank' , 'unrank' , 'unrank' , 'ban' , 'unrank' , 'mute', 'kick', 'kick', 'unrank', 'unrank', 'unrank','5','3','1d','unrank','unrank','unrank','ban','Aucune') ON DUPLICATE KEY UPDATE webhookCreate='ban',roleCreate='unrank', roleUpdate='unrank', roleDelete='unrank', channelCreate='unrank', channelUpdate='ban',channelDelete='unrank',spam='mute',ban='kick', bot='kick' , roleAdd='unrank',antiDeco='unrank',antiKick='unrank',antiKickLimit='5', antiBanLimit='3',antiDcLimit='1d', antiDc='unrank',regionUpdate='unrank',nameUpdate='unrank',vanityUpdate='ban',vanityUpdateBypass='Aucune'`).then(async () => {
-            await this.connection.query(`SELECT * FROM antiraidconfig WHERE guildId = '${message.guild.id}'`).then((res) =>{
+            await this.connection.query(`SELECT * FROM antiraidconfig WHERE guildId = '${message.guild.id}'`).then((res) => {
                 delete res[0][0].guildId;
                 antiraidConfig = res[0][0]
-            }).catch(err => console.log("dok",err))
+            }).catch(err => console.log("dok", err))
             StateManager.emit('antiraidConfU', message.guild.id, antiraidConfig);
             StateManager.emit('antilinkUpdate', message.guild.id, "1")
 
         }).catch(err => {
             console.log("d", err)
-        }) 
+        })
 
         await this.connection.query(`INSERT INTO antiraidWlBp VALUES ('${message.guild.id}','0', '1' , '1' , '0' , '1' , '0' , '1' , '1', '0', '1', '1', '1','1','1','1','0','0') ON DUPLICATE KEY UPDATE webhookCreate=0,roleCreate=1, roleUpdate=1, roleDelete=0, channelCreate=1, channelUpdate=0,channelDelete=1,spam=1,ban=0, bot=1 , roleAdd =1, antilink = 1, antiDeco=1, antiKick=1,regionUpdate='1',nameUpdate='0',vanityUpdate='0'`)
             .then(() => {
@@ -141,9 +122,9 @@ owner = config.owner
                 message.channel.send(lang.antiraidConfig.antilinkOn)
                 StateManager.emit('antilinkUpdate', message.guild.id, "1")
 
-                
+
             })
-      
+
 
     } else if (antilinkOff) {
         await this.connection.query(`UPDATE antiraid SET antilink = '0' WHERE guildId = '${message.guild.id}'`)
@@ -151,19 +132,19 @@ owner = config.owner
                 message.channel.send(lang.antiraidConfig.antilinkOff)
                 StateManager.emit('antilinkUpdate', message.guild.id, "0")
             })
-     
+
     }
 
 
     else if (config) {
-        await this.connection.query(`SELECT * FROM antiraidconfig WHERE guildId = '${message.guild.id}'`).then((res) =>{
+        await this.connection.query(`SELECT * FROM antiraidconfig WHERE guildId = '${message.guild.id}'`).then((res) => {
             delete res[0][0].guildId;
             antiraidConfig = res[0][0]
         })
         const type = args[1];
         const sanction = args[2];
         const all = args[1] == 'all'
-     
+
         const guildconfig = await this.connection.query(`SELECT muteRoleId FROM guildConfig WHERE guildId = ${message.guild.id}`)
         const muteRoleId = guildconfig[0][0].muteRoleId;
         const sanctionFetched = await this.connection.query(`SELECT * FROM antiraidconfig WHERE guildId = ${message.guild.id}`)
@@ -285,7 +266,7 @@ owner = config.owner
         if (regionUpdateOn == "0") { isOnRegionUpdate = '<:778348495157329930:781189773645578311>' }
         if (vanityUpdateOn == "0") { isOnVanityUpdate = '<:778348495157329930:781189773645578311>' }
         if (nameUpdateOn == "0") { isOnNameUpdate = '<:778348495157329930:781189773645578311>' }
-        
+
         let isOnWlWbCr;
         let isOnWlRlCr;
         let isOnWlRlUp;
@@ -653,7 +634,7 @@ owner = config.owner
             .setColor(`${color}`)
             .setTimestamp()
             .setFooter("Antiraid Config", `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`);
-        
+
         let antiRegionUpdateEmbed = new Discord.MessageEmbed()
             .setDescription(`
                 \n
@@ -2115,8 +2096,8 @@ owner = config.owner
                         }
 
                     },
-                   
-                    
+
+
 
                 }
             },
@@ -2525,7 +2506,7 @@ owner = config.owner
                             message.channel.send(`Vous devez choisir entre \`ban / kick / unrank / cancel\``)
                         }
                     },
-                    '4️⃣': async() => {
+                    '4️⃣': async () => {
                         let q = await message.channel.send(" Quel est l'url à ne pas sanctionner en cas de modification ?(timeout dans 30s & \`cancel\` pour annuler)")
                         const responseWbSanc = await message.channel.awaitMessages(m => m.author.id === message.author.id, { max: 1, timeout: 30000 }).catch(() => { message.channel.send("Opération annulé pas de réponse après 30s") })
                         const CollectedWbSanc = responseWbSanc.first()
@@ -2544,8 +2525,8 @@ owner = config.owner
                         else if (lowercase == "cancel") {
                             error = message.channel.send(lang.antiraidConfig.anulee)
                             error.delete();
-								
-                        } 
+
+                        }
                     }
                 }
             },
@@ -2555,10 +2536,10 @@ owner = config.owner
         const confirMsg = await message.channel.send(lang.antiraidConfig.timeoutmsg).then(async (m) => {
             const collector = m.createReactionCollector(filter, { time: 900000 });
             collector.on('collect', async r => {
-                if(r.emoji.name == '✅'){
+                if (r.emoji.name == '✅') {
                     StateManager.emit('antiraidConfU', message.guild.id, antiraidConfig);
                     const replyMsg = message.channel.send(lang.antiraidConfig.savedmsg);
-                    setTimeout(async () =>{
+                    setTimeout(async () => {
                         await m.delete();
                         await collector.stop();
                         await replyMsg.delete();
@@ -2568,7 +2549,7 @@ owner = config.owner
             collector.on('end', async () => {
                 await m.delete();
                 const timeoutmsg = await message.channel.send(lang.antiraidConfig.timeoutmsg);
-                setTimeout(async () =>{
+                setTimeout(async () => {
                     timeoutmsg.delete()
                 }, 5000)
             });
