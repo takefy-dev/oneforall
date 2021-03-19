@@ -93,7 +93,8 @@ module.exports = new Command({
     let owner = message.guild.ownerID;
     
     if(client.BotPerso){
-        owner = process.env.OWNER
+        const config = require('../../config.json')
+owner = config.owner
     }
     let owners = guildOwner.get(message.guild.id);
     const ownerTag = new Array();

@@ -30,7 +30,8 @@ module.exports = new Command({
     let owner = message.guild.ownerID;
     
     if(client.BotPerso){
-        owner = process.env.OWNER
+        const config = require('../../config.json')
+owner = config.owner
     }
 
     var isOwner = checkOwner(message.guild.id, sender);
