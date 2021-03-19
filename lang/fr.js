@@ -791,35 +791,35 @@ module.exports = {
     },
     music:{
         requestedBy:`Demandé par:`,
-        playing : `Entrain de jouer`,
-        nothingInQueue : `Il n'y a rien dans la queue pour le moment`,
+        playing : `<:music:822488990128799774> Entrain de jouer`,
+        nothingInQueue : `<:music:822488990128799774> Il n'y a rien dans la queue pour le moment`,
         play:{
-            noMusic: `Vous devez entrer une url ou une music à chercher !`
+            noMusic: `<:music:822488990128799774> \`ERREUR\` Vous devez entrer une url ou une music à chercher !`
         },
         pause:{
-            unPause : `La music n'est plus en pause`,
-            pause : `La music est maintenant en pause`,
+            unPause : `<:music:822488990128799774> La music n'est plus en pause`,
+            pause : `<:music:822488990128799774> La music est maintenant en pause`,
         },
-        queue : `**Serveur Queue**`,
-        skip : `Skipped! Je joue maintenant:`,
-        repeatMode : (mode) => `Le mode boucle est maintenant définie sur \`${mode}\``,
-        stop : `La music est maintenant arrêté`,
+        queue : `<:music:822488990128799774> **Serveur Queue**`,
+        skip : `<:music:822488990128799774> Skipped! Je joue maintenant:`,
+        repeatMode : (mode) => `<:music:822488990128799774> Le mode boucle est maintenant définie sur \`${mode}\``,
+        stop : `<:music:822488990128799774> La music est maintenant arrêté`,
         volume :{
-            notNumber : `Veuillez entrer un nombre valide`,
-            changed : (volume) => `Le volume est maintenant défini pour \`${volume}\``
+            notNumber : `<:music:822488990128799774> \`ERREUR\` Veuillez entrer un nombre valide`,
+            changed : (volume) => `<:music:822488990128799774> Le volume est maintenant défini pour \`${volume}\``
         },
         lyrics :{
-            notFound : `Aucun parole trouvé pour: `
+            notFound : `<:music:822488990128799774> \`ERREUR\` Aucun parole trouvé pour: `
         },
         currentPlaying: {
             timeLeft : `Temps restant:`,
         },
         autoplay: {
-            missingArgs : `Veuillez entrer \`on\` ou \`off\`.`,
-            on : `L'autoplay est maintenant activé`,
-            off : `L'autoplay est maintenant désactivé`,
-            alreadyOn : `L'autoplay est déjà activé`,
-            alreadyOff : `L'autoplay est déjà désactivé`,
+            missingArgs : `<:music:822488990128799774> \`ERREUR\` Veuillez entrer \`on\` ou \`off\`.`,
+            on : `<:music:822488990128799774> L'autoplay est maintenant activé`,
+            off : `<:music:822488990128799774> L'autoplay est maintenant désactivé`,
+            alreadyOn : `<:music:822488990128799774> \`ERREUR\` L'autoplay est déjà activé`,
+            alreadyOff : `<:music:822488990128799774> \`ERREUR\`L'autoplay est déjà désactivé`,
         },
         events :{
             play : {
@@ -827,12 +827,12 @@ module.exports = {
             }
         },
         search : {
-            searching : `Browsing the web ...`,
+            searching : `<:music:822488990128799774> Browsing the web ...`,
             title : `Liste des musics trouvé:`,
-            nothingFound: `Rien n'a été trouvé`,
-            end: `La recherche est terminé`
+            nothingFound: `<:music:822488990128799774> \`ERREUR\` Rien n'a été trouvé`,
+            end: `<:music:822488990128799774> La recherche est terminé`
         },
-        shuffle: `Les musics seront joué aléatoirement`
+        shuffle: `<:music:822488990128799774> Les musics seront joué aléatoirement`
     },
     
     logs: {

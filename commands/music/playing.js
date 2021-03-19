@@ -21,27 +21,26 @@ module.exports = new Command({
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
     const queue = client.music.getQueue(message)
     if (!queue) return message.channel.send(lang.music.nothingInQueue)
-    const song = queue.song[0];
-    let minutes = song.duration.split(":")[0];   
-    let seconds = song.duration.split(":")[1];    
+    console.log(queue)
+    const song = queue.songs[0];
+    console.log(song)
+    let minutes = song.formattedDuration.split(":")[0];   
+    let seconds = song.formattedDuration.split(":")[1];    
     let ms = (Number(minutes)*60+Number(seconds));   
-    //get thumbnail
-    let thumb;
-    if (song.thumbnail === undefined) thumb = "https://media.giphy.com/media/P4OLEIP94nLi63K9JM/giphy.gif";
-    else thumb = song.thumbnail.url;
+
     //define current time
     const seek = (queue.connection.dispatcher.streamTime - queue.connection.dispatcher.pausedTime) / 1000;
     //define left duration
     const left = ms - seek;
 
     let nowPlaying = new Discord.MessageEmbed()
-          .setAuthor('♪Now playing♪','https://cdn.discordapp.com/attachments/778600026280558617/781024479623118878/ezgif.com-gif-maker_1.gif','https://harmonymusic.tk')
-          .setDescription(`[**${song.title}**](${song.url})`)
-          .setThumbnail(song.thumbnail.url)
+          .setAuthor('♪Now playing♪','../../assets/music/img/musicSpin.gif','https://www.one4all.fr')
+          .setDescription(`[**${song.name}**](${song.url})`)
+          .setThumbnail(song.thumbnail)
           .setColor(`${color}`)
           .setFooter(`${lang.music.requestedBy} ${message.author.username}#${message.author.discriminator}`, message.member.user.displayAvatarURL({ dynamic: true }))
       //if its a stream
-      if(ms >= 10000) {
+      if(song.isLive) {
         nowPlaying.addField("\u200b", "🔴 LIVE", false);
         //send approve msg
         return message.channel.send(nowPlaying);
