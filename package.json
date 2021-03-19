@@ -51,6 +51,7 @@
     "request": "^2.88.2",
     "secure-random-password": "^0.2.2",
     "shelljs": "^0.8.4",
+    "string-progressbar": "^1.0.3",
     "twemoji-parser": "^13.0.0"
   }
 }
