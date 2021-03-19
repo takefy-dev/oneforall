@@ -32,13 +32,22 @@ module.exports = new Command({
     const seek = (queue.connection.dispatcher.streamTime - queue.connection.dispatcher.pausedTime) / 1000;
     //define left duration
     const left = ms - seek;
-
+    const likes = song.likes;
+    const dislikes = song.dislikes;
+    const reposts = song.reposts;
+    const view = song.views;
+    const name = song.name;
+    const url = song.url;
+    const thumbnail = song.thumbnail;
+    const requestedBy = song.user;
+    const averageRate = parseFloat(song.videoDetails.averageRating).toFixed(1);
+    const category = song.videoDetails.category;
     let nowPlaying = new Discord.MessageEmbed()
-          .setAuthor('♪Now playing♪','../../assets/music/img/musicSpin.gif','https://www.one4all.fr')
+          .setAuthor('♪Now playing♪','https://cdn.discordapp.com/attachments/820031925389230110/822494236007596082/3dgifmaker81211.gif','https://www.one4all.fr')
           .setDescription(`[**${song.name}**](${song.url})`)
-          .setThumbnail(song.thumbnail)
+          .setImage(song.thumbnail)
           .setColor(`${color}`)
-          .setFooter(`${lang.music.requestedBy} ${message.author.username}#${message.author.discriminator}`, message.member.user.displayAvatarURL({ dynamic: true }))
+          .setFooter(`${lang.music.requestedBy} ${requestedBy.username}#${requestedBy.discriminator}`, requestedBy.displayAvatarURL({ dynamic: true }))
       //if its a stream
       if(song.isLive) {
         nowPlaying.addField("\u200b", "🔴 LIVE", false);
@@ -47,7 +56,7 @@ module.exports = new Command({
       }
       //If its not a stream 
       if (ms > 0 && ms<10000) {
-        nowPlaying.addField("\u200b", "**``[" + createBar((ms == 0 ? seek : ms), seek, 25, "▬", "🔘")[0] + "]``**\n**" + "\n[" + new Date(seek * 1000).toISOString().substr(11, 8) + " / " + (ms == 0 ? " ◉ LIVE" : new Date(ms * 1000).toISOString().substr(11, 8))+ "]**" + "\n" + `\n **${lang.music.currentPlaying.timeLeft}**` + "``" + new Date(left * 1000).toISOString().substr(11, 8) + "``", false );
+        nowPlaying.addField("\u200b", "**``[" + createBar((ms == 0 ? seek : ms), seek, 25, "▬", "🔘")[0] + "]``**\n**" + "\n[" + new Date(seek * 1000).toISOString().substr(11, 8) + " / " + (ms == 0 ? " ◉ LIVE" : new Date(ms * 1000).toISOString().substr(11, 8))+ "]**" + "\n" + `\n **${lang.music.currentPlaying.timeLeft}**` + "``" + new Date(left * 1000).toISOString().substr(11, 8) + "``", false ); // the bar
         //send approve msg
         return message.channel.send(nowPlaying);
       }

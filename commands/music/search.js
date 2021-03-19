@@ -20,8 +20,9 @@ module.exports = new Command({
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
     const musicName = args.join(" ");
-    const msg = await message.channel.send(lang.music.search.searching);
+    if(!musicName) return  message.channel.send(lang.music.search.noArgs);
 
+    const msg = await message.channel.send(lang.music.search.searching);
     try {
       
         await client.music.search(musicName).then(async (result) => {
