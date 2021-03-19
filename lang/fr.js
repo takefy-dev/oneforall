@@ -816,7 +816,9 @@ module.exports = {
         },
         search : {
             searching : `Browsing the web ...`,
-            title : `Liste des musics trouvé:`
+            title : `Liste des musics trouvé:`,
+            nothingFound: `Rien n'a été trouvé`,
+            end: `La recherche est terminé`
         },
         shuffle: `Les musics seront joué aléatoirement`
     },
