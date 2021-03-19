@@ -806,7 +806,19 @@ module.exports = {
         volume :{
             notNumber : `Veuillez entrer un nombre valide`,
             changed : (volume) => `Le volume est maintenant défini pour \`${volume}\``
-        }
+        },
+        autoplay: {
+            missingArgs : `Veuillez entrer \`on\` ou \`off\`.`,
+            on : `L'autoplay est maintenant activé`,
+            off : `L'autoplay est maintenant désactivé`,
+            alreadyOn : `L'autoplay est déjà activé`,
+            alreadyOff : `L'autoplay est déjà désactivé`,
+        },
+        search : {
+            searching : `Browsing the web ...`,
+            title : `Liste des musics trouvé:`
+        },
+        shuffle: `Les musics seront joué aléatoirement`
     },
     
     logs: {

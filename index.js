@@ -123,7 +123,7 @@ const manager = new GiveawayManagerWithOwnDatabase(CommandHandler.client, {
 // We now have a giveawaysManager property to access the manager everywhere!
 CommandHandler.client.giveawaysManager = manager;
 
-const distube= new Distube(CommandHandler.client, { searchSongs: true, leaveOnEmpty: true});
+const distube= new Distube(CommandHandler.client, { searchSongs: false, leaveOnEmpty: true});
 CommandHandler.client.music = distube;
 CommandHandler.client.BotPerso = false
 
