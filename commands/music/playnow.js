@@ -7,13 +7,13 @@ const guildLang = new Map();
 var langF = require('../../function/lang')
 const usersPlaylist = new Map();
 module.exports = new Command({
-    name: 'play',
-    description: 'Play a song | Jouer une music',
+    name: 'playnow',
+    description: 'Play a song now| Jouer une music en skippant la queue',
     // Optionnals :
-    usage: '!play <url/title/playlistName>',
+    usage: '!playnow <url/title/playlistName>',
     category: 'music',
     tags: ['guildOnly', "voiceOnly"],
-    aliases: ['p'],
+    aliases: ['pn', 'pnow'],
     clientPermissions: ['EMBED_LINKS'],
     cooldown: 4
 }, async(client, message, args) => {
@@ -27,7 +27,7 @@ module.exports = new Command({
         console.log(wantedPlaylist.length)
         if(!wantedPlaylist || wantedPlaylist.length === 0){
             try{
-                await client.music.play(message, musicName).catch(err => console.log(err))
+                await client.music.playSkip(message, musicName).catch(err => console.log(err))
         
             }catch(e){
                 console.error(e)
@@ -41,7 +41,7 @@ module.exports = new Command({
             }
             console.log(songs)
             try{
-                await client.music.playCustomPlaylist(message, songs, {name : wantedPlaylist[0].name}, false, true);
+                await client.music.playCustomPlaylist(message, songs, {name : wantedPlaylist[0].name}, true, true);
             }catch(e){
                 console.error(e)
                 message.channel.send(`Une erreur est survenue`)
@@ -49,7 +49,7 @@ module.exports = new Command({
         }
     }else{
         try{
-            await client.music.play(message, musicName).catch(err => console.log(err))
+            await client.music.playSkip(message, musicName).catch(err => console.log(err))
     
         }catch(e){
             console.error(e)
