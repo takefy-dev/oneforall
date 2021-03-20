@@ -13,7 +13,7 @@ module.exports = new Command({
     description: 'Manage your playlist | Gerer vos playlist',
     // Optionnals :
     usage: '!playlist <add/delete/remove/import> <playlistName>',
-    category: '',
+    category: 'music',
     tags: ['guildOnly'],
     aliases: ['pl'],
     clientPermissions: ['EMBED_LINKS'],

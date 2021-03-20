@@ -25,6 +25,7 @@ module.exports = new Event(
     },
     module.exports = async (handler, oldState, newState) => {
         this.connection = StateManager.connection;
+        if(newState.id === handler.client.user.id) return await newState.guild.me.voice.setSelfDeaf(true);
 
         const color = guildEmbedColor.get(oldState.guild.id);
         //#region voiceState

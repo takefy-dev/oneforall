@@ -74,7 +74,6 @@ module.exports = {
             this.connection = StateManager.connection;
             const lang = gLang(message)
             const color = guildColor(message)
-            console.log(playlist)
             const nameOfPl = playlist.name;
             if(usersPlaylist.has(message.author.id) && !usersPlaylist.get(message.author.id).find(pl => pl.name === nameOfPl)){
                 const msg = await message.channel.send(lang.loading)
