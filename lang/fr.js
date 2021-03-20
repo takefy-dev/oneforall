@@ -826,6 +826,9 @@ module.exports = {
             addToQueue : {
                 add: (songName, time, url) => `<a:music:822494244434214982> J'ai ajouté [${songName} - \`${time}\`](${url}) à la queue`
             },
+            playlist: {
+                play: (playlistName, songs) => `<a:music:822494244434214982> ${playlistName} - ${songs} est maintenant en jeux`,
+            },
             empty : `Personne n'est dans le channel. Je le quitte`,
             
 
@@ -850,9 +853,15 @@ module.exports = {
             urlQ : (name) => `<a:music:822494244434214982> Quel est l'url de la music à ajouter à la playlist ${name} ?`,
             urlPlaylistQ: `<a:music:822494244434214982> Quel est l'url de la playlist à importer ?`,
             provideOnlyValidUrl: `<a:music:822494244434214982> \`ERREUR\` Merci d'entrer uniquement des url valides \`(youtube)\``,
-            successAdd : (name) => `La music a bien été ajouté a la playlist ${name}`,
-            playlistToLong : `La playlist comporte plus de 50 music, je prend les 50 premières musics`
-        },
+            successAdd : (name) => `<a:music:822494244434214982> La music a bien été ajouté a la playlist ${name}`,
+            successImport : (name) =>`<a:music:822494244434214982> La playlist a bien été importé avec le nom ${name}`,
+            successDelete : (name) =>`<a:music:822494244434214982> La playlist ${name} a bien été supprimé`,
+            successRemove : (name) =>`<a:music:822494244434214982> J'ai enlevé la music souhaité de ${name}`,
+            playlistToLong : `<a:music:822494244434214982> La playlist comporte plus de 50 musics, je prend les 50 premières musics`,
+            removeQ : `<a:music:822494244434214982> Quel est l'url de la music à enlever (cancel pour annuler)`,
+            songNotFound : `<a:music:822494244434214982> La music à supprimer n'est pas dans cette playlist`    
+        }
+        ,
         shuffle: `<a:music:822494244434214982> Les musics seront joué aléatoirement`
     },
     

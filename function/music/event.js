@@ -74,66 +74,80 @@ module.exports = {
             this.connection = StateManager.connection;
             const lang = gLang(message)
             const color = guildColor(message)
-            const msg = await message.channel.send(lang.loading)
-            const emoji = ['✅', '❌']
-            for (const em of emoji) await msg.react(em)
-            const filter = (reaction, user) => emoji.includes(reaction.emoji.name) && user.id === message.author.id;
-            dureefiltrer = response => { return response.author.id === message.author.id };
-
-            const embed = new Discord.MessageEmbed()
-                .setDescription(lang.music.importPlaylist.description)
-                .setColor(`${color}`)
-                .setFooter(`${message.author.username}`, message.author.displayAvatarURL({ dynamic: true }))
-            msg.edit('', embed).then(async m => {
-                const collector = m.createReactionCollector(filter, { time: 120000 });
-                collector.on('collect', async r => {
-                    r.users.remove(message.author);
-                    if (r.emoji.name === '✅') {
-                        // if(playlist.songs.length >= 35) return message.channel.send(lang.music.importPlaylist.toManySongs)
-
-                        message.channel.send(lang.music.importPlaylist.nameQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
-                                .then(async cld => {
-                                    const name = cld.first().content;
-                                    let playlists = usersPlaylist.get(message.author.id);
-                                    let songsList = [];
-                                    for (const song of playlist.songs) {
-                                        songsList.push({ name: song.name, url: song.url, duration: song.formattedDuration, thumbnail: song.thumbnail })
-                                    }
-                                    if (!playlists) {
-                                        playlists = [{ name, song: songsList }]
-
-                                        return await this.connection.query(`INSERT INTO playlist VALUES ('${message.author.id}', ?)`, [JSON.stringify(playlists)]).then(() => {
-                                            StateManager.emit('playlist', message.author.id, playlists);
-                                            message.channel.send(lang.music.importPlaylist.success).then(m => {
-                                                setTimeout(() => {
-                                                    mp.delete()
-                                                    m.delete();
-                                                    cld.first().delete();
-                                                }, 2000)
+            console.log(playlist)
+            const nameOfPl = playlist.name;
+            if(usersPlaylist.has(message.author.id) && !usersPlaylist.get(message.author.id).find(pl => pl.name === nameOfPl)){
+                const msg = await message.channel.send(lang.loading)
+                const emoji = ['✅', '❌']
+                for (const em of emoji) await msg.react(em)
+                const filter = (reaction, user) => emoji.includes(reaction.emoji.name) && user.id === message.author.id;
+                dureefiltrer = response => { return response.author.id === message.author.id };
+    
+                const embed = new Discord.MessageEmbed()
+                    .setDescription(lang.music.importPlaylist.description)
+                    .setColor(`${color}`)
+                    .setFooter(`${message.author.username}`, message.author.displayAvatarURL({ dynamic: true }))
+                msg.edit('', embed).then(async m => {
+                    const collector = m.createReactionCollector(filter, { time: 120000 });
+                    collector.on('collect', async r => {
+                        r.users.remove(message.author);
+                        if (r.emoji.name === emoji[0]) {
+                            // if(playlist.songs.length >= 35) return message.channel.send(lang.music.importPlaylist.toManySongs)
+    
+                            message.channel.send(lang.music.importPlaylist.nameQ).then(mp => {
+                                mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
+                                    .then(async cld => {
+                                        const name = cld.first().content;
+                                        let playlists = usersPlaylist.get(message.author.id);
+                                        let songsList = [];
+                                        for (const song of playlist.songs) {
+                                            songsList.push({ name: song.name, url: song.url, duration: song.formattedDuration, thumbnail: song.thumbnail })
+                                        }
+                                        if (!playlists) {
+                                            playlists = [{ name, song: songsList }]
+    
+                                            return await this.connection.query(`INSERT INTO playlist VALUES ('${message.author.id}', ?)`, [JSON.stringify(playlists)]).then(() => {
+                                                StateManager.emit('playlist', message.author.id, playlists);
+                                                message.channel.send(lang.music.importPlaylist.success).then(m => {
+                                                    setTimeout(() => {
+                                                        mp.delete()
+                                                        m.delete();
+                                                        cld.first().delete();
+                                                    }, 2000)
+                                                })
                                             })
-                                        })
-                                    } else {
-                                       
-                                        playlists.push({ name, song: songsList })
-
-                                        return await this.connection.query(`UPDATE playlist SET playlist = ? WHERE userId ='${message.author.id}'`, [JSON.stringify(playlists)]).then(() => {
-                                            StateManager.emit('playlist', message.author.id, playlists);
-                                            message.channel.send(lang.music.importPlaylist.success).then(m => {
-                                                setTimeout(() => {
-                                                    mp.delete()
-                                                    m.delete();
-                                                    cld.first().delete();
-                                                }, 2000)
+                                        } else {
+                                           
+                                            playlists.push({ name, song: songsList })
+    
+                                            return await this.connection.query(`UPDATE playlist SET playlist = ? WHERE userId ='${message.author.id}'`, [JSON.stringify(playlists)]).then(() => {
+                                                StateManager.emit('playlist', message.author.id, playlists);
+                                                message.channel.send(lang.music.importPlaylist.success).then(m => {
+                                                    setTimeout(() => {
+                                                        mp.delete()
+                                                        m.delete();
+                                                        cld.first().delete();
+                                                    }, 2000)
+                                                })
                                             })
-                                        })
-                                    }
-                                });
-                        })
-                    }
+                                        }
+                                    });
+                            })
+                        }else{
+                            await message.channel.send(lang.cancel);
+                            collector.stop();
+                        }
+                    })
+                    
                 })
-                
-            })
+            }else{
+                console.log(playlist.songs.lenght)
+                const embed = new Discord.MessageEmbed()
+                .setDescription(lang.music.events.playlist.play(nameOfPl, playlist.songs.length))
+                .setColor(`${color}`);
+                message.channel.send(embed)
+            }
+           
 
         })
 
@@ -161,4 +175,7 @@ embedsColor(guildEmbedColor);
 langF(guildLang);
 StateManager.on('playlist', (userId, playlist) => {
     usersPlaylist.set(userId, playlist)
+})
+StateManager.on('playlistDelete', (userId) =>{
+    usersPlaylist.delete(userId)
 })

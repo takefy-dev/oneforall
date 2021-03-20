@@ -46,11 +46,9 @@ module.exports = new Command({
                     const id = extractVideoID(url)
                     const awaiting = await message.channel.send(lang.loading)
                     await youtube.getVideo(id).then(async (videoInformation) => {
-                        console.log(videoInformation)
                         const name = videoInformation.title;
                         const thumbnail = msg.embeds[0].thumbnail.url;
                         const duration = duratiform.format(videoInformation.duration * 1000, '(h:h:)(m:mm:)(s:ss)');   // 07:36
-                        console.log(videoInformation)
                         const index = authorPlaylist.indexOf(playlistToEdit)
 
                         playlistToEdit.song.push({ name, url, thumbnail, duration });
@@ -105,7 +103,7 @@ module.exports = new Command({
                             authorPlaylist.push(playlist);
                             await this.connection.query(`UPDATE playlist SET playlist = ? WHERE userId = '${message.author.id}'`, [JSON.stringify(authorPlaylist)]).then(() => {
                                 StateManager.emit('playlist', message.author.id, authorPlaylist);
-                                awaiting.edit(lang.music.playlist.successAdd(playlistName)).then(m => {
+                                awaiting.edit(lang.music.playlist.successImport(playlistName)).then(m => {
                                     setTimeout(() => {
                                         m.delete();
                                         msg.delete();
@@ -116,7 +114,7 @@ module.exports = new Command({
                         }else{
                             await this.connection.query(`INSERT INTO playlist VALUES ('${message.author.id}', ?)`, [JSON.stringify([playlist])]).then(() => {
                                 StateManager.emit('playlist', message.author.id, [playlist]);
-                                awaiting.edit(lang.music.playlist.successAdd(playlistName)).then(m => {
+                                awaiting.edit(lang.music.playlist.successImport(playlistName)).then(m => {
                                     setTimeout(() => {
                                         m.delete();
                                         msg.delete();
@@ -131,6 +129,76 @@ module.exports = new Command({
                 })
         })
        
+    }else if(type === "delete"){
+      
+        if (!usersPlaylist.has(message.author.id)) return message.channel.send(lang.music.playlist.noPlaylist)
+        const authorPlaylist = usersPlaylist.get(message.author.id);
+        const playlistToEdit = authorPlaylist.find(pl => pl.name === playlistName)
+        if (!playlistToEdit) return message.channel.send(lang.music.playlist.notFound)
+        const newAuthorPlaylist = authorPlaylist.filter(pl => pl.name !== playlistName);
+        if(newAuthorPlaylist.length === 0){
+            await this.connection.query(`DELETE FROM playlist WHERE userId = '${message.author.id}'`).then(() =>{
+                StateManager.emit('playlistDelete', message.author.id)
+                message.channel.send(lang.music.playlist.successDelete(playlistName)).then(m => {
+                    setTimeout(() => {
+                        m.delete();
+                        mp.delete();
+                    }, 5000)
+                })
+            })
+        }else{
+            await this.connection.query(`UPDATE playlist SET playlist = ? WHERE userId = '${message.author.id}'`, [JSON.stringify(newAuthorPlaylist)]).then(() => {
+                StateManager.emit('playlist', message.author.id, newAuthorPlaylist);
+                message.channel.send(lang.music.playlist.successDelete(playlistName)).then(m => {
+                    setTimeout(() => {
+                        m.delete();
+                        mp.delete();
+                    }, 5000)
+                })
+            })
+        }
+       
+    }else if(type === "remove"){
+        if (!usersPlaylist.has(message.author.id)) return message.channel.send(lang.music.playlist.noPlaylist)
+        const authorPlaylist = usersPlaylist.get(message.author.id);
+        const playlistToEdit = authorPlaylist.find(pl => pl.name === playlistName)
+        if (!playlistToEdit) return message.channel.send(lang.music.playlist.notFound)
+        message.channel.send(lang.music.playlist.removeQ).then(mp => {
+            mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
+                .then(async cld => {
+
+                    const msg = cld.first()
+                    const url = msg.content;
+                    if(msg.content.toLowerCase() === "cancel"){
+                        return await message.channel.send(lang.cancel).then(mps =>{
+                            setTimeout(() =>{
+                                mps.delete();
+                                mp.delete();
+                                msg.delete();
+                            }, 5000)
+                        })
+                    }
+                    const urlTester = /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/;
+                    const isValid = urlTester.test(url);
+                    if (!url && !isValid) return message.channel.send(lang.music.playlist.provideOnlyValidUrl)
+                    const songs = playlistToEdit.song;
+                    console.log(songs)
+                    if(songs.filter(songs => songs.url === url).length === 0) return message.channel.send(lang.music.playlist.songNotFound)
+                    const newSongs = songs.filter(song => song.url !== url);
+                    playlistToEdit.song = newSongs;
+                    const index = authorPlaylist.indexOf(playlistToEdit)
+                    authorPlaylist[index] = playlistToEdit;
+                    await this.connection.query(`UPDATE playlist SET playlist = ? WHERE userId = '${message.author.id}'`, [JSON.stringify(authorPlaylist)]).then(() => {
+                        StateManager.emit('playlist', message.author.id, authorPlaylist);
+                        message.channel.send(lang.music.playlist.successRemove(playlistName)).then(m => {
+                            setTimeout(() => {
+                                m.delete();
+                                mp.delete();
+                            }, 5000)
+                        })
+                    })
+                })
+            })
     }
 });
 
@@ -151,4 +219,7 @@ embedsColor(guildEmbedColor);
 langF(guildLang);
 StateManager.on('playlist', (userId, playlist) => {
     usersPlaylist.set(userId, playlist)
+})
+StateManager.on('playlistDelete', (userId) =>{
+    usersPlaylist.delete(userId)
 })

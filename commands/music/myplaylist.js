@@ -21,7 +21,7 @@ module.exports = new Command({
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
     const authorPlaylist = usersPlaylist.get(message.author.id);
-    const playlist = !authorPlaylist ? `No playlist` : authorPlaylist.map((pl, i) => `${i+1}. ${pl.name}`);
+    const playlist = !authorPlaylist ? `No playlist` : authorPlaylist.map((pl, i) => `${i+1}. ${pl.name}\n`);
     const embed = new Discord.MessageEmbed()
     .setDescription(playlist)
     .setColor(`${color}`)
@@ -33,4 +33,7 @@ embedsColor(guildEmbedColor);
 langF(guildLang);
 StateManager.on('playlist', (userId, playlist) => {
     usersPlaylist.set(userId, playlist)
+})
+StateManager.on('playlistDelete', (userId) =>{
+    usersPlaylist.delete(userId)
 })
