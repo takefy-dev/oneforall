@@ -676,6 +676,74 @@ module.exports = {
         title : `Top des 10 membres ayant le plus de coins`,
         noCoins : `Personne a de coins sur le serveur.`
     },
+
+    music:{
+        requestedBy : `Asked by:`,
+        playing : `<a:music:822494244434214982> Playing`,
+        nothingInQueue : `<a:music:822494244434214982> There is nothing in the queue at the moment `,
+        play:{
+            noMusic: `<a:music:822494244434214982> \`ERROR\` You must enter a url or a music to search  !`
+        },
+        pause:{
+            unPause : `<a:music:822494244434214982> Music is no longer paused`,
+            pause : `<a:music:822494244434214982> Music is now paused `,
+        },
+        queue : `<a:music:822494244434214982> **Server Queue**`,
+        skip : `<a:music:822494244434214982> Skipped! I play now:`,
+        repeatMode : (mode) => `<a:music:822494244434214982> Loop mode is now set to \`${mode}\``,
+        stop : `<a:music:822494244434214982> The music is now stopped `,
+        volume :{
+            notNumber : `<a:music:822494244434214982> \`ERROR\` Please enter a valid number `,
+            changed : (volume) => `<a:music:822494244434214982> The volume is now set for \`${volume}%\``
+        },
+        noAvgRate :`Aucune information disponible`,
+        lyrics :{
+            notFound : `<a:music:822494244434214982> \`ERROR\` No lyrics found for: `
+        },
+        currentPlaying: {
+            timeLeft : `Temps restant:`,
+        },
+        autoplay: {
+            missingArgs : `<a:music:822494244434214982> \`ERROR\` Please enter \`on\` or \`off\`.`,
+            on : `<a:music:822494244434214982> Autoplay is now activated`,
+            off : `<a:music:822494244434214982> Autoplay is now disabled `,
+            alreadyOn : `<a:music:822494244434214982> \`ERROR\` Autoplay is already activated `,
+            alreadyOff : `<a:music:822494244434214982> \`ERROR\` Autoplay is already disabled `,
+        },
+        events :{
+            addToQueue : {
+                add: (songName, time, url) => `<a:music:822494244434214982> I added [${songName} - \`${time}\`](${url}) in the queue`
+            },
+            empty : `No one is in the channel. I leave him`,
+            
+
+        },
+        importPlaylist:{
+            description : `Do you want to import this playlist into your personal playlist ?`,
+            nameQ : `What should be the name of this playlist ?`,
+            success : `The playlist has been saved`,
+            toManySongs : `Your playlist has too much music, please take another one with less music (35 max)`
+        },
+        search : {
+            searching : `<a:music:822494244434214982> Browsing the web ...`,
+            title : `List of music found:`,
+            noArgs: `<a:music:822494244434214982> \`ERREUR\` Please enter something to look for it`,
+            nothingFound: `<a:music:822494244434214982> \`ERREUR\` Nothing was found`,
+            end: `<a:music:822494244434214982> The search is finished`
+        },
+        playlist:{
+            noPlaylist: `<a:music:822494244434214982> \`ERREUR\` You do not have a saved playlist to save it, do \`!play <playlistUrl>\``,
+            noPlaylistName : `<a:music:822494244434214982> \`ERREUR\` You must enter the name of one of your playlists.`,
+            notFound : `<a:music:822494244434214982> \`ERREUR\` This playlist is not part of your playlist .`,
+            urlQ : (name) => `<a:music:822494244434214982> What is the url of the music to add to the playlist  ${name} ?`,
+            urlPlaylistQ: `<a:music:822494244434214982> What is the url of the playlist to import?`,
+            provideOnlyValidUrl: `<a:music:822494244434214982> \`ERREUR\` Please enter only valid urls \`(youtube)\``,
+            successAdd : (name) => `The music has been added to the playlist ${name}`,
+            playlistToLong : `The playlist contains more than 50 songs, I take the first 50 songs `
+        },
+        shuffle: `<a:music:822494244434214982> The musics will be played randomly `
+    },
+
     logs: {
         banCounter : {
             title : "\`🚫\` Adding a ban to a member (command)",
