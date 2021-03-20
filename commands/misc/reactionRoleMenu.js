@@ -136,7 +136,7 @@ module.exports = new Command({
                                 await msg.delete();
                             }, 2000)
                             const check = await this.connection.query(`SELECT * FROM reactRole WHERE msgId ='${msgIdF.id}'`)
-                            if(check[0].length > 0){
+                            if (check[0].length > 0) {
                                 return await message.channel.send(lang.reactionRole.alreadyReact).then(rp => setTimeout(() => {
                                     rp.delete()
                                     msg.delete()
@@ -216,7 +216,15 @@ module.exports = new Command({
 
                                         }
                                         if (emoji.id != null) {
-                                            let emojis = client.emojis.cache.get(emoji.id)
+                                            let emojis;
+                                            if (client.BotPerso) {
+                                                emojis = client.emojis.cache.get(emoji.id)
+
+                                            }else{
+                                               await client.shard.broadcastEval(`this.emojis.cache.get('${emoji.id}')`).then((result) =>{
+                                                    emojis = result.filter(em => em !== null)[0]
+                                               })
+                                            }
                                             if (emojis == undefined) {
                                                 await message.channel.send(lang.reactionRole.emojiDoesNotExist).then(async mp => {
                                                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 50000, errors: ['time'] })
@@ -476,16 +484,16 @@ module.exports = new Command({
                     await fetchedMsg.react(`${key}`)
                 }
                 const emojiRoleArray = Object.fromEntries(emojiRoleMapping)
-                await this.connection.query(`INSERT INTO reactRole VALUES('${msgId.get(message.guild.id)}', '${message.guild.id}','${JSON.stringify(emojiRoleArray)}')`).then((res) =>{
+                await this.connection.query(`INSERT INTO reactRole VALUES('${msgId.get(message.guild.id)}', '${message.guild.id}','${JSON.stringify(emojiRoleArray)}')`).then((res) => {
                     StateManager.emit('reactionRoleUp', msgId.get(message.guild.id), emojiRoleArray)
-                    return message.channel.send(lang.reactionRole.success).then((m) =>{
-                        m.delete({timeout: 2000})
-                        msg.delete({timeout: 2000 })
+                    return message.channel.send(lang.reactionRole.success).then((m) => {
+                        m.delete({ timeout: 2000 })
+                        msg.delete({ timeout: 2000 })
                     })
                 })
-               
 
-               
+
+
 
             }
             function updateEmbed() {
