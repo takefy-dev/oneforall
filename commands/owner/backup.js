@@ -204,7 +204,7 @@ module.exports = new Command({
 
             }
 
-            if (backupsName.length == 0 && backupsId.length == 0) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` **${message.member.tag}**, vous ne posséder pas de backup`)
+            if (backupsName.length == 0 && backupsId.length == 0) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` **${message.author.user.tag}**, vous ne posséder pas de backup`)
             const embed = new Discord.MessageEmbed()
                 .setTitle(`Liste des backup de __${message.author.username}__:`)
                 .addField(`<:title:783422216095793172> Serveur Name`, `${backupsName.join('\n')}`, true)

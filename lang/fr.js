@@ -827,7 +827,7 @@ module.exports = {
                 add: (songName, time, url) => `<a:music:822494244434214982> J'ai ajouté [${songName} - \`${time}\`](${url}) à la queue`
             },
             playlist: {
-                play: (playlistName, songs) => `<a:music:822494244434214982> ${playlistName} - ${songs} est maintenant en jeux`,
+                play: (playlistName, songs) => `<a:music:822494244434214982> La playlist ${playlistName} a démarré`,
             },
             empty : `Personne n'est dans le channel. Je le quitte`,
             
