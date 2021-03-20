@@ -806,8 +806,9 @@ module.exports = {
         stop : `<a:music:822494244434214982> La music est maintenant arrêté`,
         volume :{
             notNumber : `<a:music:822494244434214982> \`ERREUR\` Veuillez entrer un nombre valide`,
-            changed : (volume) => `<a:music:822494244434214982> Le volume est maintenant défini pour \`${volume}\``
+            changed : (volume) => `<a:music:822494244434214982> Le volume est maintenant défini pour \`${volume}%\``
         },
+        noAvgRate :`Aucune information disponible`,
         lyrics :{
             notFound : `<a:music:822494244434214982> \`ERREUR\` Aucun parole trouvé pour: `
         },
@@ -822,9 +823,18 @@ module.exports = {
             alreadyOff : `<a:music:822494244434214982> \`ERREUR\`L'autoplay est déjà désactivé`,
         },
         events :{
-            play : {
+            addToQueue : {
+                add: (songName, time, url) => `<a:music:822494244434214982> J'ai ajouté [${songName} - \`${time}\`](${url}) à la queue`
+            },
+            empty : `Personne n'est dans le channel. Je le quitte`,
+            
 
-            }
+        },
+        importPlaylist:{
+            description : `Voulez-vous importer cette playlist dans vos playlist personnelle ?`,
+            nameQ : `Quel doit être le nom de cette playlist ?`,
+            success : `La playlist a été sauvegardé`,
+            toManySongs : `Votre playlist comporte trop de music veuilez en prendre un autre avec moins de music (35 max)`
         },
         search : {
             searching : `<a:music:822494244434214982> Browsing the web ...`,
@@ -832,6 +842,16 @@ module.exports = {
             noArgs: `<a:music:822494244434214982> \`ERREUR\` Veuillez entrer quelque chose à chercher`,
             nothingFound: `<a:music:822494244434214982> \`ERREUR\` Rien n'a été trouvé`,
             end: `<a:music:822494244434214982> La recherche est terminé`
+        },
+        playlist:{
+            noPlaylist: `<a:music:822494244434214982> \`ERREUR\` Vous n'avez pas de playlist sauvegarder pour en sauvegarder faites \`!play <playlistUrl>\``,
+            noPlaylistName : `<a:music:822494244434214982> \`ERREUR\` Vous devez entrer le nom d'un de vos playlist.`,
+            notFound : `<a:music:822494244434214982> \`ERREUR\` Cette playlist ne fait pas partie de vos playlist.`,
+            urlQ : (name) => `<a:music:822494244434214982> Quel est l'url de la music à ajouter à la playlist ${name} ?`,
+            urlPlaylistQ: `<a:music:822494244434214982> Quel est l'url de la playlist à importer ?`,
+            provideOnlyValidUrl: `<a:music:822494244434214982> \`ERREUR\` Merci d'entrer uniquement des url valides \`(youtube)\``,
+            successAdd : (name) => `La music a bien été ajouté a la playlist ${name}`,
+            playlistToLong : `La playlist comporte plus de 50 music, je prend les 50 premières musics`
         },
         shuffle: `<a:music:822494244434214982> Les musics seront joué aléatoirement`
     },

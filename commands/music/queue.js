@@ -22,7 +22,13 @@ module.exports = new Command({
     const queue = client.music.getQueue(message)
     if (!queue) return message.channel.send(lang.music.nothingInQueue)
     const q = queue.songs.map((song, i) => `${i === 0 ? lang.music.playing : `${i}.`} ${song.name} - \`${song.formattedDuration}\``).join("\n")
-    message.channel.send(`${lang.music.queue}\n${q}`)
+    const embed = new Discord.MessageEmbed()
+    .setTitle(`Current queue`)
+    .setDescription(queue.songs.map((song, i) => `${i === 0 ? lang.music.playing: `${i}.`} [${song.name} - \`${song.formattedDuration}\`](${song.url})`).join("\n"))
+    .setTimestamp()
+    .setColor(`${color}`)
+    
+    message.channel.send(embed)
 });
 
 embedsColor(guildEmbedColor);

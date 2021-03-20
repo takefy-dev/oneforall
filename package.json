@@ -27,12 +27,14 @@
     "discord.js-pagination": "^1.0.3",
     "distube": "^2.8.11",
     "dotenv": "^8.2.0",
+    "duratiform": "^2.0.0",
     "events": "^3.2.0",
     "fast-date-format": "^2.2.4",
     "ffmpeg-static": "^4.2.8",
     "fs": "0.0.1-security",
     "gdate": "^1.1.4",
     "hex-color-regex": "^1.1.0",
+    "i": "^0.3.6",
     "luxon": "^1.25.0",
     "lyrics-finder": "^21.7.0",
     "moment": "^2.29.1",
@@ -41,6 +43,7 @@
     "mysqlimporter": "^1.0.0",
     "node-mysql-importer": "0.0.10",
     "nodemon": "^2.0.6",
+    "npm": "^7.6.3",
     "number-to-emoji": "^1.0.0",
     "os": "^0.1.1",
     "path": "^0.12.7",
@@ -52,6 +55,7 @@
     "secure-random-password": "^0.2.2",
     "shelljs": "^0.8.4",
     "string-progressbar": "^1.0.3",
-    "twemoji-parser": "^13.0.0"
+    "twemoji-parser": "^13.0.0",
+    "youtubei": "0.0.1-rc.14"
   }
 }

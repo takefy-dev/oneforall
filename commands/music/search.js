@@ -25,7 +25,7 @@ module.exports = new Command({
     const msg = await message.channel.send(lang.music.search.searching);
     try {
       
-        await client.music.search(musicName).then(async (result) => {
+        await client.music.search(musicName,{limit: 10}).then(async (result) => {
             const emojis = [
                 "1️⃣",
                 "2️⃣",
@@ -52,7 +52,7 @@ module.exports = new Command({
                 .setFooter(client.user.username);
             const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id;
 
-            msg.edit(" ", embed) .then(async m => {
+            msg.edit(" ", embed).then(async m => {
                 const collector = m.createReactionCollector(filter, { time: 120000 });
                 collector.on('collect', async r => {
                     r.users.remove(message.author);

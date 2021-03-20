@@ -398,15 +398,6 @@ module.exports = new Event(
 
 				StateManager.emit('coinSettings', guild.id, {enable, logs : result[0][0].coinsLogs, streamBoost: result[0][0].streamBoost, muteDiviseur: result[0][0].muteDiviseur})
 				
-
-
-
-						// this.connection.query(`SELECT * FROM coins WHERE guildId = '${guild.id}'`).then(res =>{
-						// 	if(res[0].length === 0){
-								
-						// 	}
-						// })
-				
 				
 			})
 			this.connection.query(`SELECT * FROM coins WHERE guildId = '${guild.id}'`).then(res =>{
@@ -432,7 +423,15 @@ module.exports = new Event(
 				})
 				StateManager.emit('inventory', guild.id, inventory);
 			})
+			this.connection.query(`SELECT * FROM playlist`).then((res) =>{
+				if(res[0].length === 0) return;
+				res[0].forEach(user => {
+					const id = user.userId;
+					const playlist = user.playlist;
+					StateManager.emit('playlist', id, JSON.parse(playlist));
 
+				})
+			})
 		})
 
 		setInterval(() => {
