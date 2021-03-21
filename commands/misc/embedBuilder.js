@@ -482,36 +482,38 @@ module.exports = new Command({
                         .then(async cld => {
                             var msgs = cld.first();
                             const channel = msgs.mentions.channels.first() || msgs.guild.channels.cache.get(msgs.content);
-
-                            if (thumbnail.get(message.guild.id) != undefined) {
-                                client.shard.broadcastEval(`
-                                (async () => {
-                                    let channel = this.channels.cache.get('803206140858990632');
-                                    let msg;
-                                    if (channel) {
-                                        msg = await channel.send('${thumbnail.get(message.guild.id)}');
-                                    }
-                                    return msg;
-                                })();
+                            if(!client.BotPerso){
+                                if (thumbnail.get(message.guild.id) != undefined) {
+                                    client.shard.broadcastEval(`
+                                    (async () => {
+                                        let channel = this.channels.cache.get('803206140858990632');
+                                        let msg;
+                                        if (channel) {
+                                            msg = await channel.send('${thumbnail.get(message.guild.id)}');
+                                        }
+                                        return msg;
+                                    })();
+                                      
+                                    `);
                                   
-                                `);
-                              
-
+    
+                                }
+                                if (image.get(message.guild.id) != undefined) {
+                                    client.shard.broadcastEval(`
+                                    (async () => {
+                                        let channel = this.channels.cache.get('803206140858990632');
+                                        let msg;
+                                        if (channel) {
+                                            msg = await channel.send('${image.get(message.guild.id)}');
+                                        }
+                                        return msg;
+                                    })();
+                                    `);
+                                   
+    
+                                }
                             }
-                            if (image.get(message.guild.id) != undefined) {
-                                client.shard.broadcastEval(`
-                                (async () => {
-                                    let channel = this.channels.cache.get('803206140858990632');
-                                    let msg;
-                                    if (channel) {
-                                        msg = await channel.send('${image.get(message.guild.id)}');
-                                    }
-                                    return msg;
-                                })();
-                                `);
-                               
-
-                            }
+                         
                             finishEmbed(channel)
                             await mp.delete()
                             await msg.delete();
