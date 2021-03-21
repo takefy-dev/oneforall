@@ -27,7 +27,7 @@ module.exports = new Event(
 
         let action;
         if (isOn) {
-            action = await channel.guild.fetchAuditLogs({ type: "WEBHOOK_CREATE" }).then(async (audit) => audit.entries.first());
+            action = await channel.guild.fetchAuditLogs({limit: 1, type: "WEBHOOK_CREATE" }).then(async (audit) => audit.entries.first());
 
         } else {
             return;
