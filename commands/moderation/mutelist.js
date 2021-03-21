@@ -34,7 +34,7 @@ module.exports = new Command({
             const timeLeft = prettyMilliseconds(expireAt.getTime() - now.getTime())
             mutedData.push(`<@${muted.userId}> ・ ${timeLeft}`)
         })
-        if(muteDate.length === 0 ) return message.channel.send(`Il n'y a pas de membre muet`)
+        if(res[0].length === 0 ) return message.channel.send(`Il n'y a pas de membre muet`)
         try {
             let tdata = await message.channel.send(lang.loading)
     

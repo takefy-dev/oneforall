@@ -82,7 +82,7 @@ module.exports = new Event(
 			return;
 
 
-		} else if (isOn == true && isOwner == false || guild.owner.id !== action.executor.id || isOnWl == true && isWl == false || isOnWl == false) {
+		} else if (isOn == true && isOwner == false || guild.ownerID !== action.executor.id || isOnWl == true && isWl == false || isOnWl == false) {
 			if(!count.has(action.executor.id)){
 				count.set(action.executor.id, 0)
 			
