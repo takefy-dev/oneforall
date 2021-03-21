@@ -4,7 +4,7 @@ const guildCommandPrefixes = new Map();
 require('events').EventEmitter.defaultMaxListeners = 0;
 const { CommandHandler } = require('advanced-command-handler');
 const Distube = require('distube');
-const BotPerso = true;
+const BotPerso = false;
 
 if (BotPerso) {
     let owner;
