@@ -28,8 +28,13 @@ module.exports = new Command({
     let owner = message.guild.ownerID;
 
     if (client.BotPerso) {
-        const config = require('../../config.json')
-        owner = config.owner
+        const fs = require('fs');
+        const path = './config.json';
+        if (fs.existsSync(path)) {
+            owner = require('../../config.json').owner;
+        } else {
+            owner = process.env.OWNER
+        }
     }
     const result = await this.connection.query(`SELECT owner FROM guildConfig WHERE guildId = '${message.guild.id}'`)
     const whitelisted = result[0][0].owner;
@@ -44,7 +49,7 @@ module.exports = new Command({
     const list = args[0] == 'list';
     if (!add & !remove & !list & !clear) return message.channel.send(lang.owner.errorSyntax)
     if (add) {
-    
+
         if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.owner.errorNotOwner(message.guild))
         let member = message.guild.member(message.author.id);
         if (args[1]) {
@@ -104,7 +109,7 @@ module.exports = new Command({
 
         })
     } else if (list) {
-     
+
 
         if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
         try {

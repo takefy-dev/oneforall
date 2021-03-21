@@ -24,8 +24,13 @@ module.exports = new Command({
     let owner = message.guild.ownerID;
 
     if (client.BotPerso) {
-        const config = require('../../config.json')
-        owner = config.owner
+        const fs = require('fs');
+        const path = './config.json';
+        if (fs.existsSync(path)) {
+            owner = require('../../config.json').owner;
+        } else {
+            owner = process.env.OWNER
+        }
     };
 
     if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)

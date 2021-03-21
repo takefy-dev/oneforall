@@ -125,7 +125,7 @@ CommandHandler.client.giveawaysManager = manager;
 
 const distube= new Distube(CommandHandler.client, { searchSongs: false, leaveOnEmpty: true});
 CommandHandler.client.music = distube;
-CommandHandler.client.BotPerso = false
+CommandHandler.client.BotPerso = true
 
 CommandHandler.client.isGuildOwner = require('./function/check/botOwner')
 

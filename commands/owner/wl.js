@@ -34,8 +34,13 @@ module.exports = new Command({
     let owner = message.guild.ownerID;
 
     if (client.BotPerso) {
-        const config = require('../../config.json')
-        owner = config.owner
+        const fs = require('fs');
+        const path = './config.json';
+        if (fs.existsSync(path)) {
+            owner = require('../../config.json').owner;
+        } else {
+            owner = process.env.OWNER
+        }
     }
 
 

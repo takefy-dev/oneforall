@@ -18,49 +18,49 @@ module.exports = new Command({
     usage: '!invite [config / mention/ id]',
     category: 'owners',
     tags: ['guildOnly'],
-    clientPermissions : ['ADD_REACTIONS'],
+    clientPermissions: ['ADD_REACTIONS'],
     aliases: ['welcome'],
     cooldown: 5
 }, async (client, message, args) => {
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
-    
+
     this.connection = StateManager.connection;
     const config = args[0] == "config";
     const color = guildEmbedColor.get(message.guild.id);
     const help = args[0] == "help";
-    if(help) {
+    if (help) {
         const embed = new Discord.MessageEmbed()
-        .setAuthor(`Informations Invitations`, `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
-        .setColor(`${color}`)
-        .setTimestamp()
-        .setThumbnail(`https://images-ext-1.discordapp.net/external/io8pRqFGLz1MelORzIv2tAiPB3uulaHCX_QH7XEK0y4/%3Fwidth%3D588%26height%3D588/https/media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg`)
-        .setFooter("Informations Invitations", `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
-        .addField('<:invite_oeople:785494680904138763> Invitations:', `[\`invite config\`](https://discord.gg/WHPSxcQkVk) ・ Setup du système d'invitations\n[\`invite mention/id\`](https://discord.gg/WHPSxcQkVk) ・ Voyez combien d'invitations un utilisateur possède `)
-    message.channel.send(embed)
+            .setAuthor(`Informations Invitations`, `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
+            .setColor(`${color}`)
+            .setTimestamp()
+            .setThumbnail(`https://images-ext-1.discordapp.net/external/io8pRqFGLz1MelORzIv2tAiPB3uulaHCX_QH7XEK0y4/%3Fwidth%3D588%26height%3D588/https/media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg`)
+            .setFooter("Informations Invitations", `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
+            .addField('<:invite_oeople:785494680904138763> Invitations:', `[\`invite config\`](https://discord.gg/WHPSxcQkVk) ・ Setup du système d'invitations\n[\`invite mention/id\`](https://discord.gg/WHPSxcQkVk) ・ Voyez combien d'invitations un utilisateur possède `)
+        message.channel.send(embed)
     }
-   if (!args[0]) {
-        
+    if (!args[0]) {
+
         message.guild.fetchInvites().then(invites => {
             const userInvites = invites.array().filter(o => o.inviter.id === message.author.id);
             var userInviteCount = 0;
-         
+
             for (var i = 0; i < userInvites.length; i++) {
                 var invite = userInvites[i];
                 userInviteCount += invite['uses'];
             }
             let inv = "invite";
-            if(userInviteCount > 1){
+            if (userInviteCount > 1) {
                 inv = 'invites'
             }
             const embed = new Discord.MessageEmbed()
-            .setDescription(lang.invite.countDesc(message.author, userInviteCount, inv))
-            .setColor(`${color}`)
-            .setTimestamp()
-            .setFooter(client.user.tag)
+                .setDescription(lang.invite.countDesc(message.author, userInviteCount, inv))
+                .setColor(`${color}`)
+                .setTimestamp()
+                .setFooter(client.user.tag)
             message.reply(embed);
         }
         )
-    }else if(message.mentions.users.first() || !isNaN(args[0])){
+    } else if (message.mentions.users.first() || !isNaN(args[0])) {
         const user = await message.mentions.users.first() || await client.users.fetch(args[0]).catch(async err => {
             return await message.channel.send(lang.ban.noBan).then(mp => mp.delete({ timeout: 4000 }));
         })
@@ -68,34 +68,39 @@ module.exports = new Command({
         message.guild.fetchInvites().then(invites => {
             const userInvites = invites.array().filter(o => o.inviter.id === user.id);
             var userInviteCount = 0;
-         
+
             for (var i = 0; i < userInvites.length; i++) {
                 var invite = userInvites[i];
                 userInviteCount += invite['uses'];
             }
             let inv = "invite";
-            if(userInviteCount > 1){
+            if (userInviteCount > 1) {
                 inv = 'invites'
             }
             const embed = new Discord.MessageEmbed()
-            .setDescription(lang.invite.countDesc(user, userInviteCount, inv))
-            .setColor(`${color}`)
-            .setTimestamp()
-            .setFooter(client.user.tag)
+                .setDescription(lang.invite.countDesc(user, userInviteCount, inv))
+                .setColor(`${color}`)
+                .setTimestamp()
+                .setFooter(client.user.tag)
             message.channel.send(embed);
         }
         )
     }
-   
+
     if (config) {
         let owner = message.guild.ownerID;
-    
-        if(client.BotPerso){
-            const config = require('../../config.json')
-            owner = config.owner
+
+        if (client.BotPerso) {
+            const fs = require('fs');
+            const path = './config.json';
+            if (fs.existsSync(path)) {
+                owner = require('../../config.json').owner;
+            } else {
+                owner = process.env.OWNER
+            }
         }
-    
-        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
+
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
 
         const msg = await message.channel.send(lang.loading)
@@ -120,7 +125,7 @@ module.exports = new Command({
         let isOnS;
         if (isOn[0][0].inviteOn == '0') { isOnS = '<:778348495157329930:781189773645578311>' }
         if (isOn[0][0].inviteOn == '1') { isOnS = '<:778348494712340561:781153837850820619>' }
-       
+
         const embed = new Discord.MessageEmbed()
             .setTitle(lang.invite.titleConfig)
             .setDescription(lang.invite.descConfig(inviteChannel, message.guild, isOnS, inviteMsg))
@@ -220,12 +225,12 @@ module.exports = new Command({
                     if (collected.first().content.toLowerCase() == "cancel") {
                         return message.channel.send(lang.cancel);
                     } else if (collected.first().content.toLowerCase() == lang.yes) {
-                        
+
 
                         await this.connection.query(`
                         UPDATE guildConfig SET inviteOn = '1' WHERE guildId = '${message.guild.id}'
                         `).then(() => {
-                       
+
 
                             message.channel.send(lang.invite.successEnable);
                             StateManager.emit('inviteOn', message.guild.id, '1')
@@ -285,11 +290,11 @@ module.exports = new Command({
 });
 
 embedsColor(guildEmbedColor);
-StateManager.on('ownerUpdate', (guildId, data) =>{
+StateManager.on('ownerUpdate', (guildId, data) => {
     guildOwner.set(guildId, data);
-  })
-  StateManager.on('ownerFetched', (guildId, data) =>{
+})
+StateManager.on('ownerFetched', (guildId, data) => {
     guildOwner.set(guildId, data);
-  
-  })
+
+})
 langF(guildLang);

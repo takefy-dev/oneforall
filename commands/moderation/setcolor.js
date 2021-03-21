@@ -23,25 +23,19 @@ module.exports = new Command({
     this.connection = StateManager.connection;
     const sender = message.author.id;
     var isOwner = checkOwner(message.guild.id, sender);
-    const owner = message.guild.ownerID;
-    let owners = guildOwner.get(message.guild.id);
-    const ownerTag = new Array();
-    if(typeof owners != "object"){
-        owners = owners.split(',')
-    }else {
-        owners = owners
-    }
-    for(var i = 0; i < owners.length - 1; i++){
-        let ownerSS
-            await message.guild.members.fetch().then((members) =>{
-                ownerSS = members.get(owners[i])
-            })
-        const ownerList = ownerSS.user.tag;
-        ownerTag.push(ownerList);
+    let owner = message.guild.ownerID;
 
+    if (client.BotPerso) {
+        const fs = require('fs');
+        const path = './config.json';
+        if (fs.existsSync(path)) {
+            owner = require('../../config.json').owner;
+        } else {
+            owner = process.env.OWNER
+        }
     }
     
-    if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag))
+    if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
     const color = args[0];
     var checkColor = hexColorCheck(color);
 
