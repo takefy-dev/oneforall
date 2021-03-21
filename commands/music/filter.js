@@ -26,7 +26,7 @@ module.exports = new Command({
     if(!desiredFilter || !availableFilter.includes(desiredFilter)) return message.channel.send(lang.music.filter.noArgs)
 
     if(desiredFilter === "off"){
-        let filter =  client.music.setFilter(message, queue.filter);
+        client.music.setFilter(message, queue.filter);
 
         message.channel.send(lang.music.filter.successOff)
     }else{
