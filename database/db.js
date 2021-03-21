@@ -10,7 +10,7 @@ let pass;
 if (fs.existsSync(path)) {
     const config = require('../config.json')
    
-        user = config.dbUser
+        user = config.dbuser
         pass= config.dbPass
         name=  config.dbName
 
