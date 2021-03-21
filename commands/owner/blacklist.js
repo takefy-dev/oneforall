@@ -68,7 +68,7 @@ module.exports = new Command({
         await this.connection.query(`UPDATE blacklist SET isOn = '1'`).then(() => {
             return message.channel.send(lang.blacklist.successEnable)
         })
-        StateManager.emit('blacklistIsOn', message.guild.ownerID, '1')
+        StateManager.emit('blacklistIsOn', owner, '1')
 
     }
     if (off) {
@@ -86,7 +86,7 @@ module.exports = new Command({
         await this.connection.query(`UPDATE blacklist SET isOn = '0'`).then(() => {
             return message.channel.send(lang.blacklist.successDisable)
         })
-        StateManager.emit('blacklistIsOn', message.guild.ownerID, '0')
+        StateManager.emit('blacklistIsOn', owner, '0')
     }
     if (add) {
         if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
@@ -146,7 +146,7 @@ module.exports = new Command({
         this.connection.query(
             `UPDATE blacklist SET blacklisted = '${tempdata}' WHERE userId = '${owner}'`
         ).then(() => {
-            StateManager.emit('blacklistUpdate', message.guild.ownerID, tempdata);
+            StateManager.emit('blacklistUpdate', owner, tempdata);
             message.channel.send(lang.blacklist.successBl(memberUser)).then(() => {
                 if (memberUser.bannable == false) message.channel.send(lang.blacklist.errorBannable)
                 message.guild.members.ban(memberUser.id, { reason: `Blacklist par ${message.author.tag}`, })
@@ -170,31 +170,9 @@ module.exports = new Command({
 
         })
     } else if (remove) {
-        const owner = message.guild.ownerID;
-        if(tempdata == undefined) return message.channel.send(lang.blacklist.errorNotInDb)
-
-        const sender = message.author.id;
-        var isOwner = checkOwner(message.guild.id, sender);
-        let owners = guildOwner.get(message.guild.id);
-        const ownerTag = new Array();
-        if (typeof owners != "object") {
-            owners = owners.split(',')
-        } else {
-            owners = owners
-        }
-        for (var i = 0; i < owners.length - 1; i++) {
-            let ownerSS
-            await message.guild.members.fetch().then((members) => {
-                ownerSS = members.get(owners[i])
-            })
-
-            const ownerList = ownerSS.user.tag;
-            ownerTag.push(ownerList);
-
-        }
-
-        if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag));
+       
         let memberUser;
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
         
         if(message.mentions.users.first()){
             memberUser = message.mentions.users.first();
@@ -225,7 +203,7 @@ module.exports = new Command({
         this.connection.query(
             `UPDATE blacklist SET blacklisted = '${tempdata}' WHERE userId = '${owner}'`
         ).then(() => {
-            StateManager.emit('blacklistUpdate', message.guild.ownerID, tempdata);
+            StateManager.emit('blacklistUpdate', owner, tempdata);
 
             message.channel.send(lang.blacklist.successRmBl(memberUser)).then(() => {
                 message.guild.members.unban(memberUser.id, `UnBlacklist par ${message.author.tag}`)
@@ -248,7 +226,8 @@ module.exports = new Command({
 
         })
     } else if (list) {
-        const owner = message.guild.ownerID;
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
+
         if(tempdata == undefined) return message.channel.send(lang.blacklist.errorNotInDb)
         try {
             let tdata = await message.channel.send(lang.loading)
@@ -352,28 +331,8 @@ module.exports = new Command({
             console.log(err)
         }
     } else if (clear) {
-        const owner = message.guild.ownerID;
-
-        const sender = message.author.id;
-        var isOwner = checkOwner(message.guild.id, sender);
-        let owners = guildOwner.get(message.guild.id);
-        const ownerTag = new Array();
-        if (typeof owners != "object") {
-            owners = owners.split(',')
-        } else {
-            owners = owners
-        }
-        for (var i = 0; i < owners.length - 1; i++) {
-            let ownerSS
-            await message.guild.members.fetch().then((members) => {
-                ownerSS = members.get(owners[i])
-            })
-            const ownerList = ownerSS.user.tag;
-            ownerTag.push(ownerList);
-
-        }
-
-        if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.error.errorNoOwner(ownerTag))
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
+        
         const embed = new Discord.MessageEmbed()
             .setTitle(`Confirmation`)
             .setDescription(lang.blacklist.clearBl)

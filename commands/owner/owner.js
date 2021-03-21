@@ -50,7 +50,8 @@ module.exports = new Command({
     if (!add & !remove & !list & !clear) return message.channel.send(lang.owner.errorSyntax)
     if (add) {
 
-        if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.owner.errorNotOwner(message.guild))
+        if ((owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+
         let member = message.guild.member(message.author.id);
         if (args[1]) {
             member = message.guild.member(args[1]);
@@ -81,7 +82,8 @@ module.exports = new Command({
         })
     } else if (remove) {
 
-        if (message.author.id != owner & !isOwner && !client.isOwner(message.author.id)) return message.channel.send(lang.owner.errorNotOwner(message.guild))
+        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+
         let member = message.guild.member(message.author.id);
         if (args[1]) {
             member = message.guild.member(args[1]);

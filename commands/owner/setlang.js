@@ -32,7 +32,7 @@ module.exports = new Command({
             owner = process.env.OWNER
         }
     }
-    if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+    if (owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
     const msg = await message.channel.send(lang.loading)
     let reac1
     let reac2

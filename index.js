@@ -4,21 +4,47 @@ const guildCommandPrefixes = new Map();
 require('events').EventEmitter.defaultMaxListeners = 0;
 const { CommandHandler } = require('advanced-command-handler');
 const Distube = require('distube');
+const BotPerso = true;
+
+if (BotPerso) {
+    let owner;
+    const fs = require('fs');
+    const path = './config.json';
+    if (fs.existsSync(path)) {
+        owner = require('../../config.json').owner;
+    } else {
+        owner = process.env.OWNER
+    }
+    CommandHandler.create({
+        commandsDir: 'commands',
+        eventsDir: 'events',
+        prefix: '',
+        owners: ['659038301331783680', '188356697482330122', '443812465772462090', owner]
+    });
+    CommandHandler.launch({
+        token: process.env.TOKEN,
+        clientOptions: {
+            partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+            restTimeOffset: 0,
+        },
+    });
+}else{
+    CommandHandler.create({
+        commandsDir: 'commands',
+        eventsDir: 'events',
+        prefix: '',
+        owners: ['659038301331783680', '188356697482330122', '443812465772462090']
+    });
+    CommandHandler.launch({
+        token: process.env.TOKEN,
+        clientOptions: {
+            partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+            restTimeOffset: 0,
+        },
+    });
+}
 
 
-CommandHandler.create({
-    commandsDir: 'commands',
-    eventsDir: 'events',
-    prefix: '',
-    owners: ['659038301331783680', '188356697482330122', '443812465772462090']
-});
-CommandHandler.launch({
-    token: process.env.TOKEN,
-    clientOptions: {
-        partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
-        restTimeOffset: 0,
-    },
-});
 
 const MySQL = require('mysql2');
 const sql = MySQL.createConnection({
@@ -125,7 +151,7 @@ CommandHandler.client.giveawaysManager = manager;
 
 const distube= new Distube(CommandHandler.client, { searchSongs: false, leaveOnEmpty: true});
 CommandHandler.client.music = distube;
-CommandHandler.client.BotPerso = true
+CommandHandler.client.BotPerso = BotPerso
 
 CommandHandler.client.isGuildOwner = require('./function/check/botOwner')
 
