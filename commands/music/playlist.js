@@ -29,7 +29,6 @@ module.exports = new Command({
     const dureefiltrer = response => { return response.author.id === message.author.id };
     const youtube = new Client();
     if (type === "add") {
-
         if (!usersPlaylist.has(message.author.id)) return message.channel.send(lang.music.playlist.noPlaylist)
         const authorPlaylist = usersPlaylist.get(message.author.id);
         const playlistToEdit = authorPlaylist.find(pl => pl.name === playlistName)
@@ -69,13 +68,23 @@ module.exports = new Command({
         })
 
     } else if (type === 'import') {
+        if(usersPlaylist.has(message.author.id)) {
+            const authorPlaylist = usersPlaylist.get(message.author.id)
+            if(authorPlaylist.length > 10){
+                return message.channel.send(lang.music.playlist.toManyPlaylist)
+            }
+            const playlistFinder = authorPlaylist.find(playlist => playlist.name === playlistName)
+            if(playlistFinder){
+                return message.channel.send(lang.music.playlist.alreadyName)
+            }
+            
+        }
         message.channel.send(lang.music.playlist.urlPlaylistQ).then(mp => {
             mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                 .then(async cld => {
 
                     const msg = cld.first()
                     const url = msg.content;
-                    console.log(url)
                     const urlTester = /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/;
                     const isValid = urlTester.test(url);
                     if (!url && !isValid) return message.channel.send(lang.music.playlist.provideOnlyValidUrl)
@@ -108,7 +117,7 @@ module.exports = new Command({
                                         m.delete();
                                         msg.delete();
                                         mp.delete();
-                                    }, 5000)
+                                    }, 10000)
                                 })
                             })
                         }else{
@@ -119,7 +128,7 @@ module.exports = new Command({
                                         m.delete();
                                         msg.delete();
                                         mp.delete();
-                                    }, 5000)
+                                    }, 10000)
                                 })
                             })
                         }

@@ -828,6 +828,7 @@ module.exports = {
             },
             playlist: {
                 play: (playlistName, songs) => `<a:music:822494244434214982> La playlist ${playlistName} a démarré`,
+                addToQueue: (playlistName) => `<a:music:822494244434214982> La playlist ${playlistName} a été ajouté à la queue`
             },
             empty : `Personne n'est dans le channel. Je le quitte`,
             
@@ -859,7 +860,9 @@ module.exports = {
             successRemove : (name) =>`<a:music:822494244434214982> J'ai enlevé la music souhaité de ${name}`,
             playlistToLong : `<a:music:822494244434214982> La playlist comporte plus de 50 musics, je prend les 50 premières musics`,
             removeQ : `<a:music:822494244434214982> Quel est l'url de la music à enlever (cancel pour annuler)`,
-            songNotFound : `<a:music:822494244434214982> La music à supprimer n'est pas dans cette playlist`    
+            songNotFound : `<a:music:822494244434214982> La music à supprimer n'est pas dans cette playlist`   ,
+            toManyPlaylist : `<a:music:822494244434214982> \`ERREUR\` Vous ne pouvez pas avoir plus de 10 playlist`,
+            alreadyName :`<a:music:822494244434214982> \`ERREUR\` Une playlist comportant déjà ce nom existe veuillez choisir un autre nom de playlist` ,
         }
         ,
         shuffle: `<a:music:822494244434214982> Les musics seront joué aléatoirement`

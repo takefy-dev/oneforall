@@ -24,7 +24,7 @@ module.exports = new Command({
     const q = queue.songs.map((song, i) => `${i === 0 ? lang.music.playing : `${i}.`} ${song.name} - \`${song.formattedDuration}\``).join("\n")
     const embed = new Discord.MessageEmbed()
     .setTitle(`Current queue`)
-    .setDescription(queue.songs.map((song, i) => `${i === 0 ? lang.music.playing: `${i}.`} [${song.name} - \`${song.formattedDuration}\`](${song.url})`).join("\n"))
+    .setDescription(queue.songs.map((song, i) => `${i === 0 ? lang.music.playing: `${i}.`} [${song.name} - \`${song.formattedDuration}\`](${song.url})`).slice(0, 15).join("\n"))
     .setTimestamp()
     .setColor(`${color}`)
     
