@@ -16,6 +16,7 @@ module.exports = new Command({
     userPermissions: ['ADMINISTRATOR'],
     cooldown: 3
 }, async(client, message, args) => {
+    return;
     this.connection = StateManager.connection;
     const color = guildEmbedColor.get(message.guild.id);
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
