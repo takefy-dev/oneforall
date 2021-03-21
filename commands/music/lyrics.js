@@ -27,6 +27,7 @@ module.exports = new Command({
         lyrics = await lyricsFinder(queue.songs[0].name, "");
         if (!lyrics) lyrics = `${lang.music.lyrics.notFound} ${queue.songs[0].name}.`;
       } catch (error) {
+        console.log(error)
         lyrics = `${lang.music.lyrics.notFound} ${queue.songs[0].name}.`;
       }
   

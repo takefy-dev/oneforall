@@ -54,6 +54,7 @@
     "request": "^2.88.2",
     "secure-random-password": "^0.2.2",
     "shelljs": "^0.8.4",
+    "soundcloud-scraper": "^4.0.3",
     "string-progressbar": "^1.0.3",
     "twemoji-parser": "^13.0.0",
     "youtubei": "0.0.1-rc.14"

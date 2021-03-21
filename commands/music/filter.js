@@ -24,7 +24,7 @@ module.exports = new Command({
     if (!queue) return message.channel.send(lang.music.nothingInQueue)
     const desiredFilter = args[0];
     if(!desiredFilter || !availableFilter.includes(desiredFilter)) return message.channel.send(lang.music.filter.noArgs)
-
+    
     if(desiredFilter === "off"){
         client.music.setFilter(message, queue.filter);
 

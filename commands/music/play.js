@@ -24,7 +24,6 @@ module.exports = new Command({
     if(usersPlaylist.has(message.author.id)){
         const authorPlaylist = usersPlaylist.get(message.author.id);
         let wantedPlaylist = authorPlaylist.filter(pl => pl.name === musicName);
-        console.log(wantedPlaylist.length)
         if(!wantedPlaylist || wantedPlaylist.length === 0){
             try{
                 await client.music.play(message, musicName).catch(err => console.log(err))
@@ -39,7 +38,6 @@ module.exports = new Command({
             for(let song of songsPropertie){
                 songs.push(song.url)
             }
-            console.log(songs)
             try{
                 await client.music.playCustomPlaylist(message, songs, {name : wantedPlaylist[0].name}, false, true);
             }catch(e){

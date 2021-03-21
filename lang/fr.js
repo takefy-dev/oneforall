@@ -858,11 +858,13 @@ module.exports = {
             successImport : (name) =>`<a:music:822494244434214982> La playlist a bien été importé avec le nom ${name}`,
             successDelete : (name) =>`<a:music:822494244434214982> La playlist ${name} a bien été supprimé`,
             successRemove : (name) =>`<a:music:822494244434214982> J'ai enlevé la music souhaité de ${name}`,
+            successCreate : (name) =>`<a:music:822494244434214982> J'ai créé la playlist ${name}`,
             playlistToLong : `<a:music:822494244434214982> La playlist comporte plus de 50 musics, je prend les 50 premières musics`,
             removeQ : `<a:music:822494244434214982> Quel est l'url de la music à enlever (cancel pour annuler)`,
             songNotFound : `<a:music:822494244434214982> La music à supprimer n'est pas dans cette playlist`   ,
             toManyPlaylist : `<a:music:822494244434214982> \`ERREUR\` Vous ne pouvez pas avoir plus de 10 playlist`,
             alreadyName :`<a:music:822494244434214982> \`ERREUR\` Une playlist comportant déjà ce nom existe veuillez choisir un autre nom de playlist` ,
+            createQ : `<a:music:822494244434214982> Quel est la première music à ajouter dans votre playlist ?`
         },
         filter : {
             noArgs : `<a:music:822494244434214982> \`ERREUR\` Vous devez choisir une option d'effet a appliqué \`3d, bassboost, echo, karaoke, nightcore, vaporwave, flanger, gate,haas, reverse, surround, mcompand, phaser, tremolo, earwax\``,

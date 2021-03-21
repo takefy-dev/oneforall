@@ -93,7 +93,7 @@ module.exports = {
                 if (authorPlaylist.length > 10) {
                     return message.channel.send(lang.music.playlist.toManyPlaylist)
                 }
-                const playlistFinder = authorPlaylist.find(playlist => playlist.name === playlistName)
+                const playlistFinder = authorPlaylist.find(playlist => playlist.name === nameOfPl)
                 if (playlistFinder) {
                     return message.channel.send(lang.music.playlist.alreadyName)
                 }
