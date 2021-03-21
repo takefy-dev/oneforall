@@ -15,6 +15,7 @@ module.exports = new Command({
     tags: ['guildOnly'],
     cooldown: 5
 }, async (client, message, args) => {
+    return;
     const color = guildEmbedColor.get(message.guild.id);
     this.connection = StateManager.connection;
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
