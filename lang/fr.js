@@ -863,8 +863,14 @@ module.exports = {
             songNotFound : `<a:music:822494244434214982> La music à supprimer n'est pas dans cette playlist`   ,
             toManyPlaylist : `<a:music:822494244434214982> \`ERREUR\` Vous ne pouvez pas avoir plus de 10 playlist`,
             alreadyName :`<a:music:822494244434214982> \`ERREUR\` Une playlist comportant déjà ce nom existe veuillez choisir un autre nom de playlist` ,
-        }
-        ,
+        },
+        filter : {
+            noArgs : `<a:music:822494244434214982> \`ERREUR\` Vous devez choisir une option d'effet a appliqué \`3d, bassboost, echo, karaoke, nightcore, vaporwave, flanger, gate,haas, reverse, surround, mcompand, phaser, tremolo, earwax\``,
+            success : (addedFilter, filter) => `<a:music:822494244434214982> Succès le filtre ${addedFilter} a été ajouté a la liste des filtres (${filter|| "Off"}) `,
+            successOff : `<a:music:822494244434214982> Le filtre est désactivé`,
+        
+        },
+        
         shuffle: `<a:music:822494244434214982> Les musics seront joué aléatoirement`
     },
     
