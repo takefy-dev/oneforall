@@ -38,7 +38,7 @@ module.exports = new Command({
             owner = process.env.OWNER
         }
     }
-    if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+    if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
     if (!client.BotPerso) {
         let voted

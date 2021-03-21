@@ -91,6 +91,7 @@ module.exports = new Event(
 	},
 	async (handler, message) => {
 		if (message.guild == null) return;
+		if(!guildLang.has(message.guild.id)) return;
 
 		const color = guildEmbedColor.get(message.guild.id)
 		this.connection = StateManager.connection;
@@ -306,8 +307,11 @@ module.exports = new Event(
 				else {
 					++msgCount;
 					if (parseInt(msgCount) === LIMIT) {
-						message.member.roles.add(muteRole);
-						message.channel.send(`${message.member}, vous avez été mute car vous spammez`)
+						if(muteRole){
+							message.member.roles.add(muteRole);
+							message.channel.send(`${message.member}, vous avez été mute car vous spammez`)
+						}
+						
 					} else {
 						userData.msgCount = msgCount;
 						usersMap.set(message.author.id, userData);

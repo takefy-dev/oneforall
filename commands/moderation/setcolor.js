@@ -35,7 +35,7 @@ module.exports = new Command({
         }
     }
     
-    if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+    if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
     const color = args[0];
     var checkColor = hexColorCheck(color);
 

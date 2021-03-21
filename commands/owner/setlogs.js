@@ -34,7 +34,7 @@ module.exports = new Command({
     const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
     const color = guildEmbedColor.get(message.guild.id);
 
-    if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+    if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
     await this.connection.query(`SELECT modLog, msgLog, voiceLog, antiraidLog FROM guildConfig WHERE guildId = '${message.guild.id}'`).then((result) => {
         modLog.set(message.guild.id, result[0][0].modLog)

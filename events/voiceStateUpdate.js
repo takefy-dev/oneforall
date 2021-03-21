@@ -169,7 +169,7 @@ module.exports = new Event(
                         const coins = parseInt(durationMin);
 
                      
-                        await this.connection.query(`INSERT INTO coins VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `).then(() =>{
+                        await this.connection.query(`INSERT INTO coins VALUES (userId, guildId, coins) ('${oldState.id}', '${oldState.guild.id}', '${coins}') `).then(() =>{
                             const newGuildUserCoins = []
                             newGuildUserCoins.push({userId: oldState.id, coins})
                             userCoins.set(oldState.guild.id, newGuildUserCoins)

@@ -41,7 +41,7 @@ module.exports = new Command({
         let link = `https://cdn.discordapp.com/emojis/${custom.id}.${custom.animated ? "gif" : "png"}`
         message.guild.emojis.create(link, name, { reason: `emoji add par ${message.author.username}` }).then(()=>{
             message.channel.send(lang.addemoji.success(name))
-            Logger.log(`${Logger.setColor('teal')}${member.user.tag} a ajouté un emoji`, 'Success add emoji')
+            Logger.log(`${Logger.setColor('teal')}${message.author.tag} a ajouté un emoji`, 'Success add emoji')
         })
 
     }

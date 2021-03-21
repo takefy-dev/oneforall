@@ -39,7 +39,7 @@ module.exports = new Command({
         }
     }
 
-    if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+    if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
     await this.connection.query(`SELECT soutienId FROM guildConfig WHERE guildId = '${message.guild.id}'`).then((result) => {
         soutienId.set(message.guild.id, result[0][0].soutienId);

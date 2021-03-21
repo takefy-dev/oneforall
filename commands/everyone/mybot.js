@@ -78,7 +78,7 @@ module.exports = new Command(
                 const timeLeft = prettyMilliseconds(expireAt.getTime() - now.getTime())
                 const msg = await message.channel.send(lang.loading)
                 const avatar = message.author.displayAvatarURL({ dynamic: true })
-                const inv = `https://discord.com/oauth2/authorize?client_id=${result.botId}&scope=bot&permissions=8`
+                const inv = `https://discord.com/oauth2/authorize?client_id=${result.client.botId}&scope=bot&permissions=8`
                 const embed = new Discord.MessageEmbed()
 
                     .setDescription(`

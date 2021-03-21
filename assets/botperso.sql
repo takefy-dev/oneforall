@@ -324,7 +324,14 @@ CREATE TABLE `guildConfig` (
   `channelCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non Non définie"}',
   `roleCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non Non définie"}',
   `boosterCount` longtext COLLATE utf8mb4_unicode_ci DEFAULT _cp850'{"name": "Non Non définie"}',
-
+  `statsOn` tinyint(1) DEFAULT '0',
+  `warnBan` int DEFAULT '4',
+  `warnKick` int DEFAULT '3',
+  `warnMute` int DEFAULT '2',
+  `coinsOn` tinyint(1) DEFAULT '0',
+  `streamBoost` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '1.5',
+  `muteDiviseur` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '2',
+  `coinsLogs` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'Non définie',
   PRIMARY KEY (`guildId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -514,6 +521,46 @@ CREATE TABLE `warn` (
   `warn` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+DROP TABLE IF EXISTS `coins`;
+
+CREATE TABLE `coins` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `userId` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guildId` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `coins` float(50,2) NOT NULL DEFAULT '0.00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+DROP TABLE IF EXISTS `coinShop`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `coinShop` (
+  `guildId` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `shop` longtext COLLATE utf8mb4_unicode_ci DEFAULT (_cp850'Rien dans le magasin'),
+  PRIMARY KEY (`guildId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `playlist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `playlist` (
+  `userId` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `playlist` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `inventory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `inventory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `userId` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guildId` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `inventory` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

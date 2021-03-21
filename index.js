@@ -11,7 +11,7 @@ if (BotPerso) {
     const fs = require('fs');
     const path = './config.json';
     if (fs.existsSync(path)) {
-        owner = require('../../config.json').owner;
+        owner = require('./config.json').owner;
     } else {
         owner = process.env.OWNER
     }

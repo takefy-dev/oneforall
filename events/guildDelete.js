@@ -7,6 +7,7 @@ module.exports = new Event(
 	},
 module.exports = async(handler, guild) => {
   this.connection = StateManager.connection;
+  if(guild.deleted) return;
   try {
     await this.connection.query(
       `DELETE FROM guilds WHERE guildId = '${guild.id}'`
@@ -24,7 +25,7 @@ module.exports = async(handler, guild) => {
     await this.connection.query(
       `DELETE FROM antiraidWlBp WHERE guildId = '${guild.id}'`
     )
-    await this.connection.query(`DELETE FROM coinShop WHERE guildId = '${guild.id}')`)
+    await this.connection.query(`DELETE FROM coinShop WHERE guildId = '${guild.id}'`)
 
     console.log(`Deleted from db.`)
   } catch(err) {

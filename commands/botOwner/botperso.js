@@ -91,7 +91,7 @@ module.exports = new Command({
         const formattime = dateFormater.formatDate(new Date(time), 'yyyy-MM-dd');
         console.log(time)
         const discordName = member.nickname === null ? member.user.username : member.nickname;
-        const botpersoSqlPath = `/home/takefy/Documents/oneforall/assets/botperso.sql`
+        const botpersoSqlPath = `/home/oneforall/assets/botperso.sql`
         try{
             this.botperso.query(`CREATE DATABASE ${discordName}`).then(() =>{
                 importer.config({
