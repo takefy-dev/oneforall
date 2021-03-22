@@ -738,7 +738,7 @@ module.exports = {
         syntaxEdit : `<:720681441670725645:780539422479351809> \`ERREUR\` Erreur de syntax : (!shop edit <itemId>)`,
         noModification : `Vous n'avez rien modifié dans l'item`,
         successEdit : `<:720681705219817534:780540043033837622> \`SUCCÈS\` L'item a bien été modifié`,
-        shopDesc : (guildName) => `:shopping_cart: Magasin sur le serveur **${guildName}**.\n<a:coinsoneforall:819646518180446228> Achetez un item avec le \`buy [number]\` command.`
+        shopDesc : (guildName) => `:shopping_cart: Magasin sur le serveur **${guildName}**.\n<a:coinsoneforall:823538178622488616> Achetez un item avec le \`buy [number]\` command.`
     
     },
     buy : {
@@ -748,9 +748,9 @@ module.exports = {
         nothingInShop : `<:720681441670725645:780539422479351809> \`ERREUR\` Il n'y a rien dans le magasin`,
         notEnoughCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas assé d'argent pour acheter cet item`,
         itemNotInShop : `<:720681441670725645:780539422479351809> \`ERREUR\` L'item n'est pas dans le magasin`,
-        success : (name, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez acheté **${name}** pour <a:coinsoneforall:819646518180446228> **${price}** coins.`,
+        success : (name, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez acheté **${name}** pour <a:coinsoneforall:823538178622488616> **${price}** coins.`,
         alreadyRole : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous possédez déjà ce rôle vous ne pouvez donc pas acheter cet item.`,
-        buyLog : (memberPing, itemName, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${memberPing} a acheté **${itemName}** pour <a:coinsoneforall:819646518180446228> **${price}** coins.`
+        buyLog : (memberPing, itemName, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${memberPing} a acheté **${itemName}** pour <a:coinsoneforall:823538178622488616> **${price}** coins.`
 
     },
     coins : {
@@ -762,7 +762,7 @@ module.exports = {
         giverNoCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous avez aucun coins à donner`,
         giverAndReceiverSame : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne  pouvez pas vous donner vous même de l'argent`,
         infZero : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas donner une somme inférieur à 1 coins`,
-        successPay : (receiver, amount) =>`<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez donné <a:coinsoneforall:819646518180446228> **${amount}** coins a ${receiver}`,
+        successPay : (receiver, amount) =>`<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez donné <a:coinsoneforall:823538178622488616> **${amount}** coins a ${receiver}`,
         payLog : (giver, receiver, amount) => `${giver} a donné ${amount} coins à ${receiver}`, 
     },
     lb :{
