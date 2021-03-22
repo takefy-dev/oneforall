@@ -25,7 +25,7 @@ module.exports = new Command({
         const lb = sortedTotalCoins.slice(0, 10)
         const embed = new Discord.MessageEmbed()
         .setTitle(lang.lb.title)
-        .setDescription(lb.map((user, i) => `${i++} . <@${user[1].userId}> : ${user[1].coins}`))
+        .setDescription(lb.map((user, i) => `${i+1} . <@${user[1].userId}> : ${user[1].coins}`))
         .setFooter(`OneForAll coins`)
         .setColor(`${color}`)
         message.channel.send(embed)

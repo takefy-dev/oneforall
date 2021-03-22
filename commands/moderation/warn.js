@@ -17,7 +17,7 @@ module.exports = new Command({
     usage: '!warn [clear/list/remove] <mention/id/> [amountToClear or all / numberOfTheWarnToRemove] [reason]',
     category: 'moderation',
     tags: ['guildOnly'],
-    userPermissions: ['ADMINISTRATOR'],
+    userPermissions: ['BAN_MEMBERS'],
     clientPermissions: ['EMBED_LINKS'],
     cooldown: 3
 }, async (client, message, args) => {
