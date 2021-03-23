@@ -2538,7 +2538,8 @@ module.exports = new Command({
         ])
         await antiraidConfigMenu.start();
         const filter = (reaction, user) => ['✅'].includes(reaction.emoji.name) && user.id === message.author.id;
-        const confirMsg = await message.channel.send(lang.antiraidConfig.timeoutmsg).then(async (m) => {
+        const confirMsg = await message.channel.send(lang.antiraidConfig.reactsave).then(async (m) => {
+            await m.react('✅')
             const collector = m.createReactionCollector(filter, { time: 900000 });
             collector.on('collect', async r => {
                 if (r.emoji.name == '✅') {
