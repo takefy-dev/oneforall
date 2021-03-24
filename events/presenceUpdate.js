@@ -12,8 +12,8 @@ module.exports = new Event(
   module.exports = async (handler, oldMember, newMember) => {
     // console.log(newMember)
     this.connection = StateManager.connection;
+    if(!handler.client.BotPerso) return;
     handler.client.guilds.cache.forEach(guild => {
-		return;
       
       if (!oldMember) return;
       const msg = soutienMsg.get(guild.id);
