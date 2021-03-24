@@ -7,7 +7,7 @@ const guildLang = new Map();
 var langF = require('../../function/lang')
 const userCoins = new Map();
 module.exports = new Command({
-    name: 'learderboard',
+    name: 'leaderboard',
     description: 'Show the top 10 member with the most coins | Affiche le top 10 des membres avec le plus de coins',
     // Optionnals :
     usage: '!leaderboard',
