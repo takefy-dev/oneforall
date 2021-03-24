@@ -89,8 +89,7 @@ module.exports = new Command({
         StateManager.emit('blacklistIsOn', owner, '0')
     }
     if (add) {
-        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
-
+if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
         let memberUser;
         try{
@@ -172,8 +171,7 @@ module.exports = new Command({
     } else if (remove) {
        
         let memberUser;
-        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
-        
+if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)        
         if(message.mentions.users.first()){
             memberUser = message.mentions.users.first();
         }else if(await client.users.cache.has(args[1]) && !isNaN(args[1])){
@@ -226,8 +224,7 @@ module.exports = new Command({
 
         })
     } else if (list) {
-        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
-
+if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
         if(tempdata == undefined) return message.channel.send(lang.blacklist.errorNotInDb)
         try {
             let tdata = await message.channel.send(lang.loading)
@@ -331,8 +328,7 @@ module.exports = new Command({
             console.log(err)
         }
     } else if (clear) {
-        if ((!client.isGuildOwner(message.guild.id, message.author.id) || owner !== message.author.id) && !client.isOwner(message.author.id))   return message.channel.send(lang.error.notListOwner)
-        
+if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)        
         const embed = new Discord.MessageEmbed()
             .setTitle(`Confirmation`)
             .setDescription(lang.blacklist.clearBl)

@@ -383,7 +383,7 @@ module.exports = new Event(
 					if(cmd.tags.includes("voiceOnly") && !message.member.voice.channel){
 						return await message.channel.send(lang.error.voiceChat)
 					}
-					Logger.log(`${Logger.setColor('magenta', message.author.tag)} executed the command ${Logger.setColor('gold', cmd.name)} on the guild ${Logger.setColor('teal', message.guild.name)}.`);
+					Logger.log(`${Logger.setColor('magenta', message.author.tag)} executed the command ${Logger.setColor('gold', `${cmd.name} ${args.length > 0 ? args.join(' ') : ''}`)} on the guild ${Logger.setColor('teal', message.guild.name)}.`);
 
 					const verified = verifyPerms(message, cmd);
 					// if (verified.client.length > 0) return message.channel.send({ embed: missingPermission(verified.client, true) });
