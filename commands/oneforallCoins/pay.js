@@ -41,6 +41,7 @@ module.exports = new Command({
     const guildCoins = userCoins.get(message.guild.id);
     if(guildCoins){
         const giverCoinsInfo = guildCoins.find(coins => coins.userId === message.author.id);
+        if(giverCoinsInfo.coins < parseInt(amountToGive)) return message.channel.send(lang.pay.cantPay)
         let giverCoin = 0;
         if (giverCoinsInfo) giverCoin = giverCoinsInfo.coins;
         if (giverCoin < 1) return message.channel.send(lang.pay.giverNoCoins).then(mp => mp.delete({ timeout: 4000 }))

@@ -764,6 +764,7 @@ module.exports = {
         infZero : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas donner une somme inférieur à 1 coins`,
         successPay : (receiver, amount) =>`<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez donné <a:coinsoneforall:823538178622488616> **${amount}** coins a ${receiver}`,
         payLog : (giver, receiver, amount) => `${giver} a donné ${amount} coins à ${receiver}`, 
+        cantPay : `Vous ne pouvez pas donner ce montant`
     },
     lb :{
         title : `Top des 10 membres ayant le plus de coins`,
