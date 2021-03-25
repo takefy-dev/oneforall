@@ -20,21 +20,6 @@ module.exports = new Command({
     clientPermissions: ['BAN_MEMBERS'],
     cooldown: 5
 }, async (client, message, args) => {
-
-    var tempdata;
-    this.connection = StateManager.connection;
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
-    const result = await this.connection.query(`SELECT blacklisted FROM blacklist WHERE userId = '${message.guild.ownerID}'`)
-  
-    if (result[0].length != 0) {
-        const blacklisted = result[0][0].blacklisted;
-        const strBlacklisted = blacklisted.toString();
-        var ar2 = blacklisted.split(",")
-        tempdata = ar1.concat(ar2);
-
-    }
-
     let owner = message.guild.ownerID;
     
     if(client.BotPerso){
@@ -46,6 +31,21 @@ module.exports = new Command({
             owner = process.env.OWNER
         }
     }
+    var tempdata;
+    this.connection = StateManager.connection;
+    const color = guildEmbedColor.get(message.guild.id);
+    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const result = await this.connection.query(`SELECT blacklisted FROM blacklist WHERE userId = '${owner}'`)
+  
+    if (result[0].length != 0) {
+        const blacklisted = result[0][0].blacklisted;
+        const strBlacklisted = blacklisted.toString();
+        var ar2 = blacklisted.split(",")
+        tempdata = ar1.concat(ar2);
+
+    }
+
+    
 
     const clear = args[0] == 'clear';
     const add = args[0] == "add";
