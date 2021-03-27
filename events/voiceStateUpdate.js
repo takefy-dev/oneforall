@@ -74,117 +74,120 @@ module.exports = new Event(
         }
         //#endregion voiceState
         //#region coins
-        const guildCoinsSettings = coinSettings.get(oldState.guild.id);
-        if (guildCoinsSettings.enable) {
-            let guildUserCoins = userCoins.get(oldState.guild.id);
-            const streamBoost = parseInt(guildCoinsSettings.streamBoost);
-            const muteDiviseur = parseInt(guildCoinsSettings.muteDiviseur);
-            if ((oldState.member && oldState.member.user.bot) || (newState.member && newState.member.user.bot)) return;
-            if (!oldState.channelID && newState.channelID) { // This user has join the channel.
-                activeMemberInVoiceCoins.set(oldState.id, Date.now());
-            }
-            let data;
-            if (!activeMemberInVoiceCoins.has(oldState.id)) {
-                data = Date.now();
-                activeMemberInVoiceCoins.set(oldState.id, data); // check current data for the existence of
-            }
-            else {
-                data = activeMemberInVoiceCoins.get(oldState.id);
-
-            }
-            let duration = Date.now() - data;
-            if (oldState.channelID && !newState.channelID) { // This user has left the channel.
-                activeMemberInVoiceCoins.delete(oldState.id);
-                let durationMin = duration * 1.66667e-5;
-                if (durationMin >= 1) {
-                    if (oldState.serverDeaf || oldState.serverMute || oldState.selfDeaf || oldState.selfMute) {
-                        durationMin = (duration * 1.66667e-5) / muteDiviseur;
-                    } else if (oldState.selfVideo || oldState.streaming) {
-                        durationMin = (duration * 1.66667e-5) * streamBoost
-                    }
-                    if (guildUserCoins) {
-                        const userCoinsInfo = guildUserCoins.filter(coins => coins.userId === oldState.id);
-                        if (userCoinsInfo.length !== 0) {
-                            const coins = parseInt(userCoinsInfo[0].coins + durationMin) ;
-                            console.log(coins)
-                            const index = guildUserCoins.indexOf(userCoinsInfo[0])
-                            guildUserCoins[index].coins = coins;
-                            StateManager.emit('guildCoins', oldState.guild.id, guildUserCoins)
-                            await this.connection.query(`UPDATE coins SET coins = '${coins}' WHERE guildId = '${oldState.guild.id}' AND userId = '${oldState.id}'`);
-                        } else {
-                            const coins = parseInt(durationMin);
-                            const newUserCoins = { userId: oldState.id, coins };
-                            guildUserCoins.push(newUserCoins);
-                            await this.connection.query(`INSERT INTO coins (userId, guildId,  coins)VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `)
-
-                        }
-                    } else {
-
-                        const coins = parseInt(durationMin);
-        
-                        await this.connection.query(`INSERT INTO coins (userId, guildId, coins) VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `).then(() =>{
-                            const newGuildUserCoins = []
-                            newGuildUserCoins.push({userId: oldState.id, coins})
-                            userCoins.set(oldState.guild.id, newGuildUserCoins)
-                            guildUserCoins = userCoins.get(oldState.guild.id)
-                            StateManager.emit('guildCoins', oldState.guild.id, guildUserCoins)
-                        })
-
-                    }
-
-
-
-
+        if(coinSettings.has(oldState.guild.id)) {
+            const guildCoinsSettings = coinSettings.get(oldState.guild.id);
+            if (guildCoinsSettings.enable) {
+                let guildUserCoins = userCoins.get(oldState.guild.id);
+                const streamBoost = parseInt(guildCoinsSettings.streamBoost);
+                const muteDiviseur = parseInt(guildCoinsSettings.muteDiviseur);
+                if ((oldState.member && oldState.member.user.bot) || (newState.member && newState.member.user.bot)) return;
+                if (!oldState.channelID && newState.channelID) { // This user has join the channel.
+                    activeMemberInVoiceCoins.set(oldState.id, Date.now());
                 }
-
-            }
-            else if (oldState.channelID && newState.channelID) { // This user has changes the channel.
-                activeMemberInVoiceCoins.set(oldState.id, Date.now());
-                let durationMin = duration * 1.66667e-5;
-
-                if (durationMin >= 1) {
-                    if (oldState.serverDeaf || oldState.serverMute || oldState.selfDeaf || oldState.selfMute) {
-                        durationMin = (duration * 1.66667e-5) / muteDiviseur;
-                    } else if (oldState.selfVideo || oldState.streaming) {
-                        durationMin = (duration * 1.66667e-5) * streamBoost;
-                    }
-                    if (guildUserCoins) {
-                        const userCoinsInfo = guildUserCoins.filter(coins => coins.userId === oldState.id);
-
-                        if (userCoinsInfo.length !== 0) {
-                            const coins = parseInt(userCoinsInfo[0].coins + durationMin) ;
-                            const index = guildUserCoins.indexOf(userCoinsInfo[0])
-                            guildUserCoins[index].coins = coins;
-                            StateManager.emit('guildCoins', oldState.guild.id, guildUserCoins)
-                            await this.connection.query(`UPDATE coins SET coins = '${coins}' WHERE guildId = '${oldState.guild.id}' AND userId = '${oldState.id}'`);
-                        } else {
-                            const coins = parseInt(durationMin);
-                            const newUserCoins = { userId: oldState.id, coins };
-                            guildUserCoins.push(newUserCoins);
-                            await this.connection.query(`INSERT INTO coins (userId, guildId,  coins)VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `)
-
-                        }
-                    } else {
-
-                        const coins = parseInt(durationMin);
-
-                     
-                        await this.connection.query(`INSERT INTO coins VALUES (userId, guildId, coins) ('${oldState.id}', '${oldState.guild.id}', '${coins}') `).then(() =>{
-                            const newGuildUserCoins = []
-                            newGuildUserCoins.push({userId: oldState.id, coins})
-                            userCoins.set(oldState.guild.id, newGuildUserCoins)
-                            guildUserCoins = userCoins.get(oldState.guild.id)
-                            StateManager.emit('guildCoins', oldState.guild.id, guildUserCoins)
+                let data;
+                if (!activeMemberInVoiceCoins.has(oldState.id)) {
+                    data = Date.now();
+                    activeMemberInVoiceCoins.set(oldState.id, data); // check current data for the existence of
+                }
+                else {
+                    data = activeMemberInVoiceCoins.get(oldState.id);
     
-                        })
-
-                    }
-
                 }
-
+                let duration = Date.now() - data;
+                if (oldState.channelID && !newState.channelID) { // This user has left the channel.
+                    activeMemberInVoiceCoins.delete(oldState.id);
+                    let durationMin = duration * 1.66667e-5;
+                    if (durationMin >= 1) {
+                        if (oldState.serverDeaf || oldState.serverMute || oldState.selfDeaf || oldState.selfMute) {
+                            durationMin = (duration * 1.66667e-5) / muteDiviseur;
+                        } else if (oldState.selfVideo || oldState.streaming) {
+                            durationMin = (duration * 1.66667e-5) * streamBoost
+                        }
+                        if (guildUserCoins) {
+                            const userCoinsInfo = guildUserCoins.filter(coins => coins.userId === oldState.id);
+                            if (userCoinsInfo.length !== 0) {
+                                const coins = parseInt(userCoinsInfo[0].coins + durationMin) ;
+                                console.log(coins)
+                                const index = guildUserCoins.indexOf(userCoinsInfo[0])
+                                guildUserCoins[index].coins = coins;
+                                StateManager.emit('guildCoins', oldState.guild.id, guildUserCoins)
+                                await this.connection.query(`UPDATE coins SET coins = '${coins}' WHERE guildId = '${oldState.guild.id}' AND userId = '${oldState.id}'`);
+                            } else {
+                                const coins = parseInt(durationMin);
+                                const newUserCoins = { userId: oldState.id, coins };
+                                guildUserCoins.push(newUserCoins);
+                                await this.connection.query(`INSERT INTO coins (userId, guildId,  coins)VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `)
+    
+                            }
+                        } else {
+    
+                            const coins = parseInt(durationMin);
+            
+                            await this.connection.query(`INSERT INTO coins (userId, guildId, coins) VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `).then(() =>{
+                                const newGuildUserCoins = []
+                                newGuildUserCoins.push({userId: oldState.id, coins})
+                                userCoins.set(oldState.guild.id, newGuildUserCoins)
+                                guildUserCoins = userCoins.get(oldState.guild.id)
+                                StateManager.emit('guildCoins', oldState.guild.id, guildUserCoins)
+                            })
+    
+                        }
+    
+    
+    
+    
+                    }
+    
+                }
+                else if (oldState.channelID && newState.channelID) { // This user has changes the channel.
+                    activeMemberInVoiceCoins.set(oldState.id, Date.now());
+                    let durationMin = duration * 1.66667e-5;
+    
+                    if (durationMin >= 1) {
+                        if (oldState.serverDeaf || oldState.serverMute || oldState.selfDeaf || oldState.selfMute) {
+                            durationMin = (duration * 1.66667e-5) / muteDiviseur;
+                        } else if (oldState.selfVideo || oldState.streaming) {
+                            durationMin = (duration * 1.66667e-5) * streamBoost;
+                        }
+                        if (guildUserCoins) {
+                            const userCoinsInfo = guildUserCoins.filter(coins => coins.userId === oldState.id);
+    
+                            if (userCoinsInfo.length !== 0) {
+                                const coins = parseInt(userCoinsInfo[0].coins + durationMin) ;
+                                const index = guildUserCoins.indexOf(userCoinsInfo[0])
+                                guildUserCoins[index].coins = coins;
+                                StateManager.emit('guildCoins', oldState.guild.id, guildUserCoins)
+                                await this.connection.query(`UPDATE coins SET coins = '${coins}' WHERE guildId = '${oldState.guild.id}' AND userId = '${oldState.id}'`);
+                            } else {
+                                const coins = parseInt(durationMin);
+                                const newUserCoins = { userId: oldState.id, coins };
+                                guildUserCoins.push(newUserCoins);
+                                await this.connection.query(`INSERT INTO coins (userId, guildId,  coins)VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `)
+    
+                            }
+                        } else {
+    
+                            const coins = parseInt(durationMin);
+    
+                         
+                            await this.connection.query(`INSERT INTO coins VALUES (userId, guildId, coins) ('${oldState.id}', '${oldState.guild.id}', '${coins}') `).then(() =>{
+                                const newGuildUserCoins = []
+                                newGuildUserCoins.push({userId: oldState.id, coins})
+                                userCoins.set(oldState.guild.id, newGuildUserCoins)
+                                guildUserCoins = userCoins.get(oldState.guild.id)
+                                StateManager.emit('guildCoins', oldState.guild.id, guildUserCoins)
+        
+                            })
+    
+                        }
+    
+                    }
+    
+                }
+    
             }
-
         }
+      
 
 
         //#endregion coins
