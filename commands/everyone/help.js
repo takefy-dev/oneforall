@@ -44,7 +44,7 @@ module.exports = new Command({
             .setTimestamp()
             .setDescription(lang.help.information2(prefix))
             .setFooter(client.user.username, message.author.displayAvatarURL({ dynamic: true }))
-            .addField(`**Links:**`, `<:verified:815181742885044224> [Top.gg](https://top.gg/bot/780019344511336518)\n<:store_tag:815181746306809877> [Support Server](https://discord.gg/n2EvRECf88)\n<:role:815181750367682580> [Website](https://one4all.fr)\n<:771462923855069204:784471984087236658> [Invite me](https://discord.com/api/oauth2/authorize?client_id=780019344511336518&permissions=8&scope=bot)`)
+            .addField(`**Links:**`, `<:verified:824621335858249778> [Top.gg](https://top.gg/bot/780019344511336518)\n<:store_tag:815181746306809877> [Support Server](https://discord.gg/n2EvRECf88)\n<:role:815181750367682580> [Website](https://one4all.fr)\n<:771462923855069204:784471984087236658> [Invite me](https://discord.com/api/oauth2/authorize?client_id=780019344511336518&permissions=8&scope=bot)`)
         const princMsg = await message.channel.send(embed).then(async m => {
             await m.react('📄')
             const collector = m.createReactionCollector(filter, { time: 900000 });
