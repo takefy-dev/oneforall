@@ -58,7 +58,7 @@ module.exports = {
         > <:unmute:801122798629945354> Open microphone : **${openMicCount}**
         > <:stream:801122725602000946> Streaming : **${streamingCount}**
         > <:mutecasque:801123005287628890> Headphone mute : **${muteHeadSetCount}**
-        > <:mutemic:801122908445212723> Mute microphone : **${muteCount}**\n\n<:sageata:801151019873599600> Total of members in voice channel : **${count}**`,
+        > <:mutemic:801122908445212723> Mute microphone : **${muteCount}**\n\n<:sageata:788796887121657877> Total of members in voice channel : **${count}**`,
     },
     authorinfo: {
         description: `__**OneforAll**__\n\n*OneforAll is a bot owned by* \`TAKEFY#9831\`\n\n**Developers :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby.#0006](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n[!" Iroz (pause)#0001](https://discord.gg/h69YZHB7Nh) -> Communication\n`,
