@@ -94,7 +94,7 @@ module.exports = {
         descriptionInf : (banned) =>`Il y a <:Banhammer:785492588269535263> **${banned.size}** membres banni(s). `
     },
     clear: {
-        error100 : '<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas supprimé plus de 100 messages à la fois!',
+        error100 : '<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas supprimer plus de 100 messages à la fois!',
         errorNaN : '<:720681441670725645:780539422479351809> \`ERREUR\` Mettez uniquement des nombres!',
         success : (deleteAmount) => `<:720681705219817534:780540043033837622> \`SUCCÈS\`  Vous avez supprimé ${deleteAmount} messages.`
     },

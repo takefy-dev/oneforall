@@ -119,13 +119,11 @@ module.exports = new Command({
         message.channel.send(lang.serverlist.leave)
     }
     if(!isNaN(args[0])){
-        for(var i=0; i < tempName.length; i++){
-            if(!tempName[i].includes(args[0])) return message.channel.send(lang.serverlist.errorNotServer)
-        }
+        if(!client.guilds.cache.has(args[0])) return message.channel.send(lang.serverlist.errorNotServer)
 
         const guild = client.guilds.cache.get(args[0])
         guild.leave().then(() =>{
-            message.channel.send(lang.serverlist.success(guildName))
+            message.channel.send(lang.serverlist.success(guild.name))
         })
     }
     
