@@ -1,4 +1,3 @@
-const BaseCommand = require('../../utils/structures/BaseCommand');
 const { version } = require('../../package.json');
 const moment = require('moment');
 const { utc } = require('moment');

@@ -1,4 +1,3 @@
-const BaseCommand = require('../../utils/structures/BaseCommand');
 const discord = require('discord.js')
 const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');

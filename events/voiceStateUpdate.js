@@ -1,5 +1,4 @@
 const StateManager = require('../utils/StateManager');
-const BaseEvent = require('../utils/structures/BaseEvent');
 var checkBotOwner = require('../function/check/botOwner');
 const guildEmbedColor = new Map();
 var checkWl = require('../function/check/checkWl');

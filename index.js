@@ -1,11 +1,18 @@
 require('dotenv').config();
+
+// Structures
+require('./utils/structures/Guild');
+require('./utils/structures/Member');
+require('./utils/structures/User');
+
+
+
 const StateManager = require('./utils/StateManager');
 const guildCommandPrefixes = new Map();
 require('events').EventEmitter.defaultMaxListeners = 0;
 const { CommandHandler } = require('advanced-command-handler');
 const Distube = require('distube');
 const BotPerso = false;
-
 if (BotPerso) {
     let owner;
     const fs = require('fs');
