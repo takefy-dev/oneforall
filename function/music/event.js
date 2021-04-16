@@ -9,8 +9,8 @@ const usersPlaylist = new Map();
 module.exports = {
     async musicEvent(music) {
         Logger.log(`${Logger.setColor('blue')} Events launch`, 'music')
-        const guildColor = (message) => guildEmbedColor.get(message.guild.id);
-        const gLang = (message) => require(`../../lang/${guildLang.get(message.guild.id)}`);
+        const guildColor = (message) => message.guild.color
+        const gLang = (message) => require(`../../lang/${message.guild.lang}`);
         const status = (queue) => `Volume: \`${queue.volume}%\` | Filter: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode == 2 ? "All Queue" : "This Song" : "Off"}\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``;
 
         // when music is start playing

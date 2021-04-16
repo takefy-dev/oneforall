@@ -16,8 +16,8 @@ module.exports = new Command({
     userPermissions: ['ADMINISTRATOR'],
     cooldown: 10
 }, async(client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     const toSay = args.slice(0).join(' ')
     await message.delete()
     if(toSay.length < 1) return message.channel.send(lang.say.cantSendEmptyMsg).then(mp => mp.delete({timeout: 4000}))

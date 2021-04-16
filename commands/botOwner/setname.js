@@ -13,7 +13,7 @@ module.exports = new Command({
     aliases: ['setname', 'setprenom', 'setnom'],
     cooldown: 2
 }, async (client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
+    const color = message.guild.color
 
     if (args.length) {
         let str_content = args.join(" ")

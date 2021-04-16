@@ -19,8 +19,8 @@ module.exports = new Command({
 }, async (client, message, args) => {
     this.connection = StateManager.connection;
 
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     let owner = message.guild.ownerID;
 
     if (client.BotPerso) {
@@ -42,7 +42,7 @@ module.exports = new Command({
     reac3 = await msg.react("❌");
     const embed = new Discord.MessageEmbed()
         .setTitle(lang.setlang.title)
-        .setDescription(lang.setlang.description(guildLang.get(message.guild.id)))
+        .setDescription(lang.setlang.description(message.guild.lang))
         .setTimestamp()
         .setColor(`${color}`)
         .setFooter(`${client.user.username}`);
@@ -51,34 +51,34 @@ module.exports = new Command({
     msg.edit('', embed).then(async (m) => {
         const collector = m.createReactionCollector(filter, { time: 900000 });
         collector.on('collect', async r => {
-            r.users.remove(message.author);
-            if (r.emoji.name == "🇫🇷") {
+            await r.users.remove(message.author);
+            if (r.emoji.name === "🇫🇷") {
                 this.connection.query(`SELECT lang FROM guildConfig WHERE guildId = '${message.guild.id}'`).then(async (res) => {
-                    if (res[0][0].lang == "fr") {
+                    if (res[0][0].lang === "fr") {
                         return message.channel.send(lang.setlang.errorSelected)
                     } else {
                         await this.connection.query(`UPDATE guildConfig SET lang = 'fr' WHERE guildId = '${message.guild.id}'`).then(async () => {
                             await collector.stop()
                             await msg.delete();
-                            StateManager.emit('langUpdate', message.guild.id, 'fr')
+                            message.guild.lang = 'fr';
                             return message.channel.send(lang.setlang.success('fr'))
                         })
                     }
                 })
-            } else if (r.emoji.name == "🇬🇧") {
+            } else if (r.emoji.name === "🇬🇧") {
                 this.connection.query(`SELECT lang FROM guildConfig WHERE guildId = '${message.guild.id}'`).then((res) => {
-                    if (res[0][0].lang == "en") {
+                    if (res[0][0].lang === "en") {
                         return message.channel.send(lang.setlang.errorSelected)
                     } else {
                         this.connection.query(`UPDATE guildConfig SET lang = 'en' WHERE guildId = '${message.guild.id}'`).then(async () => {
                             await collector.stop()
                             await msg.delete();
-                            StateManager.emit('langUpdate', message.guild.id, 'en')
+                            message.guild.lang = 'en';
                             return message.channel.send(lang.setlang.success('en'))
                         })
                     }
                 })
-            } else if (r.emoji.name == "❌") {
+            } else if (r.emoji.name === "❌") {
                 await collector.stop();
                 return await msg.delete();
             }

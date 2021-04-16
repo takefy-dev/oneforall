@@ -22,8 +22,8 @@ module.exports = new Command({
     cooldown: 2
 }, async (client, message, args) => {
     this.connection = StateManager.connection;
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
-    const color = guildEmbedColor.get(message.guild.id);
+    const lang = require(`../../lang/${message.guild.lang}`)
+    const color = message.guild.color
 
     const user = message.mentions.users.first() || await client.users.fetch(args[0]).catch(async err => {
         return await message.channel.send(lang.ban.noBan).then(mp => mp.delete({ timeout: 4000 }));

@@ -22,11 +22,11 @@ module.exports = new Command({
     aliases: ['welcome'],
     cooldown: 5
 }, async (client, message, args) => {
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
 
     this.connection = StateManager.connection;
     const config = args[0] == "config";
-    const color = guildEmbedColor.get(message.guild.id);
+    const color = message.guild.color
     const help = args[0] == "help";
     if (help) {
         const embed = new Discord.MessageEmbed()

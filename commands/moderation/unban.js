@@ -16,7 +16,7 @@ module.exports = new Command({
     userPermissions: ['BAN_MEMBERS'],
     cooldown: 2
 }, async(client, message, args) => {
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
     // if(!message.member.hasPermission('BAN_MEMBERS')) return message.channel.send("<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas la permission requise \`BAN_MEMBERS\`")
     const color = guildEmbedColor.get(message.guild.id)
     if(args[0] == 'all'){

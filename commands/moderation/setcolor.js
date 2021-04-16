@@ -19,10 +19,8 @@ module.exports = new Command({
     tags: ['guildOnly'],
     cooldown: 5
 }, async (client, message, args) => {
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
     this.connection = StateManager.connection;
-    const sender = message.author.id;
-    var isOwner = checkOwner(message.guild.id, sender);
     let owner = message.guild.ownerID;
 
     if (client.BotPerso) {
@@ -37,11 +35,11 @@ module.exports = new Command({
     
     if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
     const color = args[0];
-    var checkColor = hexColorCheck(color);
+    let checkColor = hexColorCheck(color);
 
     if (!color) return message.channel.send(lang.setcolor.noColor)
     if (color) {
-        if (checkColor == true) {
+        if (checkColor) {
             try {
                 await this.connection.query(
                     `UPDATE guildConfig SET embedColors = '${color}' WHERE guildId = '${message.guild.id}'`
@@ -53,7 +51,7 @@ module.exports = new Command({
                     .setTitle(lang.setcolor.titleDescription)
                 message.channel.send(exampleEmbed);
 
-                StateManager.emit('colorUpdate', message.guild.id, color);
+               message.guild.color = color;
             } catch (err) {
                 console.log(err);
                 message.channel.send(lang.setcolor.errorSql(color))

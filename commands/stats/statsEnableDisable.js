@@ -18,8 +18,8 @@ module.exports = new Command({
 }, async(client, message, args) => {
     return;
     this.connection = StateManager.connection;
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     if(args[0] === "on"){
         await this.connection.query(`UPDATE guildConfig SET statsOn = '1' WHERE guildId = '${message.guild.id}'`).then(() => {
             message.channel.send(lang.stats.enable).then(mp => mp.delete({ timeout: 4000 }))

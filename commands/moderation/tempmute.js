@@ -23,7 +23,7 @@ module.exports = new Command({
     clientPermissions: ['MUTE_MEMBERS'],
     cooldown: 4
 }, async (client, message, args) => {
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
     this.connection = StateManager.connection;
     let isSetup = checkSetup(message.guild.id);
     if (!isSetup) return message.channel.send(lang.error.noSetup);
@@ -39,7 +39,7 @@ module.exports = new Command({
 
     if (member.roles.cache.has(muteRole.id)) return message.channel.send(lang.tempmute.errorAlreadyMute(member));
     member.roles.add(muteRole).then(async () => {
-        const color = guildEmbedColor.get(message.guild.id);
+        const color = message.guild.color
 
         message.channel.send(lang.tempmute.success(member, time));
         let logChannelId = logsChannelId.get(message.guild.id);

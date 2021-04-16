@@ -31,9 +31,9 @@ module.exports = new Command({
     // if (allGuild > 5) {
     //     return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` Votre serveur a atteind le quota maximum de giveaway par serveur qui est de \`5\``)
     // }
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
 
-    const color = guildEmbedColor.get(message.guild.id);
+    const color = message.guild.color
     const filter = (reaction, user) => ['🕙', '🏷️', '🎁', '✅', '🕵️'].includes(reaction.emoji.name) && user.id === message.author.id,
         dureefiltrer = response => { return response.author.id === message.author.id };
     let msg = await message.channel.send(lang.loading)

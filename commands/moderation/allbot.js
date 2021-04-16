@@ -16,10 +16,10 @@ module.exports = new Command({
     userPermissions: ["ADMINISTRATOR"],
     cooldown: 10
 }, async (client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
+    const color = message.guild.color
     const tempdata = []
 
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const lang = require(`../../lang/${message.guild.lang}`);
     let bots;
     let noms;
     await message.guild.members.fetch().then((members) => {

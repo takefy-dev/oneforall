@@ -17,9 +17,9 @@ module.exports = new Command({
     clientPermissions: ['EMBED_LINKS'],
     cooldown: 4
 }, async(client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
+    const color = message.guild.color
     let availableFilter = ["off","3d","bassboost","echo","karaoke", "nightcore", "vaporwave", "flanger", "gate", "hass", "reverse", "surround", "mcompand","phaser", "tremolo", "earwax"]
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const lang = require(`../../lang/${message.guild.lang}`);
     const queue = client.music.getQueue(message)
     if (!queue) return message.channel.send(lang.music.nothingInQueue)
     const desiredFilter = args[0];

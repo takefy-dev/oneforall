@@ -19,8 +19,8 @@ module.exports = new Command({
     userPermissions: ['MUTE_MEMBERS'],
     cooldown: 2
 }, async(client, message, args) => {
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
-    const color = guildEmbedColor.get(message.guild.id);
+    const lang = require(`../../lang/${message.guild.lang}`)
+    const color = message.guild.color
     let isSetup = checkSetup(message.guild.id);
     if(!isSetup) return message.channel.send(lang.error.noSetup);
     const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);

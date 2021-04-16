@@ -20,7 +20,7 @@ module.exports = new Command({
     cooldown: 4
 }, async (client, message, args) => {
     this.connection = StateManager.connection;
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const lang = require(`../../lang/${message.guild.lang}`);
 
     let owner = message.guild.ownerID;
 
@@ -34,7 +34,7 @@ module.exports = new Command({
         }
     }
     if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id))  return message.channel.send(lang.error.notListOwner)
-    const color = guildEmbedColor.get(message.guild.id);
+    const color = message.guild.color
     const principalMsg = await message.channel.send(lang.loading)
     const emoji = ['🎥', '😶', '💌', '❌', '🌀','✅']
     for (const em of emoji) {

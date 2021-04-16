@@ -20,7 +20,7 @@ module.exports = new Command({
     // console.log(message.guild.members.cache.get('796457090679570483').voice)
     // console.log(message.guild.members.cache.filter(m => !m.bot && m.voice.sessionID))
     const color = guildEmbedColor.get(message.guild.id)
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
 
     let count = 0;
     let muteCount = 0;

@@ -18,8 +18,8 @@ module.exports = new Command({
     clientPermissions: ['EMBED_LINKS'],
     cooldown: 4
 }, async (client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     this.connection = StateManager.connection;
     const membersGuildInv = guildInventory.get(message.guild.id);
     if (membersGuildInv) {

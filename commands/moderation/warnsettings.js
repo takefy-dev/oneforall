@@ -21,8 +21,8 @@ module.exports = new Command({
     cooldown: 3
 }, async(client, message, args) => {
     this.connection = StateManager.connection;
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     let owner = message.guild.ownerID;
 
     if (client.BotPerso) {

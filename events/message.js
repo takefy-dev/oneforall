@@ -90,12 +90,14 @@ module.exports = new Event(
 		name: 'message',
 	},
 	async (handler, message) => {
+
 		if (message.guild == null) return;
-		if(!guildLang.has(message.guild.id)) return;
+		// console.log(message.guild.guildConfig.prefix)
+		// if(!guildLang.has(message.guild.id)) return;
 
 		const color = guildEmbedColor.get(message.guild.id)
 		this.connection = StateManager.connection;
-		const lang = require(`../lang/${guildLang.get(message.guild.id)}`);
+		const lang = require(`../lang/${message.guild.lang}`);
 
 		function hasDiscordInvite(string) {
 			let discordInvite = /(https:\/\/)?(www\.)?(discord\.gg|discord\.me|discordapp\.com\/invite|discord\.com\/invite)\/([a-z0-9-.]+)?/i;
@@ -105,7 +107,7 @@ module.exports = new Event(
 		}
 
 		function deleteMessage(message, type) {
-			if (message.author.id == handler.client.user.id) return;
+			if (message.author.id === handler.client.user.id) return;
 			if (message.deletable) {
 				message.delete().catch(() => { });
 			}
@@ -333,12 +335,13 @@ module.exports = new Event(
 
 
 		//#endregion antispam
-		let prefix = guildCommandPrefixes.get(message.guild.id);
+		let prefix = message.guild.guildConfig.prefix;
+
 		const botMention = message.mentions.has(handler.client.user)
 
 		if (botMention) {
 			if (message.content.includes("@here") || message.content.includes("@everyone")) return false;
-			if (prefix == undefined) return message.channel.send(`Votre serveurs n'est pas dans ma base de donnée veuillez me réajouter !`)
+			if (!prefix) return message.channel.send(`Votre serveurs n'est pas dans ma base de donnée veuillez me kick et m'ajouter !`)
 			return message.channel.send(`<:778353230484471819:780727288903237663> Mon prefix est: \`${prefix}\``)
 		}
 
@@ -364,13 +367,13 @@ module.exports = new Event(
 
 			if (cmd) {
 
-				if (message.author.id == "679559090741051393") return message.channel.send("Tu es blacklist freik");
-				if (message.author.id == "709534713500401685") return message.channel.send("Tu es blacklist Dowzy");
-				if (message.author.id == "754832699889418262") return message.channel.send("Tu es blacklist Dowzy");
-				if (message.author.id == "738127567860662374") return message.channel.send("Tu es blacklist oruma");
-				if (message.author.id == "720036345896108103") return message.channel.send("Tu es blacklist oruma");
-				if (message.author.id == "780019344511336518") return message.channel.send("Tu es blacklist next");
-				if (message.author.id == "755439561529622558") return message.channel.send("Tu es blacklist hades");
+				if (message.author.id === "679559090741051393") return message.channel.send("Tu es blacklist freik");
+				if (message.author.id === "709534713500401685") return message.channel.send("Tu es blacklist Dowzy");
+				if (message.author.id === "754832699889418262") return message.channel.send("Tu es blacklist Dowzy");
+				if (message.author.id === "738127567860662374") return message.channel.send("Tu es blacklist oruma");
+				if (message.author.id === "720036345896108103") return message.channel.send("Tu es blacklist oruma");
+				if (message.author.id === "780019344511336518") return message.channel.send("Tu es blacklist next");
+				if (message.author.id === "755439561529622558") return message.channel.send("Tu es blacklist hades");
 
 				if (!handler.client.isOwner(message.author.id) && (['owner', 'wip', 'mod'].includes(cmd.category) || cmd.tags.includes('ownerOnly'))) {
 					await message.channel.send("Tu n'es pas le créateur du bot. Tu n'as donc pas les permissions d'executer cette commande.");
@@ -408,7 +411,7 @@ module.exports = new Event(
 					
 				}
 
-				if (handler.cooldowns.has(message.author.id)) {
+				if (handler.cooldowns.has(message.author.id) && !handler.client.isOwner(message.author.id)) {
 					return message.channel.send(`Veuillez executer la commande dans \`${handler.cooldowns.get(message.author.id)}\` secondes.`);
 				} else if (cmd.cooldown > 0) {
 					handler.cooldowns.set(message.author.id, cmd.cooldown);

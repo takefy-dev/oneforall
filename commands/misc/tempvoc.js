@@ -22,8 +22,8 @@ module.exports = new Command({
     cooldown: 4
 }, async (client, message, args) => {
     this.connection = StateManager.connection;
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     const msg = await message.channel.send(lang.loading);
     const emojis = ['🕳', '💬', '💨', '💥', '❌', '✅']
     for (const emoji of emojis) {

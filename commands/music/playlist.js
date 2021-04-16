@@ -22,8 +22,8 @@ module.exports = new Command({
     cooldown: 2
 }, async (client, message, args) => {
     this.connection = StateManager.connection;
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     const type = args[0];
     const playlistName = args.slice(1).join(" ");
     if (!playlistName) return message.channel.send(lang.music.playlist.noPlaylistName)

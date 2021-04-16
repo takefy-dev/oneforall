@@ -15,8 +15,8 @@ module.exports = new Command({
     aliases: ['pp'],
     cooldown: 2
 }, async (client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     let user = message.mentions.users.first();
     if(!isNaN(args[0])) user =  await client.users.fetch(args[0]).catch()
     if (!user) user = message.author;

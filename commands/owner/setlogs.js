@@ -31,8 +31,8 @@ module.exports = new Command({
             owner = process.env.OWNER
         }
     }
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
-    const color = guildEmbedColor.get(message.guild.id);
+    const lang = require(`../../lang/${message.guild.lang}`)
+    const color = message.guild.color
 
     if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 

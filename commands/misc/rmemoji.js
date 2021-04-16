@@ -19,8 +19,8 @@ module.exports = new Command({
     clientPermissions: ['EMBED_LINKS'],
     cooldown: 2
 }, async (client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     const emoji = args[0];
     let custom = Util.parseEmoji(emoji);
 

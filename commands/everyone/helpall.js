@@ -16,8 +16,8 @@ module.exports = new Command({
     category: 'everyone',
     cooldown: 1
 }, async(client, message, args) => {
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
-    const color = guildEmbedColor.get(message.guild.id);
+    const lang = require(`../../lang/${message.guild.lang}`)
+    const color = message.guild.color
 
     if(!message.guild) return;
     var embed2 = new MessageEmbed()

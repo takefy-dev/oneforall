@@ -18,8 +18,8 @@ module.exports = new Command({
     clientPermissions: ['EMBED_LINKS'],
     cooldown: 4
 }, async(client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     const authorPlaylist = usersPlaylist.get(message.author.id);
     if(!args[0]){
         const playlist = !authorPlaylist ? `No playlist` : authorPlaylist.map((pl, i) => `${i+1}. ${pl.name}\n`);

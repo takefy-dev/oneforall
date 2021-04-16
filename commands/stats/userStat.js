@@ -16,9 +16,9 @@ module.exports = new Command({
     cooldown: 5
 }, async (client, message, args) => {
     return;
-    const color = guildEmbedColor.get(message.guild.id);
+    const color = message.guild.color
     this.connection = StateManager.connection;
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const lang = require(`../../lang/${message.guild.lang}`);
     let member = message.mentions.members.first()
     if (member === undefined && args[0]) {
         if (message.guild.members.cache.has(args[0])) {

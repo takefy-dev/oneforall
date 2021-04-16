@@ -18,7 +18,7 @@ module.exports = new Command({
     cooldown: 5
 }, async (client, message, args) => {
     const color = guildEmbedColor.get(message.guild.id)
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
 
 
     message.guild.fetchBans()

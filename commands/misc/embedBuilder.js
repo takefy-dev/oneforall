@@ -33,8 +33,8 @@ module.exports = new Command({
     cooldown: 3
 }, async (client, message, args) => {
     timestamp.set(message.guild.id, false)
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`)
     const embed = new Discord.MessageEmbed()
     .setDescription()
     const editEmbed = await message.channel.send(embed)

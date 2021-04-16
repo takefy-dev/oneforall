@@ -15,7 +15,7 @@ module.exports = new Command({
     cooldown: 3
 }, async(client, message, args) => {
     const color = guildEmbedColor.get(message.guild.id)
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const lang = require(`../../lang/${message.guild.lang}`);
     const embed = new discord.MessageEmbed()
      .setTimestamp()
      .setColor(`${color}`)

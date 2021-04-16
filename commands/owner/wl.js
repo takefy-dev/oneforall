@@ -2,15 +2,9 @@
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor')
-var checkSetup = require('../../function/check/checkSetup');
-const { cpus } = require('os');
-const guildId = new Map();
 let ar1 = new Array();
-const guildOwner = new Map();
 const guildLang = new Map();
 var langF = require('../../function/lang')
-var checkOwner = require('../../function/check/botOwner');
 const { Command } = require('advanced-command-handler');
 module.exports = new Command({
     name: 'wl',
@@ -21,16 +15,13 @@ module.exports = new Command({
     cooldown: 3
 }, async (client, message, args) => {
     this.connection = StateManager.connection;
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
 
 
-    const result = await this.connection.query(`SELECT whitelisted FROM guildConfig WHERE guildId = '${message.guild.id}'`)
-    const whitelisted = result[0][0].whitelisted;
-    const strWhitelisted = whitelisted.toString();
-    var ar2 = whitelisted.split(",")
-    var tempdata = ar1.concat(ar2);
-    const color = guildEmbedColor.get(message.guild.id);
-    const clear = args[0] == 'clear'
+    const whitelisted = message.guild.whitelist;
+    let tempdata = whitelisted;
+    const color = message.guild.color
+    const clear = args[0] === 'clear'
     let owner = message.guild.ownerID;
 
     if (client.BotPerso) {
@@ -44,10 +35,10 @@ module.exports = new Command({
     }
 
 
-    const add = args[0] == "add";
-    const remove = args[0] == 'remove';
-    const list = args[0] == 'list';
-    if (!add & !remove & !list & !clear) return message.channel.send(lang.wl.errorSyntax)
+    const add = args[0] === "add";
+    const remove = args[0] === 'remove';
+    const list = args[0] === 'list';
+    if (!add && !remove && !list && !clear) return message.channel.send(lang.wl.errorSyntax)
     if (add) {
        
 
@@ -64,7 +55,7 @@ module.exports = new Command({
         if (!member) return message.channel.send(lang.wl.errorSyntaxAdd)
 
         if (tempdata.includes(member.user.id)) return message.channel.send(lang.wl.errorAlreadyWl(member))
-        while (tempdata[0] == '==' || tempdata[0] == '') {
+        while (tempdata[0] === '==' || tempdata[0] === '') {
             tempdata.shift()
         }
         if (!tempdata.includes(member.user.id)) {
@@ -76,7 +67,7 @@ module.exports = new Command({
         this.connection.query(
             `UPDATE guildConfig SET whitelisted = '${tempdata}' WHERE guildId = '${message.guild.id}'`
         ).then(() => {
-            StateManager.emit('wlUpdate', message.guild.id, tempdata);
+            message.guild.guildConfig.whitelisted = tempdata;
 
             message.channel.send(lang.wl.successWl(member))
 
@@ -95,19 +86,19 @@ module.exports = new Command({
             member = message.guild.member(message.mentions.members.first().id);
         }
         if (!member) return message.channel.send(lang.wl.errorSyntax)
-        while (tempdata[0] == '==' || tempdata[0] == '') {
+        while (tempdata[0] === '==' || tempdata[0] === '') {
             tempdata.shift()
         }
 
 
-        if (tempdata.includes(member.user.id) == false) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` **${member.user.tag}** n'est pas dans la whitelist`)
+        if (tempdata.includes(member.user.id) === false) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` **${member.user.tag}** n'est pas dans la whitelist`)
 
         tempdata = tempdata.filter(x => x !== member.user.id)
 
         this.connection.query(
             `UPDATE guildConfig SET whitelisted = '${tempdata}' WHERE guildId = '${message.guild.id}'`
         ).then(() => {
-            StateManager.emit('wlUpdate', message.guild.id, tempdata);
+            message.guild.guildConfig.whitelisted = tempdata;
 
             message.channel.send(`<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai enlevé **${member.user.tag}** à la whitelist`)
 
@@ -243,10 +234,11 @@ module.exports = new Command({
         const collector = msg.createReactionCollector(filter, { time: 30000 });
         collector.on('collect', async (r, user) => {
 
-            if (r.emoji.name == '✅') {
+            if (r.emoji.name === '✅') {
                 try {
                     await this.connection.query(`UPDATE guildConfig SET whitelisted = '' WHERE guildId = '${message.guild.id}'`).then(() => {
                         tempdata = []
+                        message.guild.guildConfig.whitelisted = '';
                         msg.delete()
                         return message.channel.send(lang.wl.successClearWl)
 
@@ -255,28 +247,13 @@ module.exports = new Command({
                     console.error(err)
                     return message.channel.send(lang.wl.errror)
                 }
-            } else if (r.emoji.name == '❌') {
+            } else if (r.emoji.name === '❌') {
                 return message.channel.send(lang.wl.cancel)
             }
         })
 
     }
 });
-
-
-
-
-
-
-embedsColor(guildEmbedColor);
-StateManager.on('ownerUpdate', (guildId, data) => {
-    guildOwner.set(guildId, data);
-})
-StateManager.on('ownerFetched', (guildId, data) => {
-    guildOwner.set(guildId, data);
-
-})
-
 
 langF(guildLang);
 

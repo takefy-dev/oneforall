@@ -15,7 +15,7 @@ module.exports = new Command({
     clientPermissions: ['ADMINISTRATOR'],
     cooldown: 5
 }, async(client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
+    const color = message.guild.color
     
     message.member.voice.channel.join().then(m => { 
         message.channel.send(lang.voicemove.success(message.author));

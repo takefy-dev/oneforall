@@ -1,13 +1,11 @@
 const discord = require('discord.js')
-const guildEmbedColor = new Map();
+
 const StateManager = require('../../utils/StateManager');
-var checkSetup = require('../../function/check/checkSetup');
-var checkOwner = require('../../function/check/botOwner');
-var embedsColor = require('../../function/embedsColor');
+
 const guildOwner = new Map();
 const { Command } = require('advanced-command-handler');
 const guildLang = new Map();
-var langF = require('../../function/lang')
+const langF = require('../../function/lang')
 module.exports = new Command({
     name: 'setup',
     description: 'Setup the role for the bot to work perfectly | Configurer les rôles indispensable pour la fonctionnalitée du bot',
@@ -19,7 +17,7 @@ module.exports = new Command({
 }, async (client, message, args) => {
     this.connection = StateManager.connection
  
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
 
     let owner = message.guild.ownerID;
 
@@ -38,13 +36,13 @@ module.exports = new Command({
     message.channel.send(lang.setup.muteQ)
     const responseMuteRole = await message.channel.awaitMessages(m => m.author.id === message.author.id, { max: 1, timeout: 30000, errors: ['time'] }).catch(() => { message.channel.send("Opération annulée pas de réponse après 30s") })
     const CollectedMuteRole = responseMuteRole.first()
-    if (CollectedMuteRole.content.toLowerCase() == "cancel") return message.channel.send(lang.cancel)
+    if (CollectedMuteRole.content.toLowerCase() === "cancel") return message.channel.send(lang.cancel)
 
 
     message.channel.send(lang.setup.memberRoleQ)
     const responseMembreRole = await message.channel.awaitMessages(m => m.author.id === message.author.id, { max: 1, timeout: 30000, errors: ['time'] }).catch(() => { message.channel.send("Opération annulée pas de réponse après 30s") })
     const CollectedMembreRole = responseMembreRole.first()
-    if (CollectedMembreRole.content.toLowerCase() == "cancel") return message.channel.send(lang.cancel)
+    if (CollectedMembreRole.content.toLowerCase() === "cancel") return message.channel.send(lang.cancel)
 
 
     let muteRole = CollectedMuteRole.mentions.roles.first();
@@ -85,17 +83,17 @@ module.exports = new Command({
 
 
         message.channel.send(lang.setup.success(mureRoleId, memberRoleId))
-        StateManager.emit('addMuteRole', guildId, mureRoleId);
-        StateManager.emit('addMemberRole', guildId, memberRoleId)
-        StateManager.emit('setupDone', guildId, setup);
+        message.guild.guildConfig.muteRoleId = mureRoleId;
+        message.guild.guildConfig.memberRole = memberRoleId;
+        message.guild.guildConfig.setup = '1';
         message.guild.channels.cache.forEach(channel => {
-            if (channel.type == 'text') {
+            if (channel.type === 'text') {
                 channel.updateOverwrite(muteRole, {
                     SEND_MESSAGES: false,
                     ADD_REACTIONS: false
                 }, `Setup par ${message.author.tag}`)
             }
-            if (channel.type == 'voice') {
+            if (channel.type === 'voice') {
                 channel.updateOverwrite(muteRole, {
                     SPEAK: false
                 }, `Setup par ${message.author.tag}`)
@@ -108,12 +106,6 @@ module.exports = new Command({
 });
 
 
-embedsColor(guildEmbedColor);
-StateManager.on('ownerUpdate', (guildId, data) => {
-    guildOwner.set(guildId, data);
-})
-StateManager.on('ownerFetched', (guildId, data) => {
-    guildOwner.set(guildId, data);
 
-})
+
 langF(guildLang);

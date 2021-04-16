@@ -14,7 +14,7 @@ module.exports = new Command({
     category: 'everyone',
     cooldown: 2
 }, async (client, message, args) => {
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
     const color = guildEmbedColor.get(message.guild.id)
 
     const helpCommand = new Discord.MessageEmbed()

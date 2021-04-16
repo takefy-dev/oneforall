@@ -18,8 +18,8 @@ module.exports = new Command({
     cooldown: 20
 }, async(client, message, args) => {
     let tempName = [];
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     let count = 0
   
         client.guilds.cache.forEach(guild => {

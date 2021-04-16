@@ -24,8 +24,8 @@ module.exports = new Command({
     let configEmbed;
     let msg;
     this.connection = StateManager.connection;
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     const create = args[0] == "create";
     const list = args[0] == 'list';
     const load = args[0] == 'load';

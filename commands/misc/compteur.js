@@ -30,8 +30,9 @@ module.exports = new Command({
 
     this.connection = StateManager.connection;
 
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color;
+    console.log(message.guild.counter)
+    const lang = require(`../../lang/${message.guild.lang}`);
     const msg = await message.channel.send(lang.loading)
     const emoji = ['👥', '🤖', '🔊', '🟢', '⭕', '📖', '✨', '💠', '❌', '✅']
     for(const em of emoji) {
@@ -60,7 +61,7 @@ module.exports = new Command({
         const collector = m.createReactionCollector(filter, { time: 900000 });
         collector.on('collect', async r => {
             r.users.remove(message.author);
-            if(r.emoji.name == emoji[0]){
+            if(r.emoji.name === emoji[0]){
                 message.channel.send(lang.counter.memberChQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {

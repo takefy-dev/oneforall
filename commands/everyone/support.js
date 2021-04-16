@@ -15,8 +15,8 @@ module.exports = new Command({
     cooldown: 10
 }, async(client, message, args) => {
     const prefix = guildPrefix.get(message.guild.id);
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`)
     const embed = new discord.MessageEmbed()
         .setAuthor(lang.support.support, `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
         .setColor(`${color}`)

@@ -29,8 +29,8 @@ module.exports = new Command({
 }, async (client, message, args) => {
     this.botperso = BotPerso.botperso;
     
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     const reset = args[0] === 'reset';
     this.botperso.query(`SELECT * FROM client WHERE discordId = '${message.author.id}'`).then(async(result) =>{ 
         if (!result || result[0][0] == undefined) {

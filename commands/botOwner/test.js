@@ -17,8 +17,8 @@ module.exports = new Command({
     userPermissions: [],
     clientPermissions: [],
 }, async (client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     const play = client.music.playlist(args[0], message.author);
 
     console.log(play)

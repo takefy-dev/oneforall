@@ -15,7 +15,7 @@ module.exports = new Command({
    
     cooldown: 2
 }, async(client, message, args) => {
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
     function hasDiscordInvite(string) {
 		let discordInvite = /(https:\/\/)?(www\.)?(discord\.gg|discord\.me|discordapp\.com\/invite|discord\.com\/invite)\/([a-z0-9-.]+)?/i;
 

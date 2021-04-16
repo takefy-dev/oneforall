@@ -27,8 +27,8 @@ Structures.extend('User', (User) => {
             await StateManager.connection.query(`SELECT blacklisted, isOn FROM blacklist WHERE userId = '${this.userId}'`).then((res) => {
                 if(res[0][0]){
                     this.blacklisted = {
-                        enable: res[0][0].isOn,
-                        blacklisted: !res[0][0].blacklisted ? null : res[0][0].blacklisted
+                        enable: res[0][0].isOn === 1,
+                        blacklisted: res[0][0].blacklisted.toString().split(',')
                     };
                 }
             })

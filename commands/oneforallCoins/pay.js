@@ -17,8 +17,8 @@ module.exports = new Command({
     cooldown: 4
 }, async (client, message, args) => {
     this.connection = StateManager.connection;
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     const shopSettings = coinSettings.get(message.guild.id);
     if (!shopSettings.enable) return message.channel.send(lang.buy.shoDisable).then(mp => mp.delete({ timeout: 4000 }))
     let member;

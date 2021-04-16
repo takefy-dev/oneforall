@@ -15,7 +15,7 @@ module.exports = new Command({
     cooldown: 5
 }, async(client, message, args) => {
     this.connection = StateManager.connection;
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
 
     const sender = message.author.id;
     var isOwner = checkOwner(message.guild.id, sender);

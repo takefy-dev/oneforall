@@ -13,7 +13,7 @@ module.exports = new Command({
 
     cooldown: 1
 }, async (client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
+    const color = message.guild.color
     const activityName = args.join(" ");
     if(args[0] == "streaming"){
         client.user.setPresence({ activity: { name: activityName.replace("streaming", " "), type: 'STREAMING', url: "https://www.twitch.tv/discord" } })

@@ -20,7 +20,7 @@ module.exports = new Command({
     clientPermissions: ['MANAGE_CHANNELS'],
     cooldown: 2
 }, async(client, message, args) => {
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
    
     // if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send("<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas la permission requise \`MANAGE_MESSAGES\`");
 

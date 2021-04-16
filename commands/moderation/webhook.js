@@ -18,7 +18,7 @@ module.exports = new Command({
     userPermissions: ['MANAGE_WEBHOOKS'],
     cooldown: 5
 }, async(client, message, args) => {
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
     const del = args[0] == 'delete';
     if (!args[0]) {
         const embed = new Discord.MessageEmbed()

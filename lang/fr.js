@@ -15,11 +15,10 @@ module.exports = {
         YesNo : `Veuillez répondre par \`oui ou non\` uniquement !`,
         timeout : `Temps écoulé !`,
         noSetup : "Vous devez setup le bot pour pouvoir utiliser cette commande (!setup)",
-        errorNoOwner : (ownerTag) => `<:720681441670725645:780539422479351809> \`ERREUR\` Seulement les owners peuvent executer cette commande \`(${ownerTag.join(",")})\`!`,
         NoYes : "Vous devez répondre uniquement avec oui ou non !",
         timeout : `Temps écoulé !`,
         notListOwner : `Vous n'êtes pas dans la liste des owners`,
-        notGuildOwner : `Seulement la couronne du serveur peut`,
+        notGuildOwner : `Seulement la couronne du serveur peut executer cette action`,
         voiceChat : `Vous devez être dans un salon vocal pour executer cette commande`,
         MissingPermission : `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
         includesEveryoneMention : `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`

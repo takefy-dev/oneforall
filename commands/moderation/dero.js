@@ -18,8 +18,8 @@ module.exports = new Command({
     cooldown: 10
 }, async (client, message, args) => {
   
-        const color = guildEmbedColor.get(message.guild.id);
-        const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+        const color = message.guild.color
+        const lang = require(`../../lang/${message.guild.lang}`)
         let success;
         let owner = message.guild.ownerID;
     

@@ -16,8 +16,8 @@ module.exports = new Command({
     clientPermissions: ['EMBED_LINKS'],
     cooldown: 4
 }, async(client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     const queue = client.music.getQueue(message)
     if (!queue) return message.channel.send(lang.music.nothingInQueue)
     let autoplayStatus = queue.autoplay;

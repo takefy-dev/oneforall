@@ -48,7 +48,7 @@ module.exports = new Command({
     
     }
     if(!moderatorAuthorisation.hasOwnProperty(message.author.id)) return message.channel.send(`{"message": "Unauthorized"}`);
-    const color = guildEmbedColor.get(message.guild.id);
+    const color = message.guild.color
     const create = args[0] == "create";
     const del = args[0] == "delete";
     const add = args[0] == "add"

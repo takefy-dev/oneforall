@@ -32,8 +32,8 @@ module.exports = new Command({
             owner = process.env.OWNER
         }
     }
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     if (args[0] === "create") {
         if (shop.has(message.guild.id)) return message.channel.send(lang.addShop.alreadyShop)
         return await this.connection.query(`INSERT INTO coinShop VALUES ('${message.guild.id}', '[${JSON.stringify({ id: 0, item: lang.addShop.nothingInShop, prix: undefined, role: undefined })}]')`).then(async () => {

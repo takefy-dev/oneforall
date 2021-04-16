@@ -20,10 +20,11 @@ module.exports = new Command({
     category: 'owners',
     cooldown: 3
 }, async (client, message, args) => {
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    if(!client.BotPerso) return message.channel.send(`Command is disable for none client`)
+    const lang = require(`../../lang/${message.guild.lang}`)
 
     this.connection = StateManager.connection;
-    const color = guildEmbedColor.get(message.guild.id);
+    const color = message.guild.color
     const config = args[0] == "config";
     const count = args[0] == "count"
     const sender = message.author.id;

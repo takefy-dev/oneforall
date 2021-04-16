@@ -8,12 +8,14 @@ Structures.extend('Guild', (Guild) =>{
             this.guildConfigs = null;
             this.antiraidConfigs = null;
             this.reactroles = null;
+            this.counters = null;
             this.coinShop = null;
-
-             this.guildId = data.id;
-                Logger.info(`Fetching guild configs`, `Fetching all guilds`)
+            this.guildId = data.id;
+            this.lang = null;
+            this.color = null;
+            Logger.info(`Fetching guild configs`, `Fetching all guilds`)
              this.fetchGuildConfigs();
-             Logger.info(`all guilds`, 'Finish fetching')
+            Logger.info(`all guilds`, 'Finish fetching')
              Logger.log(`Fetching antiraid configs`, `Fetching all guilds`, 'orange')
              this.fetchAntiraidConfigs()
              Logger.log(`all guilds`, 'Finish fetching', 'orange')
@@ -40,18 +42,49 @@ Structures.extend('Guild', (Guild) =>{
         }
 
         get counter () {
-             return {
-                 enable: this.guildConfigs.statsOn,
+             if(!this.guildConfigs) return;
+            const memberCount = JSON.parse(this.guildConfigs.memberCount)
+            const  voiceCount= JSON.parse(this.guildConfigs.voiceCount)
+           const onlineCount = JSON.parse(this.guildConfigs.onlineCount)
+           const offlineCount = JSON.parse(this.guildConfigs.offlineCount)
+           const botCount = JSON.parse(this.guildConfigs.botCount)
+           const channelCount = JSON.parse(this.guildConfigs.channelCount)
+           const roleCount = JSON.parse(this.guildConfig.roleCount)
+           const boosterCount = JSON.parse(this.guildConfigs.boosterCount)
+        // }
+             const counter = [
+                 {id: memberCount.id, name: memberCount.name, type: 'member'},
+                 {id: voiceCount.id, name: voiceCount.name, type: 'voice'},
+                 {id: onlineCount.id, name: onlineCount.name, type: 'online'},
+                 {id: offlineCount.id, name: offlineCount.name, type: 'offline'},
+                 {id: botCount.id, name: botCount.name, type: 'bot'},
+                 {id: channelCount.id, name: channelCount.name, type: 'channel'},
+                 {id: roleCount.id, name: roleCount.name, type: 'role'},
+                 {id: boosterCount.id, name: boosterCount.name, type: 'booster'},
 
-                 memberCount : JSON.parse(this.guildConfigs.memberCount),
-                 voiceCount: JSON.parse(this.guildConfigs.voiceCount),
-                 onlineCount : JSON.parse(this.guildConfigs.onlineCount),
-                 offlineCount : JSON.parse(this.guildConfigs.offlineCount),
-                 botCount : JSON.parse(this.guildConfigs.botCount),
-                 channelCount : JSON.parse(this.guildConfigs.channelCount),
-                 roleCount : JSON.parse(this.guildConfig.roleCount),
-                 boosterCount : JSON.parse(this.guildConfigs.boosterCount)
+             ]
+            this.counters = counter;
+            return counter;
+
+
+        }
+        async editCounter(type, counterEdited){
+             const counterInDb = {
+                 "member": 'memberCount',
+                 "voice": "voiceCount",
+                 "online": "onlineCount",
+                 "offline": "offlineCount",
+                 "bot": "botCount",
+                 "channel": "channelCount",
+                 "role": "roleCount",
+                 "booster": "boosterCount"
              }
+            const toEdited = this.counter.filter(info => info.type === type);
+            const key = this.counter.getKey(toEdited);
+            await StateManager.connection.query(`UPDATE guildConfig SET counterInDb[type] = ? `, [JSON.stringify(toEdited)]).then(() =>{
+                this.counters[key] = counterEdited;
+            });
+            return this.counter;
         }
 
         get logs () {
@@ -80,11 +113,11 @@ Structures.extend('Guild', (Guild) =>{
         }
 
         get owners () {
-             return this.guildConfigs.owner
+            return this.guildConfigs.owner.toString().split(',')
         }
 
         get whitelist () {
-             return this.guildConfig.whitelisted
+             return this.guildConfigs.whitelisted.toString().split(',')
         }
 
         get reactoles () {
@@ -104,8 +137,10 @@ Structures.extend('Guild', (Guild) =>{
 
             StateManager.connection.query(`SELECT * FROM guildConfig WHERE guildId = '${this.guildId}'`).then((res) =>{
                 if(res[0][0] === undefined) return undefined;
-                delete res[0][0].guildId
+                delete res[0][0].guildId;
                 this.guildConfigs = res[0][0];
+                this.lang = res[0][0].lang;
+                this.color = res[0][0].embedColors;
             })
         }
 

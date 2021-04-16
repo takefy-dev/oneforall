@@ -17,8 +17,8 @@ module.exports = new Command({
     clientPermissions: ['EMBED_LINKS'],
     cooldown: 5
 }, async (client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
 
     if (!args[0]) return message.channel.send(lang.ball.noQuestion)
     let replies = lang.ball.reponseQuestion

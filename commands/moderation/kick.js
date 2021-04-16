@@ -16,8 +16,8 @@ module.exports = new Command({
     clientPermissions: ['KICK_MEMBERS'],
     cooldown: 2
 }, async(client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     let member = message.mentions.members.first() ||message.guild.members.cache.get(args[0]);
     if(member == message.member) return message.channel.send()
     if(!member) return message.channel.send(lang.kick.noKick)

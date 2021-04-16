@@ -21,8 +21,8 @@ module.exports = new Command({
 }, async(client, message, args) => {
     const mutedData = [];
     this.connection = StateManager.connection;
-    const color = guildEmbedColor.get(message.guild.id);
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`);
+    const color = message.guild.color
+    const lang = require(`../../lang/${message.guild.lang}`);
     await this.connection.query(`SELECT userId, muteEnd FROM tempMute WHERE guildId = '${message.guild.id}'`).then(async (res) => {
         if(res[0].length == 0) return;
         const userId = res[0][0].userId;

@@ -24,7 +24,7 @@ module.exports = new Event(
       date: new Date().toLocaleString('fr-FR', { dataStyle: 'full', timeStyle: 'short' })
     })
     StateManager.emit('snipes', message.guild.id, snipes)
-    const color = guildEmbedColor.get(message.guild.id);
+    const color = message.guild.color
     let logChannelId = logsChannelId.get(message.guild.id);
     let logChannel
     if (logChannelId != undefined) {

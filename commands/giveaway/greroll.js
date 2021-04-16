@@ -16,7 +16,7 @@ module.exports = new Command({
     clientPermissions: ['ADMINISTRATOR'],
     cooldown: 2
 }, async (client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id);
+    const color = message.guild.color
     const msgId = args[0];
     if (!msgId) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` Veuillez spécifiez l'id du message de giveaway !`)
 

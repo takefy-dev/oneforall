@@ -18,7 +18,7 @@ module.exports = new Command({
     clientPermissions: ['MANAGE_ROLES'],
     cooldown: 2
 }, async(client, message, args) => {
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
 
     const add = args[0] == 'add';
         const remove = args[0] == 'remove';

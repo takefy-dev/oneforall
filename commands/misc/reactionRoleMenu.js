@@ -25,7 +25,7 @@ module.exports = new Command({
     this.connection = StateManager.connection;
     const emojiRoleMapping = new Map();
 
-    const lang = require(`../../lang/${guildLang.get(message.guild.id)}`)
+    const lang = require(`../../lang/${message.guild.lang}`)
     msgId.set(message.guild.id, 'Non définie')
     chs.set(message.guild.id, 'Non définie',)
     // isDelete.set(message.guild.id, false)
