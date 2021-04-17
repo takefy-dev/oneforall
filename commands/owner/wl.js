@@ -42,7 +42,7 @@ module.exports = new Command({
     if (add) {
        
 
-        if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+        if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
         let member = message.guild.member(message.author.id);
         if (args[1]) {
             member = message.guild.member(args[1]);
@@ -75,7 +75,7 @@ module.exports = new Command({
     } else if (remove) {
      
 
-        if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+        if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
         let member = message.guild.member(message.author.id);
         if (args[1]) {
             member = message.guild.member(args[1]);
@@ -218,7 +218,7 @@ module.exports = new Command({
     } else if (clear) {
 
 
-        if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+        if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
         const embed = new Discord.MessageEmbed()
             .setTitle(`Confirmation`)
             .setDescription(lang.wl.clearWl)

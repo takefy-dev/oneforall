@@ -456,7 +456,7 @@ module.exports = {
         titleList : `<:778353230383546419:781153631881265173> Liste des blacklist`,
         errorMe : `<:720681441670725645:780539422479351809> \`ERREUR\` Désolé vous ne pouvez pas me blacklist`,
         errorBotOwner : `<:720681441670725645:780539422479351809> \`ERREUR\` Désolé vous ne pouvez pas blacklist un des owner du bot`,
-        errorNotInDb : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'êtes pas enregistré dans ma base de donnée veuillez utiliser \`prefix + bl + on\``,
+        errorNotInDb : (prefix) => `<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'êtes pas enregistré dans ma base de donnée veuillez utiliser \` ${prefix}bl on\``,
     },
     allbot : {
         title : (bots) => `Nombre de bots : ${bots}`,

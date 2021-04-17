@@ -14,8 +14,8 @@ if (fs.existsSync(path)) {
 } else {
   ow = process.env.OWNER
 }
-owner.set(ow);
-module.exports = function checkOwner(guildOwners, authorId) {
+owner.set(ow, 'owner');
+module.exports = function checkOwner(guild, authorId) {
   
   const isOwner = owner.has(authorId);
   let ownerCheck = false;
@@ -23,7 +23,7 @@ module.exports = function checkOwner(guildOwners, authorId) {
   if (isOwner === true){
     ownerCheck = true;
   }
-  if(guildOwners.includes(authorId) === true){
+  if(guild.includes(authorId) === true){
     ownerCheck = true;
   }
   return ownerCheck;

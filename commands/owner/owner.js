@@ -44,7 +44,7 @@ module.exports = new Command({
     if (!add && !remove && !list && !clear) return message.channel.send(lang.owner.errorSyntax)
     if (add) {
 
-        if (owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+        if (owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notGuildOwner)
 
         let member = message.guild.member(message.author.id);
         if (args[1]) {
@@ -77,7 +77,7 @@ module.exports = new Command({
         })
     } else if (remove) {
 
-        if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+        if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
         let member = message.guild.member(message.author.id);
         if (args[1]) {
@@ -108,7 +108,7 @@ module.exports = new Command({
     } else if (list) {
 
 
-        if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+        if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
         try {
             let tdata = await message.channel.send(lang.loading)
 

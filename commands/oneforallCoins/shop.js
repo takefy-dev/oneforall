@@ -61,7 +61,7 @@ module.exports = new Command({
          * @param args[2] {price}
          * @param [{id, item, price, role}]
         **/
-        if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+        if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
         const itemName = args.slice(1, args.length - 1).join(" ")
         const price = args[args.length - 1]
         if (!itemName) return message.channel.send(lang.addShop.noItem).then(mp => mp.delete({ timeout: 4000 }))
@@ -96,7 +96,7 @@ module.exports = new Command({
         })
 
     } else if (args[0] === "remove") {
-        if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+        if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
         if (!args[1]) return message.channel.send(lang.addShop.noIdToDelete).then(mp => mp.delete({ timeout: 4000 }))
         if (isNaN(args[1])) return message.channel.send(lang.addShop.onlyNumber).then(mp => mp.delete({ timeout: 4000 }))
         if (!actualShop.find(shop => shop.id === parseInt(args[1]))) return message.channel.send(lang.addShop.notFoundItem).then(mp => mp.delete({ timeout: 4000 }))
@@ -125,7 +125,7 @@ module.exports = new Command({
     } else if (!args[0]) {
         showShop(shop.get(message.guild.id))
     } else if (args[0] === 'edit') {
-        if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+        if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
         if(!args[1]) return message.channel.send(lang.addShop.syntaxEdit).then(mp => mp.delete({ timeout: 4000 }))
         if (isNaN(args[1])) return message.channel.send(lang.addShop.onlyNumber).then(mp => mp.delete({ timeout: 4000 }))
         if (!actualShop.find(shop => shop.id === parseInt(args[1]))) return message.channel.send(lang.addShop.notFoundItem).then(mp => mp.delete({ timeout: 4000 }))

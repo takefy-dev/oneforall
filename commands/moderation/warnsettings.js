@@ -34,7 +34,7 @@ module.exports = new Command({
             owner = process.env.OWNER
         }
     }
-    if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+    if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
     const warnBan = warnSanction.get(message.guild.id).ban
     const warnKick = warnSanction.get(message.guild.id).kick
     const warnMute = warnSanction.get(message.guild.id).mute

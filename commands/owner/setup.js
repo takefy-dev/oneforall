@@ -31,7 +31,7 @@ module.exports = new Command({
         }
     };
 
-    if (!client.isGuildOwner(message.guild.id, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+    if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
     message.channel.send(lang.setup.muteQ)
     const responseMuteRole = await message.channel.awaitMessages(m => m.author.id === message.author.id, { max: 1, timeout: 30000, errors: ['time'] }).catch(() => { message.channel.send("Opération annulée pas de réponse après 30s") })
