@@ -21,6 +21,11 @@ const BaseCommand = require('./base-command.js')
 
 class CI extends BaseCommand {
   /* istanbul ignore next - see test/lib/load-all-commands.js */
+  static get description () {
+    return 'Install a project with a clean slate'
+  }
+
+  /* istanbul ignore next - see test/lib/load-all-commands.js */
   static get name () {
     return 'ci'
   }
@@ -30,16 +35,21 @@ class CI extends BaseCommand {
   }
 
   async ci () {
-    if (this.npm.flatOptions.global) {
+    if (this.npm.config.get('global')) {
       const err = new Error('`npm ci` does not work for global packages')
       err.code = 'ECIGLOBAL'
       throw err
     }
 
     const where = this.npm.prefix
-    const { scriptShell, ignoreScripts } = this.npm.flatOptions
-    const arb = new Arborist({ ...this.npm.flatOptions, path: where })
+    const opts = {
+      ...this.npm.flatOptions,
+      path: where,
+      log: this.npm.log,
+      save: false, // npm ci should never modify the lockfile or package.json
+    }
 
+    const arb = new Arborist(opts)
     await Promise.all([
       arb.loadVirtual().catch(er => {
         log.verbose('loadVirtual', er.stack)
@@ -51,9 +61,9 @@ class CI extends BaseCommand {
       }),
       removeNodeModules(where),
     ])
-    // npm ci should never modify the lockfile or package.json
-    await arb.reify({ ...this.npm.flatOptions, save: false })
+    await arb.reify(opts)
 
+    const ignoreScripts = this.npm.config.get('ignore-scripts')
     // run the same set of scripts that `npm install` runs.
     if (!ignoreScripts) {
       const scripts = [
@@ -65,6 +75,7 @@ class CI extends BaseCommand {
         'prepare',
         'postprepare',
       ]
+      const scriptShell = this.npm.config.get('script-shell') || undefined
       for (const event of scripts) {
         await runScript({
           path: where,

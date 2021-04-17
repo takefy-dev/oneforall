@@ -7,14 +7,23 @@ const completion = require('./utils/completion/installed-shallow.js')
 
 const BaseCommand = require('./base-command.js')
 class Uninstall extends BaseCommand {
+  static get description () {
+    return 'Remove a package'
+  }
+
   /* istanbul ignore next - see test/lib/load-all-commands.js */
   static get name () {
     return 'uninstall'
   }
 
   /* istanbul ignore next - see test/lib/load-all-commands.js */
+  static get params () {
+    return ['save']
+  }
+
+  /* istanbul ignore next - see test/lib/load-all-commands.js */
   static get usage () {
-    return ['[<@scope>/]<pkg>[@<version>]... [-S|--save|--no-save]']
+    return ['[<@scope>/]<pkg>...']
   }
 
   /* istanbul ignore next - see test/lib/load-all-commands.js */
@@ -28,8 +37,10 @@ class Uninstall extends BaseCommand {
 
   async uninstall (args) {
     // the /path/to/node_modules/..
-    const { global, prefix } = this.npm.flatOptions
-    const path = global ? resolve(this.npm.globalDir, '..') : prefix
+    const global = this.npm.config.get('global')
+    const path = global
+      ? resolve(this.npm.globalDir, '..')
+      : this.npm.localPrefix
 
     if (!args.length) {
       if (!global)
@@ -50,12 +61,15 @@ class Uninstall extends BaseCommand {
       }
     }
 
-    const arb = new Arborist({ ...this.npm.flatOptions, path })
-
-    await arb.reify({
+    const opts = {
       ...this.npm.flatOptions,
+      path,
+      log: this.npm.log,
       rm: args,
-    })
+
+    }
+    const arb = new Arborist(opts)
+    await arb.reify(opts)
     await reifyFinish(this.npm, arb)
   }
 }

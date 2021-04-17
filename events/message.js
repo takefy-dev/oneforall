@@ -1,4 +1,4 @@
-﻿﻿const StateManager = require('../utils/StateManager');
+﻿const StateManager = require('../utils/StateManager');
 var checkBotOwner = require('../function/check/botOwner');
 var embedsColor = require('../function/embedsColor');
 const guildEmbedColor = new Map();

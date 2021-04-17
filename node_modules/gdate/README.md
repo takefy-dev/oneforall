@@ -112,12 +112,12 @@ If the `ref` or the `Date` arguments are omitted, they default to the current mo
 
 If the `ref` or the `Date` arguments are omitted, they default to the current moment.
 
-- `getYYYYMMDD( Date )`: converts the date into a string of the form `YYYY/MM/DD`
+- `createYYYYMMDD( Date )`: converts the date into a string of the form `YYYY/MM/DD`
 
 ```JavaScript
   const epoch = new Date(0)
 
-  gdate.getYYYYMMDD(epoch) // "1970/01/01"
+  gdate.createYYYYMMDD(epoch) // "1970/01/01"
 ```
 
 If the `Date` argument is omitted, it defaults to the current moment.

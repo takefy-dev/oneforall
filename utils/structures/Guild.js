@@ -89,10 +89,10 @@ Structures.extend('Guild', (Guild) =>{
 
         get logs () {
              return {
-                 modLogs : this.guildConfigs.modLog,
-                 antiraidLogs : this.guildConfigs.antiraidLog,
-                 messageLogs: this.guildConfigs.msgLog,
-                 voiceLog : this.guildConfigs.voiceLog
+                 modLog : this.guildConfigs.modLog,
+                 antiraidLog : this.guildConfigs.antiraidLog,
+                 msgLog: this.guildConfigs.msgLog,
+                 voiceLog: this.guildConfigs.voiceLog
              }
         }
 

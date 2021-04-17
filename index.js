@@ -10,7 +10,7 @@ require('./utils/structures/User');
 const StateManager = require('./utils/StateManager');
 const guildCommandPrefixes = new Map();
 require('events').EventEmitter.defaultMaxListeners = 0;
-const { CommandHandler } = require('advanced-command-handler');
+const { CommandHandler, isOwner } = require('advanced-command-handler');
 const Distube = require('distube');
 const BotPerso = false;
 if (BotPerso) {
@@ -155,7 +155,7 @@ const manager = new GiveawayManagerWithOwnDatabase(CommandHandler.client, {
 });
 // We now have a giveawaysManager property to access the manager everywhere!
 CommandHandler.client.giveawaysManager = manager;
-
+CommandHandler.client.isOwner = isOwner
 const distube= new Distube(CommandHandler.client, { searchSongs: false, leaveOnEmpty: true});
 CommandHandler.client.music = distube;
 CommandHandler.client.BotPerso = BotPerso

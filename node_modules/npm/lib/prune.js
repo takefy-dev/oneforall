@@ -5,13 +5,23 @@ const reifyFinish = require('./utils/reify-finish.js')
 const BaseCommand = require('./base-command.js')
 class Prune extends BaseCommand {
   /* istanbul ignore next - see test/lib/load-all-commands.js */
+  static get description () {
+    return 'Remove extraneous packages'
+  }
+
+  /* istanbul ignore next - see test/lib/load-all-commands.js */
   static get name () {
     return 'prune'
   }
 
   /* istanbul ignore next - see test/lib/load-all-commands.js */
+  static get params () {
+    return ['production']
+  }
+
+  /* istanbul ignore next - see test/lib/load-all-commands.js */
   static get usage () {
-    return ['[[<@scope>/]<pkg>...] [--production]']
+    return ['[[<@scope>/]<pkg>...]']
   }
 
   exec (args, cb) {
@@ -20,11 +30,13 @@ class Prune extends BaseCommand {
 
   async prune () {
     const where = this.npm.prefix
-    const arb = new Arborist({
+    const opts = {
       ...this.npm.flatOptions,
       path: where,
-    })
-    await arb.prune(this.npm.flatOptions)
+      log: this.npm.log,
+    }
+    const arb = new Arborist(opts)
+    await arb.prune(opts)
     await reifyFinish(this.npm, arb)
   }
 }
