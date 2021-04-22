@@ -16,6 +16,20 @@ module.exports = (Sequelize, oneforall) => {
                 allowNull: false,
                 defaultValue: 'fr'
             },
+            color : {
+                type: Sequelize.STRING(7),
+                allowNull: false,
+                defaultValue: '#EECE32'
+            },
+            owners:{
+              type: Sequelize.TEXT(),
+                allowNull: false,
+                defaultValue: ''
+            },
+            logs : {
+                type: Sequelize.STRING(25),
+                allowNull: true
+            }
         })
         return oneforall.database.models;
 

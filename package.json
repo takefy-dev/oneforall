@@ -18,6 +18,7 @@
     "sequelize": "^6.6.2"
   },
   "devDependencies": {
-    "advanced-command-handler": "^2.4.0"
+    "advanced-command-handler": "^2.4.0",
+    "discord-reply": "^0.1.2"
   }
 }

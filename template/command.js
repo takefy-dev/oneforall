@@ -1,5 +1,7 @@
 const Command = require('../../structures/Command');
 const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
+
 module.exports = class Test extends Command{
     constructor() {
         super({
@@ -12,9 +14,9 @@ module.exports = class Test extends Command{
             userPermissions: ['ADMINISTRATOR'],
             ownerOnly: true,
             guildOwnerOnly : true,
+            guildCrownOnly : true
         });
     }
     async run(client, message,args){
-        console.log(client.database.models.guildConfig)
     }
 }

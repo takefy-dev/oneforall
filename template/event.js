@@ -1,5 +1,6 @@
 const Event = require('../structures/Event');
 const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
 
 
 module.exports = class Ready extends Event{
