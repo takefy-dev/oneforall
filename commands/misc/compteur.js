@@ -48,7 +48,7 @@ module.exports = new Command({
         channelCount.set(message.guild.id, result[0][0].channelCount)
         roleCount.set(message.guild.id, result[0][0].roleCount)
         boosterCount.set(message.guild.id, result[0][0].boosterCount)
-    }) 
+    })
     const filter = (reaction, user) => emoji.includes(reaction.emoji.name) && user.id === message.author.id,
     dureefiltrer = response => { return response.author.id === message.author.id };
     const embed = new Discord.MessageEmbed()
