@@ -11,7 +11,6 @@ Structures.extend('User', (User) => {
             this.blacklist = null;
             this.playlists = null;
             this.fetchBlacklistedUsers();
-            // this.fetchPlaylist();
 
         }
 
@@ -53,7 +52,6 @@ Structures.extend('User', (User) => {
 
         }
 
-
          async fetchBlacklistedUsers () {
            await this.client.database.models.blacklist.findOne({
                where: {
@@ -68,6 +66,45 @@ Structures.extend('User', (User) => {
                }
                Logger.log(`Fetched ${this.user.username}`, 'BLACKLIST', 'blue')
            })
+        }
+
+
+        async createBackup(backupId, guildName, guildData){
+            await this.client.database.models.backup.create({
+                backupId,
+                guildData,
+                guildName,
+                userId: this.user.id
+            }).then((res) => {
+                if(res){
+                    Logger.log(`Create ${this.user.username} : ${backupId}`, 'BACKUP', 'blue')
+                    return true
+                }else{
+                    return false
+                }
+            })
+        }
+
+        async getBackup(backupId){
+            const  backup = await this.client.database.models.backup.findOne({where: {backupId}})
+            if(!backup) return null
+            return backup.dataValues
+        }
+
+        async deleteBackup(backupId){
+
+            const res = await this.client.database.models.backup.destroy({
+                where: {
+                    backupId,
+                    userId : this.user.id
+                }
+            })
+            if(res === 1){
+                Logger.log(`Destroy ${this.user.username} : ${backupId}`, 'BACKUP', 'blue')
+                return true
+            }else{
+                return false
+            }
         }
 
         async fetchPlaylist () {
