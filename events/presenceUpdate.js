@@ -4,17 +4,23 @@ const soutienId = new Map();
 const soutienMsg = new Map();
 const soutienisOn = new Map();
 
-const { Event } = require('advanced-command-handler');
-module.exports = new Event(
-  {
-    name: 'presenceUpdate',
-  },
-  module.exports = async (handler, oldMember, newMember) => {
+const Event = require('../structures/Handler/Event');
+
+module.exports = class presenceUpdate extends Event {
+  constructor() {
+    super({
+      name: 'presenceUpdate',
+    });
+  }
+
+  async run(client, oldMember, newMember) {
     // console.log(newMember)
     this.connection = StateManager.connection;
-    if(!handler.client.BotPerso) return;
-    handler.client.guilds.cache.forEach(guild => {
-      
+    if (!client
+.BotPerso) return;
+    client
+.guilds.cache.forEach(guild => {
+
       if (!oldMember) return;
       const msg = soutienMsg.get(guild.id);
       const roleId = soutienId.get(guild.id);
@@ -27,12 +33,9 @@ module.exports = new Event(
 
       } else if (oldMember == undefined || newMember == undefined) {
         return;
-      }
-
-      else if (oldMember.status != newMember.status || oldMember == undefined || newMember == undefined) {
+      } else if (oldMember.status != newMember.status || oldMember == undefined || newMember == undefined) {
         return;
-      }
-      else if (isOn == "1") {
+      } else if (isOn == "1") {
         if (status[0] != null && status[0].includes(msg)) {
           guild.members.cache.get(newMember.user.id).roles.add(roleId)
         } else {
@@ -44,7 +47,7 @@ module.exports = new Event(
       }
     });
   }
-)
+}
 
 StateManager.on('soutienIdFetched', (guildId, soutienIds) => {
   soutienId.set(guildId, soutienIds);

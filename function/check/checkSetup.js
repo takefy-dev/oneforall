@@ -4,7 +4,7 @@ const guildSetupDone= new Map();
 
 module.exports = function checkSetup(guild) { 
   const checkSetup = guildSetupDone.get(guild);
-  var setupChecked = false;
+  let setupChecked = false;
   if (checkSetup == true){
       setupChecked = true;
   }

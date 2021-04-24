@@ -1,31 +1,28 @@
-const Discord = require('discord.js')
-const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
-var checkSetup = require('../../function/check/checkSetup');
-var embedsColor = require('../../function/embedsColor');
-const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms');
-const { Command } = require('advanced-command-handler');
-const mute = require('./mute');
 const muteRoleId = new Map();
-const guildLang = new Map();
-var logsChannelF = require('../../function/fetchLogs');
 const logsChannelId = new Map();
 const moment = require('moment')
-var langF = require('../../function/lang')
-module.exports = new Command({
-    name: 'tempmute',
-    description: 'Tempmute a members | Tempmute un membre',
-    // Optionnals :
-    usage: '!tempmute <mention/id> <time>',
-    category: 'moderation',
-    userPermissions: ['MUTE_MEMBERS'],
-    clientPermissions: ['MUTE_MEMBERS'],
-    cooldown: 4
-}, async (client, message, args) => {
-    const lang = require(`../../lang/${message.guild.lang}`)
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
+
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'tempmute',
+            description: 'Tempmute a members | Tempmute un membre',
+            usage: '!tempmute <mention/id> <time>',
+            category: 'moderation',
+            userPermissions: ['MUTE_MEMBERS'],
+            clientPermissions: ['MUTE_MEMBERS'],
+        });
+    }
+    async run(client, message,args){
+
+    const lang = client.lang(message.guild.lang)
     this.connection = StateManager.connection;
-    let isSetup = checkSetup(message.guild.id);
+    let isSetup =  message.guild.setup;
     if (!isSetup) return message.channel.send(lang.error.noSetup);
 
     const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
@@ -74,7 +71,6 @@ module.exports = new Command({
                         })
                         StateManager.emit('tempMute', mutedUser)
                     })
-                    // StateManager.emit('tempMute', message.guild.id, [{id:}])
                 })
 
             } catch (err) {
@@ -86,44 +82,8 @@ module.exports = new Command({
 
     })
 
-    // setTimeout(function () {
-    //     if (!member.roles.cache.has(muteRole.id)) return message.channel.send(lang.tempmute.errorUnMute(member, time))
-    //     member.roles.remove(muteRole).then(() => {
-
-    //         message.channel.send(lang.tempmute.successUnMute(member, time));
-    //         let logChannelId = logsChannelId.get(message.guild.id);
-    //         if (logChannelId != undefined) {
-    //             let logChannel = message.guild.channels.cache.get(logChannelId)
-    //             const logsEmbed = new Discord.MessageEmbed()
-    //                 .setTitle("\`❌\` Unmute temporaire d'un membre")
-    //                 .setDescription(`
-    // 				\`👨‍💻\` Auteur : **${member.user.tag}** \`(${member.user.id})\` est unmute après :\n
-    //                 \`\`\`${time}\`\`\`
-
-    // 				`)
-    //                 .setTimestamp()
-    //                 .setFooter("🕙")
-    //                 .setColor(`${color}`)
-
-    //                 .setTimestamp()
-    //                 .setFooter("🕙")
-    //                 .setColor(`${color}`)
-    //             logChannel.send(logsEmbed)
-    //         }
-    //     })
-    // }, ms(time))
 
 
-});
 
-embedsColor(guildEmbedColor);
-logsChannelF(logsChannelId, 'mod');
+}};
 
-StateManager.on('addMuteRole', (guildId, muteRole) => {
-    muteRoleId.set(guildId, muteRole);
-})
-
-StateManager.on('muteIdFetched', (guildId, muteRole) => {
-    muteRoleId.set(guildId, muteRole);
-})
-langF(guildLang);

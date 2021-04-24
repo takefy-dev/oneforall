@@ -1,24 +1,23 @@
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
 const Discord = require('discord.js')
-const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
-const {Command} = require('advanced-command-handler');
-const guildLang = new Map();
-var langF = require('../../function/lang')
 
-module.exports = new Command({
-    name: 'gaydetector',
-    description: 'A command for look a gay people | Une commande pour detecter les gays',
-    // Optionnals :
-    usage: '!gaydetector <id/member> ',
-    category: 'fun',
-    tags: ['guildOnly'],
-    aliases: ['gay'],
-    clientPermissions: ['EMBED_LINKS'],
-    cooldown: 5
-}, async(client, message, args) => {
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'gaydetector',
+            description: 'A command for look a gay people | Une commande pour detecter les gays',
+            usage: '!gaydetector <id/member> ',
+            category: 'fun',
+            tags: ['guildOnly'],
+            aliases: ['gay'],
+            clientPermissions: ['EMBED_LINKS'],
+        });
+    }
+    async run(client, message,args){
+
     const color = message.guild.color
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
 
     let member = message.mentions.users.first() || message.author
 
@@ -30,7 +29,6 @@ module.exports = new Command({
 
     message.channel.send(gaydetectorembed)
 
-});
+    }
+};
 
-embedsColor(guildEmbedColor);
-langF(guildLang);

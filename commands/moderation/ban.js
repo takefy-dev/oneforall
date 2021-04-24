@@ -1,28 +1,25 @@
-const Discord = require('discord.js')
-const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor')
-const { Command, getThing } = require('advanced-command-handler');
-var count = new Map();
-const countGuild = new Map();
-var checkOwner = require('../../function/check/botOwner');
-const guildLang = new Map();
-var logsChannelF = require('../../function/fetchLogs');
 const logsChannelId = new Map();
-var langF = require('../../function/lang')
-module.exports = new Command({
-    name: 'ban',
-    description: 'Ban a user from the server | Bannir un membre du serveur',
-    // Optionnals :
-    usage: '!ban <mention / id> [reason]',
-    category: 'moderation',
-    tags: ['guildOnly'],
-    userPermissions: ['BAN_MEMBERS'],
-    clientPermissions: ['BAN_MEMBERS'],
-    cooldown: 2
-}, async (client, message, args) => {
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
+
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'ban',
+            description: 'Ban a user from the server | Bannir un membre du serveur',
+            usage: '!ban <mention / id> [reason]',
+            category: 'moderation',
+            userPermissions: ['BAN_MEMBERS'],
+            clientPermissions: ['BAN_MEMBERS'],
+        });
+    }
+    async run(client, message,args){
+
+
     this.connection = StateManager.connection;
-    const lang = require(`../../lang/${message.guild.lang}`)
+    const lang = client.lang(message.guild.lang)
     const color = message.guild.color
 
     const user = message.mentions.users.first() || await client.users.fetch(args[0]).catch(async err => {
@@ -81,7 +78,7 @@ module.exports = new Command({
             .setTimestamp()
             .setFooter("🕙")
             .setColor(`${color}`)
-        if(logChannel != undefined){
+        if(logChannel !== undefined){
             logChannel.send(logsEmbed)
 
         }
@@ -93,9 +90,5 @@ module.exports = new Command({
             if(err.toString().includes('Missing Permission'))  return message.channel.send(lang.error.MissingPermission)
             message.channel.send(lang.ban.error(user))
         })
-});
+}};
 
-embedsColor(guildEmbedColor);
-logsChannelF(logsChannelId, 'mod');
-
-langF(guildLang);

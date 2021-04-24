@@ -4,7 +4,7 @@ const ownerBl = new Map();
 module.exports = function checkWl(ownerId, authorId) { 
   
   const isBlOwner = ownerBl.get(ownerId)
-  var blCheck = false;
+  let blCheck = false;
 
   if(isBlOwner != undefined && isBlOwner.includes(authorId) == true){
     blCheck = true;

@@ -1,23 +1,21 @@
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
 const Discord = require('discord.js')
-const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
-const {Command} = require('advanced-command-handler');
-const guildLang = new Map();
-var langF = require('../../function/lang')
 
-module.exports = new Command({
-    name: 'autoplay',
-    description: "Enable or disable the autoplay | Activer ou désactiver l'autoplay",
-    // Optionnals :
-    usage: '!autoplay <on/off>',
-    category: 'music',
-    tags: ['guildOnly', 'voiceOnly'],
-    clientPermissions: ['EMBED_LINKS'],
-    cooldown: 4
-}, async(client, message, args) => {
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'autoplay',
+            description: "Enable or disable the autoplay | Activer ou désactiver l'autoplay",
+            usage: '!autoplay <on/off>',
+            category: 'music',
+            clientPermissions: ['EMBED_LINKS'],
+        });
+    }
+    async run(client, message,args){
+
     const color = message.guild.color
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
     const queue = client.music.getQueue(message)
     if (!queue) return message.channel.send(lang.music.nothingInQueue)
     let autoplayStatus = queue.autoplay;
@@ -36,7 +34,4 @@ module.exports = new Command({
     }
 
   
-});
-
-embedsColor(guildEmbedColor);
-langF(guildLang);
+}}

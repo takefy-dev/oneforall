@@ -1,24 +1,23 @@
-const Discord = require('discord.js')
-const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
-const {Command} = require('advanced-command-handler');
-const guildLang = new Map();
-var langF = require('../../function/lang')
 
-module.exports = new Command({
-    name: 'loop',
-    description: 'Set the repeat mode | Changer le mode en boucle',
-    // Optionnals :
-    usage: `!loop <off/song/queue> \`off: Disable\`, \`song: Repeat a song\`, \`queue: Repeat all the queue\``,
-    category: 'music',
-    aliases: ['rp'],
-    tags: ['guildOnly', 'voiceOnly'],
-    clientPermissions: ['EMBED_LINKS'],
-    cooldown: 4
-}, async(client, message, args) => {
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
+
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'loop',
+            description: 'Set the repeat mode | Changer le mode en boucle',
+            usage: `!loop <off/song/queue> \`off: Disable\`, \`song: Repeat a song\`, \`queue: Repeat all the queue\``,
+            category: 'music',
+            aliases: ['rp'],
+            clientPermissions: ['EMBED_LINKS'],
+        });
+    }
+    async run(client, message,args){
+
     const color = message.guild.color
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
     const queue = client.music.getQueue(message)
     if (!queue) return message.channel.send(lang.music.nothingInQueue)
     let mode = null
@@ -36,7 +35,4 @@ module.exports = new Command({
     mode = client.music.setRepeatMode(message, mode)
     mode = mode ? mode === 2 ? "Repeat queue" : "Repeat song" : "Off"
     message.channel.send(lang.music.repeatMode(mode))
-});
-
-embedsColor(guildEmbedColor);
-langF(guildLang);
+}}

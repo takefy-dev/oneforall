@@ -1,24 +1,23 @@
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
 const Discord = require('discord.js')
-const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
-const { Command } = require('advanced-command-handler');
-const bans = new Map();
-const guildLang = new Map();
-var langF = require('../../function/lang')
-module.exports = new Command({
-    name: 'alladmins',
-    description: 'Show all members with administator permissions | Afficher tout les membres avec les perm admin',
-    // Optionnals :
-    usage: '!alladmins',
-    category: 'moderation',
-    clientPermissions: ["MANAGE_GUILD"],
-    userPermissions: ['ADMINISTRATOR'],
-    cooldown: 5
-}, async (client, message, args) => {
+
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'alladmins',
+            description: 'Show all members with administator permissions | Afficher tout les membres avec les perm admin',
+            usage: '!alladmins',
+            category: 'moderation',
+            clientPermissions: ["MANAGE_GUILD"],
+            userPermissions: ['ADMINISTRATOR'],
+        });
+    }
+    async run(client, message,args){
+
     const tempdata = []
-    const color = guildEmbedColor.get(message.guild.id)
-    const lang = require(`../../lang/${message.guild.lang}`)
+    const color =message.guild.color
+    const lang = client.lang(message.guild.lang)
     const admins = message.guild.members.cache.filter(
         (m) => m.hasPermission('ADMINISTRATOR')
     ).map(m => tempdata.push(m.user.id))
@@ -40,7 +39,6 @@ module.exports = new Command({
         let p0 = 0;
         let p1 = 10;
         let page = 1;
-        // console.log(tempdata.map(r => r).map((user, i) => message.guild.members.cache.get(user).user.id, i))
 
         let embed = new Discord.MessageEmbed()
 
@@ -133,8 +131,6 @@ module.exports = new Command({
     } catch (err) {
         console.log(err)
     }
-});
+}};
 
 
-embedsColor(guildEmbedColor);
-langF(guildLang);

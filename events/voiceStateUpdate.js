@@ -1,16 +1,14 @@
 const StateManager = require('../utils/StateManager');
-var checkBotOwner = require('../function/check/botOwner');
 const guildEmbedColor = new Map();
-var checkWl = require('../function/check/checkWl');
-var logsChannelF = require('../function/fetchLogs');
-var embedsColor = require('../function/embedsColor');
+let logsChannelF = require('../function/fetchLogs');
+let embedsColor = require('../function/embedsColor');
 const Discord = require('discord.js');
 const logsChannelId = new Map();
 const logsVoiceId = new Map();
 const antiDecoOn = new Map();
-var checkBotOwner = require('../function/check/botOwner');
 const guildAntiraidConfig = new Map();
-const { Event } = require('advanced-command-handler');
+const Event = require('../structures/Handler/Event');
+
 const tempVocOn = new Map();
 const tempVocInfo = new Map();
 const statsOn = new Map();
@@ -18,13 +16,17 @@ const activeMemberInVoice = new Map();
 const activeMemberInVoiceCoins = new Map();
 const coinSettings = new Map();
 const userCoins = new Map();
-module.exports = new Event(
-    {
-        name: 'voiceStateUpdate',
-    },
-    module.exports = async (handler, oldState, newState) => {
+module.exports = class voiceStateUpdate extends Event {
+    constructor() {
+        super({
+            name: 'voiceStateUpdate',
+        });
+    }
+
+    async run(client, oldState, newState) {
         this.connection = StateManager.connection;
-        if(newState.id === handler.client.user.id) return await newState.guild.me.voice.setSelfDeaf(true);
+        if (newState.id === client
+.user.id) return await newState.guild.me.voice.setSelfDeaf(true);
 
         const color = guildEmbedColor.get(oldState.guild.id);
         //#region voiceState
@@ -37,8 +39,7 @@ module.exports = new Event(
             if (!activeMemberInVoice.has(oldState.id)) {
                 data = Date.now();
                 activeMemberInVoice.set(oldState.id, data); // check current data for the existence of
-            }
-            else {
+            } else {
                 data = activeMemberInVoice.get(oldState.id);
 
             }
@@ -55,8 +56,7 @@ module.exports = new Event(
                     }
 
                 })
-            }
-            else if (oldState.channelID && newState.channelID) { // This user has changes the channel.
+            } else if (oldState.channelID && newState.channelID) { // This user has changes the channel.
                 activeMemberInVoice.set(oldState.id, Date.now());
                 await this.connection.query(`SELECT duration FROM statsVoc WHERE channelId = '${oldState.channelID}' AND userId = '${oldState.id}'`).then(async (res) => {
                     if (res[0].length != 0) {
@@ -73,7 +73,7 @@ module.exports = new Event(
         }
         //#endregion voiceState
         //#region coins
-        if(coinSettings.has(oldState.guild.id)) {
+        if (coinSettings.has(oldState.guild.id)) {
             const guildCoinsSettings = coinSettings.get(oldState.guild.id);
             if (guildCoinsSettings.enable) {
                 let guildUserCoins = userCoins.get(oldState.guild.id);
@@ -87,10 +87,9 @@ module.exports = new Event(
                 if (!activeMemberInVoiceCoins.has(oldState.id)) {
                     data = Date.now();
                     activeMemberInVoiceCoins.set(oldState.id, data); // check current data for the existence of
-                }
-                else {
+                } else {
                     data = activeMemberInVoiceCoins.get(oldState.id);
-    
+
                 }
                 let duration = Date.now() - data;
                 if (oldState.channelID && !newState.channelID) { // This user has left the channel.
@@ -105,7 +104,7 @@ module.exports = new Event(
                         if (guildUserCoins) {
                             const userCoinsInfo = guildUserCoins.filter(coins => coins.userId === oldState.id);
                             if (userCoinsInfo.length !== 0) {
-                                const coins = parseInt(userCoinsInfo[0].coins + durationMin) ;
+                                const coins = parseInt(userCoinsInfo[0].coins + durationMin);
                                 console.log(coins)
                                 const index = guildUserCoins.indexOf(userCoinsInfo[0])
                                 guildUserCoins[index].coins = coins;
@@ -113,35 +112,32 @@ module.exports = new Event(
                                 await this.connection.query(`UPDATE coins SET coins = '${coins}' WHERE guildId = '${oldState.guild.id}' AND userId = '${oldState.id}'`);
                             } else {
                                 const coins = parseInt(durationMin);
-                                const newUserCoins = { userId: oldState.id, coins };
+                                const newUserCoins = {userId: oldState.id, coins};
                                 guildUserCoins.push(newUserCoins);
                                 await this.connection.query(`INSERT INTO coins (userId, guildId,  coins)VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `)
-    
+
                             }
                         } else {
-    
+
                             const coins = parseInt(durationMin);
-            
-                            await this.connection.query(`INSERT INTO coins (userId, guildId, coins) VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `).then(() =>{
+
+                            await this.connection.query(`INSERT INTO coins (userId, guildId, coins) VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `).then(() => {
                                 const newGuildUserCoins = []
                                 newGuildUserCoins.push({userId: oldState.id, coins})
                                 userCoins.set(oldState.guild.id, newGuildUserCoins)
                                 guildUserCoins = userCoins.get(oldState.guild.id)
                                 StateManager.emit('guildCoins', oldState.guild.id, guildUserCoins)
                             })
-    
+
                         }
-    
-    
-    
-    
+
+
                     }
-    
-                }
-                else if (oldState.channelID && newState.channelID) { // This user has changes the channel.
+
+                } else if (oldState.channelID && newState.channelID) { // This user has changes the channel.
                     activeMemberInVoiceCoins.set(oldState.id, Date.now());
                     let durationMin = duration * 1.66667e-5;
-    
+
                     if (durationMin >= 1) {
                         if (oldState.serverDeaf || oldState.serverMute || oldState.selfDeaf || oldState.selfMute) {
                             durationMin = (duration * 1.66667e-5) / muteDiviseur;
@@ -150,43 +146,42 @@ module.exports = new Event(
                         }
                         if (guildUserCoins) {
                             const userCoinsInfo = guildUserCoins.filter(coins => coins.userId === oldState.id);
-    
+
                             if (userCoinsInfo.length !== 0) {
-                                const coins = parseInt(userCoinsInfo[0].coins + durationMin) ;
+                                const coins = parseInt(userCoinsInfo[0].coins + durationMin);
                                 const index = guildUserCoins.indexOf(userCoinsInfo[0])
                                 guildUserCoins[index].coins = coins;
                                 StateManager.emit('guildCoins', oldState.guild.id, guildUserCoins)
                                 await this.connection.query(`UPDATE coins SET coins = '${coins}' WHERE guildId = '${oldState.guild.id}' AND userId = '${oldState.id}'`);
                             } else {
                                 const coins = parseInt(durationMin);
-                                const newUserCoins = { userId: oldState.id, coins };
+                                const newUserCoins = {userId: oldState.id, coins};
                                 guildUserCoins.push(newUserCoins);
                                 await this.connection.query(`INSERT INTO coins (userId, guildId,  coins)VALUES ('${oldState.id}', '${oldState.guild.id}', '${coins}') `)
-    
+
                             }
                         } else {
-    
+
                             const coins = parseInt(durationMin);
-    
-                         
-                            await this.connection.query(`INSERT INTO coins VALUES (userId, guildId, coins) ('${oldState.id}', '${oldState.guild.id}', '${coins}') `).then(() =>{
+
+
+                            await this.connection.query(`INSERT INTO coins VALUES (userId, guildId, coins) ('${oldState.id}', '${oldState.guild.id}', '${coins}') `).then(() => {
                                 const newGuildUserCoins = []
                                 newGuildUserCoins.push({userId: oldState.id, coins})
                                 userCoins.set(oldState.guild.id, newGuildUserCoins)
                                 guildUserCoins = userCoins.get(oldState.guild.id)
                                 StateManager.emit('guildCoins', oldState.guild.id, guildUserCoins)
-        
+
                             })
-    
+
                         }
-    
+
                     }
-    
+
                 }
-    
+
             }
         }
-      
 
 
         //#endregion coins
@@ -225,7 +220,7 @@ module.exports = new Event(
                         if (oldState.channelID === tempVocINFO.chId) return;
                         if (oldState.channel.members.size === 0) {
                             // -- Supprime le salon si personne est dedans
-                            oldState.channel.delete({ reason: `Personne dans le salon` })
+                            oldState.channel.delete({reason: `Personne dans le salon`})
                         }
                     }
                 } else if (oldState.channelID !== null && newState.channelID !== null) {
@@ -241,7 +236,7 @@ module.exports = new Event(
                             if (oldState.channel.members.size === 0) {
                                 // -- Supprime le salon
                                 if (oldState.channelID === tempVocINFO.chId) return;
-                                oldState.channel.delete({ reason: `Salon temporaire - Plus personne dans le salon` })
+                                oldState.channel.delete({reason: `Salon temporaire - Plus personne dans le salon`})
                             }
                         }
 
@@ -250,7 +245,7 @@ module.exports = new Event(
                         // -- Vérifie que l'ancien salon est vide
                         if (oldState.channel.members.size === 0) {
                             // -- Supprime le salon
-                            oldState.channel.delete({ reason: `Salon temporaire - Plus personne dans le salon` })
+                            oldState.channel.delete({reason: `Salon temporaire - Plus personne dans le salon`})
                         }
                         // -- 
                         // -- Obtiens la catégorie 
@@ -303,17 +298,17 @@ module.exports = new Event(
         let logVoiceId = logsVoiceId.get(oldState.guild.id);
         let logVoice
 
-        if (logVoiceId != undefined) {
+        if (logVoiceId !== undefined) {
             logVoice = oldState.guild.channels.cache.get(logVoiceId)
 
 
         }
-        if (logVoice != undefined && !oldState.bot) {
+        if (logVoice !== undefined && !oldState.bot) {
             let logEmbed;
             let member;
             let channel;
 
-            if (oldState.channelID == null && newState != undefined && newState.channelID != null) {
+            if (oldState.channelID == null && newState.channelID != null) {
                 member = await oldState.guild.members.fetch(oldState.id);
                 channel = await newState.guild.channels.cache.get(newState.channelID)
                 logEmbed = new Discord.MessageEmbed()
@@ -329,7 +324,7 @@ module.exports = new Event(
                     .setColor(`${color}`)
                 logVoice.send(logEmbed)
             }
-            if (oldState.channelID != null && newState != undefined && newState.channelID == null) {
+            if (oldState.channelID != null && newState.channelID == null) {
                 member = await oldState.guild.members.fetch(oldState.id);
                 channel = await newState.guild.channels.cache.get(oldState.channelID)
                 logEmbed = new Discord.MessageEmbed()
@@ -345,9 +340,12 @@ module.exports = new Event(
                     .setColor(`${color}`)
                 logVoice.send(logEmbed)
             }
-            if (oldState.channelID != null && newState != undefined && newState.channelID != null && oldState.channelID != newState.channelID) {
-                let action = await oldState.guild.fetchAuditLogs({ type: "MEMBER_MOVE", limit: 1 }).then(async (audit) => audit.entries.first());
-                const { executor, target } = action
+            if (oldState.channelID != null && newState.channelID != null && oldState.channelID !== newState.channelID) {
+                let action = await oldState.guild.fetchAuditLogs({
+                    type: "MEMBER_MOVE",
+                    limit: 1
+                }).then(async (audit) => audit.entries.first());
+                const {executor, target} = action
                 member = await oldState.guild.members.fetch(oldState.id);
                 channel = await newState.guild.channels.cache.get(oldState.channelID)
                 logEmbed = new Discord.MessageEmbed()
@@ -364,10 +362,9 @@ module.exports = new Event(
                 if (!action) {
                     logVoice.send(logEmbed)
                 }
-                if (executor.id == oldState.id) {
+                if (executor.id === oldState.id) {
                     logVoice.send(logEmbed)
-                }
-                else if (action.extra.channel.id != oldState.id && executor.id != oldState.id) {
+                } else if (action.extra.channel.id !== oldState.id && executor.id !== oldState.id) {
                     logEmbed = new Discord.MessageEmbed()
                         .setTitle('\`🔊\` Changement de salon')
                         .setDescription(`
@@ -382,7 +379,6 @@ module.exports = new Event(
                     logVoice.send(logEmbed)
 
                 }
-
 
 
             }
@@ -420,7 +416,7 @@ module.exports = new Event(
             }
         };
         if (oldState.channel != null && newState.channel != null) {
-            if (oldState.member.id === handler.client.user.id) {
+            if (oldState.member.id === client.user.id) {
                 newState.channel.leave()
                 oldState.channel.members.forEach(m => {
                     m.voice.setChannel(newState.channel.id)
@@ -431,19 +427,18 @@ module.exports = new Event(
         //#endregion log
 
 
-
         //#region  anti deco
         // const isOn = antiDecoOn.get(oldState.guild.id)
         // if (isOn == '1') {
         //     // if(newState) return;
 
         //     let logChannelId = logsChannelId.get(oldState.guild.id);
-        //     let logChannel = handler.client.guilds.cache.get(oldState.guild.id).channels.cache.get(logChannelId)
+        //     let logChannel = client.guilds.cache.get(oldState.guild.id).channels.cache.get(logChannelId)
 
         //     let action = await oldState.guild.fetchAuditLogs({ type: "MEMBER_DISCONNECT" }).then(async (audit) => audit.entries.first());
         //     if(action == undefined) return;
         //     if (action.executor == undefined) return;
-        //     if (action.executor.id === handler.client.user.id) return;
+        //     if (action.executor.id === client.user.id) return;
         //     const actionTime = new Date(action.createdTimestamp);
         //     const actualDate = new Date(Date.now());
         //     const formatedActionTime = parseInt(actionTime.getHours()) + parseInt(actionTime.getMinutes()) + parseInt(actionTime.getSeconds())
@@ -451,7 +446,7 @@ module.exports = new Event(
         //     if (formatedActualtime === formatedActionTime) {
         //         console.log(action)
 
-        //         var isOwner = checkBotOwner(oldState.guild.id, action.executor.id);
+        //         let isOwner = checkBotOwner(oldState.guild.id, action.executor.id);
 
         //         const isWlOnFetched = await this.connection.query(`SELECT antiDeco FROM antiraidWlBp WHERE guildId = '${oldState.guild.id}'`);
         //         const isWlOnfetched = isWlOnFetched[0][0].antiDeco;
@@ -473,7 +468,7 @@ module.exports = new Event(
 
         //             return;
         //         } else if (isOn == true && isOwner == false || oldState.guild.owner.id !== action.executor.id || isOnWl == true && isWl == false || isOnWl == false) {
-        //             let guild = handler.client.guilds.cache.find(guild => guild.id === oldState.guild.id);
+        //             let guild = client.guilds.cache.find(guild => guild.id === oldState.guild.id);
 
         //             let after = await this.connection.query(`SELECT antideco FROM antiraidconfig WHERE guildId = '${oldState.guild.id}'`)
 
@@ -546,9 +541,8 @@ module.exports = new Event(
         //#endregion anti deco
 
 
-
     }
-)
+}
 logsChannelF(logsChannelId, 'raid');
 logsChannelF(logsVoiceId, 'voice');
 

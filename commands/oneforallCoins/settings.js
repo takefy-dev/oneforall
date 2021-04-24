@@ -1,10 +1,10 @@
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
+let embedsColor = require('../../function/embedsColor');
 const { Command } = require('advanced-command-handler');
 const guildLang = new Map();
-var langF = require('../../function/lang')
+let langF = require('../../function/lang')
 const coinSettings = new Map();
 const userCoins = new Map();
 module.exports = new Command({
@@ -20,7 +20,7 @@ module.exports = new Command({
     cooldown: 4
 }, async (client, message, args) => {
     this.connection = StateManager.connection;
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
 
     let owner = message.guild.ownerID;
 
@@ -57,7 +57,7 @@ module.exports = new Command({
                 message.channel.send(lang.coinSettings.streamBoostQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if (msg.content === "cancel") return message.channel.send(lang.cancel).then(mps => mps.delete({ timeout: 4000 }))
                             if (isNaN(msg.content)) return message.channel.send(lang.coinSettings.onlyNumber).then(mp => mp.delete({ timeout: 4000 }))
                             config.streamBoost = msg.content
@@ -70,7 +70,7 @@ module.exports = new Command({
                 message.channel.send(lang.coinSettings.muteDiviseurQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if (msg.content === "cancel") return message.channel.send(lang.cancel).then(mp => mp.delete({ timeout: 4000 }))
                             if (isNaN(msg.content)) return message.channel.send(lang.coinSettings.onlyNumber).then(mp => mp.delete({ timeout: 4000 }))
                             config.muteDiviseur = msg.content
@@ -84,7 +84,7 @@ module.exports = new Command({
                 message.channel.send(lang.coinSettings.logsQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
 
                             if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content != 'cancel') {
                                 return message.channel.send(lang.coinSettings.errorNotChannel)

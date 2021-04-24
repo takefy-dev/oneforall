@@ -1,31 +1,31 @@
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
-const { Command } = require('advanced-command-handler');
-const guildLang = new Map();
-var langF = require('../../function/lang')
 const backup = require('discord-backup')
 const DateFormat = require('fast-date-format');
-const guildOwner = new Map();
 let loadTimeout = new Map();
-var checkOwner = require('../../function/check/botOwner');
 let doNotBackup = new Map();
-module.exports = new Command({
-    name: 'backup',
-    description: 'Create a backup of the server | Creer un backup du serveur',
-    // Optionnals :
-    usage: '!backup <create / list / delete>',
-    category: 'owners',
-    userPermissions: ['ADMINISTRATOR'],
-    clientPermissions: ["SEND_MESSAGES", "EMBED_LINKS", "ADMINISTRATOR"],
-    cooldown: 5
-}, async (client, message, args) => {
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
+
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'backup',
+            description: 'Create a backup of the server | Creer un backup du serveur',
+            usage: '!backup <create / list / delete>',
+            category: 'owners',
+            userPermissions: ['ADMINISTRATOR'],
+            clientPermissions: ["SEND_MESSAGES", "EMBED_LINKS", "ADMINISTRATOR"],
+        });
+    }
+    async run(client, message,args){
+
     let configEmbed;
     let msg;
     this.connection = StateManager.connection;
     const color = message.guild.color
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
     const create = args[0] == "create";
     const list = args[0] == 'list';
     const load = args[0] == 'load';
@@ -217,18 +217,7 @@ module.exports = new Command({
     }
     if (load) {
         let owner = message.guild.ownerID;
-
-        if (client.BotPerso) {
-            const fs = require('fs');
-            const path = './config.json';
-            if (fs.existsSync(path)) {
-                owner = require('../../config.json').owner;
-            } else {
-                owner = process.env.OWNER
-            }
-        }
-
-        if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+        if (!message.guild.isGuildOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
         if (loadTimeout.has(message.author.id)) return message.channel.send(lang.backup.timeout)
         const backupId = args[1];
@@ -373,14 +362,4 @@ module.exports = new Command({
         dd.setFooter(client.user.username);
         msg.edit(dd)
     }
-});
-
-embedsColor(guildEmbedColor);
-langF(guildLang);
-StateManager.on('ownerUpdate', (guildId, data) => {
-    guildOwner.set(guildId, data);
-})
-StateManager.on('ownerFetched', (guildId, data) => {
-    guildOwner.set(guildId, data);
-
-})
+}}

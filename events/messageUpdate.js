@@ -1,22 +1,26 @@
 const StateManager = require('../utils/StateManager');
 const antilinkGuild = new Map();
 const Discord = require('discord.js')
-var checkBotOwner = require('../function/check/botOwner');
-var embedsColor = require('../function/embedsColor');
+let checkBotOwner = require('../function/check/botOwner');
+let embedsColor = require('../function/embedsColor');
 const guildEmbedColor = new Map();
 const logsChannelId = new Map();
 const logsMsgId = new Map();
-var logsChannelF = require('../function/fetchLogs');
+let logsChannelF = require('../function/fetchLogs');
 
-const { Event } = require('advanced-command-handler');
-module.exports = new Event(
-	{
-		name: 'messageUpdate',
-	},
-	module.exports = async (handler, oldMessage, newMessage) => {
+const Event = require('../structures/Handler/Event');
+
+module.exports = class messageUpdate extends Event {
+	constructor() {
+		super({
+			name: 'messageUpdate',
+		});
+	}
+
+	async run(client, oldMessage, newMessage) {
 		this.connection = StateManager.connection;
 		if (oldMessage.guild == null) return;
-		if(oldMessage.author == null) return;
+		if (oldMessage.author == null) return;
 		if (oldMessage.author.bot || newMessage.author.bot) return;
 
 		const color = guildEmbedColor.get(oldMessage.guild.id)
@@ -24,16 +28,17 @@ module.exports = new Event(
 		if (newMessage.guild == null) return;
 
 		let logMsgId = logsMsgId.get(oldMessage.guild.id);
-     
+
 
 		let logMsgChannel
 		if (logMsgId != undefined) {
-			logMsgChannel = handler.client.guilds.cache.get(oldMessage.guild.id).channels.cache.get(logMsgId)
-			
+			logMsgChannel = client
+.guilds.cache.get(oldMessage.guild.id).channels.cache.get(logMsgId)
+
 
 		}
 		if (logMsgChannel != undefined && logMsgChannel.guild.id == oldMessage.guild.id) {
-			const url = `https://discord.com/channels/${oldMessage.guild.id}/${oldMessage.channel.id}/${oldMessage.id} ` 
+			const url = `https://discord.com/channels/${oldMessage.guild.id}/${oldMessage.channel.id}/${oldMessage.id} `
 			const logsEmbed = new Discord.MessageEmbed()
 				.setTitle('\`📣\` Modification de message')
 				.setDescription(`
@@ -44,12 +49,8 @@ module.exports = new Event(
 				.setTimestamp()
 				.setFooter("🕙")
 				.setColor(`${color}`)
-				logMsgChannel.send(logsEmbed);
+			logMsgChannel.send(logsEmbed);
 		}
-
-
-
-
 
 
 		function hasDiscordInvite(string) {
@@ -61,11 +62,16 @@ module.exports = new Event(
 
 		function deleteMessage(message, type) {
 			if (newMessage.deletable) {
-				newMessage.delete().catch(() => { });
+				newMessage.delete().catch(() => {
+				});
 			}
 
-			if (type === 'link') { var msg = `${message.author}, vous n'êtes pas autorisé à poster des liens` } else { var msg = `${message.author}, votre message a été supprimé sans raison.` }
-			var embed = new Discord.MessageEmbed()
+			if (type === 'link') {
+				let msg = `${message.author}, vous n'êtes pas autorisé à poster des liens`
+			} else {
+				let msg = `${message.author}, votre message a été supprimé sans raison.`
+			}
+			let embed = new Discord.MessageEmbed()
 				.setColor(`${color}`)
 				.setDescription(msg);
 			message.channel.send(embed)
@@ -76,8 +82,12 @@ module.exports = new Event(
 		const isAntilinkOn = antilinkGuild.get(oldMessage.guild.id);
 
 		let isAntilink
-		if (isAntilinkOn == "0") { isAntilink = false }
-		if (isAntilinkOn == '1') { isAntilink = true }
+		if (isAntilinkOn == "0") {
+			isAntilink = false
+		}
+		if (isAntilinkOn == '1') {
+			isAntilink = true
+		}
 		if (isAntilink == false) {
 			if (oldMessage.author.bot) return;
 		}
@@ -88,27 +98,41 @@ module.exports = new Event(
 		if (isAntilink == true) {
 			const isWlOnFetched = await this.connection.query(`SELECT antilink FROM antiraidWlBp WHERE guildId = '${oldMessage.guild.id}'`);
 			const isWlOnfetched = isWlOnFetched[0][0].antilink;
-			if (isWlOnfetched == "1") { isOnWl = true };
-			if (isWlOnfetched == "0") { isOnWl = false };
+			if (isWlOnfetched == "1") {
+				isOnWl = true
+			}
+			;
+			if (isWlOnfetched == "0") {
+				isOnWl = false
+			}
+			;
 			if (isOnWl == true) {
 				let isWlFetched = await this.connection.query(`SELECT whitelisted FROM guildConfig WHERE guildId = '${oldMessage.guild.id}'`);
 				let isWlfetched = isWlFetched[0][0].whitelisted.toString();
 				let isWl1 = isWlfetched.split(",");
-				if (isWl1.includes(oldMessage.author.id)) { isWl = true };
-				if (!isWl1.includes(oldMessage.author.id)) { isWl = false };
+				if (isWl1.includes(oldMessage.author.id)) {
+					isWl = true
+				}
+				;
+				if (!isWl1.includes(oldMessage.author.id)) {
+					isWl = false
+				}
+				;
 			}
 
 		}
 		// if(hasDiscordInvite(newMessage.content))deleteMessage(newMessage, 'link');
-		var isOwner = checkBotOwner(newMessage.guild.id, newMessage.author.id);
+		let isOwner = checkBotOwner(newMessage.guild.id, newMessage.author.id);
 		if (isOwner == true) return;
 		if (isAntilink == true && hasDiscordInvite(newMessage.content) && newMessage.author.id != newMessage.guild.ownerID && isOnWl == false) {
 			deleteMessage(newMessage, 'link');
 
 			let logChannelId = logsChannelId.get(newMessage.guild.id);
-			let logChannel = handler.client.guilds.cache.get(newMessage.guild.id).channels.cache.get(logChannelId)
+			let logChannel = client
+.guilds.cache.get(newMessage.guild.id).channels.cache.get(logChannelId)
 			if (logChannel == undefined) return;
-			if (newMessage.author.id === handler.client.user.id) return;
+			if (newMessage.author.id === client
+.user.id) return;
 			const user = newMessage.guild.members.cache.get(newMessage.author.id)
 			const logsEmbed = new Discord.MessageEmbed()
 				.setTitle('\`❌\` Post de lien en modifiant un message')
@@ -124,9 +148,11 @@ module.exports = new Event(
 		} else if (isAntilink == true && hasDiscordInvite(newMessage.content) && isOnWl == true && isWl == false && newMessage.author.id != newMessage.guild.ownerID) {
 			deleteMessage(newMessage, 'link');
 			let logChannelId = logsChannelId.get(newMessage.guild.id);
-			let logChannel = handler.client.guilds.cache.get(newMessage.guild.id).channels.cache.get(logChannelId)
+			let logChannel = client
+.guilds.cache.get(newMessage.guild.id).channels.cache.get(logChannelId)
 			if (logChannel == undefined) return;
-			if (newMessage.author.id === handler.client.user.id) return;
+			if (newMessage.author.id === client
+.user.id) return;
 			const user = newMessage.guild.members.cache.get(newMessage.author.id)
 			const logsEmbed = new Discord.MessageEmbed()
 				.setTitle('\`❌\` Post de lien en modifiant un message')
@@ -141,7 +167,7 @@ module.exports = new Event(
 			logChannel.send(logsEmbed);
 		}
 	}
-)
+}
 
 
 

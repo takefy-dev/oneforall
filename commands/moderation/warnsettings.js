@@ -1,40 +1,27 @@
-const Discord = require('discord.js')
-const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
-const {Command} = require('advanced-command-handler');
-const guildLang = new Map();
-var langF = require('../../function/lang')
+
 const warnSanction = new Map();
 const tempWarn = new Map();
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
 
-module.exports = new Command({
-    name: 'warn-config',
-    description: 'Configure the warn system | Configurer le system de warn',
-    // Optionnals :
-    usage: '!warn-config',
-    category: 'moderation',
-    tags: ['guildOnly'],
-    aliases: ['setwarn', 'warnconfig', 'warnsetup', 'warn-conf', 'warn config'],
-    userPermissions: ['ADMINISTRATOR'],
-    clientPermissions: ['EMBED_LINKS'],
-    cooldown: 3
-}, async(client, message, args) => {
-    this.connection = StateManager.connection;
-    const color = message.guild.color
-    const lang = require(`../../lang/${message.guild.lang}`);
-    let owner = message.guild.ownerID;
-
-    if (client.BotPerso) {
-        const fs = require('fs');
-        const path = './config.json';
-        if (fs.existsSync(path)) {
-            owner = require('../../config.json').owner;
-        } else {
-            owner = process.env.OWNER
-        }
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'warn-config',
+            description: 'Configure the warn system | Configurer le system de warn',
+            // Optionnals :
+            usage: '!warn-config',
+            category: 'moderation',
+            tags: ['guildOnly'],
+            aliases: ['setwarn', 'warnconfig', 'warnsetup', 'warn-conf', 'warn config'],
+            userPermissions: ['ADMINISTRATOR'],
+            clientPermissions: ['EMBED_LINKS'],
+            guildOwnerOnly : true,
+        });
     }
-    if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
+    async run(client, message,args){
+
     const warnBan = warnSanction.get(message.guild.id).ban
     const warnKick = warnSanction.get(message.guild.id).kick
     const warnMute = warnSanction.get(message.guild.id).mute
@@ -61,7 +48,7 @@ module.exports = new Command({
                 message.channel.send(lang.warn.banQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if(msg.content.toLowerCase() === 'cancel') return message.channel.send(lang.cancel).then(mps => {
                                 setTimeout( () => {
                                     mp.delete()
@@ -91,7 +78,7 @@ module.exports = new Command({
                 message.channel.send(lang.warn.kickQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if(msg.content.toLowerCase() === 'cancel') return message.channel.send(lang.cancel).then(mps => {
                                 setTimeout( () => {
                                     mp.delete()
@@ -121,7 +108,7 @@ module.exports = new Command({
                 message.channel.send(lang.warn.muteQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if(msg.content.toLowerCase() === 'cancel') return message.channel.send(lang.cancel).then(mps => {
                                 setTimeout( () => {
                                     mp.delete()
@@ -168,7 +155,7 @@ module.exports = new Command({
                 })
             }
             collector.on('end', async (collected, reason) => {
-                if (reason == 'time') {
+                if (reason === 'time') {
                     message.channel.send(lang.error.timeout)
                 }
                 tempWarn.delete(message.guild.id)
@@ -179,20 +166,9 @@ module.exports = new Command({
             const tempWarns = tempWarn.get(message.guild.id)
             embed.setDescription(lang.warn.description(tempWarns.ban, tempWarns.kick, tempWarns.mute))
             principalMsg.edit(embed)
-            // msgembed.addField(`\`🕙\`  Durée`, `${prettyMilliseconds(time.get(message.guild.id))}`, true)
-            // msgembed.addField(`\`🏷️\`  Salon`, `<#${channel}>`, true)
-            // msgembed.addField(`\`🕵️\` Gagnant imposé`, `<@${win}>`, true)
-            // msgembed.addField(`\`🔊\` Présence en vocal`, `${voice}`, true)
-            // msgembed.addField(`\`🎁\` Gain`, `${gains}`, true)
 
         }
     })
   
 
-});
-
-embedsColor(guildEmbedColor);
-langF(guildLang);
-StateManager.on('warnSanction', (guildId, warnArray) =>{
-    warnSanction.set(guildId, warnArray)
-})
+}}

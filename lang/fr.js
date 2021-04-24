@@ -14,11 +14,11 @@ module.exports = {
     error: {
         YesNo : `Veuillez répondre par \`oui ou non\` uniquement !`,
         timeout : `Temps écoulé !`,
+        cooldown: (time) => `Veuillez executer la commande dans \`${time}\` secondes.`,
         noSetup : "Vous devez setup le bot pour pouvoir utiliser cette commande (!setup)",
         NoYes : "Vous devez répondre uniquement avec oui ou non !",
-        timeout : `Temps écoulé !`,
         notListOwner : `Vous n'êtes pas dans la liste des owners`,
-        notGuildOwner : `Seulement la couronne du serveur peut executer cette action`,
+        notGuildOwner : `Seulement le propiétaire du serveur peut executer cette action`,
         voiceChat : `Vous devez être dans un salon vocal pour executer cette commande`,
         MissingPermission : `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
         includesEveryoneMention : `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`
@@ -240,15 +240,18 @@ module.exports = {
         replyMsgDelete : '<:720681705219817534:780540043033837622> Tous les webhooks ont été supprimés.'
     },
     wl : {
-        errorSyntax :"<:720681441670725645:780539422479351809> `ERREUR` Erreur de syntaxe (!wl add/remove/list/clear @TAKEFY)",
         errorSyntaxAdd : "<:720681441670725645:780539422479351809> `ERREUR` Erreur de syntaxe : !wl\`<add/ remove/ list>\` \`<mention / id>\`",
-        errorAlreadyWl : (member) => `<:720681441670725645:780539422479351809> \`ERREUR\` **${member.user.tag}** est déjà dans la whitelist`,
-        successWl : (member) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai ajouté **${member.user.tag}** à la whitelist`,
+        errorAlreadyWl : (member) => `<:720681441670725645:780539422479351809> \`ERREUR\` **${member}** est déjà dans la whitelist`,
+        successWl : (member) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai ajouté **${member}** à la whitelist`,
         clearWl : `Êtes-vous sûr de vouloir clear la whitelist ?`,
         successClearWl : `J'ai clear la whitelist`,
         error :`Oupsi une erreur a été détectée, je n'ai donc pas pu clear la whitelist`,
         cancel : `Je n'ai pas clear de la whitelist`,
-        
+        errorNotWl : (member) => `<:720681441670725645:780539422479351809> \`ERREUR\` **${member}** n'est pas dans les whitelist`,
+        successRmWl : (member) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai enlevé **${member}** des owner`,
+
+
+
     },
     voicemove : {
         success :  (author) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${author}, déplace moi dans le salon ou tu souhaite que je déplace toutes les personnes du salon!`,
@@ -289,7 +292,8 @@ module.exports = {
         memberRoleQ :"<:720681705219817534:780540043033837622> \`SUCCÈS\` Mentionne le rôle membre (si c'est everyone mettre l'id de everyone) !(timeout dans 30s & \`cancel\` pour annuler)",
         success : (mureRoleId, memberRoleId) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Les roles \`(${mureRoleId}, ${memberRoleId})\`ont bien été ajouté`,
         error : (mureRoleId, memberRole) =>`<:720681441670725645:780539422479351809> \`ERREUR\` Oupsi une erreur est survennue pour ajouter les rôles ${mureRoleId} ${memberRole} dans la liste base de donée`,
-        
+        dontFindMember : `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas ce role membre`,
+        dontFindMute : `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas ce role mute`
     },
     setlogs : {
         embedTitle : `Configuration des logs`,
@@ -328,17 +332,17 @@ module.exports = {
         // error: (channelLogs) =>`<:720681441670725645:780539422479351809> \`ERREUR\` Oupsi une erreur est survennue pour le salon des logs de l'antiraid \`(${channelLogs.name})\` dans la base de donnée`
     },
     owner : {
+        noMember : `Veuillez spécifier un membre`,
         errorSyntax :"<:720681441670725645:780539422479351809> `ERREUR` Erreur de syntaxe (!owner add/remove/list/clear @TAKEFY)",
         errorSyntaxAdd : "<:720681441670725645:780539422479351809> `ERREUR` Erreur de syntaxe : !owner\`<add/ remove/ list>\` \`<mention / id>\`",
-        errorAlreadyOwner : (member) => `<:720681441670725645:780539422479351809> \`ERREUR\` **${member.user.tag}** est déjà dans la owner list`,
-        successOwner : (member) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai ajouté **${member.user.tag}** à la owner list`,
-        errorNotOwner : (member) => `<:720681441670725645:780539422479351809> \`ERREUR\` **${member.user.tag}** n'est pas dans les owners`,
-        successRmOwner : (member) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai enlevé **${member.user.tag}** des owner`,
+        errorAlreadyOwner : (member) => `<:720681441670725645:780539422479351809> \`ERREUR\` **${member}** est déjà dans la owner list`,
+        successOwner : (member) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai ajouté **${member}** à la owner list`,
+        errorNotOwner : (member) => `<:720681441670725645:780539422479351809> \`ERREUR\` **${member}** n'est pas dans les owners`,
+        successRmOwner : (member) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai enlevé **${member}** des owner`,
         clearOwner : `Êtes-vous sûr de vouloir clear la owner list ?`,
         successClearOwner : `J'ai clear la owner list`,
         error :`Oupsi une erreur a été détectée, je n'ai donc pas pu clear la owner list`,
         cancel : `Je n'ai pas clear de la owner list`,
-        errorNotOwner : (guild) => `<:720681441670725645:780539422479351809> \`ERREUR\` Seulement le membre qui possède la couronne peux executer cette commande (${guild.owner.user.username})!`,
         titleList : `<:778353230383546419:781153631881265173> Liste des owners`,
 
     },

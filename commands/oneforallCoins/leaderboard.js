@@ -1,10 +1,10 @@
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
+let embedsColor = require('../../function/embedsColor');
 const {Command} = require('advanced-command-handler');
 const guildLang = new Map();
-var langF = require('../../function/lang')
+let langF = require('../../function/lang')
 const userCoins = new Map();
 module.exports = new Command({
     name: 'leaderboard',
@@ -18,7 +18,7 @@ module.exports = new Command({
     cooldown: 4
 }, async(client, message, args) => {
     const color = message.guild.color
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
     const guildTotalCoins = userCoins.get(message.guild.id);
     if(guildTotalCoins){
         const sortedTotalCoins = Object.entries(guildTotalCoins).sort((a, b) => b[1].coins - a[1].coins);

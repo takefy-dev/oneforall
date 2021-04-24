@@ -1,8 +1,8 @@
 const StateManager = require('../utils/StateManager');
 const guildCommandPrefixes = new Map();
-var checkBotOwner = require('../function/check/botOwner');
-var logsChannelF = require('../function/fetchLogs');
-var embedsColor = require('../function/embedsColor');
+let checkBotOwner = require('../function/check/botOwner');
+let logsChannelF = require('../function/fetchLogs');
+let embedsColor = require('../function/embedsColor');
 const logsChannelId = new Map();
 const guildEmbedColor = new Map();
 const Discord = require('discord.js');
@@ -22,23 +22,27 @@ const isBlFetched = require('../function/check/checkBl')
 const sleep = (milliseconds) => {
 	return new Promise(resolve => setTimeout(resolve, milliseconds))
   }
-const { Event } = require('advanced-command-handler');
-module.exports = new Event(
-	{
-		name: 'guildMemberAdd',
-	},
-	module.exports = async (handler, member) => {
+const Event = require('../structures/Handler/Event');
+
+module.exports = class guildMemberAdd extends Event {
+	constructor() {
+		super({
+			name: 'guildMemberAdd',
+		});
+	}
+
+	async run(client, member) {
 		this.connection = StateManager.connection;
 
-		if(!guildInvites.has(member.guild.id)){
-			if(member.guild.me.hasPermission('MANAGE_GUILD')){
+		if (!guildInvites.has(member.guild.id)) {
+			if (member.guild.me.hasPermission('MANAGE_GUILD')) {
 				await member.guild.fetchInvites()
-				.then(invites => {
-					guildInvites.set(member.guild.id, invites)
-				}).catch((err) => {
-					console.log(err)
-				})
-	
+					.then(invites => {
+						guildInvites.set(member.guild.id, invites)
+					}).catch((err) => {
+						console.log(err)
+					})
+
 			}
 		}
 		const color = guildEmbedColor.get(member.guild.id)
@@ -46,10 +50,12 @@ module.exports = new Event(
 		let guild = member.guild;
 		let logChannel
 		if (logChannelId != undefined) {
-			logChannel = handler.client.guilds.cache.get(member.guild.id).channels.cache.get(logChannelId)
-			
-		
-		};
+			logChannel = client
+.guilds.cache.get(member.guild.id).channels.cache.get(logChannelId)
+
+
+		}
+		;
 		//#region blacklist
 		const isOnBlF = await this.connection.query(`SELECT isOn FROM blacklist WHERE userId = '${member.guild.ownerID}'`)
 		if (isOnBlF[0][0] != undefined) {
@@ -57,7 +63,7 @@ module.exports = new Event(
 			if (isOnBl == '1') {
 				const isBl = isBlFetched(member.guild.ownerID, member.id);
 				if (isBl == true) {
-					member.guild.members.ban(member.id, { reason: `Blacklist` }).then(() => {
+					member.guild.members.ban(member.id, {reason: `Blacklist`}).then(() => {
 						if (logChannel == undefined || logChannel.guild.id != member.guild.id) return;
 
 						const logsEmbed = new Discord.MessageEmbed()
@@ -70,7 +76,7 @@ module.exports = new Event(
 							.setTimestamp()
 							.setFooter("🕙")
 							.setColor(`${color}`)
-						if(logChannel != undefined){
+						if (logChannel != undefined) {
 							logChannel.send(logsEmbed);
 
 						}
@@ -85,11 +91,11 @@ module.exports = new Event(
 		const isOnF = await this.connection.query(`SELECT antiDc FROM antiraid WHERE guildId = '${member.guild.id}'`)
 		let isOnSS = isOnF[0][0].antiDc
 		if (isOnSS == '1') {
-			const time = ms(Date.now() - member.user.createdTimestamp, { long: true });
+			const time = ms(Date.now() - member.user.createdTimestamp, {long: true});
 			const requireTimeF = await this.connection.query(`SELECT antiDcLimit FROM antiraidconfig WHERE guildId = '${member.guild.id}'`)
 			const requireTime = requireTimeF[0][0].antiDcLimit;
 
-		
+
 			if (requireTime.includes("day") || requireTime.includes("days")) {
 				if (parseInt(requireTime.replace(" days", " ").replace(" day", " ")) > parseInt(time.replace(" days", " ").replace(" day", " ")) || time.includes(" hours") || time.includes(" hour") || time.includes(" minutes") || time.includes(" minute") || time.includes(" secondes") || time.includes(" second")) {
 					alt(member)
@@ -107,9 +113,11 @@ module.exports = new Event(
 					alt(member)
 				}
 			}
+
 			async function alt(member) {
 				this.connection = StateManager.connection;
-				let guild1 = handler.client.guilds.cache.find(guild => guild.id === member.guild.id);
+				let guild1 = client
+.guilds.cache.find(guild => guild.id === member.guild.id);
 
 				let sanctionF = guildAntiraidConfig.get(guild1.id);
 
@@ -133,7 +141,6 @@ module.exports = new Event(
 					})
 				}
 
-			
 
 				const logsEmbed = new Discord.MessageEmbed()
 					.setTitle("\`🤵\` Un membre a rejoins avec un compte créé trop récemment !")
@@ -146,19 +153,17 @@ module.exports = new Event(
 					.setTimestamp()
 					.setFooter("🕙")
 					.setColor(`${color}`)
-				if(logChannel != undefined){
+				if (logChannel != undefined) {
 					logChannel.send(logsEmbed);
 
 				}
 			}
 
 
-
-
 		}
 
 		//#endregion anti alt
-	
+
 		//#region  invite
 		const isOnss = inviteOn.get(guild.id);
 		if (isOnss == '1') {
@@ -178,10 +183,11 @@ module.exports = new Event(
 								.then(res => {
 									if (res.code) {
 										chInv.send(`<@${member.id}> a été invite par l'url personnalisé du serveur`)
-										
+
 									} else {
 										return;
-									};
+									}
+									;
 								})
 								.catch(console.error);
 						}
@@ -189,13 +195,13 @@ module.exports = new Event(
 					let inviter;
 					let count;
 					let memberTotal;
-					if(usedInv != undefined){
+					if (usedInv != undefined) {
 						inviter = `${guild.members.cache.get(usedInv.inviter.id).user.tag}`;
 						count = `${usedInv.uses}`;
 						memberTotal = `${member.guild.memberCount}`
 					}
 
-					
+
 					const space = `\n`
 					if (chInv != undefined && usedInv != undefined) {
 						if (msgPreset.includes("${invited}") || msgPreset.includes("${inviter}") || msgPreset.includes("${count}") || msgPreset.includes("${memberTotal}") || msgPreset.includes("${space}")) {
@@ -240,12 +246,10 @@ module.exports = new Event(
 								while (msg.includes("${space}")) {
 									msg = msg.replace("${space}", space)
 								}
-							}
-
-							else {
+							} else {
 								msg = msgPreset;
 							}
-							
+
 							chInv.send(`${msg}`)
 						}
 
@@ -253,16 +257,12 @@ module.exports = new Event(
 					}
 
 
-
-
-				}
-				catch (err) {
+				} catch (err) {
 					console.log(err);
 				}
 			}
 		}
 		//#endregion invite
-
 
 
 		//#region antiraid
@@ -273,32 +273,51 @@ module.exports = new Event(
 		const isOnFetched = await this.connection.query(`SELECT bot FROM antiraid WHERE guildId = '${member.guild.id}'`);
 		const isOnfetched = isOnFetched[0][0].bot;
 		let isOn;
-		if (isOnfetched == "1") { isOn = true };
-		if (isOnFetched == "0") { isOn = false };
+		if (isOnfetched == "1") {
+			isOn = true
+		}
+		;
+		if (isOnFetched == "0") {
+			isOn = false
+		}
+		;
 		let action;
 		if (isOn) {
 			if (member.user.bot == false) return;
-			action = await member.guild.fetchAuditLogs({ type: "BOT_ADD", }).then((audit) => audit.entries.first());
+			action = await member.guild.fetchAuditLogs({type: "BOT_ADD",}).then((audit) => audit.entries.first());
 
 		} else {
 			return;
 		}
-		if (action.executor.id === handler.client.user.id) return;
-		var isOwner = checkBotOwner(guild.id, action.executor.id);
+		if (action.executor.id === client
+.user.id) return;
+		let isOwner = checkBotOwner(guild.id, action.executor.id);
 
 
 		const isWlOnFetched = await this.connection.query(`SELECT bot FROM antiraidWlBp WHERE guildId = '${member.guild.id}'`);
 		const isWlOnfetched = isWlOnFetched[0][0].bot;
 		let isOnWl;
-		if (isWlOnfetched == "1") { isOnWl = true };
-		if (isWlOnfetched == "0") { isOnWl = false };
+		if (isWlOnfetched == "1") {
+			isOnWl = true
+		}
+		;
+		if (isWlOnfetched == "0") {
+			isOnWl = false
+		}
+		;
 
 		let isWlFetched = await this.connection.query(`SELECT whitelisted FROM guildConfig WHERE guildId = '${member.guild.id}'`);
 		let isWlfetched = isWlFetched[0][0].whitelisted.toString();
 		let isWl1 = isWlfetched.split(",");
 		let isWl;
-		if (isWl1.includes(action.executor.id)) { isWl = true };
-		if (!isWl1.includes(action.executor.id)) { isWl = false };
+		if (isWl1.includes(action.executor.id)) {
+			isWl = true
+		}
+		;
+		if (!isWl1.includes(action.executor.id)) {
+			isWl = false
+		}
+		;
 
 		if (isOwner == true || member.guild.ownerID == action.executor.id || isOn == false) {
 			return;
@@ -306,25 +325,25 @@ module.exports = new Event(
 
 			return;
 		} else if (isOn == true && isOwner == false || guild.owner.id !== action.executor.id || isOnWl == true && isWl == false || isOnWl == false) {
-			try{
+			try {
 				member.kick(action.target.id)
 
-			}catch(e){
-				if(e.toString().toLowerCase().includes('missing permissions')){
-					
-	
+			} catch (e) {
+				if (e.toString().toLowerCase().includes('missing permissions')) {
+
+
 					const logsEmbed = new Discord.MessageEmbed()
-					.setTitle("\`🤖\` Ajout d'un Bot")
-					.setDescription(`
+						.setTitle("\`🤖\` Ajout d'un Bot")
+						.setDescription(`
 				\`👨‍💻\` Auteur : **${action.executor.tag}** \`(${action.executor.id})\` a ajouté le bot :\n
 					\`\`\`${action.target.username}\`\`\`
 					
 					\`🧾\`Erreur : Je n'ai pas assez de permissions pour remodifier ce rôles
 					`)
-					.setTimestamp()
-					.setFooter("🕙")
-					.setColor(`${color}`)
-					if(logChannel != undefined){
+						.setTimestamp()
+						.setFooter("🕙")
+						.setColor(`${color}`)
+					if (logChannel != undefined) {
 						logChannel.send(logsEmbed);
 
 					}
@@ -334,7 +353,8 @@ module.exports = new Event(
 			let after = await this.connection.query(`SELECT bot FROM antiraidconfig WHERE guildId = '${member.guild.id}'`)
 
 
-			let guild1 = handler.client.guilds.cache.find(guild => guild.id === member.guild.id);
+			let guild1 = client
+.guilds.cache.find(guild => guild.id === member.guild.id);
 			let targetMember = guild1.members.cache.get(action.executor.id);
 			if (targetMember.roles.highest.comparePositionTo(member.guild.me.roles.highest) <= 0) {
 
@@ -342,7 +362,7 @@ module.exports = new Event(
 					guild1.members.ban(action.executor.id)
 				} else if (after[0][0].bot === 'kick') {
 					guild1.member(action.executor.id).kick(
-						 `OneForAll - Type: botAdd `
+						`OneForAll - Type: botAdd `
 					)
 				} else if (after[0][0].bot === 'unrank') {
 					let roles = []
@@ -353,11 +373,11 @@ module.exports = new Event(
 					if (action.executor.bot) {
 						let botRole = targetMember.roles.cache.filter(r => r.managed)
 						// let r = guild.roles.cache.get(botRole.id)
-						
-						for(const[id] of botRole){
+
+						for (const [id] of botRole) {
 							botRole = guild.roles.cache.get(id)
 						}
-						botRole.setPermissions(0,  `OneForAll - Type: botAdd `)
+						botRole.setPermissions(0, `OneForAll - Type: botAdd `)
 					}
 				}
 
@@ -378,12 +398,11 @@ module.exports = new Event(
 				}
 
 			} else {
-				
 
 
 				const logsEmbed = new Discord.MessageEmbed()
-				.setTitle("\`🤖\` Ajout d'un Bot")
-				.setDescription(`
+					.setTitle("\`🤖\` Ajout d'un Bot")
+					.setDescription(`
 						\`👨‍💻\` Auteur : **${targetMember.user.tag}** \`(${action.executor.id})\` a ajouté le bot :\n
 						\`\`\`${action.target.username}\`\`\`
 						\`🧾\`Sanction : Aucune car il possède  plus de permissions que moi
@@ -391,16 +410,16 @@ module.exports = new Event(
 					.setTimestamp()
 					.setFooter("🕙")
 					.setColor(`${color}`)
-					if(logChannel != undefined){
-						logChannel.send(logsEmbed);
+				if (logChannel != undefined) {
+					logChannel.send(logsEmbed);
 
-					}
+				}
 			}
 			//#endregion
 		}
 
 	}
-)
+}
 
 logsChannelF(logsChannelId, 'raid');
 

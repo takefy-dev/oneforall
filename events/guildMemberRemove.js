@@ -1,22 +1,26 @@
 const StateManager = require('../utils/StateManager');
-var embedsColor = require('../function/embedsColor');
+let embedsColor = require('../function/embedsColor');
 const Discord = require('discord.js')
-var logsChannelF = require('../function/fetchLogs');
+let logsChannelF = require('../function/fetchLogs');
 const memberId = new Map();
 const memberName = new Map();
 const guildCommandPrefixes = new Map();
 const logsChannelId = new Map();
 const logsModId = new Map();
 const guildEmbedColor = new Map();
-var count = new Map();
+let count = new Map();
 const countGuild = new Map();
-var checkBotOwner = require('../function/check/botOwner');
-const { Event } = require('advanced-command-handler');
-module.exports = new Event(
-	{
-		name: 'guildMemberRemove',
-	},
-	module.exports = async (handler, member) => {
+let checkBotOwner = require('../function/check/botOwner');
+const Event = require('../structures/Handler/Event');
+
+module.exports = class guildMemberRemove extends Event {
+	constructor() {
+		super({
+			name: 'guildMemberRemove',
+		});
+	}
+
+	async run(client, member) {
 		this.connection = StateManager.connection;
 		// let guild = member.guild;
 		// let memberCount = guild.memberCount;
@@ -33,9 +37,12 @@ module.exports = new Event(
 		const isWlfetched = isWlFetched[0][0].whitelisted.toString();
 		const isWl1 = isWlfetched.split(',')
 		let isWl = false;
-		if (isWl1.includes(member.id)) { isWl = true };
+		if (isWl1.includes(member.id)) {
+			isWl = true
+		}
+		;
 		if (isWl = true) {
-			for (var i = 0; i < isWl1.length; i++) {
+			for (let i = 0; i < isWl1.length; i++) {
 
 				if (isWl1[i] === member.id) {
 
@@ -56,9 +63,12 @@ module.exports = new Event(
 		const isOwnerfetched = isOwnerFetched[0][0].owner.toString();
 		const isOwner1 = isOwnerfetched.split(',')
 		let isOwnerss = false;
-		if (isOwner1.includes(member.id)) { isOwnerss = true };
+		if (isOwner1.includes(member.id)) {
+			isOwnerss = true
+		}
+		;
 		if (isOwnerss = true) {
-			for (var i = 0; i < isOwner1.length; i++) {
+			for (let i = 0; i < isOwner1.length; i++) {
 
 				if (isOwner1[i] === member.id) {
 
@@ -76,13 +86,7 @@ module.exports = new Event(
 		//#region  antickick
 		const guild = member.guild
 		const color = guildEmbedColor.get(guild.id)
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-
-
-
-
-
-
+		if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
 
 
 		let logChannelId = logsChannelId.get(guild.id);
@@ -90,21 +94,28 @@ module.exports = new Event(
 		if (logChannelId != undefined) {
 			logChannel = guild.channels.cache.get(logChannelId)
 
-		};
-
+		}
+		;
 
 
 		//#region  anti mass kick
 		const isOnFetched = await this.connection.query(`SELECT antiKick FROM antiraid WHERE guildId = '${guild.id}'`);
 		const isOnfetched = isOnFetched[0][0].antiKick;
 		let isOn;
-		if (isOnfetched == "1") { isOn = true };
-		if (isOnFetched == "0") { isOn = false };
+		if (isOnfetched == "1") {
+			isOn = true
+		}
+		;
+		if (isOnFetched == "0") {
+			isOn = false
+		}
+		;
 
-		let action = await guild.fetchAuditLogs({ type: "KICK_MEMBERS" }).then(async (audit) => audit.entries.first());
+		let action = await guild.fetchAuditLogs({type: "KICK_MEMBERS"}).then(async (audit) => audit.entries.first());
 
-		if (action.executor.id === handler.client.user.id) return;
-		var isOwner = checkBotOwner(guild.id, action.executor.id);
+		if (action.executor.id === client
+.user.id) return;
+		let isOwner = checkBotOwner(guild.id, action.executor.id);
 		const actionTime = new Date(action.createdTimestamp);
 		const actualDate = new Date(Date.now());
 		const formatedActionTime = parseInt(actionTime.getHours()) + parseInt(actionTime.getMinutes()) + parseInt(actionTime.getSeconds())
@@ -113,7 +124,8 @@ module.exports = new Event(
 			let logModId = logsModId.get(guild.id);
 			let logMod
 			if (logModId != undefined && action.action == 'MEMBER_KICK') {
-				logMod = handler.client.guilds.cache.get(member.guild.id).channels.cache.get(logModId)
+				logMod = client
+.guilds.cache.get(member.guild.id).channels.cache.get(logModId)
 				const embed = new Discord.MessageEmbed()
 					.setTitle("\`🚫\` Un membre a été exclu")
 					.setDescription(`
@@ -127,13 +139,19 @@ module.exports = new Event(
 				logMod.send(embed)
 
 
-
-			};
+			}
+			;
 			const isWlOnFetched = await this.connection.query(`SELECT antiKick FROM antiraidWlBp WHERE guildId = '${guild.id}'`);
 			const isWlOnfetched = isWlOnFetched[0][0].antiKick;
 			let isOnWl;
-			if (isWlOnfetched == "1") { isOnWl = true };
-			if (isWlOnfetched == "0") { isOnWl = false };
+			if (isWlOnfetched == "1") {
+				isOnWl = true
+			}
+			;
+			if (isWlOnfetched == "0") {
+				isOnWl = false
+			}
+			;
 
 			if (isOwner == true || guild.ownerID == action.executor.id || isOn == false) {
 				return;
@@ -150,7 +168,7 @@ module.exports = new Event(
 
 
 				// console.log(count.has(action.executor.id))
-				var limitF = await this.connection.query(`SELECT antiKickLimit FROM antiraidconfig WHERE guildId = '${guild.id}'`);
+				let limitF = await this.connection.query(`SELECT antiKickLimit FROM antiraidconfig WHERE guildId = '${guild.id}'`);
 				let limit = parseInt(limitF[0][0].antiKickLimit);
 				let targetMember = guild.members.cache.get(action.executor.id);
 				if (targetMember == undefined) {
@@ -176,13 +194,13 @@ module.exports = new Event(
 						.setColor(`${color}`);
 
 
-
 					if (logChannel == undefined || logChannel.guild.id != member.guild.id) return;
 
 
 					logChannel.send(banCounter)
 				} else {
-					let guild1 = handler.client.guilds.cache.find(g => g.id === guild.id);
+					let guild1 = client
+.guilds.cache.find(g => g.id === guild.id);
 
 
 					countGuild.get(guild1.id).set(action.executor.id, parseInt(count.get(action.executor.id)) + 1)
@@ -198,7 +216,7 @@ module.exports = new Event(
 						} else if (after[0][0].antiKick === 'kick') {
 							guild1.member(getKey(countGuild.get(guild.id), limit)).kick(
 								`OneForAll - Type: antiMassKick `
-						)
+							)
 						} else if (after[0][0].antiKick === 'unrank') {
 							let roles = []
 							let role = await guild1.member(getKey(countGuild.get(guild.id), limit)).roles.cache
@@ -208,8 +226,8 @@ module.exports = new Event(
 							if (action.executor.bot) {
 								let botRole = targetMember.roles.cache.filter(r => r.managed)
 								// let r = guild.roles.cache.get(botRole.id)
-								
-								for(const[id] of botRole){
+
+								for (const [id] of botRole) {
 									botRole = guild.roles.cache.get(id)
 								}
 								botRole.setPermissions(0, `OneForAll - Type: antiMassKick `)
@@ -227,16 +245,16 @@ module.exports = new Event(
 							.setTimestamp()
 							.setFooter("🕙")
 							.setColor(`${color}`)
-						if(logChannel != undefined){
+						if (logChannel != undefined) {
 							logChannel.send(logsEmbed);
 
 						}
-					}else {
+					} else {
 
-			
+
 						const logsEmbed = new Discord.MessageEmbed()
-						.setTitle("\`🚫\` Un membre a été exclu")
-						.setDescription(`
+							.setTitle("\`🚫\` Un membre a été exclu")
+							.setDescription(`
 						\`👨‍💻\` Auteur : **${targetMember.user.tag}** \`(${action.executor.id})\` a exclu ${countGuild.get(guild.id).get(action.executor.id)} membre(s) :\n
 							\`\`\`${action.target.username}\`\`\`
 							\`🧾\`Sanction : Aucune car il possède  plus de permissions que moi
@@ -244,13 +262,12 @@ module.exports = new Event(
 							.setTimestamp()
 							.setFooter("🕙")
 							.setColor(`${color}`)
-							if(logChannel != undefined){
-								logChannel.send(logsEmbed);
-	
-							}
+						if (logChannel != undefined) {
+							logChannel.send(logsEmbed);
+
+						}
 					}
 				}
-
 
 
 			}
@@ -259,9 +276,8 @@ module.exports = new Event(
 		//#endregion anti mass kick
 
 
-
 	}
-);
+}
 logsChannelF(logsChannelId, 'raid');
 logsChannelF(logsModId, 'mod');
 

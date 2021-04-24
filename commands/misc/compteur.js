@@ -1,24 +1,23 @@
+
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
 const Discord = require('discord.js')
-const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
-const {Command} = require('advanced-command-handler');
-const guildLang = new Map();
-var langF = require('../../function/lang')
 
-module.exports = new Command({
-    name: 'counter',
-    description: "Show the counter creation menu | Afficher le menu de création d'un compteur",
-    // Optionnals :
-    usage: '!counter',
-    category: 'misc',
-    aliases: ['compteur'],
-    tags:['guildOnly'],
-    userPermissions: ['ADMINISTRATOR'],
-    clientPermissions: ['ADD_REACTIONS', 'EMBED_LINKS'],
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'counter',
+            description: "Show the counter creation menu | Afficher le menu de création d'un compteur",
+            // Optionnals :
+            usage: '!counter',
+            category: 'misc',
+            aliases: ['compteur'],
+            userPermissions: ['ADMINISTRATOR'],
+            clientPermissions: ['ADD_REACTIONS', 'EMBED_LINKS'],
+        });
+    }
+    async run(client, message,args){
 
-    cooldown: 7
-}, async(client, message, args) => {
     let memberCount = new Map();
     let botCount = new Map();
     let voiceCount = new Map();
@@ -27,12 +26,8 @@ module.exports = new Command({
     let channelCount = new Map();
     let roleCount = new Map();
     let boosterCount = new Map();
-
-    this.connection = StateManager.connection;
-
     const color = message.guild.color;
-    console.log(message.guild.counter)
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
     const msg = await message.channel.send(lang.loading)
     const emoji = ['👥', '🤖', '🔊', '🟢', '⭕', '📖', '✨', '💠', '❌', '✅']
     for(const em of emoji) {
@@ -65,7 +60,7 @@ module.exports = new Command({
                 message.channel.send(lang.counter.memberChQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content != 'off') {
                                 return message.channel.send(lang.counter.errorNotChannel)
                             }
@@ -109,7 +104,7 @@ module.exports = new Command({
                                 message.channel.send(lang.counter.nameQ).then((messageReply) =>{
                                     messageReply.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                                     .then(async cld => {
-                                        var msg = cld.first();
+                                        let msg = cld.first();
                                         memberCount.set(message.guild.id, JSON.stringify({id : ch.id, name: `${msg.content}`}))
                                         const replayMsg = message.channel.send(lang.counter.successMemberName(msg.content)).then(rp =>{
                                             setTimeout(async () => {
@@ -131,7 +126,7 @@ module.exports = new Command({
                 message.channel.send(lang.counter.botChQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content != 'off') {
                                 return message.channel.send(lang.counter.errorNotChannel)
                             }
@@ -170,7 +165,7 @@ module.exports = new Command({
                                 message.channel.send(lang.counter.nameQ).then((messageReply) =>{
                                     messageReply.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                                     .then(async cld => {
-                                        var msg = cld.first();
+                                        let msg = cld.first();
                                         botCount.set(message.guild.id, JSON.stringify({id : ch.id, name: `${msg.content}`}))
                                         const replayMsg = message.channel.send(lang.counter.successBotName(msg.content)).then(rp =>{
                                             setTimeout(async () => {
@@ -193,7 +188,7 @@ module.exports = new Command({
                 message.channel.send(lang.counter.vocalChQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content != 'off') {
                                 return message.channel.send(lang.counter.errorNotChannel)
                             }
@@ -232,7 +227,7 @@ module.exports = new Command({
                                 message.channel.send(lang.counter.nameQ).then((messageReply) =>{
                                     messageReply.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                                     .then(async cld => {
-                                        var msg = cld.first();
+                                        let msg = cld.first();
                                         voiceCount.set(message.guild.id, JSON.stringify({id : ch.id, name: `${msg.content}`}))
                                         const replayMsg = message.channel.send(lang.counter.successVocalName(msg.content)).then(rp =>{
                                             setTimeout(async () => {
@@ -254,7 +249,7 @@ module.exports = new Command({
                 message.channel.send(lang.counter.onlineChQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content != 'off') {
                                 return message.channel.send(lang.counter.errorNotChannel)
                             }
@@ -293,7 +288,7 @@ module.exports = new Command({
                                 message.channel.send(lang.counter.nameQ).then((messageReply) =>{
                                     messageReply.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                                     .then(async cld => {
-                                        var msg = cld.first();
+                                        let msg = cld.first();
                                         onlineCount.set(message.guild.id, JSON.stringify({id : ch.id, name: `${msg.content}`}))
                                         const replayMsg = message.channel.send(lang.counter.successOnlineName(msg.content)).then(rp =>{
                                             setTimeout(async () => {
@@ -315,7 +310,7 @@ module.exports = new Command({
                  message.channel.send(lang.counter.offlineChQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content != 'off') {
                                 return message.channel.send(lang.counter.errorNotChannel)
                             }
@@ -354,7 +349,7 @@ module.exports = new Command({
                                 message.channel.send(lang.counter.nameQ).then((messageReply) =>{
                                     messageReply.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                                     .then(async cld => {
-                                        var msg = cld.first();
+                                        let msg = cld.first();
                                         offlineCount.set(message.guild.id, JSON.stringify({id : ch.id, name: `${msg.content}`}))
                                         const replayMsg = message.channel.send(lang.counter.successOfflineName(msg.content)).then(rp =>{
                                             setTimeout(async () => {
@@ -376,7 +371,7 @@ module.exports = new Command({
                  message.channel.send(lang.counter.channelChQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content != 'off') {
                                 return message.channel.send(lang.counter.errorNotChannel)
                             }
@@ -416,7 +411,7 @@ module.exports = new Command({
                                 message.channel.send(lang.counter.nameQ).then((messageReply) =>{
                                     messageReply.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                                     .then(async cld => {
-                                        var msg = cld.first();
+                                        let msg = cld.first();
                                         channelCount.set(message.guild.id, JSON.stringify({id : ch.id, name: `${msg.content}`}))
                                         const replayMsg = message.channel.send(lang.counter.successChannelName(msg.content)).then(rp =>{
                                             setTimeout(async () => {
@@ -439,7 +434,7 @@ module.exports = new Command({
                  message.channel.send(lang.counter.roleChQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content != 'off') {
                                 return message.channel.send(lang.counter.errorNotChannel)
                             }
@@ -478,7 +473,7 @@ module.exports = new Command({
                                 message.channel.send(lang.counter.nameQ).then((messageReply) =>{
                                     messageReply.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                                     .then(async cld => {
-                                        var msg = cld.first();
+                                        let msg = cld.first();
                                         roleCount.set(message.guild.id, JSON.stringify({id : ch.id, name: `${msg.content}`}))
                                         const replayMsg = message.channel.send(lang.counter.successRoleName(msg.content)).then(rp =>{
                                             setTimeout(async () => {
@@ -500,7 +495,7 @@ module.exports = new Command({
                 message.channel.send(lang.counter.boostChQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content != 'off') {
                                 return message.channel.send(lang.counter.errorNotChannel)
                             }
@@ -539,7 +534,7 @@ module.exports = new Command({
                                 message.channel.send(lang.counter.nameQ).then((messageReply) =>{
                                     messageReply.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                                     .then(async cld => {
-                                        var msg = cld.first();
+                                        let msg = cld.first();
                                         boosterCount.set(message.guild.id, JSON.stringify({id : ch.id, name: `${msg.content}`}))
                                         const replayMsg = message.channel.send(lang.counter.successBoostName(msg.content)).then(rp =>{
                                             setTimeout(async () => {
@@ -677,7 +672,5 @@ module.exports = new Command({
             }
         })
     })
-});
+}};
 
-embedsColor(guildEmbedColor);
-langF(guildLang);

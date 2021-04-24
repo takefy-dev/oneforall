@@ -1,10 +1,10 @@
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
+let embedsColor = require('../../function/embedsColor');
 const {Command} = require('advanced-command-handler');
 const guildLang = new Map();
-var langF = require('../../function/lang')
+let langF = require('../../function/lang')
 
 module.exports = new Command({
     name: 'stats',
@@ -19,7 +19,7 @@ module.exports = new Command({
     return;
     this.connection = StateManager.connection;
     const color = message.guild.color
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
     if(args[0] === "on"){
         await this.connection.query(`UPDATE guildConfig SET statsOn = '1' WHERE guildId = '${message.guild.id}'`).then(() => {
             message.channel.send(lang.stats.enable).then(mp => mp.delete({ timeout: 4000 }))

@@ -1,10 +1,10 @@
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
+let embedsColor = require('../../function/embedsColor');
 const { Command } = require('advanced-command-handler');
 const guildLang = new Map();
-var langF = require('../../function/lang')
+let langF = require('../../function/lang')
 const guildInventory = new Map();
 const userCoins = new Map();
 module.exports = new Command({
@@ -19,7 +19,7 @@ module.exports = new Command({
     cooldown: 4
 }, async (client, message, args) => {
     const color = message.guild.color
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
     this.connection = StateManager.connection;
     const membersGuildInv = guildInventory.get(message.guild.id);
     if (membersGuildInv) {

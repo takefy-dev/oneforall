@@ -1,26 +1,24 @@
-
-const Discord = require('discord.js')
 const randomPuppy = require('random-puppy')
-const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
-const { Command } = require('advanced-command-handler');
-const guildLang = new Map();
-var langF = require('../../function/lang')
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
 
-module.exports = new Command({
-    name: 'meme',
-    description: 'A meme command for Joke | Une commande meme pour rigoler',
-    // Optionnals :
-    usage: '!meme',
-    category: 'fun',
-    tags: ['guildOnly'],
-    aliases: ['!me'],
-    clientPermissions: ["EMBED_LINKS"],
-    cooldown: 5
-}, async (client, message, args) => {
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'meme',
+            description: 'A meme command for Joke | Une commande meme pour rigoler',
+            usage: '!meme',
+            category: 'fun',
+            tags: ['guildOnly'],
+            aliases: ['!me'],
+            clientPermissions: ["EMBED_LINKS"],
+        });
+    }
+    async run(client, message,args){
+
     const color = message.guild.color
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
     const subReddits = ["dankememe", "meme", "memes"]
     const random = subReddits[Math.floor(Math.random() * 3) ]
 
@@ -33,7 +31,4 @@ module.exports = new Command({
         .setURL(`https://reddit.com/r/${random}`)
 
     message.channel.send(embed)
-});
-
-embedsColor(guildEmbedColor);
-langF(guildLang);
+}};

@@ -1,18 +1,22 @@
 const StateManager = require('../utils/StateManager');
-var checkBotOwner = require('../function/check/botOwner');
+let checkBotOwner = require('../function/check/botOwner');
 const guildEmbedColor = new Map();
-var checkWl = require('../function/check/checkWl');
-var logsChannelF = require('../function/fetchLogs');
-var embedsColor = require('../function/embedsColor');
+let checkWl = require('../function/check/checkWl');
+let logsChannelF = require('../function/fetchLogs');
+let embedsColor = require('../function/embedsColor');
 const Discord = require('discord.js')
 const logsChannelId = new Map();
 const guildAntiraidConfig = new Map();
-const { Event } = require('advanced-command-handler');
-module.exports = new Event(
-    {
-        name: 'webhookUpdate',
-    },
-    module.exports = async (handler, channel) => {
+const Event = require('../structures/Handler/Event');
+
+module.exports = class webhookUpdate extends Event {
+    constructor() {
+        super({
+            name: 'webhookUpdate',
+        });
+    }
+
+    async run(client, channel) {
         const color = guildEmbedColor.get(channel.guild.id)
         this.connection = StateManager.connection;
 
@@ -21,30 +25,45 @@ module.exports = new Event(
         const isOnFetched = await this.connection.query(`SELECT webhookCreate FROM antiraid WHERE guildId = '${channel.guild.id}'`);
         const isOnfetched = isOnFetched[0][0].webhookCreate;
         let isOn;
-        if (isOnfetched == "1") { isOn = true };
-        if (isOnFetched == "0") { isOn = false };
+        if (isOnfetched == "1") {
+            isOn = true
+        }
+        ;
+        if (isOnFetched == "0") {
+            isOn = false
+        }
+        ;
 
         let action;
         if (isOn) {
-            action = await channel.guild.fetchAuditLogs({limit: 1, type: "WEBHOOK_CREATE" }).then(async (audit) => audit.entries.first());
+            action = await channel.guild.fetchAuditLogs({
+                limit: 1,
+                type: "WEBHOOK_CREATE"
+            }).then(async (audit) => audit.entries.first());
 
         } else {
             return;
         }
         // console.log("ss", checkBotOwner(channel.guild.id, action.executor.id))
 
-        if (action.executor.id === handler.client.user.id) return;
-        var isOwner = checkBotOwner(channel.guild.id, action.executor.id);
-
+        if (action.executor.id === client
+            .user.id) return;
+        let isOwner = checkBotOwner(channel.guild.id, action.executor.id);
 
 
         const isWlOnFetched = await this.connection.query(`SELECT webhookCreate FROM antiraidWlBp WHERE guildId = '${channel.guild.id}'`);
         const isWlOnfetched = isWlOnFetched[0][0].webhookCreate;
         let isOnWl;
-        if (isWlOnfetched == "1") { isOnWl = true };
-        if (isWlOnfetched == "0") { isOnWl = false };
+        if (isWlOnfetched == "1") {
+            isOnWl = true
+        }
+        ;
+        if (isWlOnfetched == "0") {
+            isOnWl = false
+        }
+        ;
         if (isOnWl == true) {
-            var isWl = checkWl(channel.guild.id, action.executor.id);
+            let isWl = checkWl(channel.guild.id, action.executor.id);
 
         }
         // let isWlFetched = await this.connection.query(`SELECT whitelisted FROM guildConfig WHERE guildId = '${channel.guild.id}'`);
@@ -58,22 +77,23 @@ module.exports = new Event(
         } else if (isOwner == true || guild.ownerID == action.executor.id || isOn == false || isOnWl == true && isWl == true) {
             return;
         } else if (isOn == true && isOwner == false || guild.owner.id !== action.executor.id || isOnWl == true && isWl == false || isOnWl == false) {
-            try{
+            try {
                 await channel.delete();
-                var newChannel = await channel.clone()
+                let newChannel = await channel.clone()
                 newChannel.setPosition(channel.position)
                 const embed = new Discord.MessageEmbed()
                     .setDescription('👩‍💻 Si vous voulez ne plus être raid comme ce serveur alors le lien est ici ... [oneforall antiraid](https://discord.gg/rdrTpVeGWX)')
                     .setColor(`${color}`)
                     .setTimestamp()
-                    .setFooter(handler.client.user.username)
+                    .setFooter(client
+                        .user.username)
                 newChannel.send(embed)
-            }catch(e){
+            } catch (e) {
                 console.log("err", e)
-					if(e.toString().toLowerCase().includes('missing permissions')){
-						if (logChannel == undefined) return;
-		
-						const logsEmbed = new Discord.MessageEmbed()
+                if (e.toString().toLowerCase().includes('missing permissions')) {
+                    if (logChannel == undefined) return;
+
+                    const logsEmbed = new Discord.MessageEmbed()
                         .setTitle('\`❌\` Création de Weebhooks')
                         .setDescription(`
                         \`👨‍💻\` Auteur : **${action.executor.tag}** \`(${action.executor.id})\` a crée un weehbooks \n
@@ -81,19 +101,18 @@ module.exports = new Event(
                         
                         \`🧾\`Erreur : Je n'ai pas assez de permissions pour remodifier ce rôles
 						`)
-						.setTimestamp()
-						.setFooter("🕙")
-						.setColor(`${color}`)
-						 logChannel.send(logsEmbed);
-					}
+                        .setTimestamp()
+                        .setFooter("🕙")
+                        .setColor(`${color}`)
+                    logChannel.send(logsEmbed);
+                }
             }
-      
+
             let after = guildAntiraidConfig.get(channel.guild.id);
 
 
-
-
-            let guild = handler.client.guilds.cache.find(guild => guild.id === action.target.guildID);
+            let guild = client
+                .guilds.cache.find(guild => guild.id === action.target.guildID);
 
             let targetMember = guild.members.cache.get(action.executor.id);
             if (targetMember == undefined) {
@@ -113,7 +132,6 @@ module.exports = new Event(
                     )
 
 
-
                 } else if (after.webhookCreate == 'unrank') {
 
                     let roles = []
@@ -123,23 +141,24 @@ module.exports = new Event(
                     guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: webhookCreate`)
                     if (action.executor.bot) {
                         let botRole = targetMember.roles.cache.filter(r => r.managed)
-						// let r = guild.roles.cache.get(botRole.id)
-						
-						for(const[id] of botRole){
-							botRole = guild.roles.cache.get(id)
-						}
-						botRole.setPermissions(0, `OneForAll - Type: webhookCreate`)
-                    }
+                        // let r = guild.roles.cache.get(botRole.id)
 
+                        for (const [id] of botRole) {
+                            botRole = guild.roles.cache.get(id)
+                        }
+                        botRole.setPermissions(0, `OneForAll - Type: webhookCreate`)
+                    }
 
 
                 }
 
                 let logChannelId = logsChannelId.get(channel.guild.id);
                 if (logChannelId == undefined) return;
-                let logChannel = handler.client.guilds.cache.get(channel.guild.id).channels.cache.get(logChannelId)
+                let logChannel = client
+                    .guilds.cache.get(channel.guild.id).channels.cache.get(logChannelId)
                 if (logChannel != undefined) {
-                    if (action.executor.id === handler.client.user.id) return;
+                    if (action.executor.id === client
+                        .user.id) return;
                     const logsEmbed = new Discord.MessageEmbed()
                         .setTitle('\`❌\` Création de Weebhooks')
                         .setDescription(`
@@ -158,8 +177,8 @@ module.exports = new Event(
                 if (logChannel == undefined) return;
 
                 const logsEmbed = new Discord.MessageEmbed()
-                .setTitle('\`❌\` Création de Weebhooks')
-                .setDescription(`
+                    .setTitle('\`❌\` Création de Weebhooks')
+                    .setDescription(`
    \`👨‍💻\` Auteur : **${targetMember.user.tag}** \`(${action.executor.id})\` a crée un weehbooks \n
     \`\`\`${action.target.name}\`\`\`
                 \`🧾\`Sanction : Aucune car il possède  plus de permissions que moi
@@ -171,7 +190,7 @@ module.exports = new Event(
             }
         }
     }
-)
+}
 
 logsChannelF(logsChannelId, 'raid');
 embedsColor(guildEmbedColor);

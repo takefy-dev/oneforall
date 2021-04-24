@@ -1,106 +1,86 @@
 const StateManager = require('../utils/StateManager');
-var checkBotOwner = require('../function/check/botOwner');
-var checkWl = require('../function/check/checkWl');
-var logsChannelF = require('../function/fetchLogs');
-var embedsColor = require('../function/embedsColor');
+let checkBotOwner = require('../function/check/botOwner');
+let checkWl = require('../function/check/checkWl');
+let logsChannelF = require('../function/fetchLogs');
+let embedsColor = require('../function/embedsColor');
 const logsChannelId = new Map();
 const guildAntiraidConfig = new Map();
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
-const { Event } = require('advanced-command-handler');
-module.exports = new Event(
-    {
-        name: 'channelDelete',
-    },
-    module.exports = async (handler, channel) => {
+const Event = require('../structures/Handler/Event');
+const {Logger} = require('advanced-command-handler')
+module.exports = class channelDelete extends Event {
+    constructor() {
+        super({
+            name: 'channelDelete',
+        });
+    }
+
+    async run(client, channel) {
         this.connection = StateManager.connection;
-        if(channel.guild == undefined) return;
-        const color = guildEmbedColor.get(channel.guild.id)
-
         let guild = channel.guild
+
+        if (!guild) return;
+        const color = guild.color
+
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        const antiraidConfig = guild.antiraid;
+        const isOn = antiraidConfig.enable[this.name];
+        if(!isOn) return;
+        let action = await channel.guild.fetchAuditLogs({type: "CHANNEL_DELETE"}).then(async (audit) => audit.entries.first());
 
-        const isOnFetched = await this.connection.query(`SELECT channelDelete FROM antiraid WHERE guildId = '${channel.guild.id}'`);
-        const isOnfetched = isOnFetched[0][0].channelDelete;
-        let isOn;
-        if (isOnfetched == "1") { isOn = true };
-        if (isOnFetched == "0") { isOn = false };
-        let action;
-        if (isOn) {
-            action = await channel.guild.fetchAuditLogs({ type: "CHANNEL_DELETE" }).then(async (audit) => audit.entries.first());
+        if (action.executor.id === client.user.id)  return Logger.log(`No sanction oneforall`, `CHANNEL DELETE`, 'pink');
+        if(guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `CHANNEL DELETE`, 'pink');
 
-        } else {
-            return;
-        }
-        if (action.executor.id === handler.client.user.id) return;
-        var isOwner = checkBotOwner(channel.guild.id, action.executor.id);
+        let isGuildOwner = guild.isGuildOwner(action.executor.id);
+        let isBotOwner = client.isOwner(action.executor.id);
 
 
+        let isWlBypass = antiraidConfig.bypass[this.name];
+        if (isWlBypass) var isWl = guild.isGuildWl(action.executor.id);
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL DELETE`, 'pink');
 
-        const isWlOnFetched = await this.connection.query(`SELECT channelDelete FROM antiraidWlBp WHERE guildId = '${channel.guild.id}'`);
-        const isWlOnfetched = isWlOnFetched[0][0].channelDelete;
-        let isOnWl;
-        if (isWlOnfetched == "1") { isOnWl = true };
-        if (isWlOnfetched == "0") { isOnWl = false };
-        var isWl;
-        if (isOnWl == true) {
-            isWl = checkWl(channel.guild.id, action.executor.id);
-
-        }
-        // let isWlFetched = await this.connection.query(`SELECT whitelisted FROM guildConfig WHERE guildId = '${channel.guild.id}'`);
-        // let isWlfetched = isWlFetched[0][0].whitelisted.toString();
-        // let isWl1 = isWlfetched.split(",");
-        // let isWl;
-        // if (isWl1.includes(action.executor.id)) { isWl = true };
-        // if (!isWl1.includes(action.executor.id)) { isWl = false };
         let logChannelId = logsChannelId.get(channel.guild.id);
-     
 
-		let logChannel
-		if (logChannelId != undefined) {
-			logChannel = channel.guild.channels.cache.get(logChannelId)
-		
 
-		}
-        if (isOwner == true || guild.ownerID == action.executor.id || isOn == false) {
-            return;
-        } else if (isOwner == true || guild.ownerID == action.executor.id || isOn == false || isOnWl == true && isWl == true) {
-            return;
+        let logChannel
+        if (logChannelId != undefined) {
+            logChannel = channel.guild.channels.cache.get(logChannelId)
 
-        } else if (isOn == true && isOwner == false || guild.owner.id !== action.executor.id || isOnWl == true && isWl == false || isOnWl == false) {
-            try{
+
+        }
+         if (isWlBypass && !isWl || !isWlBypass) {
+            try {
                 let newChannel = await channel.clone()
                 newChannel.setPosition(channel.position)
-            }catch(e){
-                if(e.toString().toLowerCase().includes('missing permissions')){
-                   
+            } catch (e) {
+                if (e.toString().toLowerCase().includes('missing permissions')) {
 
-    
+
                     const logsEmbed = new Discord.MessageEmbed()
-                    .setTitle("\`📣\` Suppression d'un channel")
-                    .setDescription(`
+                        .setTitle("\`📣\` Suppression d'un channel")
+                        .setDescription(`
                     \`👨‍💻\` Auteur : **${action.executor.tag}** \`(${action.executor.id})\` a supprimé le channel:\n
                     \`\`\`${channel.name}\`\`\`
                     
                     \`🧾\`Erreur : Je n'ai pas assez de permissions pour remodifier ce rôles
                     `)
-                    .setTimestamp()
-                    .setFooter("🕙")
-                    .setColor(`${color}`)
-                    if(logChannel != undefined){
+                        .setTimestamp()
+                        .setFooter("🕙")
+                        .setColor(`${color}`)
+                    if (logChannel != undefined) {
                         logChannel.send(logsEmbed);
 
                     }
                 }
             }
-            
+
 
             let after = guildAntiraidConfig.get(channel.guild.id);
 
 
-
-
-            let guild = handler.client.guilds.cache.find(guild => guild.id === channel.guild.id);
+            let guild = client
+.guilds.cache.find(guild => guild.id === channel.guild.id);
             let targetMember = guild.members.cache.get(action.executor.id);
             if (targetMember == undefined) {
                 await channel.guild.members.fetch().then((members) => {
@@ -112,7 +92,7 @@ module.exports = new Event(
                     guild.members.ban(action.executor.id)
                 } else if (after.channelDelete === 'kick') {
                     guild.member(action.executor.id).kick(
-                       `OneForAll - Type: channelDelete `
+                        `OneForAll - Type: channelDelete `
                     )
                 } else if (after.channelDelete === 'unrank') {
                     let roles = []
@@ -122,16 +102,14 @@ module.exports = new Event(
                     guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: channelDelete`)
                     if (action.executor.bot) {
                         let botRole = targetMember.roles.cache.filter(r => r.managed)
-						// let r = guild.roles.cache.get(botRole.id)
-						
-						for(const[id] of botRole){
-							botRole = guild.roles.cache.get(id)
-						}
-						botRole.setPermissions(0,  `OneForAll - Type: channelDelete `)
+                        // let r = guild.roles.cache.get(botRole.id)
+
+                        for (const [id] of botRole) {
+                            botRole = guild.roles.cache.get(id)
+                        }
+                        botRole.setPermissions(0, `OneForAll - Type: channelDelete `)
                     }
                 }
-             
-             
 
 
                 const logsEmbed = new Discord.MessageEmbed()
@@ -145,14 +123,13 @@ module.exports = new Event(
                     .setTimestamp()
                     .setFooter("🕙")
                     .setColor(`${color}`)
-                    if(logChannel != undefined){
-                        logChannel.send(logsEmbed);
+                if (logChannel != undefined) {
+                    logChannel.send(logsEmbed);
 
-                    }
-            }else {
-              
+                }
+            } else {
 
-    
+
                 const logsEmbed = new Discord.MessageEmbed()
                     .setTitle("\`📣\` Suppression d'un channel")
                     .setDescription(`
@@ -163,15 +140,15 @@ module.exports = new Event(
                     .setTimestamp()
                     .setFooter("🕙")
                     .setColor(`${color}`)
-                    if(logChannel != undefined){
-                        logChannel.send(logsEmbed);
+                if (logChannel != undefined) {
+                    logChannel.send(logsEmbed);
 
-                    }
+                }
             }
-        } 
+        }
 
     }
-);
+};
 logsChannelF(logsChannelId, 'raid');
 
 embedsColor(guildEmbedColor);

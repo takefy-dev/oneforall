@@ -1,81 +1,61 @@
 const StateManager = require('../utils/StateManager');
-var checkBotOwner = require('../function/check/botOwner');
-var checkWl = require('../function/check/checkWl');
-var logsChannelF = require('../function/fetchLogs');
-var embedsColor = require('../function/embedsColor');
+let checkBotOwner = require('../function/check/botOwner');
+let checkWl = require('../function/check/checkWl');
+let logsChannelF = require('../function/fetchLogs');
 const logsChannelId = new Map();
 const Discord = require('discord.js');
-const { Logger } = require('advanced-command-handler');
-const guildEmbedColor = new Map();
-const guildAntiraidConfig = new Map();
-const { Event } = require('advanced-command-handler');
-module.exports = new Event(
-    {
-        name: 'channelCreate',
-        //optionnal :
-    },
-    module.exports = async (handler, channel) => {
-        this.connection = StateManager.connection;
+const Event = require('../structures/Handler/Event');
+const {Logger} = require('advanced-command-handler')
+
+
+module.exports = class channelCreate extends Event {
+    constructor() {
+        super({
+            name: 'channelCreate',
+        });
+    }
+
+    async run(client, channel) {
         let guild = channel.guild
-        if (channel.type == "dm") return;
+        if (channel.type === "dm") return;
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-        const color = guildEmbedColor.get(channel.guild.id)
+        const color = guild.color;
+        const antiraidConfig = guild.antiraid;
+        const isOn = antiraidConfig.enable[this.name];
+        if(!isOn) return;
 
-        const isOnFetched = await this.connection.query(`SELECT channelCreate FROM antiraid WHERE guildId = '${channel.guild.id}'`);
-        const isOnfetched = isOnFetched[0][0].channelCreate;
-        let isOn;
-        if (isOnfetched == "1") { isOn = true };
-        if (isOnFetched == "0") { isOn = false };
-        let action;
-        if (isOn) {
-            action = await channel.guild.fetchAuditLogs({ type: "CHANNEL_CREATE" }).then(async (audit) => audit.entries.first());
+        let action = await channel.guild.fetchAuditLogs({type: "CHANNEL_CREATE"}).then(async (audit) => audit.entries.first());
 
-        } else {
-            return;
-        }
-        if (action.executor.id === handler.client.user.id) return;
-        var isOwner = checkBotOwner(channel.guild.id, action.executor.id);
+        if (action.executor.id === client.user.id)  return Logger.log(`No sanction oneforall`, `CHANNEL DELETE`, 'pink');
+        if(guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `CHANNEL DELETE`, 'pink');
 
-        const isWlOnFetched = await this.connection.query(`SELECT channelCreate FROM antiraidWlBp WHERE guildId = '${channel.guild.id}'`);
-        const isWlOnfetched = isWlOnFetched[0][0].channelCreate;
-        let isOnWl;
-        if (isWlOnfetched == "1") { isOnWl = true };
-        if (isWlOnfetched == "0") { isOnWl = false };
-        if (isOnWl == true) {
-            var isWl = checkWl(channel.guild.id, action.executor.id);
+        let isGuildOwner = guild.isGuildOwner(action.executor.id);
+        let isBotOwner = client.isOwner(action.executor.id);
 
-        }
-        // let isWlFetched = await this.connection.query(`SELECT whitelisted FROM guildConfig WHERE guildId = '${channel.guild.id}'`);
-        // let isWlfetched =  isWlFetched[0][0].whitelisted.toString();
-        // let isWl1 = isWlfetched.split(",");
-        // let isWl;
-        // if (isWl1.includes(action.executor.id)) { isWl = true };
-        // if (!isWl1.includes(action.executor.id)) { isWl = false };
-      
-        if (isOwner == true || guild.ownerID == action.executor.id || isOn == false) {
-            return;
-        } else if (isOwner == true || guild.ownerID == action.executor.id || isOn == false || isOnWl == true && isWl == true) {
-            return;
 
-        } else if (isOn == true && isOwner == false || guild.owner.id !== action.executor.id || isOnWl == true && isWl == false || isOnWl == false) {
-            try{
+        let isWlBypass = antiraidConfig.bypass[this.name];
+        if (isWlBypass) var isWl = guild.isGuildWl(action.executor.id);
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL DELETE`, 'pink');
+
+
+        if (isWlBypass && !isWl || !isWlBypass) {
+            try {
                 channel.delete()
-            }catch(e){
-                if(e.toString().toLowerCase().includes('missing permissions')){
-               
+            } catch (e) {
+                if (e.toString().toLowerCase().includes('missing permissions')) {
 
-    
+
                     const logsEmbed = new Discord.MessageEmbed()
-                    .setTitle("\`📣\` Création d'un channel")
-                    .setDescription(`
+                        .setTitle("\`📣\` Création d'un channel")
+                        .setDescription(`
                     \`👨‍💻\` Auteur : **${action.executor.tag}** \`(${action.executor.id})\` a crée le channel:\n
                     \`\`\`${action.target.name}\`\`\`
                     \`🧾\`Erreur : Je n'ai pas assez de permissions pour remodifier ce rôles
                     `)
-                    .setTimestamp()
-                    .setFooter("🕙")
-                    .setColor(`${color}`)
-                    if(logChannel != undefined){
+                        .setTimestamp()
+                        .setFooter("🕙")
+                        .setColor(`${color}`)
+                    if (logChannel != undefined) {
                         logChannel.send(logsEmbed);
 
                     }
@@ -87,13 +67,13 @@ module.exports = new Event(
             let logChannel
             if (logChannelId != undefined) {
                 logChannel = channel.guild.channels.cache.get(logChannelId)
-    
+
             }
             let after = guildAntiraidConfig.get(channel.guild.id);
 
 
+            let guild = client.guilds.cache.find(guild => guild.id === action.target.guild.id);
 
-            let guild = handler.client.guilds.cache.find(guild => guild.id === action.target.guild.id);
             let targetMember = guild.members.cache.get(action.executor.id);
             if (targetMember == undefined) {
                 await channel.guild.members.fetch().then((members) => {
@@ -115,15 +95,15 @@ module.exports = new Event(
                     guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: channelCreate`)
                     if (action.executor.bot) {
                         let botRole = targetMember.roles.cache.filter(r => r.managed)
-						// let r = guild.roles.cache.get(botRole.id)
-						
-						for(const[id] of botRole){
-							botRole = guild.roles.cache.get(id)
-						}
-						botRole.setPermissions(0, `OneForAll - Type: channelCreate`)
+                        // let r = guild.roles.cache.get(botRole.id)
+
+                        for (const [id] of botRole) {
+                            botRole = guild.roles.cache.get(id)
+                        }
+                        botRole.setPermissions(0, `OneForAll - Type: channelCreate`)
                     }
                 }
-    
+
 
                 const logsEmbed = new Discord.MessageEmbed()
                     .setTitle("\`📣\` Création d'un channel")
@@ -136,13 +116,13 @@ module.exports = new Event(
                     .setTimestamp()
                     .setFooter("🕙")
                     .setColor(`${color}`)
-                    if(logChannel != undefined){
-                        logChannel.send(logsEmbed);
+                if (logChannel != undefined) {
+                    logChannel.send(logsEmbed);
 
-                    }
-            }else {
-              
-    
+                }
+            } else {
+
+
                 const logsEmbed = new Discord.MessageEmbed()
                     .setTitle("\`📣\` Création d'un channel")
                     .setDescription(`
@@ -153,19 +133,18 @@ module.exports = new Event(
                     .setTimestamp()
                     .setFooter("🕙")
                     .setColor(`${color}`)
-                    if(logChannel != undefined){
-                        logChannel.send(logsEmbed);
+                if (logChannel != undefined) {
+                    logChannel.send(logsEmbed);
 
-                    }
+                }
             }
         }
 
     }
-);
+};
 
 logsChannelF(logsChannelId, 'raid');
 
-embedsColor(guildEmbedColor);
 StateManager.on('antiraidConfF', (guildId, config) => {
     guildAntiraidConfig.set(guildId, config)
 })

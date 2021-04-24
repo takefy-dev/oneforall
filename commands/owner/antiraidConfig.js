@@ -2,55 +2,44 @@
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor')
-var checkOwner = require('../../function/check/botOwner')
-const guildOwner = new Map();
-var langF = require('../../function/lang')
-const guildLang = new Map();
-
 const { Menu } = require('discord.js-menu')
-const { Command } = require('advanced-command-handler');
-const hasVoted = require('../../function/check/hasVoteTopGg')
+let antiraidConfig = {};
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
 
-let antiraidConfig = new Object();
-module.exports = new Command({
-    name: 'antiraid',
-    description: "Setup the antiraid | Configurer l'antiraid",
-    // Optionnals :
-    usage: '!antiraid',
-    clientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES'],
-    ownerOnly: false,
-    category: 'owners',
-    cooldown: 5
-}, async (client, message, args) => {
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'antiraid',
+            description: "Setup the antiraid | Configurer l'antiraid",
+            usage: '!antiraid',
+            clientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES'],
+            ownerOnly: false,
+            category: 'owners',
+            guildOwnerOnly : true,
+            onlyTopGg : true
+        });
+    }
+    async run(client, message,args){
+
     this.connection = StateManager.connection;
-    const lang = require(`../../lang/${message.guild.lang}`)
+    const lang = client.lang(message.guild.lang)
 
-    const color = guildEmbedColor.get(message.guild.id)
+    const color =message.guild.color
     let owner = message.guild.ownerID;
 
-    if (client.BotPerso) {
-        const fs = require('fs');
-        const path = './config.json';
-        if (fs.existsSync(path)) {
-            owner = require('../../config.json').owner;
-        } else {
-            owner = process.env.OWNER
-        }
-    }
-    if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
 
-    if (!client.BotPerso) {
-        let voted
-        const votedF = await hasVoted(message.author.id).then((vote) => {
-            if (vote == false) voted = false
-            if (vote == true) voted = true
-        })
-        if (voted == false) {
-            return message.channel.send(lang.antiraidConfig.noVote)
-
-        }
-    }
+    // if (!client.BotPerso) {
+    //     let voted
+    //     const votedF = await hasVoted(message.author.id).then((vote) => {
+    //         if (vote == false) voted = false
+    //         if (vote == true) voted = true
+    //     })
+    //     if (voted == false) {
+    //         return message.channel.send(lang.antiraidConfig.noVote)
+    //
+    //     }
+    // }
 
     const allOn = args[0] == "on";
     const config = args[0] == "config";
@@ -2563,14 +2552,4 @@ module.exports = new Command({
 
     }
 
-});
-
-embedsColor(guildEmbedColor);
-StateManager.on('ownerUpdate', (guildId, data) => {
-    guildOwner.set(guildId, data);
-})
-StateManager.on('ownerFetched', (guildId, data) => {
-    guildOwner.set(guildId, data);
-
-})
-langF(guildLang);
+}}

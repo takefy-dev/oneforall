@@ -1,19 +1,22 @@
 const StateManager = require('../utils/StateManager');
-const { Event } = require('advanced-command-handler');
-var checkBotOwner = require('../function/check/botOwner');
+const Event = require('../structures/Handler/Event');
+
+let checkBotOwner = require('../function/check/botOwner');
 const guildEmbedColor = new Map();
-var checkWl = require('../function/check/checkWl');
-var logsChannelF = require('../function/fetchLogs');
-var embedsColor = require('../function/embedsColor');
+let checkWl = require('../function/check/checkWl');
+let logsChannelF = require('../function/fetchLogs');
+let embedsColor = require('../function/embedsColor');
 const Discord = require('discord.js')
 const logsChannelId = new Map();
 const guildAntiraidConfig = new Map();
-module.exports = new Event(
-	{
-		name: 'guildRegionUpdate',
+module.exports = class guildRegionUpdate extends Event {
+	constructor() {
+		super({
+			name: 'guildRegionUpdate',
+		});
+	}
 
-	},
-	async (handler, guild, oldRegion, newRegion) => {
+	async run(client, guild, oldRegion, newRegion) {
 
 		const color = guildEmbedColor.get(guild.id)
 		this.connection = StateManager.connection;
@@ -22,36 +25,49 @@ module.exports = new Event(
 		const isOnFetched = await this.connection.query(`SELECT regionUpdate FROM antiraid WHERE guildId = '${guild.id}'`);
 		const isOnfetched = isOnFetched[0][0].regionUpdate;
 		let isOn;
-		if (isOnfetched == "1") { isOn = true };
-		if (isOnFetched == "0") { isOn = false };
+		if (isOnfetched == "1") {
+			isOn = true
+		}
+		;
+		if (isOnFetched == "0") {
+			isOn = false
+		}
+		;
 
 		let action;
 		if (isOn) {
-			action = await guild.fetchAuditLogs({ type: "GUILD_UPDATE" }).then(async (audit) => audit.entries.first());
+			action = await guild.fetchAuditLogs({type: "GUILD_UPDATE"}).then(async (audit) => audit.entries.first());
 
 		} else {
 			return;
 		}
 
 		// console.log("ss", checkBotOwner(channel.guild.id, action.executor.id))
-		if (action.changes[0].key == 'region' && action.executor.id != handler.client.user.id) {
+		if (action.changes[0].key == 'region' && action.executor.id != client
+.user.id) {
 			let logChannelId = logsChannelId.get(guild.id);
 			let logChannel;
-			if(logChannelId != undefined){
-				logChannel = handler.client.guilds.cache.get(guild.id).channels.cache.get(logChannelId)
+			if (logChannelId != undefined) {
+				logChannel = client
+.guilds.cache.get(guild.id).channels.cache.get(logChannelId)
 			}
-		   
-			var isOwner = checkBotOwner(guild.id, action.executor.id);
 
+			let isOwner = checkBotOwner(guild.id, action.executor.id);
 
 
 			const isWlOnFetched = await this.connection.query(`SELECT regionUpdate FROM antiraidWlBp WHERE guildId = '${guild.id}'`);
 			const isWlOnfetched = isWlOnFetched[0][0].regionUpdate;
 			let isOnWl;
-			if (isWlOnfetched == "1") { isOnWl = true };
-			if (isWlOnfetched == "0") { isOnWl = false };
+			if (isWlOnfetched == "1") {
+				isOnWl = true
+			}
+			;
+			if (isWlOnfetched == "0") {
+				isOnWl = false
+			}
+			;
 			if (isOnWl == true) {
-				var isWl = checkWl(guild.id, action.executor.id);
+				let isWl = checkWl(guild.id, action.executor.id);
 
 			}
 			// let isWlFetched = await this.connection.query(`SELECT whitelisted FROM guildConfig WHERE guildId = '${channel.guild.id}'`);
@@ -82,18 +98,14 @@ module.exports = new Event(
 							.setTimestamp()
 							.setFooter("🕙")
 							.setColor(`${color}`)
-							if (logChannel != undefined){
-								logChannel.send(logsEmbed);
-							}
+						if (logChannel != undefined) {
+							logChannel.send(logsEmbed);
+						}
 					}
 				}
 
 				let after = guildAntiraidConfig.get(guild.id);
 
-
-
-
-				
 
 				let targetMember = guild.members.cache.get(action.executor.id);
 				if (targetMember == undefined) {
@@ -113,7 +125,6 @@ module.exports = new Event(
 						)
 
 
-
 					} else if (after.regionUpdate == 'unrank') {
 
 						let roles = []
@@ -123,24 +134,24 @@ module.exports = new Event(
 						guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: guildUpdate - changeRegion`)
 						if (action.executor.bot) {
 							let botRole = targetMember.roles.cache.filter(r => r.managed)
-						// let r = guild.roles.cache.get(botRole.id)
-						
-						for(const[id] of botRole){
-							botRole = guild.roles.cache.get(id)
-						}
-						botRole.setPermissions(0, `OneForAll - Type: guildUpdate - changeRegion`)
-						}
+							// let r = guild.roles.cache.get(botRole.id)
 
+							for (const [id] of botRole) {
+								botRole = guild.roles.cache.get(id)
+							}
+							botRole.setPermissions(0, `OneForAll - Type: guildUpdate - changeRegion`)
+						}
 
 
 					}
 
-					
+
 					if (logChannel != undefined) {
-						if (action.executor.id === handler.client.user.id) return;
+						if (action.executor.id === client
+.user.id) return;
 						const logsEmbed = new Discord.MessageEmbed()
-						.setTitle('\`📣\` Modification de région')
-						.setDescription(`
+							.setTitle('\`📣\` Modification de région')
+							.setDescription(`
 					\`👨‍💻\` Auteur : **${action.executor.tag}** \`(${action.executor.id})\` a modifié la région du serveur \n
 					\`\`\`${oldRegion} en ${newRegion}\`\`\`
            \`🧾\` Sanction : ${after.regionUpdate}
@@ -153,11 +164,11 @@ module.exports = new Event(
 					}
 
 				} else {
-					
+
 
 					const logsEmbed = new Discord.MessageEmbed()
-					.setTitle('\`📣\` Modification de région')
-					.setDescription(`
+						.setTitle('\`📣\` Modification de région')
+						.setDescription(`
 				\`👨‍💻\` Auteur : **${action.executor.tag}** \`(${action.executor.id})\` a modifié la région du serveur \n
 				\`\`\`${oldRegion} en ${newRegion}\`\`\`
                 \`🧾\`Sanction : Aucune car il possède  plus de permissions que moi
@@ -165,14 +176,14 @@ module.exports = new Event(
 						.setTimestamp()
 						.setFooter("🕙")
 						.setColor(`${color}`)
-						if (logChannel != undefined){
-							logChannel.send(logsEmbed);
-						}
+					if (logChannel != undefined) {
+						logChannel.send(logsEmbed);
+					}
 				}
 			}
 		}
 	}
-);
+};
 logsChannelF(logsChannelId, 'raid');
 embedsColor(guildEmbedColor);
 StateManager.on('antiraidConfF', (guildId, config) => {

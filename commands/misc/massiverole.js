@@ -1,30 +1,28 @@
-const Discord = require('discord.js')
-const guildEmbedColor = new Map();
 const ms = require('ms')
-const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
-const { Command } = require('advanced-command-handler');
-const prettyMilliseconds = require('pretty-ms');
-const guildLang = new Map();
-var langF = require('../../function/lang')
 const timer = new Map();
 let member = new Map();
 let counts = new Map();
 let done = new Map();
-module.exports = new Command({
-    name: 'massrole',
-    description: "Add / Remove a role to all members in a server | Permet d'ajouter / enlver un rôle a tout les membres d'un serveur",
-    // Optionnals :
-    usage: '!massrole < add / remove> <role>',
-    category: 'misc',
-    tags : ['guildOnly'],
-    aliases: ['roleall', 'allrole'],
-    userPermissions: ["MANAGE_ROLES"],
-    clientPermissions: ["MANAGE_ROLES"],
-    cooldown: 5
-}, async (client, message, args) => {
-    const lang = require(`../../lang/${message.guild.lang}`)
-    const color = guildEmbedColor.get(message.guild.id)
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
+
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'massrole',
+            description: "Add / Remove a role to all members in a server | Permet d'ajouter / enlver un rôle a tout les membres d'un serveur",
+            usage: '!massrole < add / remove> <role>',
+            category: 'misc',
+            aliases: ['roleall', 'allrole'],
+            userPermissions: ["MANAGE_ROLES"],
+            clientPermissions: ["MANAGE_ROLES"],
+        });
+    }
+    async run(client, message,args){
+
+    const lang = client.lang(message.guild.lang)
+    const color = message.guild.color
     let owner = message.guild.ownerID;
 
     if (client.BotPerso) {
@@ -43,8 +41,8 @@ module.exports = new Command({
         if (role.permissions.has("KICK_MEMBERS") || role.permissions.has("BAN_MEMBERS") || role.permissions.has("ADMINISTRATOR") || role.permissions.has("MANAGE_CHANNELS") || role.permissions.has("MANAGE_GUILD") || role.permissions.has("MANAGE_ROLES")) return message.channel.send(lang.massrole.highPermRole(role.name))
 
     }
-    const add = args[0] == 'add';
-    const remove = args[0] == 'remove'
+    const add = args[0] === 'add';
+    const remove = args[0] === 'remove'
     if (!args[0]) {
         const embed = new Discord.MessageEmbed()
                         .setAuthor(`Informations Massrole`, `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
@@ -61,8 +59,8 @@ module.exports = new Command({
             member.set(message.guild.id, members.filter(member => member.roles.highest.comparePositionTo(message.guild.me.roles.highest) <= 0 && !member.roles.cache.has(role.id))) 
         })
         
-        if (member.get(message.guild.id).size == 0) return message.channel.send(lang.massrole.errorRlAlready(role))
-        var timeLeft = ms(`${member.get(message.guild.id).size}s`)
+        if (member.get(message.guild.id).size === 0) return message.channel.send(lang.massrole.errorRlAlready(role))
+        let timeLeft = ms(`${member.get(message.guild.id).size}s`)
         const embed = new Discord.MessageEmbed()
         .setTitle(lang.massrole.title(role, member.get(message.guild.id).size))
         .setDescription(lang.massrole.descriptionTimeLeft(timeLeft))
@@ -87,7 +85,7 @@ module.exports = new Command({
                         }
                         
                     })
-                    if(done.get(message.guild.id) == member.get(message.guild.id).size - 1) {
+                    if(done.get(message.guild.id) === member.get(message.guild.id).size - 1) {
     
                        message.channel.send(lang.massrole.successAdd(role, member.get(message.guild.id).size))
                        counts.delete(message.guild.id)
@@ -106,22 +104,18 @@ module.exports = new Command({
         
     
 
-        //
+
         setTimeout(async () => {
             timer.delete(message.guild.id)
         },1.8e+6)
-        // var inter = setInterval(addRole, 1000);
-        // function stopInt() {
-        //     clearTimeout(inter);
-        //     message.channel.send(lang.massrole.successAdd(role, member))
-        // }
+
     }  else if (remove) {
         await message.guild.members.fetch().then((members) =>{
             member.set(message.guild.id, members.filter(member => member.roles.highest.comparePositionTo(message.guild.me.roles.highest) <= 0 && member.roles.cache.has(role.id))) 
         })
         
-        if (member.get(message.guild.id).size == 0) return message.channel.send(lang.massrole.errorRlNot(role))
-        var timeLeft = ms(`${member.get(message.guild.id).size}s`)
+        if (member.get(message.guild.id).size === 0) return message.channel.send(lang.massrole.errorRlNot(role))
+        let timeLeft = ms(`${member.get(message.guild.id).size}s`)
         const embed = new Discord.MessageEmbed()
         .setTitle(lang.massrole.titleRm(role, member.get(message.guild.id).size))
         .setDescription(lang.massrole.descriptionTimeLeft(timeLeft))
@@ -146,7 +140,7 @@ module.exports = new Command({
                         }
                         
                     })
-                    if(done.get(message.guild.id) == member.get(message.guild.id).size - 1) {
+                    if(done.get(message.guild.id) === member.get(message.guild.id).size - 1) {
     
                        message.channel.send(lang.massrole.successRemove(role, member.get(message.guild.id).size))
                        counts.delete(message.guild.id)
@@ -165,21 +159,17 @@ module.exports = new Command({
         
     
 
-        //
+
         setTimeout(async () => {
             timer.delete(message.guild.id)
         },1.8e+6)
-        // var inter = setInterval(addRole, 1000);
-        // function stopInt() {
-        //     clearTimeout(inter);
-        //     message.channel.send(lang.massrole.successAdd(role, member))
-        // }
 
 
-    }else if(args[0] == 'status'){
+
+    }else if(args[0] === 'status'){
     
         if(!done.has(message.guild.id) || !member.has(message.guild.id)) return message.channel.send(lang.nickall.noMassrole) 
-        var timeLeft = ms(`${member.get(message.guild.id).size - done.get(message.guild.id)}s`)
+        let timeLeft = ms(`${member.get(message.guild.id).size - done.get(message.guild.id)}s`)
         const status = new Discord.MessageEmbed()
         .setTitle('Status')
         .setDescription(lang.descriptionTimeLeft(timeLeft))
@@ -193,7 +183,5 @@ module.exports = new Command({
 
 
 
-});
+}};
 
-embedsColor(guildEmbedColor);
-langF(guildLang);

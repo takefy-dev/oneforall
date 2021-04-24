@@ -1,36 +1,34 @@
-const Discord = require('discord.js')
-const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
-const { Command } = require('advanced-command-handler');
-const guildLang = new Map();
-var langF = require('../../function/lang')
 const categoryNameMapping = new Map();
-
 const enable = new Map();
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
+
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'tempvoc',
+            description: 'Show the tempvoc menu | Afficher le menu de vocal temporaire',
+            usage: '!tempvoc',
+            category: 'misc',
+            userPermissions: ['ADMINISTRATOR'],
+            clientPermissions: ['EMBED_LINKS'],
+        });
+    }
+    async run(client, message,args){
 
 
-module.exports = new Command({
-    name: 'tempvoc',
-    description: 'Show the tempvoc menu | Afficher le menu de vocal temporaire',
-    // Optionnals :
-    usage: '!tempvoc',
-    category: 'misc',
-    tags: ['guildOnly'],
-    userPermissions: ['ADMINISTRATOR'],
-    clientPermissions: ['EMBED_LINKS'],
-    cooldown: 4
-}, async (client, message, args) => {
     this.connection = StateManager.connection;
     const color = message.guild.color
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
     const msg = await message.channel.send(lang.loading);
     const emojis = ['🕳', '💬', '💨', '💥', '❌', '✅']
     for (const emoji of emojis) {
         await msg.react(emoji)
     }
     await this.connection.query(`SELECT tempvocInfo, isOn FROM tempvoc WHERE guildId = '${message.guild.id}' `).then((result) => {
-        if (result[0].length == 0) {
+        if (result[0].length === 0) {
             categoryNameMapping.set(message.guild.id, JSON.stringify({ catId: 'Non définie', chId: undefined, chName: 'Non définie' }))
             enable.set(message.guild.id, 'Désactivé')
 
@@ -91,7 +89,7 @@ module.exports = new Command({
                 await message.channel.send(lang.tempvoc.nameQ).then(mp => {
                     mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 50000, errors: ['time'] })
                         .then(async cld => {
-                            var msg = cld.first();
+                            let msg = cld.first();
                             if (msg.content.toLowerCase() == "cancel") {
                                 const reply = await message.channel.send(lang.cancel)
                                 await reply.delete({ timeout: 2000 })
@@ -234,7 +232,5 @@ module.exports = new Command({
 
         })
     })
-});
+}}
 
-embedsColor(guildEmbedColor);
-langF(guildLang);

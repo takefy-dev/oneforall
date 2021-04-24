@@ -5,7 +5,7 @@ this.connection = StateManager.connection;
 
     const isWlFetched = await this.connnection.query(`SELECT 'webhookCreate' FROM antiraidWlBp WHERE guildId = '${guildID}'`);
     const isWbWlRes = isWlFetched[0][0].webhookCreate;
-    var isWlOn = false
+    let isWlOn = false
     if (isWbWlRes == "1") {
         isWlOn = true;
     }
@@ -18,7 +18,7 @@ const wbUp = async function checkWbWlOn(guildID) {
 
     const isWlFetched = await this.connnection.query(`SELECT 'webhookUpdate' FROM antiraidWlBp WHERE guildId = '${guildID}'`);
     const isWbWlRes = isWlFetched[0][0].webhookUpdate;
-    var isWlOn = false
+    let isWlOn = false
     if (isWbWlRes == "1") {
         isWlOn = true;
     }
@@ -31,7 +31,7 @@ const wbDel = async function checkWbWlOn(guildID) {
 
     const isWlFetched = await this.connnection.query(`SELECT 'webhookDelete' FROM antiraidWlBp WHERE guildId = '${guildID}'`);
     const isWbWlRes = isWlFetched[0][0].webhookDelete;
-    var isWlOn = false
+    let isWlOn = false
     if (isWbWlRes == "1") {
         isWlOn = true;
     }
@@ -44,7 +44,7 @@ const rlCr = async function checkWbWlOn(guildID) {
 
     const isWlFetched = await this.connnection.query(`SELECT 'roleCreate' FROM antiraidWlBp WHERE guildId = '${guildID}'`);
     const isWbWlRes = isWlFetched[0][0].roleCreate;
-    var isWlOn = false
+    let isWlOn = false
     if (isWbWlRes == "1") {
         isWlOn = true;
     }
@@ -57,7 +57,7 @@ const rlUp = async function checkWbWlOn(guildID) {
 
     const isWlFetched = await this.connnection.query(`SELECT 'roleUpdate' FROM antiraidWlBp WHERE guildId = '${guildID}'`);
     const isWbWlRes = isWlFetched[0][0].roleUpdate;
-    var isWlOn = false
+    let isWlOn = false
     if (isWbWlRes == "1") {
         isWlOn = true;
     }
@@ -70,7 +70,7 @@ const rlDel = async function checkWbWlOn(guildID) {
 
     const isWlFetched = await this.connnection.query(`SELECT 'roleDelete' FROM antiraidWlBp WHERE guildId = '${guildID}'`);
     const isWbWlRes = isWlFetched[0][0].roleUpdate;
-    var isWlOn = false
+    let isWlOn = false
     if (isWbWlRes == "1") {
         isWlOn = true;
     }
@@ -83,7 +83,7 @@ const chCr = async function checkWbWlOn(guildID) {
 
     const isWlFetched = await this.connnection.query(`SELECT 'channelCreate' FROM antiraidWlBp WHERE guildId = '${guildID}'`);
     const isWbWlRes = isWlFetched[0][0].channelCreate;
-    var isWlOn = false
+    let isWlOn = false
     if (isWbWlRes == "1") {
         isWlOn = true;
     }
@@ -95,7 +95,7 @@ const chUp = async function checkWbWlOn(guildID) {
 
     const isWlFetched = await this.connnection.query(`SELECT 'channelUpdate' FROM antiraidWlBp WHERE guildId = '${guildID}'`);
     const isWbWlRes = isWlFetched[0][0].channelUpdate;
-    var isWlOn = false
+    let isWlOn = false
     if (isWbWlRes == "1") {
         isWlOn = true;
     }
@@ -107,7 +107,7 @@ const chDel = async function checkWbWlOn(guildID) {
 
     const isWlFetched = await this.connnection.query(`SELECT 'channelDelete' FROM antiraidWlBp WHERE guildId = '${guildID}'`);
     const isWbWlRes = isWlFetched[0][0].channelDelete;
-    var isWlOn = false
+    let isWlOn = false
     if (isWbWlRes == "1") {
         isWlOn = true;
     }
@@ -119,7 +119,7 @@ const spam = async function checkWbWlOn(guildID) {
 
     const isWlFetched = await this.connnection.query(`SELECT 'spam' FROM antiraidWlBp WHERE guildId = '${guildID}'`);
     const isWbWlRes = isWlFetched[0][0].spam;
-    var isWlOn = false
+    let isWlOn = false
     if (isWbWlRes == "1") {
         isWlOn = true;
     }
@@ -131,7 +131,7 @@ const ban = async function checkWbWlOn(guildID) {
 
     const isWlFetched = await this.connnection.query(`SELECT 'ban' FROM antiraidWlBp WHERE guildId = '${guildID}'`);
     const isWbWlRes = isWlFetched[0][0].ban;
-    var isWlOn = false
+    let isWlOn = false
     if (isWbWlRes == "1") {
         isWlOn = true;
     }
@@ -144,7 +144,7 @@ const bot = async function checkWbWlOn(guildID) {
 
     const isWlFetched = await this.connnection.query(`SELECT 'bot' FROM antiraidWlBp WHERE guildId = '${guildID}'`);
     const isWbWlRes = isWlFetched[0][0].bot;
-    var isWlOn = false
+    let isWlOn = false
     if (isWbWlRes == "1") {
         isWlOn = true;
     }

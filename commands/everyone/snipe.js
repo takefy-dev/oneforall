@@ -1,29 +1,32 @@
-const Discord = require('discord.js')
-const guildEmbedColor = new Map();
+
 const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
-const {Command} = require('advanced-command-handler');
-const guildLang = new Map();
-var langF = require('../../function/lang')
 const sniped = new Map();
-module.exports = new Command({
-    name: 'snipe',
-    description: 'Show the last deleted message in a channel',
-    // Optionnals :
-    usage: '!snipe',
-    category: 'everyone',
-   
-    cooldown: 2
-}, async(client, message, args) => {
-    const lang = require(`../../lang/${message.guild.lang}`)
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
+
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'snipe',
+            description: 'Show the last deleted message in a channel',
+            usage: '!snipe',
+            category: 'everyone',
+        });
+    }
+    async run(client, message,args){
+
+
+
+    const lang = client.lang(message.guild.lang)
     function hasDiscordInvite(string) {
 		let discordInvite = /(https:\/\/)?(www\.)?(discord\.gg|discord\.me|discordapp\.com\/invite|discord\.com\/invite)\/([a-z0-9-.]+)?/i;
 
-		if (discordInvite.test(string)) return true;
-		return false;
+		return discordInvite.test(string);
+
 	}
 
-    const color = guildEmbedColor.get(message.guild.id)
+    const color =message.guild.color
     let msg;
 
     try{
@@ -42,9 +45,8 @@ module.exports = new Command({
     .setColor(`${color}`)
     if(msg.image)embed.setImage(msg.image)
     message.channel.send(embed)
-});
+}};
 StateManager.on('snipes', async (guildId, snipe) =>{
     await sniped.set(guildId, snipe)
 })
-embedsColor(guildEmbedColor);
-langF(guildLang);
+

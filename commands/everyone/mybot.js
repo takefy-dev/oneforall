@@ -1,25 +1,25 @@
-const { Command } = require('advanced-command-handler');
-const BotPerso = require('../../utils/BotPerso.js')
-const Discord = require('discord.js')
 const prettyMilliseconds = require('pretty-ms');
-const guildEmbedColor = new Map();
-var embedsColor = require('../../function/embedsColor');
-const fetch = require('node-fetch')
-const guildLang = new Map();
-var langF = require('../../function/lang')
-module.exports = new Command(
-    {
-        name: 'mybot',
 
-        category: 'botperso',
-        tags: ['guildOnly'],
-        aliases: ['mybots', 'mesbot'],
-        clientPermissions: ['SEND_MESSAGES'],
-        cooldown: 5,
-    },
-    async (client, message, args) => {
+const fetch = require('node-fetch')
+
+const Command = require('../../structures/Handler/Command');
+const {Logger} = require('advanced-command-handler')
+const Discord = require('discord.js')
+module.exports = class Test extends Command {
+    constructor() {
+        super({
+            name: 'mybot',
+            category: 'botperso',
+            aliases: ['mybots', 'mesbot'],
+            clientPermissions: ['EMBED_LINKS'],
+        });
+    }
+
+    async run(client, message, args) {
+
+
         const color = message.guild.color
-        const lang = require(`../../lang/${message.guild.lang}`);
+        const lang = client.lang(message.guild.lang)
         const moderatorAuthorisation = {
             '659038301331783680': {
                 name: 'baby',
@@ -41,7 +41,7 @@ module.exports = new Command(
                 name: 'rheus',
                 auth: 'ytAMTQMRH5TtB5fA'
             },
-        
+
         }
         await fetch(`http://46.4.251.37:3000/api/client/${message.author.id}`, {
             "credentials": "include",
@@ -55,20 +55,19 @@ module.exports = new Command(
             "method": "GET",
 
 
-
         }).then(async res => {
             const result = await res.json();
             if (result.message) {
-                const avatar = message.author.displayAvatarURL({ dynamic: true })
+                const avatar = message.author.displayAvatarURL({dynamic: true})
 
                 const embed = new Discord.MessageEmbed()
-                .setTimestamp()
-                .setDescription(`
+                    .setTimestamp()
+                    .setDescription(`
                     Vous n'avez pas de bot personnalisé
                 `)
-                .setColor(`${color}`)
-                .setFooter(message.author.tag, avatar)
-                
+                    .setColor(`${color}`)
+                    .setFooter(message.author.tag, avatar)
+
                 return message.channel.send(embed)
             } else {
 
@@ -77,7 +76,7 @@ module.exports = new Command(
                 const expireAt = new Date(result.client.expireAt)
                 const timeLeft = prettyMilliseconds(expireAt.getTime() - now.getTime())
                 const msg = await message.channel.send(lang.loading)
-                const avatar = message.author.displayAvatarURL({ dynamic: true })
+                const avatar = message.author.displayAvatarURL({dynamic: true})
                 const inv = `https://discord.com/oauth2/authorize?client_id=${result.client.botId}&scope=bot&permissions=8`
                 const embed = new Discord.MessageEmbed()
 
@@ -93,7 +92,6 @@ module.exports = new Command(
         })
 
     }
-);
+}
 
-embedsColor(guildEmbedColor);
-langF(guildLang);
+

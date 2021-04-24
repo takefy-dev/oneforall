@@ -1,10 +1,10 @@
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
+let embedsColor = require('../../function/embedsColor');
 const { Command } = require('advanced-command-handler');
 const guildLang = new Map();
-var langF = require('../../function/lang')
+let langF = require('../../function/lang')
 const coinSettings = new Map();
 const userCoins = new Map();
 module.exports = new Command({
@@ -18,7 +18,7 @@ module.exports = new Command({
 }, async (client, message, args) => {
     this.connection = StateManager.connection;
     const color = message.guild.color
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
     const shopSettings = coinSettings.get(message.guild.id);
     if (!shopSettings.enable) return message.channel.send(lang.buy.shoDisable).then(mp => mp.delete({ timeout: 4000 }))
     let member;

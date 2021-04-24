@@ -1,23 +1,22 @@
-const discord = require('discord.js')
-const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
-const {Command} = require('advanced-command-handler');
-const { lang } = require('moment');
-const guildLang = new Map();
-var langF = require('../../function/lang')
-module.exports = new Command({
-    name: 'clear',
-    description: 'Delete a number of message | Supprimer un nombre de messages',
-    // Optionnals :
-    usage: '!clear <number>',
-    category: 'moderation',
-    userPermissions: ['MANAGE_MESSAGES'],
-    clientPermissions: ['MANAGE_MESSAGES'],
-    cooldown: 2
-}, async(client, message, args) => {
-    const color = guildEmbedColor.get(message.guild.id)
-    const lang = require(`../../lang/${message.guild.lang}`)
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
+
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'clear',
+            description: 'Delete a number of message | Supprimer un nombre de messages',
+            usage: '!clear <number>',
+            category: 'moderation',
+            userPermissions: ['MANAGE_MESSAGES'],
+            clientPermissions: ['MANAGE_MESSAGES'],
+        });
+    }
+    async run(client, message,args){
+
+    const color =message.guild.color
+    const lang = client.lang(message.guild.lang)
 
     let deleteAmount;
 
@@ -37,7 +36,4 @@ module.exports = new Command({
         }, 5000)  
    
     });
-});
-
-embedsColor(guildEmbedColor);
-langF(guildLang);
+}}

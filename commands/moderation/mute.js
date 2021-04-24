@@ -1,28 +1,27 @@
-const Discord = require('discord.js')
-const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
-var checkSetup = require('../../function/check/checkSetup');
-var embedsColor = require('../../function/embedsColor');
-const { Command } = require('advanced-command-handler');
+
 const muteRoleId = new Map();
-const guildLang = new Map();
-var logsChannelF = require('../../function/fetchLogs');
 const logsChannelId = new Map();
-var langF = require('../../function/lang')
-module.exports = new Command({
-    name: 'mute',
-    description: 'Mute a member | Mute un member',
-    // Optionnals :
-    usage: '!mute <mention/id>',
-    category: 'moderation',
-    userPermissions: ["MUTE_MEMBERS"],
-    clientPermissions: ['MUTE_MEMBERS'],
-    cooldown: 2
-}, async (client, message, args) => {
-    const lang = require(`../../lang/${message.guild.lang}`)
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
+
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'mute',
+            description: 'Mute a member | Mute un member',
+            usage: '!mute <mention/id>',
+            category: 'moderation',
+            userPermissions: ["MUTE_MEMBERS"],
+            clientPermissions: ['MUTE_MEMBERS'],
+        });
+    }
+    async run(client, message,args){
+
+    const lang = client.lang(message.guild.lang)
 
     const color = message.guild.color
-    let isSetup = checkSetup(message.guild.id);
+    let isSetup = message.guild.setup;
     if (!isSetup) return message.channel.send(lang.error.noSetup);
     if (!args[0]) {
         const embed = new Discord.MessageEmbed()
@@ -62,17 +61,4 @@ module.exports = new Command({
 			logChannel.send(logsEmbed)
         }
     })
-});
-
-embedsColor(guildEmbedColor);
-langF(guildLang);
-logsChannelF(logsChannelId, 'mod');
-
-
-StateManager.on('addMuteRole', (guildId, muteRole) => {
-    muteRoleId.set(guildId, muteRole);
-})
-
-StateManager.on('muteIdFetched', (guildId, muteRole) => {
-    muteRoleId.set(guildId, muteRole);
-})
+}}

@@ -1,29 +1,28 @@
-const Discord = require('discord.js')
-const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
-const { Command } = require('advanced-command-handler');
-const guildLang = new Map();
-var langF = require('../../function/lang')
 const usersPlaylist = new Map();
 const { Client } = require("youtubei");
 const duratiform = require('duratiform');
 const SoundCloud = require("soundcloud-scraper");
 const soundcloud = new SoundCloud.Client();
-module.exports = new Command({
-    name: 'playlist',
-    description: 'Manage your playlist | Gerer vos playlist',
-    // Optionnals :
-    usage: '!playlist <add/delete/remove/import/create> <playlistName>',
-    category: 'music',
-    tags: ['guildOnly'],
-    aliases: ['pl'],
-    clientPermissions: ['EMBED_LINKS'],
-    cooldown: 2
-}, async (client, message, args) => {
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
+
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'playlist',
+            description: 'Manage your playlist | Gerer vos playlist',
+            usage: '!playlist <add/delete/remove/import/create> <playlistName>',
+            category: 'music',
+            aliases: ['pl'],
+            clientPermissions: ['EMBED_LINKS'],
+        });
+    }
+    async run(client, message,args){
+
     this.connection = StateManager.connection;
     const color = message.guild.color
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
     const type = args[0];
     const playlistName = args.slice(1).join(" ");
     if (!playlistName) return message.channel.send(lang.music.playlist.noPlaylistName)
@@ -317,26 +316,18 @@ module.exports = new Command({
                 })
         })
     }
-});
+}}
 
 function extractVideoID(url) {
-    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
-    var match = url.match(regExp);
-    if (match && match[7].length == 11) {
+    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    if (match && match[7].length === 11) {
         return match[7];
     } else {
     }
 }
 function extractPlaylistID(url) {
     const regPlaylist = /[&?]list=([^&]+)/i;
-    match = url.match(regPlaylist);
+    let match = url.match(regPlaylist);
     return match[1]
 }
-embedsColor(guildEmbedColor);
-langF(guildLang);
-StateManager.on('playlist', (userId, playlist) => {
-    usersPlaylist.set(userId, playlist)
-})
-StateManager.on('playlistDelete', (userId) => {
-    usersPlaylist.delete(userId)
-})

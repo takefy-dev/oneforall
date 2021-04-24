@@ -4,7 +4,7 @@ const guildByPassId= new Map();
 
 module.exports = function checkByPass(guild, author) { 
   const byPassRoleId = guildByPassId.get(guild);
-  var byPassChecked = false;
+  let byPassChecked = false;
   if(author.has(byPassRoleId)){
     byPassChecked = true;
   }

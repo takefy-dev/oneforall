@@ -1,20 +1,23 @@
 const StateManager = require('../utils/StateManager');
-const { Event } = require('advanced-command-handler');
-var checkBotOwner = require('../function/check/botOwner');
+const Event = require('../structures/Handler/Event');
+
+let checkBotOwner = require('../function/check/botOwner');
 const guildEmbedColor = new Map();
-var checkWl = require('../function/check/checkWl');
-var logsChannelF = require('../function/fetchLogs');
-var embedsColor = require('../function/embedsColor');
+let checkWl = require('../function/check/checkWl');
+let logsChannelF = require('../function/fetchLogs');
+let embedsColor = require('../function/embedsColor');
 const Discord = require('discord.js')
 const logsChannelId = new Map();
 const guildAntiraidConfig = new Map();
-module.exports = new Event(
-	{
-		name: 'guildUpdate',
-	
-	},
-	async (handler, oldGuild, newGuild) => {
-    
+module.exports = class guildUpdate extends Event {
+	constructor() {
+		super({
+			name: 'guildUpdate',
+		});
+	}
+
+	async run(client, oldGuild, newGuild) {
+
 		const color = guildEmbedColor.get(oldGuild.id)
 		this.connection = StateManager.connection;
 
@@ -22,34 +25,47 @@ module.exports = new Event(
 		const isOnFetched = await this.connection.query(`SELECT nameUpdate FROM antiraid WHERE guildId = '${oldGuild.id}'`);
 		const isOnfetched = isOnFetched[0][0].nameUpdate;
 		let isOn;
-		if (isOnfetched == "1") { isOn = true };
-		if (isOnFetched == "0") { isOn = false };
+		if (isOnfetched == "1") {
+			isOn = true
+		}
+		;
+		if (isOnFetched == "0") {
+			isOn = false
+		}
+		;
 		let action;
 		if (isOn) {
-			action = await oldGuild.fetchAuditLogs({ type: "GUILD_UPDATE" }).then(async (audit) => audit.entries.first());
+			action = await oldGuild.fetchAuditLogs({type: "GUILD_UPDATE"}).then(async (audit) => audit.entries.first());
 
 		} else {
 			return;
 		}
 		// console.log("ss", checkBotOwner(channel.guild.id, action.executor.id))
-		if (action.changes[0].key == 'name' && action.executor.id != handler.client.user.id) {
+		if (action.changes[0].key == 'name' && action.executor.id != client
+.user.id) {
 			let logChannelId = logsChannelId.get(oldGuild.id);
 			let logChannel;
-			if(logChannelId != undefined){
-				logChannel = handler.client.guilds.cache.get(oldGuild.id).channels.cache.get(logChannelId)
+			if (logChannelId != undefined) {
+				logChannel = client
+.guilds.cache.get(oldGuild.id).channels.cache.get(logChannelId)
 			}
-		   
-			var isOwner = checkBotOwner(oldGuild.id, action.executor.id);
 
+			let isOwner = checkBotOwner(oldGuild.id, action.executor.id);
 
 
 			const isWlOnFetched = await this.connection.query(`SELECT nameUpdate FROM antiraidWlBp WHERE guildId = '${oldGuild.id}'`);
 			const isWlOnfetched = isWlOnFetched[0][0].nameUpdate;
 			let isOnWl;
-			if (isWlOnfetched == "1") { isOnWl = true };
-			if (isWlOnfetched == "0") { isOnWl = false };
+			if (isWlOnfetched == "1") {
+				isOnWl = true
+			}
+			;
+			if (isWlOnfetched == "0") {
+				isOnWl = false
+			}
+			;
 			if (isOnWl == true) {
-				var isWl = checkWl(oldGuild.id, action.executor.id);
+				let isWl = checkWl(oldGuild.id, action.executor.id);
 
 			}
 			// let isWlFetched = await this.connection.query(`SELECT whitelisted FROM guildConfig WHERE guildId = '${channel.guild.id}'`);
@@ -66,13 +82,13 @@ module.exports = new Event(
 				try {
 					await oldGuild.setName(action.changes[0].old, `OneForAll - Type: guildUpdate - changeName`)
 				} catch (e) {
-				
+
 					if (e.toString().toLowerCase().includes('missing permissions')) {
-						
+
 
 						const logsEmbed = new Discord.MessageEmbed()
-						.setTitle('\`📣\` Modification du nom du serveur')
-						.setDescription(`
+							.setTitle('\`📣\` Modification du nom du serveur')
+							.setDescription(`
 					\`👨‍💻\` Auteur : **${action.executor.tag}** \`(${action.executor.id})\` a modifié le nom du serveur \n
                         \`\`\`${action.changes[0].old} en ${action.changes[0].new}\`\`\`
                         
@@ -81,19 +97,15 @@ module.exports = new Event(
 							.setTimestamp()
 							.setFooter("🕙")
 							.setColor(`${color}`)
-							if (logChannel != undefined) {
-								logChannel.send(logsEmbed);
-							
-							}
+						if (logChannel != undefined) {
+							logChannel.send(logsEmbed);
+
+						}
 					}
 				}
 
 				let after = guildAntiraidConfig.get(oldGuild.id);
 
-
-
-
-				
 
 				let targetMember = oldGuild.members.cache.get(action.executor.id);
 				if (targetMember == undefined) {
@@ -113,7 +125,6 @@ module.exports = new Event(
 						)
 
 
-
 					} else if (after.nameUpdate == 'unrank') {
 
 						let roles = []
@@ -123,24 +134,24 @@ module.exports = new Event(
 						oldGuild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: guildUpdate - changeName`)
 						if (action.executor.bot) {
 							let botRole = targetMember.roles.cache.filter(r => r.managed)
-						// let r = guild.roles.cache.get(botRole.id)
-						
-						for(const[id] of botRole){
-							botRole = oldGuild.roles.cache.get(id)
-						}
-						botRole.setPermissions(0, `OneForAll - Type: guildUpdate - changeName`)
-						}
+							// let r = guild.roles.cache.get(botRole.id)
 
+							for (const [id] of botRole) {
+								botRole = oldGuild.roles.cache.get(id)
+							}
+							botRole.setPermissions(0, `OneForAll - Type: guildUpdate - changeName`)
+						}
 
 
 					}
 
-					
+
 					if (logChannel != undefined) {
-						if (action.executor.id === handler.client.user.id) return;
+						if (action.executor.id === client
+.user.id) return;
 						const logsEmbed = new Discord.MessageEmbed()
-						.setTitle('\`📣\` Modification du nom du serveur')
-						.setDescription(`
+							.setTitle('\`📣\` Modification du nom du serveur')
+							.setDescription(`
 					\`👨‍💻\` Auteur : **${action.executor.tag}** \`(${action.executor.id})\` a modifié le nom du serveur \n
 					\`\`\`${action.changes[0].old} en ${action.changes[0].new}\`\`\`
            \`🧾\` Sanction : ${after.nameUpdate}
@@ -153,11 +164,11 @@ module.exports = new Event(
 					}
 
 				} else {
-				
+
 
 					const logsEmbed = new Discord.MessageEmbed()
-					.setTitle('\`📣\` Modification du nom du serveur')
-					.setDescription(`
+						.setTitle('\`📣\` Modification du nom du serveur')
+						.setDescription(`
 				\`👨‍💻\` Auteur : **${action.executor.tag}** \`(${action.executor.id})\` a modifié le nom du serveur \n
 				\`\`\`${action.changes[0].old} en ${action.changes[0].new}\`\`\`
                 \`🧾\`Sanction : Aucune car il possède  plus de permissions que moi
@@ -165,15 +176,15 @@ module.exports = new Event(
 						.setTimestamp()
 						.setFooter("🕙")
 						.setColor(`${color}`)
-						if (logChannel != undefined) {
-							logChannel.send(logsEmbed);
-						
-						}
+					if (logChannel != undefined) {
+						logChannel.send(logsEmbed);
+
+					}
 				}
 			}
 		}
 	}
-);
+};
 
 
 logsChannelF(logsChannelId, 'raid');

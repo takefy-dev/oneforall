@@ -1,10 +1,10 @@
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
+let embedsColor = require('../../function/embedsColor');
 const { Command } = require('advanced-command-handler');
 const guildLang = new Map();
-var langF = require('../../function/lang')
+let langF = require('../../function/lang')
 const prettyMilliseconds = require('pretty-ms');
 module.exports = new Command({
     name: 'stat',
@@ -18,7 +18,7 @@ module.exports = new Command({
     return;
     const color = message.guild.color
     this.connection = StateManager.connection;
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
     let member = message.mentions.members.first()
     if (member === undefined && args[0]) {
         if (message.guild.members.cache.has(args[0])) {

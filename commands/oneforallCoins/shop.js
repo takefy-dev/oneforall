@@ -1,12 +1,12 @@
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
-var embedsColor = require('../../function/embedsColor');
+let embedsColor = require('../../function/embedsColor');
 const { Command } = require('advanced-command-handler');
 const guildLang = new Map();
 const SqlString = require('sqlstring');
 
-var langF = require('../../function/lang');
+let langF = require('../../function/lang');
 const ms = require('ms');
 const shop = new Map();
 module.exports = new Command({
@@ -33,7 +33,7 @@ module.exports = new Command({
         }
     }
     const color = message.guild.color
-    const lang = require(`../../lang/${message.guild.lang}`);
+    const lang = client.lang(message.guild.lang)
     if (args[0] === "create") {
         if (shop.has(message.guild.id)) return message.channel.send(lang.addShop.alreadyShop)
         return await this.connection.query(`INSERT INTO coinShop VALUES ('${message.guild.id}', '[${JSON.stringify({ id: 0, item: lang.addShop.nothingInShop, prix: undefined, role: undefined })}]')`).then(async () => {
@@ -158,7 +158,7 @@ module.exports = new Command({
                     message.channel.send(lang.addShop.newNameQ).then(mp => {
                         mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                             .then(cld => {
-                                var msg = cld.first();
+                                let msg = cld.first();
                                 if(msg.content === "cancel") return message.channel.send(lang.cancel).then(mps =>{
                                     setTimeout(() =>{
                                         msWriteProfilerMark.delete();
@@ -189,7 +189,7 @@ module.exports = new Command({
                     message.channel.send(lang.addShop.newPriceQ).then(mp => {
                         mp.channel.awaitMessages(dureefiltrer, { max: 1, time: 30000, errors: ['time'] })
                             .then(cld => {
-                                var msg = cld.first();
+                                let msg = cld.first();
                                 if (isNaN(msg.content)) return message.channel.send(lang.addShop.noPrice).then(mp => mp.delete({ timeout: 4000 }))
                                 if (parseInt(msg.content) === 0) return message.channel.send(lang.addShop.priceInf0).then(mp => mp.delete({ timeout: 4000 }))
                                 message.channel.send(lang.addShop.successEditItemPrice(msg.content)).then((mps) =>{

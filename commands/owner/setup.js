@@ -1,111 +1,78 @@
-const discord = require('discord.js')
 
-const StateManager = require('../../utils/StateManager');
+const Command = require('../../structures/Handler/Command');
+const {Logger} = require('advanced-command-handler')
+const Discord = require('discord.js')
 
-const guildOwner = new Map();
-const { Command } = require('advanced-command-handler');
-const guildLang = new Map();
-const langF = require('../../function/lang')
-module.exports = new Command({
-    name: 'setup',
-    description: 'Setup the role for the bot to work perfectly | Configurer les rôles indispensable pour la fonctionnalitée du bot',
-    // Optionnals :
-    usage: '!setup',
-    category: 'owners',
-    ownerOnly: false,
-    cooldown: 2
-}, async (client, message, args) => {
-    this.connection = StateManager.connection
- 
-    const lang = require(`../../lang/${message.guild.lang}`)
-
-    let owner = message.guild.ownerID;
-
-    if (client.BotPerso) {
-        const fs = require('fs');
-        const path = './config.json';
-        if (fs.existsSync(path)) {
-            owner = require('../../config.json').owner;
-        } else {
-            owner = process.env.OWNER
-        }
-    };
-
-    if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
-
-    message.channel.send(lang.setup.muteQ)
-    const responseMuteRole = await message.channel.awaitMessages(m => m.author.id === message.author.id, { max: 1, timeout: 30000, errors: ['time'] }).catch(() => { message.channel.send("Opération annulée pas de réponse après 30s") })
-    const CollectedMuteRole = responseMuteRole.first()
-    if (CollectedMuteRole.content.toLowerCase() === "cancel") return message.channel.send(lang.cancel)
-
-
-    message.channel.send(lang.setup.memberRoleQ)
-    const responseMembreRole = await message.channel.awaitMessages(m => m.author.id === message.author.id, { max: 1, timeout: 30000, errors: ['time'] }).catch(() => { message.channel.send("Opération annulée pas de réponse après 30s") })
-    const CollectedMembreRole = responseMembreRole.first()
-    if (CollectedMembreRole.content.toLowerCase() === "cancel") return message.channel.send(lang.cancel)
-
-
-    let muteRole = CollectedMuteRole.mentions.roles.first();
-    let mureRoleId;
-    if (!muteRole) {
-        mureRoleId = CollectedMuteRole.content.toLowerCase();
-    } else {
-        mureRoleId = muteRole.id;
+module.exports = class Test extends Command {
+    constructor() {
+        super({
+            name: 'setup',
+            description: 'Setup the role for the bot to work perfectly | Configurer les rôles indispensable pour la fonctionnalitée du bot',
+            usage: '!setup',
+            category: 'owners',
+            guildOwnerOnly: true,
+            cooldown: 5
+        });
     }
 
-    let memberRole = CollectedMembreRole.mentions.roles.first();
-    let memberRoleId;
-    if (!memberRole) {
-        memberRoleId = CollectedMembreRole.content.toLowerCase();
-    } else {
-        memberRoleId = memberRole.id;
-    }
+    async run(client, message, args) {
 
 
+        const lang = client.lang(message.guild.lang)
 
 
-    const guildId = message.guild.id;
-    const setup = true
-
-    try {
-
-        await this.connection.query(
-            `UPDATE guildConfig SET muteRoleId = '${mureRoleId}' WHERE guildId = '${guildId}'`
-        );
-
-        await this.connection.query(
-            `UPDATE guildConfig SET setup = '1' WHERE guildId = '${guildId}'`
-        );
-
-        await this.connection.query(
-            `UPDATE guildConfig SET memberRole = '${memberRoleId}' WHERE guildId = '${guildId}'`
-        );
-
-
-        message.channel.send(lang.setup.success(mureRoleId, memberRoleId))
-        message.guild.guildConfig.muteRoleId = mureRoleId;
-        message.guild.guildConfig.memberRole = memberRoleId;
-        message.guild.guildConfig.setup = '1';
-        message.guild.channels.cache.forEach(channel => {
-            if (channel.type === 'text') {
-                channel.updateOverwrite(muteRole, {
-                    SEND_MESSAGES: false,
-                    ADD_REACTIONS: false
-                }, `Setup par ${message.author.tag}`)
-            }
-            if (channel.type === 'voice') {
-                channel.updateOverwrite(muteRole, {
-                    SPEAK: false
-                }, `Setup par ${message.author.tag}`)
-            }
+        message.channel.send(lang.setup.muteQ)
+        const responseMuteRole = await message.channel.awaitMessages(m => m.author.id === message.author.id, {
+            max: 1,
+            timeout: 30000,
+            errors: ['time']
+        }).catch(() => {
+            message.channel.send("Opération annulée pas de réponse après 30s")
         })
-    } catch (err) {
-        console.log(err)
-        message.channel.send(lang.setup.error(mureRoleId, memberRole))
+        const CollectedMuteRole = responseMuteRole.first()
+        if (CollectedMuteRole.content.toLowerCase() === "cancel") return message.channel.send(lang.cancel)
+
+
+        message.channel.send(lang.setup.memberRoleQ)
+        const responseMembreRole = await message.channel.awaitMessages(m => m.author.id === message.author.id, {
+            max: 1,
+            timeout: 30000,
+            errors: ['time']
+        }).catch(() => {
+            message.channel.send("Opération annulée pas de réponse après 30s")
+        })
+        const CollectedMembreRole = responseMembreRole.first()
+        if (CollectedMembreRole.content.toLowerCase() === "cancel") return message.channel.send(lang.cancel)
+
+
+        let muteRole = CollectedMuteRole.mentions.roles.first() || message.guild.roles.cache.get(CollectedMuteRole.content);
+        let muteRoleId = muteRole.id;
+        if(!muteRole) return  message.channel.send(lang.setup.dontFindMute)
+
+        let memberRole = CollectedMembreRole.mentions.roles.first() || message.guild.roles.cache.get(CollectedMembreRole.content);
+        let memberRoleId = memberRole.id
+        if(!memberRole) return message.channel.send(lang.setup.dontFindMember)
+
+        try {
+
+            await message.guild.updateSetup(muteRoleId, memberRoleId)
+            message.channel.send(lang.setup.success(muteRoleId, memberRoleId))
+            message.guild.channels.cache.forEach(channel => {
+                if (channel.type === 'text') {
+                    channel.updateOverwrite(muteRole, {
+                        SEND_MESSAGES: false,
+                        ADD_REACTIONS: false
+                    }, `Setup par ${message.author.tag}`)
+                }
+                if (channel.type === 'voice') {
+                    channel.updateOverwrite(muteRole, {
+                        SPEAK: false
+                    }, `Setup par ${message.author.tag}`)
+                }
+            })
+        } catch (err) {
+            console.log(err)
+            message.channel.send(lang.setup.error(muteRoleId, memberRole))
+        }
     }
-});
-
-
-
-
-langF(guildLang);
+}
