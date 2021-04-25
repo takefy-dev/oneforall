@@ -11,6 +11,8 @@ module.exports = class Test extends Command{
             category: 'moderation',
             clientPermissions: ["MANAGE_GUILD"],
             userPermissions: ['ADMINISTRATOR'],
+            cooldown: 5
+
         });
     }
     async run(client, message,args){

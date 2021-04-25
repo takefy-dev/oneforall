@@ -17,6 +17,8 @@ module.exports = class Test extends Command {
             tags: ['guildOnly'],
             clientPermissions: ['SEND_MESSAGES', 'ADD_REACTIONS'],
             userPermissions: ['ADMINISTRATOR'],
+            cooldown: 5
+
         });
     }
 

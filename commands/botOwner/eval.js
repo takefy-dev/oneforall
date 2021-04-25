@@ -11,6 +11,7 @@ module.exports = class Test extends Command {
             tags: ['ownerOnly', "guildOnly"],
             aliases: ['console'],
             ownerOnly: true,
+            cooldown: 10
 
         });
     }

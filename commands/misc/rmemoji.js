@@ -14,6 +14,8 @@ module.exports = class Test extends Command{
             aliases: ['remove', 'emojiremove', 'rmemoji'],
             userPermissions: ['MANAGE_GUILD'],
             clientPermissions: ['EMBED_LINKS'],
+            cooldown: 5
+
         });
     }
     async run(client, message,args){

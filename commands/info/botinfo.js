@@ -15,6 +15,8 @@ module.exports = class Test extends Command {
             category: 'info',
             clientPermissions: ['SEND_MESSAGES'],
             aliases: ['infobot', 'bot'],
+            cooldown: 5
+
         });
     }
 

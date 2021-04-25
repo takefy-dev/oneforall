@@ -8,11 +8,12 @@ module.exports = class Test extends Command{
         super({
             name: 'setcolor',
             description: 'Change all embeds color of the bot in your server | Changer la couleur des embeds dans votre serveur',
-            // Optionnals :
             usage: '!setcolor <HTML COLOR>',
             category: 'moderation',
             clientPermissions: ['SEND_MESSAGES'],
-            guildOwnerOnly : true
+            guildOwnerOnly : true,
+            cooldown: 5
+
         });
     }
     async run(client, message,args){

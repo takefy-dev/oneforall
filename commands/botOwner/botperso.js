@@ -20,6 +20,7 @@ module.exports = class Test extends Command{
             category: 'botOwner',
             usage: '!botperso',
             userPermissions: ['ADMINISTRATOR'],
+            cooldown: 5
 
         });
     }

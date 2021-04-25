@@ -12,6 +12,8 @@ module.exports = class Test extends Command{
             aliases: ['banlist'],
             clientPermissions: ['BAN_MEMBERS'],
             userPermissions: ['BAN_MEMBERS'],
+            cooldown: 5
+
         });
     }
     async run(client, message,args){

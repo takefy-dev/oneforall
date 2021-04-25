@@ -12,6 +12,8 @@ module.exports = class Test extends Command {
             tags: ['guildOnly'],
             clientPermissions: ['MANAGE_GUILD'],
             userPermissions: ['BAN_MEMBERS'],
+            cooldown: 5
+
         });
     }
 

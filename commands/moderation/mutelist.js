@@ -13,6 +13,8 @@ module.exports = class Test extends Command {
             category: 'moderation',
             userPermissions: ['MUTE_MEMBERS'],
             clientPermissions: ['ADD_REACTIONS', 'EMBED_LINKS'],
+            cooldown: 5
+
         });
     }
 

@@ -11,6 +11,7 @@ module.exports = class Test extends Command {
             usage: '!support',
             clientPermissions: ['SEND_MESSAGES'],
             category: 'everyone',
+            cooldown: 2
         });
     }
 

@@ -13,6 +13,8 @@ module.exports = class Test extends Command {
             category: 'moderation',
             aliases: ['showbot', 'allbot'],
             userPermissions: ["ADMINISTRATOR"],
+            cooldown: 5
+
         });
     }
 

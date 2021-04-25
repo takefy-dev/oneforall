@@ -13,6 +13,7 @@ module.exports = class Test extends Command {
             aliases: ['wb'],
             clientPermissions: ['MANAGE_WEBHOOKS'],
             userPermissions: ['MANAGE_WEBHOOKS'],
+            cooldown: 5
         });
     }
 

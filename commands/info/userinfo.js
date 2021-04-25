@@ -12,6 +12,8 @@ module.exports = class Test extends Command {
             category: 'info',
             clientPermissions: ['SEND_MESSAGES'],
             aliases: ['infouser'],
+            cooldown: 5
+
         });
     }
 

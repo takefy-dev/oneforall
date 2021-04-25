@@ -16,6 +16,8 @@ module.exports = class Test extends Command {
             category: 'moderation',
             userPermissions: ['MANAGE_CHANNELS'],
             clientPermissions: ['MANAGE_CHANNELS'],
+            cooldown: 5
+
         });
     }
 

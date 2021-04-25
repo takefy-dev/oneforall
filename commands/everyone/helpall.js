@@ -13,6 +13,8 @@ module.exports = class Test extends Command {
             description: 'Affiche toutes les commandes',
             usage: '!helpall',
             category: 'everyone',
+            cooldown: 5
+
         });
     }
 

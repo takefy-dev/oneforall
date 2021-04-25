@@ -13,6 +13,8 @@ module.exports = class Test extends Command {
             aliases: ['grl', 'gredo'],
             userPermissions: ['SEND_MESSAGES'],
             clientPermissions: ['ADMINISTRATOR'],
+            cooldown: 5
+
         });
     }
 

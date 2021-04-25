@@ -11,6 +11,8 @@ module.exports = class Test extends Command {
             category: 'everyone',
             aliases: ['voc', 'vc'],
             clientPermissions: ['SEND_MESSAGES'],
+            cooldown: 5
+
         });
     }
 

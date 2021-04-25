@@ -661,12 +661,13 @@ module.exports = {
         \`❌\` ・ Fermer le menu\n
         \`✅\` ・ Sauvegarder la configuration
         `,
-        banQ : `Quel doit être le nouveau nombre de warn avant de ban ? **Cancel pour annulé**`,
+        banQ : `Quel doit être le nouveau nombre de warn avant de ban ? **Cancel pour annuler**`,
         onlyNumber : `Vous devez entrer uniquement des nombres`,
-        kickQ : `Quel doit être le nouveau nombre de warn avant de kick ? **Cancel pour annulé**`,
-        muteQ : `Quel doit être le nouveau nombre de warn avant de mute ? **Cancel pour annulé**`,
+        kickQ : `Quel doit être le nouveau nombre de warn avant de kick ? **Cancel pour annuler**`,
+        muteQ : `Quel doit être le nouveau nombre de warn avant de mute ? **Cancel pour annuler**`,
         cancel: `La configuration du nombre de warn a été annulé`,
         save : `La configuration a été sauvegardé`,
+        error : `J'ai rencontré une erreur lors de la mis à jour`,
         listTitle : (tag) => `Liste des warns de ${tag}`,
         reason : `Raison`,
         noWarn : `Aucun warn enregistré`,
@@ -675,7 +676,11 @@ module.exports = {
         amountHigherThanWarnTotal : `Le nombre de warn à supprimer est supérieur au nombre total de warn que ce membre possède`,
         successClearAmount : (tag, amount) => `J'ai clear __${amount}__ warn(s) de **${tag}**`,
         warnNotFound : `Le warn n'existe pas`,
-        successDelete : (tag, amount) => `J'ai enlevé le warn numéro ${amount} a **${tag}**`
+        successDelete : (tag, amount) => `J'ai enlevé le warn numéro ${amount} a **${tag}**`,
+        noReason : "Aucune raison spécifique",
+        notNumber : `Vous devez entrer le numéro de warn à supprimer`,
+        noMember : "<:720681441670725645:780539422479351809> `ERREUR` Vous devez spécifier un membre (`\mention / id`\)",
+        noGuildWarn : `Aucun warn sur ce serveur`
 
 
     },

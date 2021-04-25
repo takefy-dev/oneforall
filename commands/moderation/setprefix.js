@@ -13,6 +13,8 @@ module.exports = class Test extends Command {
             tags: ['guildOnly'],
             clientPermissions: ['SEND_MESSAGES'],
             guildOwnerOnly: true,
+            cooldown: 5
+
         });
     }
 

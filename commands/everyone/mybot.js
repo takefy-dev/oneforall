@@ -12,6 +12,8 @@ module.exports = class Test extends Command {
             category: 'botperso',
             aliases: ['mybots', 'mesbot'],
             clientPermissions: ['EMBED_LINKS'],
+            cooldown: 5
+
         });
     }
 

@@ -12,6 +12,7 @@ module.exports = class Test extends Command {
             aliases: ['setphoto', 'setimage', 'seticon'],
             clientPermissions: ['EMBED_LINKS'],
             ownerOnly: true,
+            cooldown: 10
         });
     }
 

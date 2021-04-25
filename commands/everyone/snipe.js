@@ -12,6 +12,8 @@ module.exports = class Test extends Command{
             description: 'Show the last deleted message in a channel',
             usage: '!snipe',
             category: 'everyone',
+            cooldown: 5
+
         });
     }
     async run(client, message,args){

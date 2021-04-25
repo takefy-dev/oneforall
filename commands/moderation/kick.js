@@ -11,6 +11,8 @@ module.exports = class Test extends Command {
             category: 'moderation',
             userPermissions: ['KICK_MEMBERS'],
             clientPermissions: ['KICK_MEMBERS'],
+            cooldown: 5
+
         });
     }
 

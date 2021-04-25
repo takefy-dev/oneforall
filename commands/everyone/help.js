@@ -11,6 +11,7 @@ module.exports = class Test extends Command{
             usage: 'help [commandName]',
             aliases: ['h'],
             clientPermissions : ['EMBED_LINKS'],
+            cooldown: 4
 
         });
     }

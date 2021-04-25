@@ -13,6 +13,8 @@ module.exports = class Test extends Command{
             category: 'moderation',
             userPermissions: ['BAN_MEMBERS'],
             clientPermissions: ['BAN_MEMBERS'],
+            cooldown: 5
+
         });
     }
     async run(client, message,args){

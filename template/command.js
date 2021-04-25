@@ -14,7 +14,8 @@ module.exports = class Test extends Command{
             userPermissions: ['ADMINISTRATOR'],
             ownerOnly: true,
             guildOwnerOnly : true,
-            guildCrownOnly : true
+            guildCrownOnly : true,
+            cooldown: 10
         });
     }
     async run(client, message,args){

@@ -13,6 +13,8 @@ module.exports = class Test extends Command {
             userPermissions: ['ADMINISTRATOR'],
             clientPermissions: ['MANAGE_CHANNELS'],
             guildOwnerOnly: true,
+            cooldown: 5
+
         });
     }
 

@@ -11,6 +11,7 @@ module.exports = class Test extends Command{
             category: 'botOwner',
             ownerOnly: true,
             aliases: ['rb'],
+            cooldown: 20
         });
     }
     async run(client, message,args){

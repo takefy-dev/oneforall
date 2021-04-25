@@ -11,6 +11,8 @@ module.exports = class Test extends Command{
             usage: '!serverlist [guildId]',
             clientPermissions : ['EMBED_LINKS'],
             ownerOnly: true,
+            cooldown: 5
+
         });
     }
     async run(client, message,args) {

@@ -12,6 +12,8 @@ module.exports = class Test extends Command{
             userPermissions: ['MANAGE_ROLES'],
             aliases: ['rl'],
             clientPermissions: ['MANAGE_ROLES'],
+            cooldown: 5
+
         });
     }
     async run(client, message,args){

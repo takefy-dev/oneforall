@@ -18,12 +18,35 @@ Structures.extend('Guild', (Guild) => {
 
         }
 
+        get warns(){
+            return {
+                ban : this.config.warnBan,
+                kick : this.config.warnKick,
+                mute : this.config.warnMute
+            }
+        }
+
+        async allWarns(){
+            const guildWarns = []
+            await this.client.database.models.warn.findAll({where: {guildId: this.guildID}}).then(allWarns => {
+                   allWarns.forEach(warn => {
+                       if(!warn) return;
+                       const { dataValues } = warn;
+                       delete dataValues.id;
+                       delete dataValues.guildId;
+                       guildWarns.push(dataValues)
+                   })
+            })
+            if(guildWarns.length < 1) return undefined;
+            return guildWarns
+        }
+
         get logs() {
             return {
-                msgLog : this.config.msgLog,
-                modLog : this.config.modLog,
-                antiraidLog : this.config.antiraidLog,
-                voiceLog : this.config.voiceLog
+                msgLog: this.config.msgLog,
+                modLog: this.config.modLog,
+                antiraidLog: this.config.antiraidLog,
+                voiceLog: this.config.voiceLog
             }
         }
 
@@ -31,18 +54,18 @@ Structures.extend('Guild', (Guild) => {
             return this.config.setup;
         }
 
-        async updateInviteConfig(channel, message, enable){
+        async updateInviteConfig(channel, message, enable) {
             await this.client.database.models.guildConfig.update({
                 inviteMessage: message,
-                inviteChannel : channel,
-                inviteOn : enable
+                inviteChannel: channel,
+                inviteOn: enable
             }, {
                 where: {guildId: this.guildID}
             })
         }
 
 
-        async updateLogs(modLog, msgLog, voiceLog, antiraidLog){
+        async updateLogs(modLog, msgLog, voiceLog, antiraidLog) {
             await this.client.database.models.guildConfig.update({
                 modLog,
                 msgLog,
@@ -58,10 +81,10 @@ Structures.extend('Guild', (Guild) => {
                 this.config.voiceLog = voiceLog;
                 this.config.antiraidLog = antiraidLog;
                 return {
-                    msgLog : this.config.msgLog,
-                    modLog : this.config.modLog,
-                    antiraidLog : this.config.antiraidLog,
-                    voiceLog : this.config.voiceLog
+                    msgLog: this.config.msgLog,
+                    modLog: this.config.modLog,
+                    antiraidLog: this.config.antiraidLog,
+                    voiceLog: this.config.voiceLog
                 }
             }).catch(err => {
                 console.log(err);
@@ -91,6 +114,23 @@ Structures.extend('Guild', (Guild) => {
                 }
             }).then(() => {
                 this.lang = lang;
+            })
+        }
+
+        async updateWarn(warBan, warnKick, warnMute) {
+            const isUpdated =await this.client.database.models.guildConfig.update({
+                warBan,
+                warnKick,
+                warnMute
+            }, {
+                where: {
+                    guildId: this.guildID
+                }
+            }).then(res => {
+                this.config.warnBan = warBan;
+                this.config.warnKick = warnKick;
+                this.config.warnMute = warnMute;
+
             })
         }
 
@@ -141,11 +181,12 @@ Structures.extend('Guild', (Guild) => {
         }
 
         async updateSetup(muteRoleId, memberRole) {
-            await this.client.database.models.guildConfig.update({
+            const isUpdated = await this.client.database.models.guildConfig.update({
                 memberRole,
                 muteRoleId,
-                setup : true
+                setup: true
             }, {where: {guildId: this.guildID}})
+            return isUpdated.includes(1);
         }
 
         async fetchConfig() {

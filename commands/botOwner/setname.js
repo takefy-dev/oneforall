@@ -14,6 +14,7 @@ module.exports = class Test extends Command{
             aliases: ['setname', 'setprenom', 'setnom'],
             clientPermissions: ['EMBED_LINKS'],
             ownerOnly: true,
+            cooldown: 20
         });
     }
     async run(client, message,args) {

@@ -14,6 +14,8 @@ module.exports = class Test extends Command {
             aliases: ['create', 'emojicreate'],
             userPermissions: ['MANAGE_GUILD'],
             clientPermissions: ["SEND_MESSAGES", "EMBED_LINKS"],
+            cooldown: 5
+
         });
     }
 

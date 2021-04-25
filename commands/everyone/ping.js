@@ -10,6 +10,8 @@ module.exports = class Test extends Command {
             usage: '!ping',
             clientPermissions: ['SEND_MESSAGES'],
             category: 'everyone',
+            cooldown: 5
+
         });
     }
 

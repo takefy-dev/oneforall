@@ -11,7 +11,8 @@ module.exports = class Test extends Command {
             usage: '!setactivity',
             category: 'botOwner',
             ownerOnly: true,
-            clientPermissions: ['EMBED_LINKS']
+            clientPermissions: ['EMBED_LINKS'],
+            cooldown: 10
         });
     }
 

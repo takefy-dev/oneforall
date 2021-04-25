@@ -14,6 +14,8 @@ module.exports = class Test extends Command{
             aliases: ['unrank'],
             userPermissions: ['ADMINISTRATOR'],
             clientPermissions: ['MANAGE_ROLES'],
+            cooldown: 5
+
         });
     }
     async run(client, message,args){

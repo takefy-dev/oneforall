@@ -271,7 +271,12 @@ module.exports = class message extends Event {
         const cmd = await client.commands.get(args[0].toLowerCase().normalize()) || await client.aliases.get(args[0].toLocaleLowerCase().normalize());
         args.shift();
         if (prefix && cmd && message.guild) {
-            console.log(cmd.cooldown)
+
+            if (client.isOwner(message.author.id)) {
+                Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white')
+
+                return cmd.run(client, message, args)
+            }
             if(cmd.cooldown > 0){
                 if(client.cooldown.has(message.author.id)){
                     const time = client.cooldown.get(message.author.id)
@@ -284,11 +289,6 @@ module.exports = class message extends Event {
                 }
             }
 
-            if (client.isOwner(message.author.id)) {
-                Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white')
-
-                return cmd.run(client, message, args)
-            }
             if (cmd.ownerOnly) {
                 if (client.isOwner(message.author.id)) {
                     Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white')

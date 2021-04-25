@@ -10,6 +10,8 @@ module.exports = class Test extends Command {
             clientPermissions: ['EMBED_LINKS'],
             aliases: ['addbot'],
             usage: '!invitebot',
+            cooldown: 5
+
         });
     }
 

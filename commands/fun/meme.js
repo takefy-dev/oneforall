@@ -13,6 +13,8 @@ module.exports = class Test extends Command{
             tags: ['guildOnly'],
             aliases: ['!me'],
             clientPermissions: ["EMBED_LINKS"],
+            cooldown: 5
+
         });
     }
     async run(client, message,args){

@@ -13,6 +13,8 @@ module.exports = class Test extends Command {
             tags: ['guildOnly'],
             aliases: ['8b'],
             clientPermissions: ['EMBED_LINKS'],
+            cooldown: 5
+
         });
     }
 

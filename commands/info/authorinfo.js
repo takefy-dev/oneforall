@@ -10,6 +10,8 @@ module.exports = class Test extends Command {
             category: 'info',
             clientPermissions: ['SEND_MESSAGES'],
             aliases: ['author', 'createur'],
+            cooldown: 5
+
         });
     }
 

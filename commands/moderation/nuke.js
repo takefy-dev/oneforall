@@ -13,6 +13,7 @@ module.exports = class Test extends Command{
             aliases: ['renew', 'clearall'],
             userPermissions: ['MANAGE_MESSAGES'],
             clientPermissions: ['MANAGE_CHANNELS'],
+            cooldown: 5
         });
     }
     async run(client, message,args){

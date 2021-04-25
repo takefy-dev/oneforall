@@ -10,6 +10,8 @@ module.exports = class Test extends Command {
             description: "Get the picture profile of an user | Avoir l'avatar d'un utilisateur",
             usage: '!pic [user]',
             aliases: ['pp', 'avatar'],
+            cooldown: 5
+
         });
     }
     async run(client, message, args) {

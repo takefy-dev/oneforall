@@ -311,6 +311,7 @@ module.exports = {
         successMsgCh : (ch) => `You've defined the message logs for ${ch}`,
         cancel :  `You've cancel the configuration`,
         save :  `You've save the configuration`,
+
     },
     owner : {
         errorSyntax :"<:720681441670725645:780539422479351809> `ERROR` Syntax error (!owner add/remove/list/clear @TAKEFY)",

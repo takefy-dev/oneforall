@@ -14,6 +14,8 @@ module.exports = class Test extends Command{
             category: 'misc',
             userPermissions: ['ADMINISTRATOR'],
             clientPermissions: ['EMBED_LINKS'],
+            cooldown: 5
+
         });
     }
     async run(client, message,args){
