@@ -10,32 +10,8 @@ module.exports = class guildCreate extends Event {
     }
 
     async run(client, guild) {
-        this.connection = StateManager.connection;
         if (guild.deleted) return;
-        try {
-            await this.connection.query(
-                `DELETE FROM guilds WHERE guildId = '${guild.id}'`
-            );
-            await this.connection.query(
-                `DELETE FROM guildConfig WHERE guildId = '${guild.id}'`
-            );
-
-            await this.connection.query(
-                `DELETE FROM antiraid WHERE guildId = '${guild.id}'`
-            )
-            await this.connection.query(
-                `DELETE FROM antiraidconfig WHERE guildId = '${guild.id}'`
-            )
-            await this.connection.query(
-                `DELETE FROM antiraidWlBp WHERE guildId = '${guild.id}'`
-            )
-            await this.connection.query(`DELETE FROM coinShop WHERE guildId = '${guild.id}'`)
-
-            console.log(`Deleted from db.`)
-        } catch (err) {
-            console.log(err);
-        }
-
+       await guild.deleteAllData();
 
         const hook = new Discord.WebhookClient('803540682912038952', '7KhZEwqtJ3hZVWF1bGhuAuoSAzqju8e6V3Yv51wfvahtfChaUYhCtEn-Tbe5f7ErJNE6');
         const embed = new Discord.MessageEmbed()
@@ -47,7 +23,7 @@ module.exports = class guildCreate extends Event {
      <:778353230383546419:781153631881265173> OnwerName : **<@${guild.ownerID}>**\n
   `)
 
-        hook.send(embed);
+        await hook.send(embed);
     }
 }
 

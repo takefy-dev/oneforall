@@ -13,7 +13,7 @@ module.exports = class Test extends Command {
             name: 'invite',
             description: "Setup the invite system or show the number of invitation of a member | Configurer le system d'invitation ou afficher le nombre d'invitation d'un membre",
             usage: '!invite [config / mention/ id]',
-            category: 'owners',
+            category: 'invite',
             clientPermissions: ['ADD_REACTIONS'],
             aliases: ['welcome'],
             cooldown: 4
@@ -27,63 +27,40 @@ module.exports = class Test extends Command {
 
         const config = args[0] === "config";
         const color = message.guild.color
-        const help = args[0] === "help";
-        if (help) {
+
+        if (!args[0]) {
+            // const userInvites = invites.array().filter(o => o.inviter.id === message.author.id);
+            // let userInviteCount = 0;
+            //
+            // for (let i = 0; i < userInvites.length; i++) {
+            //     let invite = userInvites[i];
+            //     userInviteCount += invite['uses'];
+            // }
+            let count = message.member.invite;
+            let inv = "invite";
+            if (count.join - count.leave > 1) {
+                inv = 'invites'
+            }
             const embed = new Discord.MessageEmbed()
-                .setAuthor(`Informations Invitations`, `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
+                .setDescription(`${lang.invite.countDesc(message.author.tag || message.author.username, count.join - count.leave > 0 ? count.join - count.leave : 0, inv)}\n (__${count.join}__ join, __${count.leave}__ leave, __${count.fake}__ fake, __${count.bonus}__ bonus)`)
                 .setColor(`${color}`)
                 .setTimestamp()
-                .setThumbnail(`https://images-ext-1.discordapp.net/external/io8pRqFGLz1MelORzIv2tAiPB3uulaHCX_QH7XEK0y4/%3Fwidth%3D588%26height%3D588/https/media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg`)
-                .setFooter("Informations Invitations", `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
-                .addField('<:invite_oeople:785494680904138763> Invitations:', `[\`invite config\`](https://discord.gg/WHPSxcQkVk) ・ Setup du système d'invitations\n[\`invite mention/id\`](https://discord.gg/WHPSxcQkVk) ・ Voyez combien d'invitations un utilisateur possède `)
-            message.channel.send(embed)
-        }
-        if (!args[0]) {
-
-            message.guild.fetchInvites().then(invites => {
-                    const userInvites = invites.array().filter(o => o.inviter.id === message.author.id);
-                    let userInviteCount = 0;
-
-                    for (let i = 0; i < userInvites.length; i++) {
-                        let invite = userInvites[i];
-                        userInviteCount += invite['uses'];
-                    }
-                    let inv = "invite";
-                    if (userInviteCount > 1) {
-                        inv = 'invites'
-                    }
-                    const embed = new Discord.MessageEmbed()
-                        .setDescription(lang.invite.countDesc(message.author, userInviteCount, inv))
-                        .setColor(`${color}`)
-                        .setTimestamp()
-                        .setFooter(client.user.tag)
-                    message.reply(embed);
-                }
-            )
-        } else if (message.mentions.users.first() || !isNaN(args[0])) {
-            const user = await message.mentions.users.first() || await client.users.fetch(args[0]).catch(async err => {
-                return await message.channel.send(lang.ban.noBan).then(mp => mp.delete({timeout: 4000}));
+                .setFooter(client.user.tag)
+            message.reply(embed);
+        } else if (message.mentions.members.first() || !isNaN(args[0])) {
+            const member = await message.mentions.members.first() || await message.guild.members.fetch(args[0]).catch(async err => {
             })
-            message.guild.fetchInvites().then(invites => {
-                    const userInvites = invites.array().filter(o => o.inviter.id === user.id);
-                    let userInviteCount = 0;
-
-                    for (let i = 0; i < userInvites.length; i++) {
-                        let invite = userInvites[i];
-                        userInviteCount += invite['uses'];
-                    }
-                    let inv = "invite";
-                    if (userInviteCount > 1) {
-                        inv = 'invites'
-                    }
-                    const embed = new Discord.MessageEmbed()
-                        .setDescription(lang.invite.countDesc(user, userInviteCount, inv))
-                        .setColor(`${color}`)
-                        .setTimestamp()
-                        .setFooter(client.user.tag)
-                    message.channel.send(embed);
-                }
-            )
+            let count = member.invite;
+            let inv = "invite";
+            if (count.join - count.leave > 1) {
+                inv = 'invites'
+            }
+            const embed = new Discord.MessageEmbed()
+                .setDescription(`${lang.invite.countDesc(member.user.tag || member.user.username, count.join - count.leave > 0 ? count.join - count.leave : 0, inv)}\n (__${count.join}__ join, __${count.leave}__ leave, __${count.fake}__ fake, __${count.bonus}__ bonus)`)
+                .setColor(`${color}`)
+                .setTimestamp()
+                .setFooter(client.user.tag)
+            message.reply(embed);
         }
 
         if (config) {
@@ -230,7 +207,7 @@ module.exports = class Test extends Command {
                 inviteChannel.delete(message.guild.id)
                 inviteMsg.delete(message.guild.id)
                 inviteOn.delete(message.guild.id)
-                if(reason === "time"){
+                if (reason === "time") {
                     message.channel.send(lang.error.timeout)
 
                 }
@@ -240,6 +217,22 @@ module.exports = class Test extends Command {
                 embed.setDescription(lang.invite.descConfig(inviteChannel, message.guild, isOnS, inviteMsg))
                 msg.edit(embed)
             }
+        }else if(args[0] === "sync"){
+            const newInv = await message.guild.fetchInvites()
+            for(const [code, invite] of newInv){
+                message.guild.cachedInv.set(code, invite)
+                const member = message.guild.members.cache.get(invite.inviter.user.id)
+                if(member && invite) {
+                    let count = member.invite;
+                    count.join += invite.uses;
+                    member.updateInvite = count
+                    console.log(count)
+                }else{
+                    console.log("no data")
+                }
+
+            }
+            message.channel.send(lang.invite.syncSuccess)
         }
 
     }

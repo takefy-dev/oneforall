@@ -1,6 +1,7 @@
 const {Structures} = require('discord.js')
 const {Logger} = require('advanced-command-handler');
 const StateManager = require('../../utils/StateManager');
+const {Collection} = require("discord.js");
 Structures.extend('Guild', (Guild) => {
     class CustomGuild extends Guild {
         constructor(client, data) {
@@ -13,9 +14,19 @@ Structures.extend('Guild', (Guild) => {
             this.whitelisted = [''];
             this.color = "#36393F";
             this.antiraid = null;
+            this.cachedInv = new Collection()
             this.fetchConfig()
             this.fetchAntiraid()
 
+        }
+
+
+        async clearInvite(){
+            await this.client.models.invite.destroy({
+                where: {
+                    guildId: this.guildID
+                }
+            })
         }
 
         get warns(){
@@ -247,6 +258,64 @@ Structures.extend('Guild', (Guild) => {
                 let antiraidConfig = res[0].dataValues;
                 delete antiraidConfig.guildId;
                 this.antiraid.bypass = antiraidConfig;
+            })
+        }
+
+        async deleteAllData(){
+            await this.client.database.models.guildConfig.destroy({
+                where: {
+                    guildId: this.guildID
+                }
+            })
+            await this.client.database.models.invite.destroy({
+                where:{
+                    guildId: this.guildID
+                }
+            })
+            await this.client.database.models.warn.destroy({
+                where:{
+                    guildId: this.guildID
+                }
+            })
+            await this.client.database.models.coins.destroy({
+                where:{
+                    guildId: this.guildID
+                }
+            })
+            await this.client.database.models.antiraid.destroy({
+                where:{
+                    guildId: this.guildID
+                }
+            })
+            await this.client.database.models.antiraidconfig.destroy({
+                where:{
+                    guildId: this.guildID
+                }
+            })
+            await this.client.database.models.antiraidwlbp.destroy({
+                where:{
+                    guildId: this.guildID
+                }
+            })
+            await this.client.database.models.coins.destroy({
+                where:{
+                    guildId: this.guildID
+                }
+            })
+            await this.client.database.models.coinshop.destroy({
+                where:{
+                    guildId: this.guildID
+                }
+            })
+            await this.client.database.models.giveaways.destroy({
+                where:{
+                    guildId: this.guildID
+                }
+            })
+            await this.client.database.models.inventory.destroy({
+                where:{
+                    guildId: this.guildID
+                }
             })
         }
 

@@ -4,7 +4,7 @@ const Event = require('../structures/Handler/Event');
 module.exports = class inviteCreate extends Event {
     constructor() {
         super({
-            name: 'inviteCreate',
+            name: 'inviteDelete',
         });
     }
 
@@ -15,5 +15,6 @@ module.exports = class inviteCreate extends Event {
             guild.cachedInv.set(code, invite)
         }
         if(guild.vanityURLCode) guild.cachedInv.set(guild.vanityURLCode, await guild.fetchVanityData());
+
     }
 };

@@ -1,0 +1,59 @@
+const Event = require('../structures/Handler/Event');
+const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
+const cachedInv = new Map();
+
+
+module.exports = class Ready extends Event{
+    constructor() {
+        super({
+            name: 'guildMemberAdd',
+        });
+    }
+    async run(client, member){
+        const guild = member.guild;
+        const { inviteMessage, inviteChannel,inviteOn } = guild.config;
+        if(!inviteOn) return;
+        const channel = guild.channels.cache.get(inviteChannel);
+        const lang = client.lang(guild.lang);
+        const cachedInv = guild.cachedInv;
+        const newInv = await guild.fetchInvites()
+        const usedInv = newInv.find(inv => cachedInv.get(inv.code).uses !== inv.uses);
+        for(const [code, invite] of newInv){
+            guild.cachedInv.set(code, invite)
+        }
+        let finalMsg;
+        if(!usedInv) {
+            if(guild.vanityURLCode){
+                finalMsg = lang.invite.vanity(member)
+            }else{
+                finalMsg = lang.invite.cantTrace(member)
+            }
+        }else{
+            const fake = (Date.now() - member.createdAt) / (1000 * 60 * 60 * 24) <= 3;
+            const inviter = guild.members.cache.get(usedInv.inviter.id);
+            if(inviter){
+                let count = inviter.invite;
+                count.join += 1;
+                if(fake) count.fake += 1;
+                inviter.updateInvite = count
+                member.invitedBy = inviter.id;
+                let space = "\n"
+                let join = `${count.join}`;
+                let memberTotal = `${guild.memberCount}`
+                if (inviteMessage.includes("${invited}") || inviteMessage.includes("${inviter}") || inviteMessage.includes("${count}") || inviteMessage.includes("${memberTotal}") || inviteMessage.includes("${space}")) {
+
+                    finalMsg = inviteMessage.replace("${invited}", member).replace("${inviter}", inviter.user.tag || inviter.user.username).replace("${count}", join).replace("${memberTotal}", memberTotal);
+                    while(finalMsg.includes("${space}")){
+                        finalMsg.replace("${space}", space)
+                    }
+                }
+
+
+            }
+        }
+        if(channel) channel.send(finalMsg);
+
+
+    }
+}

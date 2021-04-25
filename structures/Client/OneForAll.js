@@ -76,7 +76,8 @@ module.exports = class OneForAll extends Client{
             const Event = new EventFile(this);
             this.on(Event.name, (...args) => Event.run(this, ...args))
             this.events.set(Event.name, Event);
-            Logger.comment(`${Logger.setColor('green', `Bind: ${Event.name}`)}`, `Binding events`)
+
+            Logger.comment(`${Logger.setColor('green', `Bind: ${event.split('.js')[0]}`)}`, `Binding events`)
         }
     }
 

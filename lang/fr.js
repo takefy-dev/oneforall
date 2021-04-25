@@ -347,8 +347,8 @@ module.exports = {
 
     },
     invite : {
-        countDesc : (author, userInviteCount, inv) => `
-        **${author.tag}** possède actuellement : \n
+        countDesc : (tag, userInviteCount, inv) => `
+        **${tag}** possède actuellement : \n
         <:invite_oeople:785494680904138763> **${userInviteCount}** ${inv}. `,
         titleConfig : `<:771462923855069204:784471984087236658> __Paramètre des invitations__`,
         descConfig : (inviteChannel, guild, isOnS, inviteMsg) => `
@@ -379,7 +379,19 @@ module.exports = {
         successEnable : `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai bien activé les messages de bienvenue !`,
         errorEnable : `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a activé les messages de bienvenue ...`,
         successDisable : `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai bien desactivé les messages de bienvenue !`,
-        errorDisable : `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a desactivé les messages de bienvenue ...`
+        errorDisable : `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a desactivé les messages de bienvenue ...`,
+        cantTrace : (invited) =>  `Je ne sais pas comment ${invited} a été invité sur le serveur`,
+        vanity : (invited) => `${invited} a été invité avec l'url personnalisé du serveur`,
+        syncSuccess: `Les invations ont bien été synchronisé`
+    },
+    addinvite: {
+      noMember : `Je ne trouve pas ce membre`,
+        noNumber: `Veuillez spécifier un nombre correct à ajouter`,
+        success : (number, tag) =>  `J'ai ajouté **${number}** ${number > 1 ? 'invites' : 'invite'} à ${tag}`,
+    },
+    rminvite : {
+        success : (number, tag) =>  `J'ai enlevé **${number}** ${number > 1 ? 'invites' : 'invite'} à ${tag}`,
+
     },
     password : {
         reply : `regarde tes messages privés`,
