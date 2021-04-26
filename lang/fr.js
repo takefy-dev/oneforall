@@ -369,10 +369,15 @@ module.exports = {
         errorMsg : `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a changer le message de bienvenue en :`,
         timeout2M : "<:720681441670725645:780539422479351809> \`ERREUR\` Pas de réponse après 2 minutes opération annulé",
         helpTitle : `<:771462923855069204:784471984087236658> __Aide sur la configuration du message de bienvenue__`,
-        helpDesc : (invitedHelp, inviterHelp, countHelp, totalMemberHelp, space) => `
+        helpDesc : (invitedHelp, inviterHelp,invitedMention,inviterMention, accountCreate, countHelp, fakeHelp, leaveHelp, totalMemberHelp, space) => `
         ${invitedHelp} \n
         ${inviterHelp} \n
+        ${invitedMention}\n
+        ${inviterMention}\n
+        ${accountCreate}\n 
         ${countHelp} \n
+        ${fakeHelp}\n
+        ${leaveHelp}\n
         ${totalMemberHelp} \n
         ${space}  `,
         enableQ : `<a:2366_Loading_Pixels:784472554328555571> Voulez-vous activer les messages de bienvenue ? Oui / Non (cancel pour annuler)`,
@@ -382,7 +387,8 @@ module.exports = {
         errorDisable : `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a desactivé les messages de bienvenue ...`,
         cantTrace : (invited) =>  `Je ne sais pas comment ${invited} a été invité sur le serveur`,
         vanity : (invited) => `${invited} a été invité avec l'url personnalisé du serveur`,
-        syncSuccess: `Les invations ont bien été synchronisé`
+        syncSuccess: `Les invations ont bien été synchronisé`,
+        oauth : (invited) => `${invited} a été invité en utilisant l'oauth`
     },
     addinvite: {
       noMember : `Je ne trouve pas ce membre`,
@@ -392,6 +398,9 @@ module.exports = {
     rminvite : {
         success : (number, tag) =>  `J'ai enlevé **${number}** ${number > 1 ? 'invites' : 'invite'} à ${tag}`,
 
+    },
+    clearInv : {
+        success : (tag) => `J'ai clear les invites sur ${tag}`
     },
     password : {
         reply : `regarde tes messages privés`,

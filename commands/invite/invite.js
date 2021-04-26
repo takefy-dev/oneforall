@@ -29,13 +29,7 @@ module.exports = class Test extends Command {
         const color = message.guild.color
 
         if (!args[0]) {
-            // const userInvites = invites.array().filter(o => o.inviter.id === message.author.id);
-            // let userInviteCount = 0;
-            //
-            // for (let i = 0; i < userInvites.length; i++) {
-            //     let invite = userInvites[i];
-            //     userInviteCount += invite['uses'];
-            // }
+
             let count = message.member.invite;
             let inv = "invite";
             if (count.join - count.leave > 1) {
@@ -80,13 +74,11 @@ module.exports = class Test extends Command {
             inviteMsg.set(message.guild.id, message.guild.config.inviteMessage)
 
             const isOn = message.guild.config.inviteOn
-            let isOnS;
-            if (isOn) {
+            let  isOnS = '<:778348494712340561:781153837850820619>'
+            if (!isOn) {
                 isOnS = '<:778348495157329930:781189773645578311>'
             }
-            if (!isOn) {
-                isOnS = '<:778348494712340561:781153837850820619>'
-            }
+
 
             const embed = new Discord.MessageEmbed()
                 .setTitle(lang.invite.titleConfig)
@@ -145,14 +137,19 @@ module.exports = class Test extends Command {
                         message.reply(lang.invite.timeout2M)
                     })
                 } else if (reaction.emoji.name === "3️⃣") {
-                    const invitedHelp = '${invited} ・ Sert à afficher le membre qui a été invité'
-                    const inviterHelp = "${inviter} ・ Sert à afficher le membre qui a invité"
+                    const invitedHelp = '${invitedTag} ・ Sert à afficher le tag du membre qui a été invité'
+                    const inviterHelp = "${inviterTag} ・ Sert à afficher le tag du membre qui a invité"
+                    const inviterMention = "${inviterMention} ・ Sert à mentionner le membre qui a invité"
+                    const invitedMention = "${invitedMention} ・ Sert à mentionner le membre qui a été invité"
+                    const accountCreate = "${creation} ・ Sert à afficher quand le membre qui a été invité a créé son compte"
                     const countHelp = "${count} ・ Sert à afficher le nombre d'invitation que l'inviteur possède"
+                    const fakeHelp = "${fake}  ・ Sert à afficher le nombre d'invitation fake que l'inviteur possède"
+                    const leaveHelp = "${leave}  ・ Sert à afficher le nombre d'invitation leave que l'inviteur possède"
                     const totalMemberHelp = "${memberTotal} ・ Sert à afficher le nombre total de membres sur le serveur"
                     const space = "${space} ・ Sert à faire un retour à la ligne"
                     const help = new Discord.MessageEmbed()
                         .setTitle(`Help`)
-                        .setDescription(lang.invite.helpDesc(invitedHelp, inviterHelp, countHelp, totalMemberHelp, space))
+                        .setDescription(lang.invite.helpDesc(invitedHelp, inviterHelp,invitedMention,inviterMention, accountCreate, countHelp, fakeHelp, leaveHelp, totalMemberHelp, space))
                         .setTimestamp()
                         .setColor(`${color}`)
                         .setFooter(client.user.username);
@@ -170,14 +167,14 @@ module.exports = class Test extends Command {
                             return message.channel.send(lang.cancel);
                         } else if (collected.first().content.toLowerCase() === lang.yes) {
 
-
+                            isOnS = '<:778348494712340561:781153837850820619>'
                             inviteOn.set(message.guild.id, true)
                             updateEmbed()
 
 
                         } else if (collected.first().content.toLowerCase() === lang.no) {
 
-
+                            isOnS = '<:778348495157329930:781189773645578311>'
                             inviteOn.set(message.guild.id, false)
                             updateEmbed()
 
@@ -221,14 +218,12 @@ module.exports = class Test extends Command {
             const newInv = await message.guild.fetchInvites()
             for(const [code, invite] of newInv){
                 message.guild.cachedInv.set(code, invite)
-                const member = message.guild.members.cache.get(invite.inviter.user.id)
+                await client.users.fetch(invite.inviter.id, true)
+                const member = await message.guild.members.cache.get(invite.inviter.user.id)
                 if(member && invite) {
                     let count = member.invite;
-                    count.join += invite.uses;
+                    count.join = invite.uses;
                     member.updateInvite = count
-                    console.log(count)
-                }else{
-                    console.log("no data")
                 }
 
             }

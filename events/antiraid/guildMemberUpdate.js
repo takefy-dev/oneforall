@@ -1,0 +1,221 @@
+const StateManager = require('../../utils/StateManager');
+let logsChannelF = require('../../function/fetchLogs');
+let embedsColor = require('../../function/embedsColor');
+let checkWl = require('../../function/check/checkWl');
+
+const logsChannelId = new Map();
+const guildEmbedColor = new Map();
+const Discord = require('discord.js')
+const guildAntiraidConfig = new Map();
+
+let checkBotOwner = require('../../function/check/botOwner');
+const Event = require('../../structures/Handler/Event');
+
+module.exports = class guildMemberUpdate extends Event {
+	constructor() {
+		super({
+			name: 'guildMemberUpdate',
+		});
+	}
+
+	async run(client, oldMember, newMember) {
+		this.connection = StateManager.connection;
+		// console.log(newMember._roles)
+		// console.log(oldMember._roles)
+		// console.log( parseInt(newMember._roles.length + 1) )
+		// console.log(oldMember._roles.length == newMember._roles.length)
+		if (parseInt(oldMember._roles.length) > parseInt(newMember._roles.length) || oldMember._roles.length == newMember._roles.length) return;
+
+
+		let guild = oldMember.guild;
+		if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+		const color = guildEmbedColor.get(oldMember.guild.id)
+
+
+		const isOnFetched = await this.connection.query(`SELECT roleAdd FROM antiraid WHERE guildId = '${oldMember.guild.id}'`);
+		const isOnfetched = isOnFetched[0][0].roleAdd;
+		let isOn;
+		if (isOnfetched == "1") {
+			isOn = true
+		}
+		;
+		if (isOnFetched == "0") {
+			isOn = false
+		}
+		;
+		let action;
+		if (isOn) {
+			action = await oldMember.guild.fetchAuditLogs({type: "MEMBER_ROLE_UPDATE"}).then(async (audit) => audit.entries.first());
+		} else {
+			return;
+		}
+		if (action.executor.id === client
+.user.id) return;
+		let isOwner = checkBotOwner(oldMember.guild.id, action.executor.id);
+
+
+		const isWlOnFetched = await this.connection.query(`SELECT roleAdd FROM antiraidWlBp WHERE guildId = '${oldMember.guild.id}'`);
+		const isWlOnfetched = isWlOnFetched[0][0].roleAdd;
+
+		let isOnWl;
+		if (isWlOnfetched == "1") {
+			isOnWl = true
+		}
+		;
+		if (isWlOnfetched == "0") {
+			isOnWl = false
+		}
+		;
+
+		if (isOnWl = true) {
+			let isWl = checkWl(oldMember.guild.id, action.executor.id);
+		}
+
+		// let isWlFetched = await this.connection.query(`SELECT whitelisted FROM guildConfig WHERE guildId = '${oldMember.guild.id}'`);
+		// let isWlfetched = isWlFetched[0][0].whitelisted.toString();
+		// let isWl1 = isWlfetched.split(",");
+		// let isWl;
+		// if (isWl1.includes(action.executor.id)) { isWl = true };
+		// if (!isWl1.includes(action.executor.id)) { isWl = false };
+
+		if (isOwner == true || guild.ownerID == action.executor.id || isOn == false) {
+			return;
+		} else if (isOwner == true || guild.ownerID == action.executor.id || isOn == false || action.changes[0].key != "$add" || isOnWl == true && isWl == true) {
+
+			return;
+		} else if (isOn == true && action.changes[0].key == "$add" && isOwner == false || guild.owner.id !== action.executor.id || isOnWl == true && isWl == false || isOnWl == false) {
+			// console.log(logsChannelId)
+			let logChannelId = logsChannelId.get(oldMember.guild.id);
+			// console.log(logChannelId)
+			let logChannel
+			if (logChannelId != undefined) {
+				logChannel = oldMember.guild.channels.cache.get(logChannelId)
+
+			}
+			;
+			// console.log(logChannel.guild.id != oldMember.guild.id)
+			let role = oldMember.guild.roles.cache.get(action.changes[0].new[0].id)
+			let memberRole = oldMember.guild.members.cache.get(action.target.id)
+
+			if (role.permissions.has("KICK_MEMBERS") || role.permissions.has("BAN_MEMBERS") || role.permissions.has("ADMINISTRATOR") || role.permissions.has("MANAGE_CHANNELS") || role.permissions.has("MANAGE_GUILD") || role.permissions.has("MANAGE_ROLES")) {
+				try {
+					await oldMember.roles.remove(action.changes[0].new[0].id)
+
+				} catch (e) {
+					if (e.toString().toLowerCase().includes('missing permissions')) {
+						console.log("err", e)
+
+
+						const logsEmbed = new Discord.MessageEmbed()
+							.setTitle(`\`💡\` Ajout d'un rôle à un membre`)
+							.setDescription(`
+						\`👨‍💻\` Auteur : **${action.executor.tag}** \`(${action.executor.id})\` a donné le rôle à **${memberRole.user.tag}** \`(${action.target.id})\`\n
+						\`\`\`${action.changes[0].new[0].name}\`\`\`
+                        
+                        \`🧾\`Erreur : Je n'ai pas assez de permissions pour remodifier ce rôles
+						`)
+							.setTimestamp()
+							.setFooter("🕙")
+							.setColor(`${color}`)
+						if (logChannel != undefined) {
+							logChannel.send(logsEmbed);
+
+						}
+					}
+				}
+
+			} else {
+				return;
+			}
+
+
+			let after = await this.connection.query(`SELECT roleAdd FROM antiraidconfig WHERE guildId = '${oldMember.guild.id}'`)
+
+
+			let guild = client
+.guilds.cache.get(oldMember.guild.id);
+			let targetMember = guild.members.cache.get(action.executor.id);
+			if (targetMember == undefined) {
+				await oldMember.guild.members.fetch().then((members) => {
+					targetMember = members.get(action.executor.id)
+				})
+			}
+			if (targetMember.roles.highest.comparePositionTo(oldMember.guild.me.roles.highest) <= 0) {
+				if (after[0][0].roleAdd === 'ban') {
+					guild.members.ban(action.executor.id)
+				} else if (after[0][0].roleAdd === 'kick') {
+					guild.member(action.executor.id).kick(
+						`OneForAll - Type: roleAdd `
+					)
+				} else if (after[0][0].roleAdd === 'unrank') {
+					let roles = []
+					let role = await guild.member(action.executor.id).roles.cache
+						.map(role => roles.push(role.id))
+					role
+					guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: roleAdd`)
+					if (action.executor.bot) {
+						let botRole = targetMember.roles.cache.filter(r => r.managed)
+						// let r = guild.roles.cache.get(botRole.id)
+
+						for (const [id] of botRole) {
+							botRole = guild.roles.cache.get(id)
+						}
+						botRole.setPermissions(0, `OneForAll - Type: roleAdd `)
+					}
+				}
+				let oldRole;
+				if (action.changes[0].old == undefined) {
+					oldRole = "Je n'ai pas pu retrouvé l'ancien rôle."
+				} else {
+					oldRole = action.changes[0].old
+				}
+
+
+				const logsEmbed = new Discord.MessageEmbed()
+					.setTitle(`\`💡\` Ajout d'un rôle à un membre`)
+					.setDescription(`
+			   \`👨‍💻\` Auteur : **${targetMember.user.tag}** \`(${action.executor.id})\` a donné le rôle à **${memberRole.user.tag}** \`(${action.target.id})\`\n
+				\`\`\`${action.changes[0].new[0].name}\`\`\`
+			   \`🧾\` Sanction : ${after[0][0].roleAdd}
+	
+			`)
+					.setTimestamp()
+					.setFooter("🕙")
+					.setColor(`${color}`)
+				if (logChannel != undefined) {
+					logChannel.send(logsEmbed);
+
+				}
+			} else {
+
+
+				const logsEmbed = new Discord.MessageEmbed()
+					.setTitle(`\`💡\` Ajout d'un rôle à un membre`)
+					.setDescription(`
+			   \`👨‍💻\` Auteur : **${targetMember.user.tag}** \`(${action.executor.id})\` a donné le rôle à **${memberRole.user.tag}** \`(${action.target.id})\`\n
+				\`\`\`${action.changes[0].new[0].name}\`\`\`
+			   \`🧾\` Sanction : Aucune car il possède plus de permissions que moi
+	
+			`)
+					.setTimestamp()
+					.setFooter("🕙")
+					.setColor(`${color}`)
+				if (logChannel != undefined) {
+					logChannel.send(logsEmbed);
+
+				}
+			}
+
+
+		}
+	}
+};
+logsChannelF(logsChannelId, 'raid');
+
+embedsColor(guildEmbedColor);
+StateManager.on('antiraidConfF', (guildId, config) => {
+	guildAntiraidConfig.set(guildId, config)
+})
+StateManager.on('antiraidConfU', (guildId, config) => {
+	guildAntiraidConfig.set(guildId, config)
+})

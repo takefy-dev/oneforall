@@ -47,11 +47,11 @@ Structures.extend('GuildMember', (Member) => {
             })
         }
 
-        set invitedBy(inviter){
+        set invitedBy(inviter) {
             this.client.database.models.invite.update({
                 invitedBy: inviter
             }, {
-                where:{
+                where: {
                     userId: this.user.id,
                     guildId: this.guildId
                 }
@@ -60,17 +60,34 @@ Structures.extend('GuildMember', (Member) => {
             })
         }
 
-        set updateInvite(newInvite){
+        set updateInvite(newInvite) {
             this.client.database.models.invite.update({
                 count: newInvite
             }, {
-                where:{
+                where: {
                     userId: this.user.id,
                     guildId: this.guildId
                 }
             }).then(() => {
                 this.invite = newInvite
             })
+        }
+
+        clearMemberInvite(resetOnlyMember) {
+            if (resetOnlyMember) {
+                this.client.database.models.invite.update({
+                    count: {join: 0, leave: 0, fake: 0, bonus: 0},
+            }, {
+                    where: {
+                        guildId: this.guildId,
+                        userId: this.user.id
+                    }
+                }).then(() => {
+                    this.invite = {join: 0, leave: 0, fake: 0, bonus: 0};
+                })
+            } else {
+                this.invite = {join: 0, leave: 0, fake: 0, bonus: 0}
+            }
         }
 
         async fetchWarns() {
@@ -88,16 +105,16 @@ Structures.extend('GuildMember', (Member) => {
         }
 
         async fetchInvite() {
-            if(!this.guild.config) return
-            if(this.user.bot  || !this.guild.config.inviteOn) return;
+            if (!this.guild.config) return
+            if (this.user.bot || !this.guild.config.inviteOn) return;
 
             await this.client.database.models.invite.findOrCreate({
                 where: {userId: this.user.id, guildId: this.guildId}
             }).then(res => {
-               const { count, invitedBy } = res[0].dataValues;
-               this.invite = count;
-               this.inviter = invitedBy;
-               Logger.log(`Fetch ${this.user.username}`, `Fetched INVITES`, 'grey')
+                const {count, invitedBy} = res[0].dataValues;
+                this.invite = count;
+                this.inviter = invitedBy;
+                Logger.log(`Fetch ${this.user.username}`, `Fetched INVITES`, 'grey')
             })
         }
     }

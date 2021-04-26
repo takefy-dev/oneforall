@@ -21,10 +21,32 @@ Structures.extend('Guild', (Guild) => {
         }
 
 
-        async clearInvite(){
-            await this.client.models.invite.destroy({
-                where: {
+        async topInvite(){
+            if(!this.config.inviteOn) return false;
+            let lb;
+            await this.client.database.models.invite.findAll({
+                attributes : ['userId', 'count'],
+                where:{
                     guildId: this.guildID
+                }
+            }).then(res => {
+                const data = []
+                res.forEach(invite => {
+                    const { dataValues } = invite;
+                    data.push(dataValues)
+                })
+                lb = data.sort((a,b) => b.count.join - a.count.join).slice(0, 10)
+
+            })
+            return lb;
+        }
+
+        async clearInvite(){
+            await this.client.database.models.invite.update({
+                count: {join: 0, leave: 0, fake: 0, bonus: 0},
+            }, {
+                where: {
+                    guildId: this.guildID,
                 }
             })
         }
