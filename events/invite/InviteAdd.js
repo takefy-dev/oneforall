@@ -44,7 +44,7 @@ module.exports = class Ready extends Event {
                 let join = `${count.join}`;
                 let memberTotal = `${guild.memberCount}`
 
-                finalMsg = inviteMessage.replace("${invitedMention}", member).replace("${inviterTag}", inviter.user.tag || inviter.user.username).replace("${count}", join).replace("${memberTotal}", memberTotal).replace("${invitedTag}", member.user.tag || member.user.username).replace("inviterMention", inviter).replace("${fake}", count.fake).replace("${leave}", count.leave).replace("${creation}", moment(member.user.createdAt));
+                finalMsg = inviteMessage.replace("${invitedMention}", member).replace("${inviterTag}", inviter.user.tag || inviter.user.username).replace("${count}", join).replace("${memberTotal}", memberTotal).replace("${invitedTag}", member.user.tag || member.user.username).replace("inviterMention", inviter).replace("${fake}", count.fake).replace("${leave}", count.leave).replace("${creation}", moment(member.user.createdAt).format("DD/MM/YYYY"));
                 while (finalMsg.includes("${space}")) {
                     finalMsg.replace("${space}", space)
                 }

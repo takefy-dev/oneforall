@@ -38,13 +38,13 @@ module.exports = class message extends Event {
 
         const color =message.guild.color
         this.connection = StateManager.connection;
-        const lang = require(`../lang/${message.guild.lang}`);
+        const lang = client.lang(message.guild.lang);
 
         function hasDiscordInvite(string) {
             let discordInvite = /(https:\/\/)?(www\.)?(discord\.gg|discord\.me|discordapp\.com\/invite|discord\.com\/invite)\/([a-z0-9-.]+)?/i;
 
-            if (discordInvite.test(string)) return true;
-            return false;
+            return discordInvite.test(string);
+
         }
 
         function deleteMessage(message, type) {
