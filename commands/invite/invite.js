@@ -74,7 +74,7 @@ module.exports = class Test extends Command {
             inviteMsg.set(message.guild.id, message.guild.config.inviteMessage)
 
             const isOn = message.guild.config.inviteOn
-            let  isOnS = '<:778348494712340561:781153837850820619>'
+            let isOnS = '<:778348494712340561:781153837850820619>'
             if (!isOn) {
                 isOnS = '<:778348495157329930:781189773645578311>'
             }
@@ -149,7 +149,7 @@ module.exports = class Test extends Command {
                     const space = "${space} ・ Sert à faire un retour à la ligne"
                     const help = new Discord.MessageEmbed()
                         .setTitle(`Help`)
-                        .setDescription(lang.invite.helpDesc(invitedHelp, inviterHelp,invitedMention,inviterMention, accountCreate, countHelp, fakeHelp, leaveHelp, totalMemberHelp, space))
+                        .setDescription(lang.invite.helpDesc(invitedHelp, inviterHelp, invitedMention, inviterMention, accountCreate, countHelp, fakeHelp, leaveHelp, totalMemberHelp, space))
                         .setTimestamp()
                         .setColor(`${color}`)
                         .setFooter(client.user.username);
@@ -214,19 +214,30 @@ module.exports = class Test extends Command {
                 embed.setDescription(lang.invite.descConfig(inviteChannel, message.guild, isOnS, inviteMsg))
                 msg.edit(embed)
             }
-        }else if(args[0] === "sync"){
+        } else if (args[0] === "sync") {
+            console.time("inv")
             const newInv = await message.guild.fetchInvites()
-            for(const [code, invite] of newInv){
+            await message.guild.members.fetch()
+            const invitesCount = new Map();
+            for (const [code, invite] of newInv) {
                 message.guild.cachedInv.set(code, invite)
-                await client.users.fetch(invite.inviter.id, true)
                 const member = await message.guild.members.cache.get(invite.inviter.user.id)
-                if(member && invite) {
-                    let count = member.invite;
-                    count.join = invite.uses;
-                    member.updateInvite = count
+                if (member && invite) {
+                    if(!invitesCount.has(member.id)) invitesCount.set(member.id, 0)
+                    let amount = invitesCount.get(member.id);
+                    invitesCount.set(member.id, amount += invite.uses)
+
+
                 }
 
             }
+            for (const [id, count] of invitesCount) {
+                const member = message.guild.members.cache.get(id);
+                member.updateInvite = {join: count, leave: 0, fake: 0, bonus: 0};
+            }
+            invitesCount.clear()
+            console.timeEnd("inv")
+
             message.channel.send(lang.invite.syncSuccess)
         }
 

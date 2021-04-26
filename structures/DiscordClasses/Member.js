@@ -11,6 +11,7 @@ Structures.extend('GuildMember', (Member) => {
             this.warns = [];
             this.invite = {join: 0, leave: 0, fake: 0, bonus: 0};
             this.inviter = null;
+            this.fetched = false;
             this.fetchWarns()
             this.fetchWarns()
             this.fetchInvite()
