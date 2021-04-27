@@ -1,15 +1,5 @@
-const StateManager = require('../../utils/StateManager');
 const Event = require('../../structures/Handler/Event');
-
-let checkBotOwner = require('../../function/check/botOwner');
-const guildEmbedColor = new Map();
-let checkWl = require('../../function/check/checkWl');
-let logsChannelF = require('../../function/fetchLogs');
-let embedsColor = require('../../function/embedsColor');
-const Discord = require('discord.js')
 const {Logger} = require("advanced-command-handler");
-const logsChannelId = new Map();
-const guildAntiraidConfig = new Map();
 module.exports = class guildUpdate extends Event {
     constructor() {
         super({
@@ -105,15 +95,3 @@ module.exports = class guildUpdate extends Event {
         }
     }
 }
-
-
-
-
-logsChannelF(logsChannelId, 'raid');
-embedsColor(guildEmbedColor);
-StateManager.on('antiraidConfF', (guildId, config) => {
-    guildAntiraidConfig.set(guildId, config)
-})
-StateManager.on('antiraidConfU', (guildId, config) => {
-    guildAntiraidConfig.set(guildId, config)
-})
