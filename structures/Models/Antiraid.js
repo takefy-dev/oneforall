@@ -6,7 +6,7 @@ module.exports = (Sequelize, oneforall) => {
                 allowNull: false,
                 primaryKey: true
             },
-            webhookCreate: {
+            webhookUpdate: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
                 defaultValue: false

@@ -6,7 +6,7 @@ module.exports = (Sequelize, oneforall) => {
                 allowNull: false,
                 primaryKey: true
             },
-            webhookCreate: {
+            webhookUpdate: {
                 type : Sequelize.STRING(6),
                 allowNull: false,
                 defaultValue: 'unrank'
