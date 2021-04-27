@@ -19,7 +19,7 @@ module.exports = class Test extends Command{
     async run(client, message,args){
 
     const lang = client.lang(message.guild.lang)
-    const position = message.channel.position;
+    const position = message.channel.rawPosition;
     const rateLimitPerUser = message.channel.rateLimitPerUser;
     let newChannel = await message.channel.clone()
     message.channel.delete();
