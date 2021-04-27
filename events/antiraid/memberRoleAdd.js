@@ -44,7 +44,7 @@ module.exports = class Ready extends Event {
             } catch (e) {
                 if (e.toString().toLowerCase().includes('missing permissions')) {
                     if (channel) {
-                        channel.send(logs.memberRole(executor, action.target, role.id, color, "Je n'ai pas assez de permissions", "ADD"))
+                        channel.send(logs.memberRole(executor, action.target, role.id, color, "Je n'ai pas assé de permissions", "ADD"))
                     }
                 }
             }
@@ -82,7 +82,7 @@ module.exports = class Ready extends Event {
 
 
                 if (channel) {
-                    channel.send(logs.memberRole(executor, action.target, role.id, color, "Je n'ai pas assez de permissions", "ADD"))
+                    channel.send(logs.memberRole(executor, action.target, role.id, color, "Je n'ai pas assé de permissions", "ADD"))
 
 
                 }

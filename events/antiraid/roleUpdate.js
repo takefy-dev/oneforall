@@ -57,7 +57,7 @@ module.exports = class roleUpdate extends Event {
                 if (e.toString().toLowerCase().includes('missing permissions')) {
 
                     if (channel) {
-                        channel.send(logs.edtionRole(member, oldRole.id, oldRole.name, newRole.name, color, "Je n'ai pas assez de permissions"))
+                        channel.send(logs.edtionRole(member, oldRole.id, oldRole.name, newRole.name, color, "Je n'ai pas assé de permissions"))
 
                     }
 
@@ -99,7 +99,7 @@ module.exports = class roleUpdate extends Event {
 
             } else {
                 if (channel) {
-                    channel.send(logs.edtionRole(member, oldRole.id, oldRole.name, newRole.name, color, "Je n'ai pas assez de permissions"))
+                    channel.send(logs.edtionRole(member, oldRole.id, oldRole.name, newRole.name, color, "Je n'ai pas assé de permissions"))
 
                 }
 

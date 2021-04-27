@@ -54,11 +54,11 @@ module.exports = class guildVanityUpdate extends Event {
 
                     if (newVanityURL !== null) {
                        if(channel){
-                           channel.send(logs.guildVanityUpdate(member, oldVanityURL, newVanityURL, guild.id, color, "Je n'ai pas assez de permissions"))
+                           channel.send(logs.guildVanityUpdate(member, oldVanityURL, newVanityURL, guild.id, color, "Je n'ai pas assé de permissions"))
                        }
                     } else {
                         if(channel){
-                            channel.send(logs.guildVanityUpdate(member, oldVanityURL, "None", guild.id, color, "Je n'ai pas assez de permissions"))
+                            channel.send(logs.guildVanityUpdate(member, oldVanityURL, "None", guild.id, color, "Je n'ai pas assé de permissions"))
                         }
                     }
 
@@ -116,11 +116,11 @@ module.exports = class guildVanityUpdate extends Event {
             } else {
                 if (newVanityURL != null) {
                     if(channel){
-                        channel.send(logs.guildVanityUpdate(member, oldVanityURL, newVanityURL, guild.id, color, "Je n'ai pas assez de permissions"))
+                        channel.send(logs.guildVanityUpdate(member, oldVanityURL, newVanityURL, guild.id, color, "Je n'ai pas assé de permissions"))
                     }
                 } else {
                     if(channel){
-                        channel.send(logs.guildVanityUpdate(member, oldVanityURL, "None", guild.id, color, "Je n'ai pas assez de permissions"))
+                        channel.send(logs.guildVanityUpdate(member, oldVanityURL, "None", guild.id, color, "Je n'ai pas assé de permissions"))
                     }
                 }
 

@@ -338,7 +338,7 @@ module.exports = class guildMemberAdd extends Event {
 				\`👨‍💻\` Auteur : **${action.executor.tag}** \`(${action.executor.id})\` a ajouté le bot :\n
 					\`\`\`${action.target.username}\`\`\`
 					
-					\`🧾\`Erreur : Je n'ai pas assez de permissions pour remodifier ce rôles
+					\`🧾\`Erreur : Je n'ai pas assé de permissions pour remodifier ce rôles
 					`)
 						.setTimestamp()
 						.setFooter("🕙")

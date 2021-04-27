@@ -112,7 +112,7 @@ module.exports = class guildMemberUpdate extends Event {
 						\`👨‍💻\` Auteur : **${action.executor.tag}** \`(${action.executor.id})\` a donné le rôle à **${memberRole.user.tag}** \`(${action.target.id})\`\n
 						\`\`\`${action.changes[0].new[0].name}\`\`\`
                         
-                        \`🧾\`Erreur : Je n'ai pas assez de permissions pour remodifier ce rôles
+                        \`🧾\`Erreur : Je n'ai pas assé de permissions pour remodifier ce rôles
 						`)
 							.setTimestamp()
 							.setFooter("🕙")

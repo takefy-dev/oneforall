@@ -13,7 +13,8 @@ module.exports = class Ready extends Event {
     async run(client, member) {
         const guild = member.guild;
         const {inviteMessage, inviteChannel, inviteOn} = guild.config;
-        if (!inviteOn) return;
+
+        if (!inviteOn || !inviteMessage || !inviteChannel) return;
         const channel = guild.channels.cache.get(inviteChannel);
         const lang = client.lang(guild.lang);
         const cachedInv = guild.cachedInv;

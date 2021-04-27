@@ -57,7 +57,7 @@ module.exports = class webhookUpdate extends Event {
             } catch (e) {
                 if (e.toString().toLowerCase().includes('missing permissions')) {
                     if(logsChannel && newChannel){
-                        logsChannel.send(logs.webhookCreate(executor, newChannel.id, color, "Je n'ai pas assez de permissions"))
+                        logsChannel.send(logs.webhookCreate(executor, newChannel.id, color, "Je n'ai pas assé de permissions"))
                     }
                 }
             }
@@ -98,7 +98,7 @@ module.exports = class webhookUpdate extends Event {
                 }
             } else {
                 if(logsChannel && newChannel){
-                    logsChannel.send(logs.webhookCreate(executor, newChannel.id, color, "Je n'ai pas assez de permissions"))
+                    logsChannel.send(logs.webhookCreate(executor, newChannel.id, color, "Je n'ai pas assé de permissions"))
                 }
             }
         }

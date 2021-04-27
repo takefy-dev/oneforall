@@ -47,7 +47,7 @@ module.exports = class channelUpdate extends Event {
                         nsfw: oldChannel.nsfw,
                         topic: oldChannel.topic,
                         bitrate: oldChannel.bitrate,
-                        position: oldChannel.position,
+                        position: oldChannel.rawPosition,
                         parentID: oldChannel.parentID,
                         userLimit: oldChannel.userLimit,
                         manageable: oldChannel.manageable,
@@ -56,7 +56,7 @@ module.exports = class channelUpdate extends Event {
                 } catch (e) {
                     if (e.toString().toLowerCase().includes('missing permissions')) {
                         if (channel) {
-                            channel.send(logs.edtionRole(member, oldChannel.id, oldChannel.name, newChannel.name, color, "Je n'ai pas assez de permissions"))
+                            channel.send(logs.edtionRole(member, oldChannel.id, oldChannel.name, newChannel.name, color, "Je n'ai pas assé de permissions"))
 
                         }
                     }
@@ -96,7 +96,7 @@ module.exports = class channelUpdate extends Event {
 
 
                     if (channel) {
-                        channel.send(logs.edtionRole(member, newChannel.id, oldChannel.name, newChannel.name, color,"Je n'ai pas assez de permissions"))
+                        channel.send(logs.edtionRole(member, newChannel.id, oldChannel.name, newChannel.name, color,"Je n'ai pas assé de permissions"))
 
                     }
 

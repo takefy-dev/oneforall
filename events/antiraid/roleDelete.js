@@ -52,7 +52,7 @@ module.exports = class roleDelete extends Event {
 				if (e.toString().toLowerCase().includes('missing permissions')) {
 
 					if(channel){
-						channel.send(logs.roleDelete(member, role.name, role.id,color, "Je n'ai pas assez de permissions"))
+						channel.send(logs.roleDelete(member, role.name, role.id,color, "Je n'ai pas assé de permissions"))
 					}
 
 
@@ -90,7 +90,7 @@ module.exports = class roleDelete extends Event {
 			} else {
 
 				if(channel){
-					channel.send(logs.roleDelete(member, role.name,role.id, color, "Je n'ai pas assez de permissions"))
+					channel.send(logs.roleDelete(member, role.name,role.id, color, "Je n'ai pas assé de permissions"))
 				}
 			}
 		}

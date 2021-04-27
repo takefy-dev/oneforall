@@ -17,6 +17,7 @@ module.exports = class Ready extends Event{
         }
         if(!member.inviter || member.user.bot) return;
         const invitedBy = member.guild.members.cache.get(member.inviter)
+        if(!invitedBy) return;
         let count = invitedBy.invite;
         count.leave += 1
         invitedBy.updateInvite = count;

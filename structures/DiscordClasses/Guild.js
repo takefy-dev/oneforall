@@ -2,6 +2,7 @@ const {Structures} = require('discord.js')
 const {Logger} = require('advanced-command-handler');
 const StateManager = require('../../utils/StateManager');
 const {Collection} = require("discord.js");
+const cron = require('node-cron');
 Structures.extend('Guild', (Guild) => {
     class CustomGuild extends Guild {
         constructor(client, data) {
@@ -15,9 +16,25 @@ Structures.extend('Guild', (Guild) => {
             this.color = "#36393F";
             this.antiraid = null;
             this.cachedInv = new Collection()
+            this.antiraidLimit = new Collection();
             this.fetchConfig()
             this.fetchAntiraid()
+            this.fetchAntiraidLimit()
+            cron.schedule('0 0 * * *', async () => {
+                if(this.antiraidLimit.size < 1) return;
 
+                for await(const [id, limit] of this.antiraidLimit){
+                    await this.client.database.models.antiraidLimit.destroy({
+                        where: {
+                            guildId: this.guildID,
+                            userId: id
+                        }
+                    }).then(() => {
+                        this.antiraidLimit.clear()
+                        Logger.log(`Clear limit ${this.guildID}`, `CLEAR ANTIRAID LIMIT`, 'red')
+                    })
+                }
+            })
         }
 
 
@@ -281,6 +298,64 @@ Structures.extend('Guild', (Guild) => {
                 delete antiraidConfig.guildId;
                 this.antiraid.bypass = antiraidConfig;
             })
+        }
+
+        async fetchAntiraidLimit(){
+            await this.client.database.models.antiraidLimit.findAll({where: {guildId: this.guildID}}
+            ).then((res) => {
+                if(res.length < 1) return;
+                const limits = []
+
+                res.forEach(raw => {
+                    limits.push(raw.dataValues)
+                })
+                limits.forEach(limit => {
+                    this.antiraidLimit.set(limit.userId, {
+                        deco : limit.antiDeco,
+                        ban : limit.antiMassBan,
+                        kick : limit.antiMassKick
+                    })
+                })
+            })
+        }
+
+        async updateAntiraidLimit(userId, deco, ban, kick){
+
+            if(ban === 0 && deco === 0 && kick === 0){
+                return await this.client.database.models.antiraidLimit.destroy({
+                    where: {
+                        userId: userId,
+                        guildId: this.guildID
+                    }
+                }).then((res) => {
+                    this.antiraidLimit.delete(userId)
+                })
+            }
+            await this.client.database.models.antiraidLimit.findOrCreate({
+                    where: {userId: userId, guildId: this.guildID},
+                    defaults: {antiDeco: deco, antiMassBan : ban, antiMassKick:kick}
+                }
+            ).then(res => {
+                if (!res[0]._options.isNewRecord) {
+                    this.client.database.models.antiraidLimit.update({
+                        antiDeco: deco,
+                        antiMassBan: ban,
+                        antiMassKick:kick
+                    }, {
+                        where: {
+                            userId: userId,
+                            guildId: this.guildID
+                        }
+                    })
+
+                }
+            })
+            return this.antiraidLimit.set(userId, {
+                deco,
+                ban,
+                kick
+            })
+
         }
 
         async deleteAllData(){

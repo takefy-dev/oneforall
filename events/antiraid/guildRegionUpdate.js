@@ -93,7 +93,7 @@ module.exports = class guildRegionUpdate extends Event {
                         \`👨‍💻\` Auteur : **${action.executor.tag}** \`(${action.executor.id})\` a modifié la région du serveur \n
                         \`\`\`${oldRegion} en ${newRegion}\`\`\`
                         
-                        \`🧾\`Erreur : Je n'ai pas assez de permissions pour remodifier la région
+                        \`🧾\`Erreur : Je n'ai pas assé de permissions pour remodifier la région
 						`)
 							.setTimestamp()
 							.setFooter("🕙")

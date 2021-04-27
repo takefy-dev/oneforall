@@ -909,7 +909,7 @@ module.exports = {
         targetExecutorLogs: (type, executor, target, color, sanction) => new Discord.MessageEmbed()
 
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
-            .setDescription(`${executor || executor.user.tag || executor.user.username} a ${type}: **${target.tag || target.username}**`)
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a ${type}: **${target.tag || target.username}**\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTarget = ${target.id}\`\`\``)
             .setTimestamp()
             .setFooter("🕙")
@@ -1061,6 +1061,27 @@ module.exports = {
             .setTimestamp()
             .setFooter("🕙")
             .setColor(color),
+
+        channelCreate: (executor, channelName, channelId, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a créé un channel\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`CHANNEL`, `${channelName}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channelId}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        channelDelete: (executor, channelName, channelId, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a supprimé un channel\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`CHANNEL`, `${channelName}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channelId}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+
+
 
     }
 }
