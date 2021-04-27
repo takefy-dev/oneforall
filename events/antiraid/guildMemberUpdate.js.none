@@ -24,7 +24,7 @@ module.exports = class guildMemberUpdate extends Event {
 		// console.log(oldMember._roles)
 		// console.log( parseInt(newMember._roles.length + 1) )
 		// console.log(oldMember._roles.length == newMember._roles.length)
-		if (parseInt(oldMember._roles.length) > parseInt(newMember._roles.length) || oldMember._roles.length == newMember._roles.length) return;
+		if (parseInt(oldMember._roles.length) > parseInt(newMember._roles.length) || oldMember._roles.length === newMember._roles.length) return;
 
 
 		let guild = oldMember.guild;

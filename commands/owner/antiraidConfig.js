@@ -22,7 +22,8 @@ module.exports = class Test extends Command{
     }
     async run(client, message,args){
 
-    this.connection = StateManager.connection;
+
+    // this.connection = StateManager.connection;
     const lang = client.lang(message.guild.lang)
 
     const color =message.guild.color

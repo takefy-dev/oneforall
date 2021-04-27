@@ -1,4 +1,4 @@
-const Event = require('../structures/Handler/Event');
+const Event = require('../../structures/Handler/Event');
 const { Logger } = require('advanced-command-handler')
 const Discord = require('discord.js')
 

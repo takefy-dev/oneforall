@@ -18,7 +18,7 @@ module.exports = class Ready extends Event {
         const lang = client.lang(guild.lang);
         const cachedInv = guild.cachedInv;
         const newInv = await guild.fetchInvites()
-        const usedInv = newInv.find(inv => cachedInv.get(inv.code).uses !== inv.uses);
+        const usedInv = newInv.find(inv => cachedInv.get(inv.code) ? cachedInv.get(inv.code).uses < inv.uses : undefined);
         for (const [code, invite] of newInv) {
             guild.cachedInv.set(code, invite)
         }

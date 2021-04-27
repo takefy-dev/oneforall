@@ -1,107 +1,63 @@
-const StateManager = require('../../utils/StateManager');
+
 const snipes = new Map();
-const guildEmbedColor = new Map();
+
 const Event = require('../../structures/Handler/Event');
 
-let logsChannelF = require('../../function/fetchLogs');
-const logsChannelId = new Map();
-const Discord = require('discord.js')
-let embedsColor = require('../../function/embedsColor');
-
 module.exports = class messageDelete extends Event {
-  constructor() {
-    super({
-      name: 'messageDelete',
-    });
-  }
-
-  async run(client, message) {
-    if (!message.author) return;
-    if (message.author.bot) return;
-    if (!message.guild) return;
-    this.connection = StateManager.connection;
-    // snipes.clear();
-    snipes.set(message.channel.id, {
-      content: message.content,
-      author: message.author,
-      image: message.attachments.first() ? message.attachments.first().proxyURL : null,
-      date: new Date().toLocaleString('fr-FR', {dataStyle: 'full', timeStyle: 'short'})
-    })
-    StateManager.emit('snipes', message.guild.id, snipes)
-    const color = message.guild.color
-    let logChannelId = logsChannelId.get(message.guild.id);
-    let logChannel
-    if (logChannelId != undefined) {
-      logChannel = client
-.guilds.cache.get(message.guild.id).channels.cache.get(logChannelId)
-
-
+    constructor() {
+        super({
+            name: 'messageDelete',
+        });
     }
-    if (logChannel != undefined && !message.partial && logChannel.guild.id == message.guild.id) {
 
+    async run(client, message) {
+        if (!message.author) return;
+        if (message.author.bot) return;
+        if (!message.guild) return;
+        // this.connection = StateManager.connection;
+        // // snipes.clear();
+        // snipes.set(message.channel.id, {
+        //     content: message.content,
+        //     author: message.author,
+        //     image: message.attachments.first() ? message.attachments.first().proxyURL : null,
+        //     date: new Date().toLocaleString('fr-FR', {dataStyle: 'full', timeStyle: 'short'})
+        // })
+        // StateManager.emit('snipes', message.guild.id, snipes)
+        const color = message.guild.color
+        let {msgLog } = message.guild.logs;
+        if(msgLog === "Non définie") return msgLog = null
+        let action = await message.guild.fetchAuditLogs({
+                limit: 1,
+                type: 'MESSAGE_DELETE',
+            }),
+            deletionLog = action.entries.first();
+        const channel = message.guild.channels.cache.get(msgLog);
+        const { logs } = client.lang(message.guild.lang)
+        if(!channel) return;
+        if (!deletionLog) {
+            //delete his msg
+            channel.send(logs.messageDelete(message.member, message.author,message.channel.id, color,message.content))
 
-      let logsEmbed;
-      let author;
-      let action = await message.guild.fetchAuditLogs({
-            limit: 1,
-            type: 'MESSAGE_DELETE',
-          }),
-          deletionLog = action.entries.first();
+        }
+        const {executor, target} = deletionLog;
 
-      if (!deletionLog) {
-        logsEmbed = new Discord.MessageEmbed()
-            .setTitle('\`❌\` Suppression de message')
-            .setDescription(`
-          \`👨‍💻\` Auteur : **${message.author.tag}** \`(${message.author.id})\` a supprimé son message \n
-            \`\`\`${message.content}\`\`\`
-          \`🧾\` ID : ${message.id}
+        if (target.id === message.author.id) {
+            // delete the message of
+            const member = message.guild.members.cache.get(executor.id)
+            channel.send(logs.messageDelete(member, message.author,message.channel.id, color,message.content))
 
-        `)
-            .setTimestamp()
-            .setFooter("🕙")
-            .setColor(`${color}`)
-        return logChannel.send(logsEmbed)
-      }
-      const {executor, target} = deletionLog;
-
-      if (target.id === message.author.id) {
-        logsEmbed = new Discord.MessageEmbed()
-            .setTitle('\`❌\` Suppression de message')
-            .setDescription(`
-          \`👨‍💻\` Auteur : **${executor.tag}** \`(${executor.id})\` a supprimé le message de **${message.author.tag}**\`(${message.author.id})\` \n
-            \`\`\`${message.content}\`\`\`
-          \`🧾\` ID : ${message.id}
-
-        `)
-            .setTimestamp()
-            .setFooter("🕙")
-            .setColor(`${color}`)
-        return logChannel.send(logsEmbed);
-
-      } else {
-        logsEmbed = new Discord.MessageEmbed()
-            .setTitle('\`❌\` Suppression de message')
-            .setDescription(`
-          \`👨‍💻\` Auteur : **${message.author.tag}** \`(${message.author.id})\` a supprimé son message \n
-            \`\`\`${message.content}\`\`\`
-          \`🧾\` ID : ${message.id}
-
-        `)
-            .setTimestamp()
-            .setFooter("🕙")
-            .setColor(`${color}`)
-        return logChannel.send(logsEmbed);
-      }
+        } else {
+            //delete his msg
+            channel.send(logs.messageDelete(message.member, message.author,message.channel.id, color,message.content))
+        }
 
 
     }
 
 
-  }
 }
 
-logsChannelF(logsChannelId, 'msg');
-embedsColor(guildEmbedColor);
+
 
 
 

@@ -911,7 +911,6 @@ module.exports = {
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a ${type}: **${target.tag || target.username}**`)
             .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTarget = ${target.id}\`\`\``)
-            .addField(`${!sanction ? '' : 'Sanction'}`,sanction)
             .setTimestamp()
             .setFooter("🕙")
             .setColor(color),
@@ -935,8 +934,6 @@ module.exports = {
             .addField('AVANT:', before)
             .addField('APRES:', after)
             .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
-            .addField(`${!sanction ? '' : 'Sanction'}`,sanction)
-
             .setTimestamp()
             .setFooter("🕙")
             .setColor(color),
@@ -948,8 +945,6 @@ module.exports = {
             .addField('AVANT:', before)
             .addField('APRES:', after)
             .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nRole = ${role}\`\`\``)
-            .addField(`${!sanction ? '' : 'Sanction'}`,sanction)
-
             .setTimestamp()
             .setFooter("🕙")
             .setColor(color),
@@ -960,8 +955,6 @@ module.exports = {
             .addField('AVANT:', before)
             .addField('APRES:', after)
             .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nGuild = ${guild}\`\`\``)
-
-
             .setTimestamp()
             .setFooter("🕙")
             .setColor(color),
@@ -972,6 +965,72 @@ module.exports = {
             .addField('AVANT:', before)
             .addField('APRES:', after)
             .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nGuild = ${guild}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        voiceChange : (executor,target,before, after, color) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} ${executor.id === target.id ? 'a changé de salon' : `a déplacé **${target.tag || target.username}**`}:`)
+            .addField('AVANT:', `<#${before}>`)
+            .addField('APRES:', `<#${after}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTarget = ${target.id}\noldChannel = ${before}\nnewChannel = ${after}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        voiceConnect: (executor, channel, color) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} s'est connecté: <#${channel}>`)
+            .addField('CHANNEL:', `<#${channel}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        voiceLeave: (executor, channel, color) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} s'est déconnecté: <#${channel}>`)
+            .addField('CHANNEL:', `<#${channel}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+
+        voiceMute: (executor, channel, color) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} s'est mute:`)
+            .addField('CHANNEL:', `<#${channel}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        voiceUnMute: (executor, channel, color) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} s'est unmute:`)
+            .addField('CHANNEL:', `<#${channel}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        messageDelete: (executor,target, channel, color, content) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} ${executor.id === target.id ? 'a son supprimé son message' : `a supprimé le message de **${target.tag || target.username}**`}:`)
+            .addField('CHANNEL:', `<#${channel}>`)
+            .addField('CONTENT:',content)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTarget = ${target.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        memberRole : (executor, target, role, color, sanction, type) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a ${type} le role <@&${role}> à: **${target.tag || target.username}**\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`${type}`, `<@&${role}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTarget = ${target.id}\nRole = ${role}\`\`\``)
             .setTimestamp()
             .setFooter("🕙")
             .setColor(color),
