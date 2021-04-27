@@ -916,7 +916,7 @@ module.exports = {
             .setColor(color),
 
 
-        editionMsg: (executor,before, after, color, extra) => new Discord.MessageEmbed()
+        editionMsg: (executor, before, after, color, extra) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a edité son message:`)
             .addField(`Edition:`, `[Ce rendre sur le message](${extra})`)
@@ -927,7 +927,7 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-        edtionChannel: (executor,channel,before, after, color,sanction) => new Discord.MessageEmbed()
+        edtionChannel: (executor, channel, before, after, color, sanction) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a edité le channel: <#${channel}>\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField(`Edition:`, `<#${channel}>`)
@@ -938,7 +938,7 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-        edtionRole: (executor,role,before, after, color, sanction) => new Discord.MessageEmbed()
+        edtionRole: (executor, role, before, after, color, sanction) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a edité le rôle: <@&${role}>\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField(`Edition:`, `<@&${role}>`)
@@ -949,7 +949,7 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-        guildNameUpdate : (executor,before, after, guild, color, sanction) => new Discord.MessageEmbed()
+        guildNameUpdate: (executor, before, after, guild, color, sanction) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a edité le nom du serveur:\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField('AVANT:', before)
@@ -959,7 +959,7 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-        guildVanityUpdate : (executor,before, after, guild, color, sanction) => new Discord.MessageEmbed()
+        guildVanityUpdate: (executor, before, after, guild, color, sanction) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a edité l'url du serveur:\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField('AVANT:', before)
@@ -969,7 +969,7 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-        voiceChange : (executor,target,before, after, color) => new Discord.MessageEmbed()
+        voiceChange: (executor, target, before, after, color) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} ${executor.id === target.id ? 'a changé de salon' : `a déplacé **${target.tag || target.username}**`}:`)
             .addField('AVANT:', `<#${before}>`)
@@ -1016,17 +1016,17 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-        messageDelete: (executor,target, channel, color, content) => new Discord.MessageEmbed()
+        messageDelete: (executor, target, channel, color, content) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} ${executor.id === target.id ? 'a son supprimé son message' : `a supprimé le message de **${target.tag || target.username}**`}:`)
             .addField('CHANNEL:', `<#${channel}>`)
-            .addField('CONTENT:',content)
+            .addField('CONTENT:', content)
             .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTarget = ${target.id}\nChannel = ${channel}\`\`\``)
             .setTimestamp()
             .setFooter("🕙")
             .setColor(color),
 
-        memberRole : (executor, target, role, color, sanction, type) => new Discord.MessageEmbed()
+        memberRole: (executor, target, role, color, sanction, type) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a ${type} le role <@&${role}> à: **${target.tag || target.username}**\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField(`${type}`, `<@&${role}>`)
@@ -1035,7 +1035,7 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-        webhookCreate : (executor, channel, color, sanction) => new Discord.MessageEmbed()
+        webhookCreate: (executor, channel, color, sanction) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a créé un webhook\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField(`CHANNEL`, `<#${channel}>`)
@@ -1043,5 +1043,24 @@ module.exports = {
             .setTimestamp()
             .setFooter("🕙")
             .setColor(color),
+
+        roleCreate: (executor, roleName, roleId, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a créé un role\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`ROLE`, `${roleName}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nRole = ${roleId}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        roleDelete: (executor, roleName, roleId, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a supprimé un role\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`ROLE`, `${roleName}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nRole = ${roleId}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
     }
 }

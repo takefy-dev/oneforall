@@ -36,15 +36,15 @@ module.exports = class webhookUpdate extends Event {
         if (isWlBypass && !isWl || !isWlBypass) {
             const executor = guild.members.cache.get(action.executor.id)
             const logsChannel = guild.channels.cache.get(antiraidLog)
-            let newChannel;
             try {
                 await channel.delete(`OneForAll - Type : webhookCreate`);
-                newChannel = await channel.clone({
+                var newChannel = await channel.clone({
                     reason: `OneForAll - Type : webhookCreate`,
                     parent: channel.parent
                 })
+                await newChannel.setPosition(channel.rawPosition)
+
                 if(newChannel){
-                    newChannel.setPosition(channel.position)
                     const embed = new Discord.MessageEmbed()
                         .setDescription('👩‍💻 Une création de webhook a été détecté le channel a donc été renew [oneforall antiraid](https://discord.gg/rdrTpVeGWX)')
                         .setColor(color)
