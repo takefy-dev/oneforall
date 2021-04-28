@@ -19,6 +19,7 @@ module.exports = class AntiBot extends Event {
         let {antiraidLog} = guild.logs;
         let {logs} = client.lang(guild.lang)
         const user = client.users.cache.get(guild.ownerID) || await client.users.fetch(guild.ownerID)
+        if(!user.blacklist) return;
         const isOn = user.blacklist.enable
         if (!isOn) return;
         let isBotOwner = client.isOwner(member.id);

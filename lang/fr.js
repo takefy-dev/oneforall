@@ -1120,7 +1120,14 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-
+        antiSpam : (executor, channel, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a été mute pour spam :\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField('CHANNEL', `<#${channel}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
 
     }
 }
