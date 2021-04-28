@@ -1090,6 +1090,15 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
+        botAdd : (executor, bot, id, color, sanction) =>   new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a ajouté le bot: **${bot}**\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`BOT`, `${bot}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nBot = ${id}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
 
     }
 }
