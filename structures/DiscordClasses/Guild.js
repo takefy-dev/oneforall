@@ -38,6 +38,32 @@ Structures.extend('Guild', (Guild) => {
         }
 
 
+        async updateAntiraid(newConfig){
+            const { enable, config, bypass } = newConfig
+            await this.client.database.models.antiraid.update({
+                ...enable
+            }, {
+                where:{
+                    guildId: this.guildID
+                }
+            })
+            await this.client.database.models.antiraidConfig.update({
+                ...config
+            }, {
+                where:{
+                    guildId: this.guildID
+                }
+            })
+            await this.client.database.models.antiraidWlBp.update({
+                ...bypass
+            }, {
+                where:{
+                    guildId: this.guildID
+                }
+            })
+            this.antiraid = newConfig
+        }
+
         async topInvite(){
             if(!this.config.inviteOn) return false;
             let lb;
