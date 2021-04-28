@@ -11,6 +11,7 @@ module.exports = class Message extends Event{
         });
     }
     async run(client, message){
+        if (message.guild == null) return;
         if(message.webhookID) return;
         const { muteRoleId } = message.guild.config;
         const muteRole = message.guild.roles.cache.get(muteRoleId);
