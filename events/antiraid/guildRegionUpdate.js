@@ -39,7 +39,7 @@ module.exports = class guildRegionUpdate extends Event {
 
                 if (e.toString().toLowerCase().includes('missing permissions')) {
                     if (channel && !channel.deleted) {
-                        channel.send(logs.regionUpdate(member, oldRegion, newRegion, color, "Je n'ai pas assé de permissions"))
+                        channel.send(logs.changeRegion(member, oldRegion, newRegion, color, "Je n'ai pas assé de permissions"))
                     }
                 }
             }
@@ -81,13 +81,13 @@ module.exports = class guildRegionUpdate extends Event {
 
 
                 if(channel && !channel.deleted){
-                    channel.send(logs.regionUpdate(member, oldRegion, newRegion, color, sanction))
+                    channel.send(logs.changeRegion(member, oldRegion, newRegion, color, sanction))
                 }
 
             } else {
 
                 if (channel && !channel.deleted) {
-                    channel.send(logs.regionUpdate(member, oldRegion, newRegion, color, "Je n'ai pas assé de permissions"))
+                    channel.send(logs.changeRegion(member, oldRegion, newRegion, color, "Je n'ai pas assé de permissions"))
                 }
             }
         }
