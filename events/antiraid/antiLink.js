@@ -24,8 +24,8 @@ module.exports = class Message extends Event{
         if(!isOn) return;
 
 
-        if (message.author.id === client.user.id)  return Logger.log(`No sanction oneforall`, `CHANNEL Create`, 'pink');
-        if(message.guild.ownerID === message.author.id) return Logger.log(`No sanction crown`, `CHANNEL Create`, 'pink');
+        if (message.author.id === client.user.id)  return
+        if(message.guild.ownerID === message.author.id) return
 
         let isGuildOwner = message.guild.isGuildOwner(message.author.id);
         let isBotOwner = client.isOwner(message.author.id);

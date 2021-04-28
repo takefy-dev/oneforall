@@ -6,15 +6,15 @@ const { Menu } = require('discord.js-menu')
 let antiraidConfig = {};
 const Command = require('../../structures/Handler/Command');
 const { Logger } = require('advanced-command-handler')
-
+// <:778348495157329930:781189773645578311> off
+// <:778348494712340561:781153837850820619> on
 module.exports = class Test extends Command{
     constructor() {
         super({
             name: 'antiraid',
             description: "Setup the antiraid | Configurer l'antiraid",
             usage: '!antiraid',
-            clientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES'],
-            ownerOnly: false,
+            clientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
             category: 'owners',
             guildOwnerOnly : true,
             onlyTopGg : true
@@ -42,15 +42,15 @@ module.exports = class Test extends Command{
     //     }
     // }
 
-    const allOn = args[0] == "on";
-    const config = args[0] == "config";
-    const allOff = args[0] == 'off';
-    const opti = args[0] == 'opti';
-    const antiSpamOn = args[0] == "antispam" && args[1] == "on";
-    const antiSpamOff = args[0] == "antispam" && args[1] == "off";
-    const antilinkOff = args[0] == "antilink" && args[1] == "off";
-    const antilinkOn = args[0] == "antilink" && args[1] == "on";
-    const sanction = args[0] == 'sanction'
+    const allOn = args[0] === "on";
+    const config = args[0] === "config";
+    const allOff = args[0] === 'off';
+    const opti = args[0] === 'opti';
+    const antiSpamOn = args[0] === "antispam" && args[1] === "on";
+    const antiSpamOff = args[0] === "antispam" && args[1] === "off";
+    const antilinkOff = args[0] === "antilink" && args[1] === "off";
+    const antilinkOn = args[0] === "antilink" && args[1] === "on";
+    const sanction = args[0] === 'sanction'
     if (!args[0]) {
         const embed = new Discord.MessageEmbed()
             .setAuthor(`Informations antiraid`, `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
@@ -225,7 +225,7 @@ module.exports = class Test extends Command{
         let isOnNameUpdate;
         let isOnVanityUpdate;
 
-        if (webhookCreateOn == "1") { isOnWbCr = '<:778348494712340561:781153837850820619>' }
+        if (webhookCreateOn == "1") { isOnWbCr = '' }
         if (roleCreateOn == "1") { isOnRlCr = '<:778348494712340561:781153837850820619>' }
         if (roleUpdateOn == "1") { isOnRlUp = '<:778348494712340561:781153837850820619>' }
         if (roleDeleteOn == "1") { isOnRlDel = '<:778348494712340561:781153837850820619>' }
@@ -252,7 +252,7 @@ module.exports = class Test extends Command{
         if (channelDeleteOn == "0") { isOnChDel = '<:778348495157329930:781189773645578311>' }
         if (spamOn == "0") { isOnSpam = '<:778348495157329930:781189773645578311>' }
         if (banOn == "0") { isOnBan = '<:778348495157329930:781189773645578311>' }
-        if (botOn == "0") { isOnBot = '<:778348495157329930:781189773645578311>' }
+        if (botOn == "0") { isOnBot = '' }
         if (roleAddOn == "0") { isOnroleAdd = '<:778348495157329930:781189773645578311>' }
         if (antilinkOn == "0") { isOnAntilink = '<:778348495157329930:781189773645578311>' }
         if (antiKickOn == "0") { isOnAntikick = '<:778348495157329930:781189773645578311>' }

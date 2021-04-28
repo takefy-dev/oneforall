@@ -1,6 +1,6 @@
 ﻿const Event = require('../../structures/Handler/Event');
 const {Logger} = require("advanced-command-handler");
-
+const DBL = require("dblapi.js");
 module.exports = class message extends Event {
     constructor() {
         super({
@@ -49,6 +49,12 @@ module.exports = class message extends Event {
             if(client.maintenance){
                 return message.channel.send(client.lang(message.guild.lang).maintenance)
             }
+            if(cmd.onlyTopGg && !client.botperso){
+                const dbl = new DBL(client.config.topGgToken, client)
+                let hasVoted = await dbl.hasVoted(message.author.id)
+                if(!hasVoted) return message.channel.send(client.lang(message.guild.lang).antiraidConfig.noVote)
+                cmd.run(client, message, args)
+            }
             if (cmd.ownerOnly) {
                 if (client.isOwner(message.author.id)) {
                     Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white')
@@ -89,6 +95,7 @@ module.exports = class message extends Event {
                 Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white');
 
             }
+
         }
 
     }
