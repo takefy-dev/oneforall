@@ -27,10 +27,8 @@ module.exports = class Test extends Command {
             }
 
 
-            const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id,
-                dureefiltrer = response => {
-                    return response.author.id === message.author.id
-                };
+            const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id;
+
 
             let fields = []
 
