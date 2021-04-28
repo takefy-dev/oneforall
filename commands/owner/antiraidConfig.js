@@ -19,6 +19,30 @@ module.exports = class Test extends Command {
         let lang = client.lang(message.guild.lang);
 
         const color = message.guild.color
+        if(args[0] === "on"){
+            const { enable } = message.guild.antiraid;
+            for(const [name,_] of Object.entries(enable)){
+                enable[name] = true;
+            }
+            await message.guild.updateAntiraid(message.guild.antiraid)
+
+        }
+        if(args[0] === "off"){
+            const { enable } = message.guild.antiraid;
+            for(const [name,_] of Object.entries(enable)){
+                enable[name] = false;
+            }
+            await message.guild.updateAntiraid(message.guild.antiraid)
+        }
+        if(args[0] === "opti"){
+            const { enable, config, bypass } = message.guild.antiraid
+            for(const [name,_] of Object.entries(enable)){
+                enable[name] = true;
+            }
+            config["webhookUpdate"] = "ban"
+            bypass["webhookUpdate"] = false
+
+        }
         if (args[0] === "config") {
             const msg = await message.channel.send(lang.loading)
             const emojis = ['◀', '1️⃣', "2️⃣", '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '▶', '❌']

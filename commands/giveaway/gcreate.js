@@ -9,7 +9,7 @@ const gain = new Map();
 const vc = new Map();
 const winner = new Map();
 const prettyMilliseconds = require('pretty-ms');
-
+// TODO CHECK GAW
 const Command = require('../../structures/Handler/Command');
 const { Logger } = require('advanced-command-handler')
 

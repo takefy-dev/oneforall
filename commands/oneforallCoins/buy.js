@@ -1,4 +1,4 @@
-// TODO - Redo coins systeme
+// TODO - Redo coins systemes
 
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
