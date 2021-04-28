@@ -19,7 +19,7 @@ module.exports = class Ready extends Event{
         if(action.executor.id === client.user.id) return;
         if(action.changes[0].key !== "name") return;
         const channel = guild.channels.cache.get(modLog);
-        if(channel){
+        if(channel && !channel.deleted){
             const color = guild.color
             const executor = guild.members.cache.get(action.executor.id);
             channel.send(logs.edtionRole(executor, oldRole.id,oldRole.name, newRole.name, color))

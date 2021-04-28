@@ -1,3 +1,5 @@
+// TODO - Redo coins systeme
+
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
 const StateManager = require('../../utils/StateManager');
