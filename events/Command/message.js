@@ -277,6 +277,7 @@ module.exports = class message extends Event {
 
                 return cmd.run(client, message, args)
             }
+
             if(cmd.cooldown > 0){
                 if(client.cooldown.has(message.author.id)){
                     const time = client.cooldown.get(message.author.id)
@@ -288,7 +289,9 @@ module.exports = class message extends Event {
                     }, cmd.cooldown * 1000)
                 }
             }
-
+            if(client.maintenance){
+                return message.channel.send(client.lang(message.guild.lang).maintenance)
+            }
             if (cmd.ownerOnly) {
                 if (client.isOwner(message.author.id)) {
                     Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white')

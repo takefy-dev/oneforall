@@ -2,7 +2,9 @@ const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms')
 const Discord = require('discord.js')
 let embed = new Discord.MessageEmbed()
+
 module.exports = {
+    maintenance : `Le bot est en maintenance pendant quelques minutes`,
     clic: "Clique ici",
     yes: "oui",
     no: "non",
@@ -17,6 +19,7 @@ module.exports = {
         cooldown: (time) => `Veuillez executer la commande dans \`${time}\` secondes.`,
         noSetup: "Vous devez setup le bot pour pouvoir utiliser cette commande (!setup)",
         NoYes: "Vous devez répondre uniquement avec oui ou non !",
+        ownerOnly: `Seulement le propriétaire du bot peut faire cette commande`,
         notListOwner: `Vous n'êtes pas dans la liste des owners`,
         notGuildOwner: `Seulement le propiétaire du serveur peut executer cette action`,
         voiceChat: `Vous devez être dans un salon vocal pour executer cette commande`,

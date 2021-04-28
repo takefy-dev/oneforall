@@ -37,6 +37,7 @@ module.exports = class OneForAll extends Client{
         this.loadEvents();
         this.initDatabase()
         this.botperso = config.botperso;
+        this.maintenance = false;
         this.music = new Distube(this, { searchSongs: false, leaveOnEmpty: true});
 
     }
@@ -97,6 +98,11 @@ module.exports = class OneForAll extends Client{
                 alter: true,
                 force: false
             })
+            await this.database.models.maintenance.findOrCreate({where: {client: this.user.id}}).then(res => {
+                this.maintenance = res[0].dataValues.enable;
+            })
+
+
         })
     }
 
