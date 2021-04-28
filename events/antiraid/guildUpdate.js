@@ -26,7 +26,7 @@ module.exports = class guildUpdate extends Event {
         let isGuildOwner = oldGuild.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
-        let isWlBypass = antiraidConfig.bypass[this.name];
+        let isWlBypass = antiraidConfig.bypass["nameUpdate"];
         if (isWlBypass) var isWl = oldGuild.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `oldGuild owner list or bot owner`}`, `CHANNEL DELETE`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {

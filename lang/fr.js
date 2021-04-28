@@ -1107,7 +1107,15 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-
+        changeRegion : (executor, oldRegion, newRegion, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a modifié la région du serveur:\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField('OLD', oldRegion)
+            .addField('NEW', newRegion)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\n\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
 
     }
 }
