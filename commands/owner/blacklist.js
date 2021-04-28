@@ -227,10 +227,8 @@ module.exports = class Test extends Command {
                         user = client.users.cache.get(ids) || await client.users.fetch(ids, true).catch(err => {
                             if (err.httpStatus === 404) {
                                 tempdata = tempdata.filter(x => x !== ids);
-                                this.connection.query(`UPDATE blacklist SET blacklisted = '${tempdata}' WHERE userId = '${guildOwner}' `).then(() => {
-                                    guildOwner.blacklisted.blacklisted = tempdata;
-
-                                })
+                                guildOwner.blacklist.blacklisted = tempdata;
+                                guildOwner.updateBlacklist(guildOwner.blacklist)
                             }
                         });
                         if (!user) {

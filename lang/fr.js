@@ -1099,6 +1099,15 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
+        blacklist : (executor, color, sanction) =>   new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a rejoins en étant blacklist:\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\n\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+
 
     }
 }
