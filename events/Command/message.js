@@ -1,4 +1,5 @@
 ﻿const Event = require('../../structures/Handler/Event');
+const {Logger} = require("advanced-command-handler");
 
 module.exports = class message extends Event {
     constructor() {
