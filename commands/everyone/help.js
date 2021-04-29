@@ -76,7 +76,6 @@ module.exports = class Test extends Command{
             const cmd = await client.commands.get(args[0].toLowerCase().normalize()) || await client.aliases.get(args[0].toLocaleLowerCase().normalize());
 
             if (!cmd) return message.channel.send(message.channel.send(lang.help.noCommand(args[0]))).then((mp) => mp.delete({timeout: 4000}))
-            console.log(cmd)
             const embed = new Discord.MessageEmbed()
                 .setTitle(`${cmd.name} command`)
                 .setDescription(lang.help.requiredOrNot)
