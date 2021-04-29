@@ -76,12 +76,12 @@ module.exports = class Test extends Command{
             const cmd = await client.commands.get(args[0].toLowerCase().normalize()) || await client.aliases.get(args[0].toLocaleLowerCase().normalize());
 
             if (!cmd) return message.channel.send(message.channel.send(lang.help.noCommand(args[0]))).then((mp) => mp.delete({timeout: 4000}))
-
+            console.log(cmd)
             const embed = new Discord.MessageEmbed()
                 .setTitle(`${cmd.name} command`)
                 .setDescription(lang.help.requiredOrNot)
                 .setThumbnail(`https://media.discordapp.net/attachments/780360844696616962/818128852105691166/ddw3h8b-5dd50e8b-32f3-4d51-9328-e55cab4aa546.gif`)
-                .addField('ALIASES', cmd.aliases.length === 0 ? lang.help.noAliases : cmd.aliases, true)
+                .addField('ALIASES', cmd.aliases.length < 1 ? lang.help.noAliases : cmd.aliases, true)
                 .addField('COOLDOWN:', `${cmd.cooldown}s`, true)
                 .addField('CATEGORY:', cmd.category, true)
                 .addField('DESCRIPTION:', cmd.description, false)

@@ -7,7 +7,7 @@ module.exports = class Test extends Command{
         super({
             name: 'clear',
             description: 'Delete a number of message | Supprimer un nombre de messages',
-            usage: '!clear <number>',
+            usage: 'clear <number>',
             category: 'moderation',
             userPermissions: ['MANAGE_MESSAGES'],
             clientPermissions: ['MANAGE_MESSAGES'],
