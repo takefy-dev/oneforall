@@ -111,11 +111,7 @@ module.exports = (Sequelize, oneforall) => {
                 allowNull: false,
                 defaultValue: 'unrank'
             },
-            vanityUpdateBypass : {
-                type: Sequelize.STRING(25),
-                allowNull: false,
-                defaultValue: 'Aucune'
-            }
+
 
 
         })

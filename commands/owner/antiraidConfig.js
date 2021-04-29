@@ -1,4 +1,3 @@
-
 const Command = require('../../structures/Handler/Command');
 const {Logger} = require('advanced-command-handler')
 const NumberFromEmoji = require('../../utils/emojiToNumber')
@@ -23,36 +22,90 @@ module.exports = class Test extends Command {
         let lang = client.lang(message.guild.lang);
 
         const color = message.guild.color
-        if(args[0] === "on"){
-            const { enable } = message.guild.antiraid;
-            for(const [name,_] of Object.entries(enable)){
+        if (args[0] === "on") {
+            const {enable} = message.guild.antiraid;
+            for (const [name, _] of Object.entries(enable)) {
                 enable[name] = true;
             }
             await message.guild.updateAntiraid(message.guild.antiraid)
+            await message.channel.send(lang.antiraidConfig.allOn)
+
 
         }
-        if(args[0] === "off"){
-            const { enable } = message.guild.antiraid;
-            for(const [name,_] of Object.entries(enable)){
+        if (args[0] === "off") {
+            const {enable} = message.guild.antiraid;
+            for (const [name, _] of Object.entries(enable)) {
                 enable[name] = false;
             }
             await message.guild.updateAntiraid(message.guild.antiraid)
+            await message.channel.send(lang.antiraidConfig.allOff)
         }
-        if(args[0] === "opti"){
-            const { enable, config, bypass } = message.guild.antiraid
-            for(const [name,_] of Object.entries(enable)){
+        if (args[0] === "opti") {
+            const {enable, config, bypass} = message.guild.antiraid
+            for (const [name, _] of Object.entries(enable)) {
                 enable[name] = true;
             }
             config["webhookUpdate"] = "ban"
             bypass["webhookUpdate"] = false
 
-            config["channelUpdate"] ="kick"
+            config["roleCreate"] = "kick"
+            bypass["roleCreate"] = true
+
+            config["roleUpdate"] = "unrank"
+            bypass["roleUpdate"] = true
+
+            config["roleDelete"] = "unrank"
+            bypass["roleDelete"] = true
+
+            config["channelCreate"] = "kick"
+            bypass["channelCreate"] = false
+
+            config["channelUpdate"] = "kick"
             bypass["channelUpdate"] = false
 
-            config['antiMassBanLimit'] = 4
+            config["channelCreate"] = "kick"
+            bypass["channelCreate"] = false
 
+
+            config["channelDelete"] = "kick"
+            bypass["channelDelete"] = false
+
+            bypass["antiSpam"] = true
+
+            config["antiMassBan"] = "unrank"
+            config["antiMassBanLimit"] = 6
+            bypass["antiMassBan"] = false
+
+            config['antiBot'] = "kick"
             bypass["antiBot"] = false
 
+            config["roleAdd"] = "unrank"
+            bypass["roleAdd"] = true
+
+            bypass["antiLink"] = true
+
+            config["antiDeco"] = "unrank"
+            config["antiDecoLimit"] = 4
+            bypass["antiDeco"] = true
+
+            config["antiKick"] = "unrank"
+            config["antiKickLimit"] = 2
+            bypass["antiKick"] = true
+
+            config["antiDc"] = "kick"
+            config["antiDcLimit"] = "1d"
+
+            config["regionUpdate"] = "unrank"
+            bypass["regionUpdate"] = false
+
+            config["nameUpdate"] = "kick"
+            bypass["nameUpdate"] = false
+
+            config["vanityUpdate"] = "ban"
+            bypass["vanityUpdate"] = false
+
+            await message.guild.updateAntiraid(message.guild.antiraid)
+            message.channel.send(lang.antiraidConfig.opti)
         }
         if (args[0] === "config") {
             const msg = await message.channel.send(lang.loading)
@@ -89,11 +142,13 @@ module.exports = class Test extends Command {
                         const eventName = name.toLowerCase().split('limit')[0]
                         const field = fields.filter(field => field.name.toLowerCase().includes(eventName))
                         field[0].value += `\nLimite: **${sanction}**`
+
                     } else {
-                        if (i < fields.length) {
-                            if (name.toLowerCase().includes("antiSpam")) sanction = "mute"
+                        if (i < Object.entries(config).length) {
+                            if (name.includes("antiSpam")) sanction = "mute"
                             let field = fields.filter(field => field.name.includes(name))
                             field[0].value += `\nSanction: **${sanction}**`
+
 
                         }
                     }
@@ -102,9 +157,10 @@ module.exports = class Test extends Command {
 
                 }
                 i = 0
-                for (const [, bp] of Object.entries(bypass)) {
-                    if (i < fields.length) {
-                        fields[i].value += `\nWhitelist bypass : **${!bp ? 'Non' : 'Oui'}**\n`
+                for (const [name, bp] of Object.entries(bypass)) {
+                    if (i < fields.length && name !== "antiDc") {
+                        let field = fields.filter(field => field.name.includes(name))
+                        field[0].value += `\nWhitelist bypass : **${!bp ? 'Non' : 'Oui'}**\n`
                         i++
                     }
                 }
@@ -131,13 +187,17 @@ module.exports = class Test extends Command {
                 let pageSection = fields.slice(page === 0 ? 0 : 9, page === 0 ? 9 : fields.length)
                 const name = pageSection[index].name.split('・')[1]
                 let splitedValue = pageSection[index].value.split('\n').filter(x => x !== "")
+                const eventName = name.split(' ')[1]
 
                 const putEmoji = () => {
                     splitedValue = pageSection[index].value.split('\n').filter(x => x !== "")
                     splitedValue[0] = `\`🟢\` ${splitedValue[0]}`
-                    splitedValue[1] =  `\`🔵\` ${splitedValue[1]}`
+                    if (eventName !== "antiSpam") {
+                        splitedValue[1] = `\`🔵\` ${splitedValue[1]}`
+
+                    }
                     splitedValue[2] = `\`🟣\` ${splitedValue[2]}`
-                    if(splitedValue.length > 3)  splitedValue[3] = `\`🟤\` ${splitedValue[3]}`
+                    if (splitedValue.length > 3) splitedValue[3] = `\`🟤\` ${splitedValue[3]}`
 
                     return pageSection[index].value = splitedValue.join('\n')
                 }
@@ -158,7 +218,6 @@ module.exports = class Test extends Command {
 
                 })
                 const indispensableEmoji = ['↩', '❌']
-                const eventName = name.split(' ')[1]
 
                 await subMenu.react(indispensableEmoji[0])
                 addEmoji: for (let i = 1; i <= splitedValue.length; i++) {
@@ -330,11 +389,10 @@ module.exports = class Test extends Command {
 
             })
             saveCollector.on('end', async (_, reason) => {
-                console.log("stop")
                 await confirMsg.delete();
                 await msg.reactions.removeAll()
                 await msg.delete()
-                if(reason === "time"){
+                if (reason === "time") {
                     const timeoutmsg = await message.channel.send(lang.antiraidConfig.timeoutmsg);
                     setTimeout(async () => {
                         timeoutmsg.delete()
