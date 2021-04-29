@@ -53,7 +53,6 @@ module.exports = class message extends Event {
                 const dbl = new DBL(client.config.topGgToken, client)
                 let hasVoted = await dbl.hasVoted(message.author.id)
                 if(!hasVoted) return message.channel.send(client.lang(message.guild.lang).antiraidConfig.noVote)
-                cmd.run(client, message, args)
             }
             if (cmd.ownerOnly) {
                 if (client.isOwner(message.author.id)) {

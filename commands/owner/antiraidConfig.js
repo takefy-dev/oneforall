@@ -15,7 +15,7 @@ module.exports = class Test extends Command {
             clientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
             category: 'owners',
             guildOwnerOnly: true,
-            onlyTopGg: true
+            // onlyTopGg: true
         });
     }
 
@@ -45,6 +45,13 @@ module.exports = class Test extends Command {
             }
             config["webhookUpdate"] = "ban"
             bypass["webhookUpdate"] = false
+
+            config["channelUpdate"] ="kick"
+            bypass["channelUpdate"] = false
+
+            config['antiMassBanLimit'] = 4
+
+            bypass["antiBot"] = false
 
         }
         if (args[0] === "config") {
@@ -83,9 +90,11 @@ module.exports = class Test extends Command {
                         const field = fields.filter(field => field.name.toLowerCase().includes(eventName))
                         field[0].value += `\nLimite: **${sanction}**`
                     } else {
-                        if (i < fields.length - 1) {
-                            if (name === "antiSpam") sanction = "mute"
-                            fields[i].value += `\nSanction: **${sanction}**`
+                        if (i < fields.length) {
+                            if (name.toLowerCase().includes("antiSpam")) sanction = "mute"
+                            let field = fields.filter(field => field.name.includes(name))
+                            field[0].value += `\nSanction: **${sanction}**`
+
                         }
                     }
                     i++
@@ -94,7 +103,7 @@ module.exports = class Test extends Command {
                 }
                 i = 0
                 for (const [, bp] of Object.entries(bypass)) {
-                    if (i < fields.length - 1) {
+                    if (i < fields.length) {
                         fields[i].value += `\nWhitelist bypass : **${!bp ? 'Non' : 'Oui'}**\n`
                         i++
                     }
@@ -133,7 +142,6 @@ module.exports = class Test extends Command {
                     return pageSection[index].value = splitedValue.join('\n')
                 }
                 putEmoji()
-
 
 
                 await subMenu.edit('', {
