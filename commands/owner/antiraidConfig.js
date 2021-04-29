@@ -1,6 +1,7 @@
 
 const Command = require('../../structures/Handler/Command');
 const {Logger} = require('advanced-command-handler')
+const NumberFromEmoji = require('../../utils/emojiToNumber')
 
 module.exports = class Test extends Command {
     constructor() {

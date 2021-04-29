@@ -85,7 +85,7 @@ module.exports = class Test extends Command{
                 .addField('COOLDOWN:', `${cmd.cooldown}s`, true)
                 .addField('CATEGORY:', cmd.category, true)
                 .addField('DESCRIPTION:', cmd.description, false)
-                .addField('USAGE:', cmd.usage === '' ? lang.help.noUsage : cmd.usage, true)
+                .addField('USAGE:', cmd.usage === '' ? lang.help.noUsage : `${prefix}${cmd.usage}`, true)
                 .addField('Client Permissions', cmd.clientPermissions)
                 .addField('User Permissions', cmd.userPermissions, true)
                 .setColor(`${color}`)

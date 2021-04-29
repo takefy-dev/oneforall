@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const Event = require('../../structures/Handler/Event');
+const {Logger} = require("advanced-command-handler");
 
 module.exports = class webhookUpdate extends Event {
     constructor() {
