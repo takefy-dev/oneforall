@@ -122,6 +122,20 @@ module.exports = class Test extends Command {
                 let pageSection = fields.slice(page === 0 ? 0 : 9, page === 0 ? 9 : fields.length)
                 const name = pageSection[index].name.split('・')[1]
                 let splitedValue = pageSection[index].value.split('\n').filter(x => x !== "")
+
+                const putEmoji = () => {
+                    splitedValue = pageSection[index].value.split('\n').filter(x => x !== "")
+                    splitedValue[0] = `\`🟢\` ${splitedValue[0]}`
+                    splitedValue[1] =  `\`🔵\` ${splitedValue[1]}`
+                    splitedValue[2] = `\`🟣\` ${splitedValue[2]}`
+                    if(splitedValue.length > 3)  splitedValue[3] = `\`🟤\` ${splitedValue[3]}`
+
+                    return pageSection[index].value = splitedValue.join('\n')
+                }
+                putEmoji()
+
+
+
                 await subMenu.edit('', {
                     embed: {
                         title: name,
@@ -214,6 +228,7 @@ module.exports = class Test extends Command {
                                     msg.delete()
                                     initFields(true)
                                     pageSection = fields.slice(page === 0 ? 0 : 9, page === 0 ? 9 : fields.length)
+                                    putEmoji()
                                     return subMenu.edit('', {
                                         embed: {
                                             title: name,
@@ -233,6 +248,7 @@ module.exports = class Test extends Command {
                     }
                     initFields(true)
                     pageSection = fields.slice(page === 0 ? 0 : 9, page === 0 ? 9 : fields.length)
+                    putEmoji()
 
                     return await subMenu.edit('', {
                         embed: {
@@ -263,7 +279,6 @@ module.exports = class Test extends Command {
                     await message.guild.updateAntiraid(antiraidConfig)
                     const replyMsg = message.channel.send(lang.antiraidConfig.savedmsg);
                     setTimeout(async () => {
-                        await confirMsg.delete();
                         await saveCollector.stop();
 
                     }, 5000)
@@ -304,16 +319,21 @@ module.exports = class Test extends Command {
 
                 })
 
-                saveCollector.on('end', async () => {
-                    await confirMsg.delete();
-                    await msg.delete()
 
+            })
+            saveCollector.on('end', async (_, reason) => {
+                console.log("stop")
+                await confirMsg.delete();
+                await msg.reactions.removeAll()
+                await msg.delete()
+                if(reason === "time"){
                     const timeoutmsg = await message.channel.send(lang.antiraidConfig.timeoutmsg);
                     setTimeout(async () => {
                         timeoutmsg.delete()
                     }, 5000)
-                });
-            })
+                }
+
+            });
         }
     }
 }
