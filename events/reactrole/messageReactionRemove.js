@@ -12,8 +12,10 @@ module.exports = class messageReactionRemove extends Event {
     }
 
     async run(client, reaction, user) {
-        this.connection = StateManager.connection;
+        const emojiRoleMapping = reaction.message.guild.reactRoles
         if (user.bot) return;
+        if(emojiRoleMapping.size < 1) return
+
         if (reaction.message.partial) await reaction.message.fetch();
         if (reaction.partial) await reaction.fetch();
         // const guild = client.guilds.cache.get(reaction.message.guild.id)
@@ -30,7 +32,7 @@ module.exports = class messageReactionRemove extends Event {
             }
             let member = reaction.message.guild.members.cache.get(user.id);
             if (role && member) {
-                member.roles.remove(role, 'Reaction role remove')
+                await member.roles.remove(role, 'Reaction role remove')
 
             }
 

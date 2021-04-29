@@ -17,9 +17,11 @@ Structures.extend('Guild', (Guild) => {
             this.antiraid = null;
             this.cachedInv = new Collection()
             this.antiraidLimit = new Collection();
+            this.reactRoles = new Collection();
             this.fetchConfig()
             this.fetchAntiraid()
             this.fetchAntiraidLimit()
+            this.fetchReactoles()
             cron.schedule('0 0 * * *', async () => {
                 if(this.antiraidLimit.size < 1) return;
 
@@ -37,6 +39,23 @@ Structures.extend('Guild', (Guild) => {
             })
         }
 
+
+        async newReactrole(msgId, emojiRole){
+            if(emojiRole){
+                await  this.client.database.models.reactrole.create({
+                    msgId,
+                    guildId: this.guildID,
+                    emojiRole
+                }).then(() => this.reactRoles.set(msgId, emojiRole))
+            }else{
+                await this.client.database.models.reactrole.destroy({
+                    where:{
+                        msgId
+                    }
+                }).then(() => this.reactRoles.delete(msgId))
+            }
+
+        }
 
         async updateAntiraid(newConfig){
             const { enable, config, bypass } = newConfig
@@ -263,6 +282,21 @@ Structures.extend('Guild', (Guild) => {
                 setup: true
             }, {where: {guildId: this.guildID}})
             return isUpdated.includes(1);
+        }
+
+        async fetchReactoles(){
+            await this.client.database.models.reactrole.findAll({
+                where: {
+                    guildId: this.guildID
+                }
+            }).then(res => {
+                if(res.length < 1) return;
+                res.forEach(raw => {
+                    const { dataValues } = raw;
+                    const { msgId, guildId, emojiRole } = dataValues
+                    this.reactRoles.set(msgId, emojiRole)
+                })
+            })
         }
 
         async fetchConfig() {
