@@ -803,6 +803,11 @@ module.exports = {
 
     },
     antiraidConfig: {
+        limitQ : `Quelle est la limite pour cet évènement ?`,
+        sanctionQ : `Quelle est la sanction pour cet événement ? (ban/unrank/kick)`,
+        antiDcError : `Vous devez entrer uniquement un temps valide (1d, 1w)`,
+        limitError : `Vous devez entrer une limite valide`,
+        antiDcUnrank : `Vous ne pouvez pas mettre cette sanction`,
         noVote: `<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,
         allOn: `Tous les évênements ont été activés`,
         allOff: `Tous les évênements ont été désactivé`,
