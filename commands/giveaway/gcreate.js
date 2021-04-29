@@ -9,7 +9,6 @@ const gain = new Map();
 const vc = new Map();
 const winner = new Map();
 const prettyMilliseconds = require('pretty-ms');
-// TODO CHECK GAW
 const Command = require('../../structures/Handler/Command');
 const { Logger } = require('advanced-command-handler')
 
@@ -120,14 +119,14 @@ module.exports = class Test extends Command {
                         if (!channel) return message.channel.send(` <:720681441670725645:780539422479351809> \`ERREUR\` **Erreur rencontrée**: veuillez rédefinir le salon du giveaway.`)
                         message.channel.send(` ✅ Giveaway lancé dans ${channel}.`)
                         const gawTime = parseInt(time.get(message.guild.id));
-                        client.giveaways.start(channel, {
+                        client.giveaway.start(channel, {
                             time: gawTime,
                             prize: gain.get(message.guild.id),
                             winnerCount: parseInt(winner.get(message.guild.id)),
                             hostedBy: message.author,
                             messages: {
                                 embedColor: `#7289da`,
-                                embedColorEnd: `#20d15e`,
+                                embedColorEnd: `#7289da`,
                                 giveaway: " ",
                                 giveawayEmbed: " ",
                                 giveawayEnded: " ",

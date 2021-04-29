@@ -23,7 +23,7 @@ module.exports = {
         })
 
         setInterval(() =>{
-            if(mutedUser.length == 0) return;
+            if(mutedUser.length === 0) return;
             mutedUser.filter(info => Date2MysqlFormat.dateAndTime(new Date()) >= Date2MysqlFormat.dateAndTime(info.muteEnd)).forEach(async (memberInfo) =>{
                 const guild = client.guilds.cache.get(memberInfo.guildId)
                 const muteId = memberInfo.id

@@ -28,9 +28,7 @@ module.exports = class Ready extends Event {
                     client.database.models.giveaways.findAll({
                         attributes: ['data']
                     }).then(res => {
-                        console.log("res", res)
                         const giveaways = res.map((row) => row.data);
-                        console.log(giveaways)
                         resolve(giveaways);
                     }).catch(err => console.log(err))
 
@@ -90,13 +88,14 @@ module.exports = class Ready extends Event {
             }
         });
 
-        const checkUnmutes = require("../../function/check/tempmute.js");
-        checkUnmutes.init(client);
 
+        //launc check mute
+        const checkMute = require('../../utils/Mute')
+        await checkMute.startChecking(client)
 
         // Launch event of music
         const musicEventsLauncher = require("../../function/music/event");
-        musicEventsLauncher.musicEvent(client.music);
+        await musicEventsLauncher.musicEvent(client.music, client);
 
 
         // setInterval(function () {

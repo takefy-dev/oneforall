@@ -1,13 +1,10 @@
 const Discord = require("discord.js");
-const guildLang = new Map();
-let langF = require('../../function/lang')
-const guildEmbedColor = new Map();
-let embedsColor = require('../../function/embedsColor');
+
 const { Logger } = require('advanced-command-handler');
 const StateManager = require("../../utils/StateManager");
 const usersPlaylist = new Map();
 module.exports = {
-    async musicEvent(music) {
+    async musicEvent(music, client) {
         Logger.log(`${Logger.setColor('blue')} Events launch`, 'music')
         const guildColor = (message) => message.guild.color
         const gLang = (message) => client.lang(message.guild.lang)
@@ -195,11 +192,3 @@ module.exports = {
 
     }
 }
-embedsColor(guildEmbedColor);
-langF(guildLang);
-StateManager.on('playlist', (userId, playlist) => {
-    usersPlaylist.set(userId, playlist)
-})
-StateManager.on('playlistDelete', (userId) => {
-    usersPlaylist.delete(userId)
-})

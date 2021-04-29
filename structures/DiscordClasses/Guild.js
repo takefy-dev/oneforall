@@ -18,14 +18,16 @@ Structures.extend('Guild', (Guild) => {
             this.cachedInv = new Collection()
             this.antiraidLimit = new Collection();
             this.reactRoles = new Collection();
+            this.muted = new Collection()
             this.fetchConfig()
             this.fetchAntiraid()
             this.fetchAntiraidLimit()
             this.fetchReactoles()
+            this.fetchMute()
             cron.schedule('0 0 * * *', async () => {
-                if(this.antiraidLimit.size < 1) return;
+                if (this.antiraidLimit.size < 1) return;
 
-                for await(const [id, limit] of this.antiraidLimit){
+                for await(const [id, limit] of this.antiraidLimit) {
                     await this.client.database.models.antiraidLimit.destroy({
                         where: {
                             guildId: this.guildID,
@@ -40,16 +42,16 @@ Structures.extend('Guild', (Guild) => {
         }
 
 
-        async newReactrole(msgId, emojiRole){
-            if(emojiRole){
-                await  this.client.database.models.reactrole.create({
+        async newReactrole(msgId, emojiRole) {
+            if (emojiRole) {
+                await this.client.database.models.reactrole.create({
                     msgId,
                     guildId: this.guildID,
                     emojiRole
                 }).then(() => this.reactRoles.set(msgId, emojiRole))
-            }else{
+            } else {
                 await this.client.database.models.reactrole.destroy({
-                    where:{
+                    where: {
                         msgId
                     }
                 }).then(() => this.reactRoles.delete(msgId))
@@ -57,53 +59,53 @@ Structures.extend('Guild', (Guild) => {
 
         }
 
-        async updateAntiraid(newConfig){
-            const { enable, config, bypass } = newConfig
+        async updateAntiraid(newConfig) {
+            const {enable, config, bypass} = newConfig
             await this.client.database.models.antiraid.update({
                 ...enable
             }, {
-                where:{
+                where: {
                     guildId: this.guildID
                 }
             })
             await this.client.database.models.antiraidConfig.update({
                 ...config
             }, {
-                where:{
+                where: {
                     guildId: this.guildID
                 }
             })
             await this.client.database.models.antiraidWlBp.update({
                 ...bypass
             }, {
-                where:{
+                where: {
                     guildId: this.guildID
                 }
             })
             this.antiraid = newConfig
         }
 
-        async topInvite(){
-            if(!this.config.inviteOn) return false;
+        async topInvite() {
+            if (!this.config.inviteOn) return false;
             let lb;
             await this.client.database.models.invite.findAll({
-                attributes : ['userId', 'count'],
-                where:{
+                attributes: ['userId', 'count'],
+                where: {
                     guildId: this.guildID
                 }
             }).then(res => {
                 const data = []
                 res.forEach(invite => {
-                    const { dataValues } = invite;
+                    const {dataValues} = invite;
                     data.push(dataValues)
                 })
-                lb = data.sort((a,b) => b.count.join - a.count.join).slice(0, 10)
+                lb = data.sort((a, b) => b.count.join - a.count.join).slice(0, 10)
 
             })
             return lb;
         }
 
-        async clearInvite(){
+        async clearInvite() {
             await this.client.database.models.invite.update({
                 count: {join: 0, leave: 0, fake: 0, bonus: 0},
             }, {
@@ -113,26 +115,26 @@ Structures.extend('Guild', (Guild) => {
             })
         }
 
-        get warns(){
+        get warns() {
             return {
-                ban : this.config.warnBan,
-                kick : this.config.warnKick,
-                mute : this.config.warnMute
+                ban: this.config.warnBan,
+                kick: this.config.warnKick,
+                mute: this.config.warnMute
             }
         }
 
-        async allWarns(){
+        async allWarns() {
             const guildWarns = []
             await this.client.database.models.warn.findAll({where: {guildId: this.guildID}}).then(allWarns => {
-                   allWarns.forEach(warn => {
-                       if(!warn) return;
-                       const { dataValues } = warn;
-                       delete dataValues.id;
-                       delete dataValues.guildId;
-                       guildWarns.push(dataValues)
-                   })
+                allWarns.forEach(warn => {
+                    if (!warn) return;
+                    const {dataValues} = warn;
+                    delete dataValues.id;
+                    delete dataValues.guildId;
+                    guildWarns.push(dataValues)
+                })
             })
-            if(guildWarns.length < 1) return undefined;
+            if (guildWarns.length < 1) return undefined;
             return guildWarns
         }
 
@@ -213,7 +215,7 @@ Structures.extend('Guild', (Guild) => {
         }
 
         async updateWarn(warBan, warnKick, warnMute) {
-            const isUpdated =await this.client.database.models.guildConfig.update({
+            const isUpdated = await this.client.database.models.guildConfig.update({
                 warBan,
                 warnKick,
                 warnMute
@@ -284,16 +286,16 @@ Structures.extend('Guild', (Guild) => {
             return isUpdated.includes(1);
         }
 
-        async fetchReactoles(){
+        async fetchReactoles() {
             await this.client.database.models.reactrole.findAll({
                 where: {
                     guildId: this.guildID
                 }
             }).then(res => {
-                if(res.length < 1) return;
+                if (res.length < 1) return;
                 res.forEach(raw => {
-                    const { dataValues } = raw;
-                    const { msgId, guildId, emojiRole } = dataValues
+                    const {dataValues} = raw;
+                    const {msgId, guildId, emojiRole} = dataValues
                     this.reactRoles.set(msgId, emojiRole)
                 })
             })
@@ -321,6 +323,45 @@ Structures.extend('Guild', (Guild) => {
                 this.owners = guildConfig.owner.split(',');
                 this.whitelisted = guildConfig.whitelisted.split(',');
                 this.prefix = guildConfig.prefix;
+            })
+        }
+
+        async updateMute(userId, newMute, time) {
+            if (!newMute) {
+                await this.client.database.models.mute.destroy({
+                    where: {
+                        userId,
+                        guildId: this.guildID
+                    }
+                }).then(() => {
+                    this.muted.delete(userId)
+                })
+            } else {
+                await this.client.database.models.mute.create({
+
+                    userId,
+                    guildId: this.guildID,
+                    expireAt : time
+
+                }).then((res) => {
+                    this.muted.set(userId, !time ? 'lifetime' : time)
+                }).catch(err => console.log(err))
+            }
+        }
+
+        async fetchMute() {
+            await this.client.database.models.mute.findOne({
+                attributes: ['expireAt', 'userId'],
+                where: {
+                    guildId: this.guildID
+                }
+            }).then(res => {
+                if (!res) return;
+                const {dataValues} = res;
+                const {userId, expireAt} = dataValues;
+                this.muted.set(userId, !expireAt ? 'lifetime' : expireAt)
+                console.log(this.muted)
+                Logger.log(`Fetch ${userId}`, `Fetched MUTES`, 'black')
             })
         }
 
@@ -360,10 +401,10 @@ Structures.extend('Guild', (Guild) => {
             })
         }
 
-        async fetchAntiraidLimit(){
+        async fetchAntiraidLimit() {
             await this.client.database.models.antiraidLimit.findAll({where: {guildId: this.guildID}}
             ).then((res) => {
-                if(res.length < 1) return;
+                if (res.length < 1) return;
                 const limits = []
 
                 res.forEach(raw => {
@@ -371,17 +412,17 @@ Structures.extend('Guild', (Guild) => {
                 })
                 limits.forEach(limit => {
                     this.antiraidLimit.set(limit.userId, {
-                        deco : limit.antiDeco,
-                        ban : limit.antiMassBan,
-                        kick : limit.antiMassKick
+                        deco: limit.antiDeco,
+                        ban: limit.antiMassBan,
+                        kick: limit.antiMassKick
                     })
                 })
             })
         }
 
-        async updateAntiraidLimit(userId, deco, ban, kick){
+        async updateAntiraidLimit(userId, deco, ban, kick) {
 
-            if(ban === 0 && deco === 0 && kick === 0){
+            if (ban === 0 && deco === 0 && kick === 0) {
                 return await this.client.database.models.antiraidLimit.destroy({
                     where: {
                         userId: userId,
@@ -393,14 +434,14 @@ Structures.extend('Guild', (Guild) => {
             }
             await this.client.database.models.antiraidLimit.findOrCreate({
                     where: {userId: userId, guildId: this.guildID},
-                    defaults: {antiDeco: deco, antiMassBan : ban, antiMassKick:kick}
+                    defaults: {antiDeco: deco, antiMassBan: ban, antiMassKick: kick}
                 }
             ).then(res => {
                 if (!res[0]._options.isNewRecord) {
                     this.client.database.models.antiraidLimit.update({
                         antiDeco: deco,
                         antiMassBan: ban,
-                        antiMassKick:kick
+                        antiMassKick: kick
                     }, {
                         where: {
                             userId: userId,
@@ -418,59 +459,59 @@ Structures.extend('Guild', (Guild) => {
 
         }
 
-        async deleteAllData(){
+        async deleteAllData() {
             await this.client.database.models.guildConfig.destroy({
                 where: {
                     guildId: this.guildID
                 }
             })
             await this.client.database.models.invite.destroy({
-                where:{
+                where: {
                     guildId: this.guildID
                 }
             })
             await this.client.database.models.warn.destroy({
-                where:{
+                where: {
                     guildId: this.guildID
                 }
             })
             await this.client.database.models.coins.destroy({
-                where:{
+                where: {
                     guildId: this.guildID
                 }
             })
             await this.client.database.models.antiraid.destroy({
-                where:{
+                where: {
                     guildId: this.guildID
                 }
             })
             await this.client.database.models.antiraidconfig.destroy({
-                where:{
+                where: {
                     guildId: this.guildID
                 }
             })
             await this.client.database.models.antiraidwlbp.destroy({
-                where:{
+                where: {
                     guildId: this.guildID
                 }
             })
             await this.client.database.models.coins.destroy({
-                where:{
+                where: {
                     guildId: this.guildID
                 }
             })
             await this.client.database.models.coinshop.destroy({
-                where:{
+                where: {
                     guildId: this.guildID
                 }
             })
             await this.client.database.models.giveaways.destroy({
-                where:{
+                where: {
                     guildId: this.guildID
                 }
             })
             await this.client.database.models.inventory.destroy({
-                where:{
+                where: {
                     guildId: this.guildID
                 }
             })

@@ -1,7 +1,6 @@
 const Command = require('../../structures/Handler/Command');
 const { Logger } = require('advanced-command-handler')
 const Discord = require('discord.js')
-// TODO : REDO HELP
 module.exports = class Test extends Command{
     constructor() {
         super({

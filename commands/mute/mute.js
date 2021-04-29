@@ -1,10 +1,7 @@
 
-const muteRoleId = new Map();
-const logsChannelId = new Map();
 const Command = require('../../structures/Handler/Command');
 const { Logger } = require('advanced-command-handler')
 const Discord = require('discord.js')
-// TODO FIX ALL MUTE SYSTEM
 module.exports = class Test extends Command{
     constructor() {
         super({
@@ -37,30 +34,11 @@ module.exports = class Test extends Command{
     }
     const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
     if (!member) return message.channel.send(lang.mute.errorNoMember)
-    const muteRole = message.guild.roles.cache.get(muteRoleId.get(message.guild.id));
+    const muteRole = message.guild.roles.cache.get(message.guild.config.muteRoleId);
     if (!muteRole) return message.channel.send(lang.mute.errorCantFindRole);
     if (member.roles.cache.has(muteRole.id)) return message.channel.send(lang.mute.errorAlreadyMute(member));
     member.roles.add(muteRole).then(() => {
         message.channel.send(lang.mute.success(member));
-       
-        let logChannelId = logsChannelId.get(message.guild.id);
-        if (logChannelId != undefined) {
-            let logChannel = message.guild.channels.cache.get(logChannelId)
-            const logsEmbed = new Discord.MessageEmbed()
-				.setTitle("\`❌\` Mute d'un membre")
-				.setDescription(`
-					\`👨‍💻\` Auteur : **${message.author.tag}** \`(${message.author.id})\` a mute :\n
-                    \`\`\`${member.user.tag} (${member.user.id})\`\`\`
-
-					`)
-				.setTimestamp()
-				.setFooter("🕙")
-				.setColor(`${color}`)
-
-				.setTimestamp()
-				.setFooter("🕙")
-				.setColor(`${color}`)
-			logChannel.send(logsEmbed)
-        }
+        message.guild.updateMute(member.id, true)
     })
 }}

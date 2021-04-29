@@ -7,6 +7,7 @@ Structures.extend('GuildMember', (Member) => {
         constructor(client, data, guild) {
             super(client, data, guild)
             this.user = data.user;
+            if (this.user.bot) return;
             this.guildId = guild.id;
             this.warns = [];
             this.invite = {join: 0, leave: 0, fake: 0, bonus: 0};
@@ -78,7 +79,7 @@ Structures.extend('GuildMember', (Member) => {
             if (resetOnlyMember) {
                 this.client.database.models.invite.update({
                     count: {join: 0, leave: 0, fake: 0, bonus: 0},
-            }, {
+                }, {
                     where: {
                         guildId: this.guildId,
                         userId: this.user.id
@@ -107,7 +108,7 @@ Structures.extend('GuildMember', (Member) => {
 
         async fetchInvite() {
             if (!this.guild.config) return
-            if (this.user.bot || !this.guild.config.inviteOn) return;
+            if (!this.guild.config.inviteOn) return;
 
             await this.client.database.models.invite.findOrCreate({
                 where: {userId: this.user.id, guildId: this.guildId}
@@ -118,6 +119,7 @@ Structures.extend('GuildMember', (Member) => {
                 Logger.log(`Fetch ${this.user.username}`, `Fetched INVITES`, 'grey')
             })
         }
+
     }
 
     return CustomMember
