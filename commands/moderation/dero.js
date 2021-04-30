@@ -8,7 +8,7 @@ module.exports = class Test extends Command {
         super({
             name: 'dero',
             description: "Fix back the derogation of channels when someone raid | Remet les dérogations des salons quand quelqu'un raid",
-            usage: '!dero',
+            usage: 'dero',
             category: 'moderation',
             userPermissions: ['ADMINISTRATOR'],
             clientPermissions: ['MANAGE_CHANNELS'],
