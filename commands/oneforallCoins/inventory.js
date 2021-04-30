@@ -11,7 +11,7 @@ module.exports = new Command({
     name: 'inventory',
     description: 'Show your inventory | Afficher votre inventaire',
     // Optionnals :
-    usage: '!inventory',
+    usage: 'inventory',
     category: 'coins',
     tags: ['guildOnly'],
     aliases: ['inv', 'bag'],
