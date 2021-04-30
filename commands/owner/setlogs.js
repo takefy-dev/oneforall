@@ -7,7 +7,7 @@ module.exports = class Test extends Command {
         super({
             name: 'setlogs',
             description: 'Setup the logs channel | Configurer le logs',
-            usage: '!setlogs',
+            usage: 'setlogs',
             tags: ['guildOnly'],
             category: 'owners',
             guildOwnerOnly: true,
