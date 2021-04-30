@@ -8,7 +8,7 @@ module.exports = class Test extends Command{
         super({
             name: 'meme',
             description: 'A meme command for Joke | Une commande meme pour rigoler',
-            usage: '!meme',
+            usage: 'meme',
             category: 'fun',
             tags: ['guildOnly'],
             aliases: ['!me'],
