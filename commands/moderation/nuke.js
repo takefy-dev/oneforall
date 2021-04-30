@@ -8,7 +8,7 @@ module.exports = class Test extends Command{
         super({
             name: 'nuke',
             description: "Clear all messages of a channel | Supprimer tout les messages d'un salon",
-            usage: '!nuke',
+            usage: 'nuke',
             category: 'moderation',
             aliases: ['renew', 'clearall'],
             userPermissions: ['MANAGE_MESSAGES'],
