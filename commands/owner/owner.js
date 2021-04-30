@@ -7,7 +7,7 @@ module.exports = class Test extends Command {
         super({
             name: 'owner',
             description: 'Manage the owner of the server | Gérer les owner du serveur',
-            usage: '!owner <add/ remove /list> < mention / id >',
+            usage: 'owner <add/ remove /list> < mention / id >',
             tags: ['guildOnly'],
             category: 'owners',
             guildCrownOnly: true,
