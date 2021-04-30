@@ -7,7 +7,7 @@ module.exports = class Test extends Command {
         super({
             name: 'unban',
             description: 'Unban a user | Unban un user',
-            usage: '!unban < mention / id >',
+            usage: 'unban < mention / id >',
             category: 'moderation',
             tags: ['guildOnly'],
             clientPermissions: ['MANAGE_GUILD'],
