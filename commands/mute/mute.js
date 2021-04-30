@@ -7,7 +7,7 @@ module.exports = class Test extends Command{
         super({
             name: 'mute',
             description: 'Mute a member | Mute un member',
-            usage: '!mute <mention/id>',
+            usage: 'mute <mention/id>',
             category: 'moderation',
             userPermissions: ["MUTE_MEMBERS"],
             clientPermissions: ['MUTE_MEMBERS'],
