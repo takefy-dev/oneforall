@@ -7,7 +7,7 @@ module.exports = class Test extends Command {
         super({
             name: 'ping',
             description: 'Get the latency and ping of the bot',
-            usage: '!ping',
+            usage: 'ping',
             clientPermissions: ['SEND_MESSAGES'],
             category: 'everyone',
             cooldown: 5
