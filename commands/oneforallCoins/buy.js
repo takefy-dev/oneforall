@@ -15,7 +15,7 @@ module.exports = new Command({
     name: 'buy',
     description: 'Buy an item from the shop | Acheter un item du magasin',
     // Optionnals :
-    usage: '!buy <itemId>',
+    usage: 'buy <itemId>',
     category: 'coins',
     tags: ['guildOnly'],
     aliases: ['acheter'],
