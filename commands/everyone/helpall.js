@@ -11,7 +11,7 @@ module.exports = class Test extends Command {
         super({
             name: 'helpall',
             description: 'Affiche toutes les commandes',
-            usage: '!helpall',
+            usage: 'helpall',
             category: 'everyone',
             cooldown: 5
 
