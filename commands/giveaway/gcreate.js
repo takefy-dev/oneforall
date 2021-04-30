@@ -17,7 +17,7 @@ module.exports = class Test extends Command {
         super({
             name: 'gcreate',
             description: 'Create giveaways | Creer des giveaways',
-            usage: '!gcreate',
+            usage: 'gcreate',
             category: 'giveaway',
             aliases: ['gstart'],
             userPermissions: ['ADMINISTRATOR'],
