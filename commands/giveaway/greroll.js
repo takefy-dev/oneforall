@@ -8,7 +8,7 @@ module.exports = class Test extends Command {
         super({
             name: 'greroll',
             description: 'Reroll giveaways',
-            usage: '!greroll',
+            usage: 'greroll',
             category: 'giveaway',
             aliases: ['grl', 'gredo'],
             userPermissions: ['SEND_MESSAGES'],
