@@ -7,7 +7,7 @@ module.exports = class Test extends Command {
         super({
             name: 'kick',
             description: 'Kick a member | Kick un membre',
-            usage: '!kick <mention/id>',
+            usage: 'kick <mention/id>',
             category: 'moderation',
             userPermissions: ['KICK_MEMBERS'],
             clientPermissions: ['KICK_MEMBERS'],
