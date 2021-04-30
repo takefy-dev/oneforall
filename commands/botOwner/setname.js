@@ -9,7 +9,7 @@ module.exports = class Test extends Command{
         super({
             name: 'setname',
             description: 'definir le nom du bot',
-            usage: '!setname dd',
+            usage: 'setname dd',
             category: 'botOwner',
             aliases: ['setname', 'setprenom', 'setnom'],
             clientPermissions: ['EMBED_LINKS'],
