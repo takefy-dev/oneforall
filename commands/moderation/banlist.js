@@ -7,7 +7,7 @@ module.exports = class Test extends Command{
         super({
             name: 'allbans',
             description: 'Show all bans members | Afficher tout les membres banni',
-            usage: '!allbans',
+            usage: 'allbans',
             category: 'moderation',
             aliases: ['banlist'],
             clientPermissions: ['BAN_MEMBERS'],
