@@ -7,7 +7,7 @@ module.exports = class Test extends Command {
         super({
             name: 'say',
             description: 'The bot can say your message | Le bot dit votre message',
-            usage: '!say <message>',
+            usage: 'say <message>',
             category: 'owners',
             userPermissions: ['ADMINISTRATOR'],
             cooldown: 6
