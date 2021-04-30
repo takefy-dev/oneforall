@@ -10,7 +10,7 @@ module.exports = class Test extends Command {
         super({
             name: 'antiraid',
             description: "Setup the antiraid | Configurer l'antiraid",
-            usage: '!antiraid',
+            usage: 'antiraid',
             clientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
             category: 'owners',
             guildOwnerOnly: true,
