@@ -344,7 +344,9 @@ Structures.extend('Guild', (Guild) => {
                     expireAt : time
 
                 }).then((res) => {
-                    this.muted.set(userId, !time ? 'lifetime' : time)
+                    const { dataValues } = res;
+                    const { expireAt } = dataValues
+                    this.muted.set(userId, !expireAt ? 'lifetime' : expireAt)
                 }).catch(err => console.log(err))
             }
         }

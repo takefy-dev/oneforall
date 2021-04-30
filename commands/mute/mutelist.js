@@ -2,6 +2,7 @@ const prettyMilliseconds = require('pretty-ms');
 const Command = require('../../structures/Handler/Command');
 const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
+const moment = require('moment')
 // TODO : MUTELIST + MUTE ROLE ADD WHEN REJOIN
 module.exports = class Test extends Command {
     constructor() {
@@ -24,14 +25,22 @@ module.exports = class Test extends Command {
         const color = message.guild.color
         const lang = client.lang(message.guild.lang)
 
-        let now = new Date();
+        let now = Date.now();
+        const {muted} = message.guild;
 
 
-        const expireAt = new Date(muted.muteEnd)
-        const timeLeft = prettyMilliseconds(expireAt.getTime() - now.getTime())
-        mutedData.push(`<@${muted.userId}> ・ ${timeLeft}`)
+        if (muted.size !== 0) {
+           for (const [id, expireAt] of muted) {
+               let timeLeft = expireAt
+                if(expireAt !== "lifetime"){
+                    timeLeft = prettyMilliseconds(expireAt.getTime() - now)
+                }
+               mutedData.push(`<@${id}> ・ ${timeLeft}`)
+           }
+        } else {
+            mutedData.push('No data')
+        }
 
-        if (res[0].length === 0) return message.channel.send(`Il n'y a pas de membre muet`)
         try {
             let tdata = await message.channel.send(lang.loading)
 
@@ -124,8 +133,6 @@ module.exports = class Test extends Command {
 
     }
 
-)
-}
 }
 ;
 

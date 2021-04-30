@@ -38,36 +38,15 @@ module.exports = class Test extends Command {
         if (!time || isNaN(ms(time))) return message.channel.send(lang.tempmute.errorTime);
 
         if (member.roles.cache.has(muteRole.id)) return message.channel.send(lang.tempmute.errorAlreadyMute(member));
-        member.roles.add(muteRole).then(async () => {
+        member.roles.add(muteRole, `Mute by ${message.author.tag}`).then(async () => {
             const color = message.guild.color
 
             message.channel.send(lang.tempmute.success(member, time));
-            // let logChannelId = logsChannelId.get(message.guild.id);
-            // if (logChannelId != undefined) {
-            //     let logChannel = message.guild.channels.cache.get(logChannelId)
-            //
-            //     const logsEmbed = new Discord.MessageEmbed()
-            //         .setTitle("\`❌\` Mute temporaire d'un membre")
-            //         .setDescription(`
-            // 			\`👨‍💻\` Auteur : **${message.author.tag}** \`(${message.author.id})\` a mute **${member.user.tag}** \`(${member.user.id})\` pendant :\n
-            //             \`\`\`${time}\`\`\`
-            //
-            // 			`)
-            //         .setTimestamp()
-            //         .setFooter("🕙")
-            //         .setColor(`${color}`)
-            //     if (logChannel != undefined) {
-            //         logChannel.send(logsEmbed)
-            //
-            //     }
+
             const timeLenght = time.split('').length
             const numberT = parseInt(time.slice(0, timeLenght - 1))
             const dateF = time.split('')[timeLenght - 1].toString()
-            console.log(numberT, dateF)
-
-
             const now = moment().utc()
-
             const muteEnd = now.add(numberT, dateF)
 
             try {
@@ -75,7 +54,12 @@ module.exports = class Test extends Command {
             } catch (err) {
                 console.log(err)
             }
-
+            const { logs } = lang
+            const { modLog } = message.guild.logs;
+            const channel = message.guild.channels.cache.get(modLog);
+            if(channel && !channel.deleted){
+                channel.send(logs.mute(message.member, member.user, time, color, "tempmute"))
+            }
 
         })
 

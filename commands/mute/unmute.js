@@ -27,6 +27,12 @@ module.exports = class Test extends Command{
     if(!muteRole) return message.channel.send(lang.unmute.errorCantFindRole);
     if(!member.roles.cache.has(muteRole.id)) return message.channel.send(lang.unmute.errorAlreadyUnMute(member));
     member.roles.remove(muteRole).then(() =>{
+        const { logs } = lang
+        const { modLog } = message.guild.logs;
+        const channel = message.guild.channels.cache.get(modLog);
+        if(channel && !channel.deleted){
+            channel.send(logs.unmute(member.user, "commande", color))
+        }
         message.channel.send(lang.unmute.success(member));
         message.guild.updateMute(member.id)
 

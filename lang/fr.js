@@ -4,7 +4,7 @@ const Discord = require('discord.js')
 let embed = new Discord.MessageEmbed()
 
 module.exports = {
-    maintenance : `Le bot est en maintenance pendant quelques minutes`,
+    maintenance: `Le bot est en maintenance pendant quelques minutes`,
     clic: "Clique ici",
     yes: "oui",
     no: "non",
@@ -803,11 +803,11 @@ module.exports = {
 
     },
     antiraidConfig: {
-        limitQ : `Quelle est la limite pour cet évènement ?`,
-        sanctionQ : `Quelle est la sanction pour cet événement ? (ban/unrank/kick)`,
-        antiDcError : `Vous devez entrer uniquement un temps valide (1d, 1w)`,
-        limitError : `Vous devez entrer une limite valide`,
-        antiDcUnrank : `Vous ne pouvez pas mettre cette sanction`,
+        limitQ: `Quelle est la limite pour cet évènement ?`,
+        sanctionQ: `Quelle est la sanction pour cet événement ? (ban/unrank/kick)`,
+        antiDcError: `Vous devez entrer uniquement un temps valide (1d, 1w)`,
+        limitError: `Vous devez entrer une limite valide`,
+        antiDcUnrank: `Vous ne pouvez pas mettre cette sanction`,
         noVote: `<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,
         allOn: `Tous les évênements ont été activés`,
         allOff: `Tous les évênements ont été désactivé`,
@@ -1088,7 +1088,7 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-        antiDc : (executor, time,limit, color , sanction) =>  new Discord.MessageEmbed()
+        antiDc: (executor, time, limit, color, sanction) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a créé son compte trop récemment\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField(`TEMPS`, `${time}`)
@@ -1098,7 +1098,7 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-        botAdd : (executor, bot, id, color, sanction) =>   new Discord.MessageEmbed()
+        botAdd: (executor, bot, id, color, sanction) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a ajouté le bot: **${bot}**\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField(`BOT`, `${bot}`)
@@ -1107,7 +1107,7 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-        blacklist : (executor, color, sanction) =>   new Discord.MessageEmbed()
+        blacklist: (executor, color, sanction) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a rejoins en étant blacklist:\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\n\`\`\``)
@@ -1115,7 +1115,7 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-        changeRegion : (executor, oldRegion, newRegion, color, sanction) => new Discord.MessageEmbed()
+        changeRegion: (executor, oldRegion, newRegion, color, sanction) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a modifié la région du serveur:\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField('OLD', oldRegion)
@@ -1125,7 +1125,7 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-        antiSpam : (executor, channel, color, sanction) => new Discord.MessageEmbed()
+        antiSpam: (executor, channel, color, sanction) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a été mute pour spam :\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField('CHANNEL', `<#${channel}>`)
@@ -1134,7 +1134,7 @@ module.exports = {
             .setFooter("🕙")
             .setColor(color),
 
-        antiLink : (executor, channel, link, color, sanction) => new Discord.MessageEmbed()
+        antiLink: (executor, channel, link, color, sanction) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a été posté un lien :\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField('LINK', link)
@@ -1143,5 +1143,25 @@ module.exports = {
             .setTimestamp()
             .setFooter("🕙")
             .setColor(color),
+
+        mute: (executor, target, time, color, type) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${target || target.tag || target.username} a été ${type}:`)
+            .addField('TIME', time)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTarget = ${target.id}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        unmute: (target, time, color) => new Discord.MessageEmbed()
+            .setAuthor(target.tag || target.username, target.tag ? target.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`**${target.tag || target.username}** a été unmute:`)
+            .addField('TIME', time)
+            .addField(`ID:`, `\`\`\`js\nTarget = ${target.id}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+
     }
 }

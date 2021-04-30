@@ -17,8 +17,12 @@ module.exports = {
                             const muteRole = guild.roles.cache.get(guild.config.muteRoleId)
                             if(!muteRole) return;
                             if(member.roles.cache.has(muteRole.id)) member.roles.remove(muteRole, `Auto unmute `)
-                            const channel = guild.channels.cache.get(guild.logs.modLog);
-                            if(channel && !channel.deleted) return channel.send(`${member} a été unmute`)
+                            const { logs } = client.lang(guild.lang)
+                            const { modLog } = guild.logs;
+                            const channel = guild.channels.cache.get(modLog);
+                            if(channel && !channel.deleted){
+                                channel.send(logs.unmute(member.user, moment(expireAt).tz("Paris").format("DD/MM/YYYY HH:mm:ss"), guild.color))
+                            }
                         })
                     }
                 }
