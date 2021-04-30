@@ -9,7 +9,7 @@ module.exports = class Test extends Command{
         super({
             name: 'ban',
             description: 'Ban a user from the server | Bannir un membre du serveur',
-            usage: '!ban <mention / id> [reason]',
+            usage: 'ban <mention / id> [reason]',
             category: 'moderation',
             userPermissions: ['BAN_MEMBERS'],
             clientPermissions: ['BAN_MEMBERS'],
