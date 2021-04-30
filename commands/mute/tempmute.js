@@ -12,7 +12,7 @@ module.exports = class Test extends Command {
         super({
             name: 'tempmute',
             description: 'Tempmute a members | Tempmute un membre',
-            usage: '!tempmute <mention/id> <time>',
+            usage: 'tempmute <mention/id> <time>',
             category: 'moderation',
             userPermissions: ['MUTE_MEMBERS'],
             clientPermissions: ['MUTE_MEMBERS'],
