@@ -7,7 +7,7 @@ module.exports = class Test extends Command {
         super({
             name: 'setlang',
             description: 'change the language of the bot | Changer la langue du bot',
-            usage: '!setlang',
+            usage: 'setlang',
             category: 'owners',
             userPermissions: ['ADMINISTRATOR'],
             clientPermissions: ['SEND_MESSAGES'],
