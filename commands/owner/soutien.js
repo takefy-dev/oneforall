@@ -11,7 +11,7 @@ module.exports = class Test extends Command {
         super({
             name: 'soutien',
             description: 'Show the menu for the soutient | Affiche le menu pour le soutient',
-            usage: '!soutien <config>',
+            usage: 'soutien <config>',
             clientPermissions: ['ADD_REACTIONS'],
             category: 'owners',
             guildOwnerOnly: true,
