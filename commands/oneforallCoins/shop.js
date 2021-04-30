@@ -13,7 +13,7 @@ module.exports = new Command({
     name: 'shop',
     description: 'Show the shop / Manage item to the shop | Afficher le magasin / Montrer le shop / Gerer les objets dans le shop',
     // Optionnals :
-    usage: '!shop [create/delete/add/edit/remove] [item/itemId] [prix]',
+    usage: 'shop [create/delete/add/edit/remove] [item/itemId] [prix]',
     category: 'coins',
     tags: ['guildOnly'],
     aliases: ['store', 'magasin'],
