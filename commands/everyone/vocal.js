@@ -7,7 +7,7 @@ module.exports = class Test extends Command {
         super({
             name: 'vocal',
             description: 'Show how many members are in voice chat | Permet de montrer combien de membres sont en vocal',
-            usage: '!vocal',
+            usage: 'vocal',
             category: 'everyone',
             aliases: ['voc', 'vc'],
             clientPermissions: ['SEND_MESSAGES'],
