@@ -7,7 +7,7 @@ module.exports = class Test extends Command {
         super({
             name: 'wl',
             description: 'Manage the whitelist | Gérer la whitelist',
-            usage: '!wl <add / remove/ list> < mention / id >',
+            usage: 'wl <add / remove/ list> < mention / id >',
             category: 'owner',
             guildOwnerOnly: true,
             cooldown: 2
