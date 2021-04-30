@@ -8,7 +8,7 @@ module.exports = class Test extends Command {
         super({
             name: 'support',
             description: 'Get the support server | Avoir le serveur de support',
-            usage: '!support',
+            usage: 'support',
             clientPermissions: ['SEND_MESSAGES'],
             category: 'everyone',
             cooldown: 2
