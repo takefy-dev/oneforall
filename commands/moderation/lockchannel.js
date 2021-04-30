@@ -12,7 +12,7 @@ module.exports = class Test extends Command {
         super({
             name: 'lock',
             description: 'Lock one or multiple channels | Fermer un ou plusieurs salons',
-            usage: '!lock <on / off / all> <on / off>',
+            usage: 'lock <on / off / all> <on / off>',
             category: 'moderation',
             userPermissions: ['MANAGE_CHANNELS'],
             clientPermissions: ['MANAGE_CHANNELS'],
