@@ -11,7 +11,7 @@ module.exports = new Command({
     name: 'pay',
     description: 'Pay a member | Payer un membre',
     // Optionnals :
-    usage: '!pay <mention / id> <number coins>',
+    usage: 'pay <mention / id> <number coins>',
     category: 'coins',
     tags: ['guildOnly'],
     cooldown: 4
