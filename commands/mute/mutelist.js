@@ -9,7 +9,7 @@ module.exports = class Test extends Command {
             name: 'mutelist',
             description: 'Show the tempmute member of the server | Afficher la liste des membres tempmute du serveur',
             // Optionnals :
-            usage: '!mutelist',
+            usage: 'mutelist',
             category: 'moderation',
             userPermissions: ['MUTE_MEMBERS'],
             clientPermissions: ['ADD_REACTIONS', 'EMBED_LINKS'],
