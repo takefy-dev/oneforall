@@ -10,7 +10,7 @@ module.exports = new Command({
     name: 'stats',
     description: 'Enable or disable stats | Activer ou désactiver les stats',
     // Optionnals :
-    usage: '!stats <on/off>',
+    usage: 'stats <on/off>',
     category: 'stats',
     tags: ['guildOnly'],
     userPermissions: ['ADMINISTRATOR'],
