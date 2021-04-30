@@ -8,7 +8,7 @@ module.exports = class Test extends Command {
         super({
             name: '8ball',
             description: 'Answer to your question. | Répond a votre question.',
-            usage: '!8ball <question>',
+            usage: '8ball <question>',
             category: 'fun',
             tags: ['guildOnly'],
             aliases: ['8b'],
