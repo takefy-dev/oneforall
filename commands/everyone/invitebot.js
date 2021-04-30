@@ -9,7 +9,7 @@ module.exports = class Test extends Command {
             description: "Get the bot invitation | Afficher l'invitation du bot",
             clientPermissions: ['EMBED_LINKS'],
             aliases: ['addbot'],
-            usage: '!invitebot',
+            usage: 'invitebot',
             cooldown: 5
 
         });
