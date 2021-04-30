@@ -9,7 +9,7 @@ module.exports = class Test extends Command{
         super({
             name: 'removeemoji',
             description: 'Remove an emoji | Supprimer un emoji',
-            usage: '!removeemoji <emoji>',
+            usage: 'removeemoji <emoji>',
             category: 'misc',
             aliases: ['remove', 'emojiremove', 'rmemoji'],
             userPermissions: ['MANAGE_GUILD'],
