@@ -11,7 +11,7 @@ module.exports = new Command({
     name: 'shop-settings',
     description: 'Setup the shop | Configurer le shop',
     // Optionnals :
-    usage: '!shop-settings',
+    usage: 'shop-settings',
     category: 'coins',
     tags: ['guildOnly'],
     aliases: ['coins-settings', 'coin-settings'],
