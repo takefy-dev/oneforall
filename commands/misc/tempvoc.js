@@ -10,7 +10,7 @@ module.exports = class Test extends Command{
         super({
             name: 'tempvoc',
             description: 'Show the tempvoc menu | Afficher le menu de vocal temporaire',
-            usage: '!tempvoc',
+            usage: 'tempvoc',
             category: 'misc',
             userPermissions: ['ADMINISTRATOR'],
             clientPermissions: ['EMBED_LINKS'],
