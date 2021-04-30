@@ -9,7 +9,7 @@ module.exports = class Test extends Command{
         super({
             name: 'derank',
             description: "Remove all roles of a member | Enlever tout les rôles d'un membre",
-            usage: '!derank <mention / id>',
+            usage: 'derank <mention / id>',
             category: 'moderation',
             aliases: ['unrank'],
             userPermissions: ['ADMINISTRATOR'],
