@@ -9,7 +9,7 @@ module.exports = class Test extends Command {
             name: 'allbots',
             description: 'Show all bot | Affiche tout les bots',
             // Optionnals :
-            usage: '!allbots',
+            usage: 'allbots',
             category: 'moderation',
             aliases: ['showbot', 'allbot'],
             userPermissions: ["ADMINISTRATOR"],
