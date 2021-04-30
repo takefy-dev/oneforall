@@ -8,7 +8,7 @@ module.exports = class Test extends Command {
         super({
             name: 'webhook',
             description: 'Show the number of webhook or delete all the webhook | Afficher le nombre de webhook ou les supprimer',
-            usage: '!webhook < size / delete >',
+            usage: 'webhook < size / delete >',
             category: 'moderation',
             aliases: ['wb'],
             clientPermissions: ['MANAGE_WEBHOOKS'],
