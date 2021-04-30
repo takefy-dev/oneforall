@@ -8,7 +8,7 @@ module.exports = class Test extends Command{
             name: 'serverlist',
             description: 'Show all the server of the bot | Affiche tout les serveurs du bot',
             category: 'botOwner',
-            usage: '!serverlist [guildId]',
+            usage: 'serverlist [guildId]',
             clientPermissions : ['EMBED_LINKS'],
             ownerOnly: true,
             cooldown: 5
