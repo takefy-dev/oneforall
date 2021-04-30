@@ -8,7 +8,7 @@ module.exports = class Test extends Command {
         super({
             name: 'setprefix',
             description: 'Change the prefix | Changer le prefix',
-            usage: '!setprefix <prefix>',
+            usage: 'setprefix <prefix>',
             category: 'moderation',
             tags: ['guildOnly'],
             clientPermissions: ['SEND_MESSAGES'],
