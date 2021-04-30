@@ -13,7 +13,7 @@ module.exports = class Test extends Command {
         super({
             name: 'backup',
             description: 'Create a backup of the server | Creer un backup du serveur',
-            usage: '!backup <create / list / delete>',
+            usage: 'backup <create / list / delete>',
             category: 'owners',
             userPermissions: ['ADMINISTRATOR'],
             clientPermissions: ["SEND_MESSAGES", "EMBED_LINKS", "ADMINISTRATOR"],
