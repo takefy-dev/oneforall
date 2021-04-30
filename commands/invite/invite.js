@@ -12,7 +12,7 @@ module.exports = class Test extends Command {
         super({
             name: 'invite',
             description: "Setup the invite system or show the number of invitation of a member | Configurer le system d'invitation ou afficher le nombre d'invitation d'un membre",
-            usage: '!invite [config / mention/ id]',
+            usage: 'invite [config / mention/ id]',
             category: 'invite',
             clientPermissions: ['ADD_REACTIONS'],
             aliases: ['welcome'],
