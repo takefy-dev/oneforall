@@ -7,7 +7,7 @@ module.exports = class Test extends Command{
         super({
             name: 'alladmins',
             description: 'Show all members with administator permissions | Afficher tout les membres avec les perm admin',
-            usage: '!alladmins',
+            usage: 'alladmins',
             category: 'moderation',
             clientPermissions: ["MANAGE_GUILD"],
             userPermissions: ['ADMINISTRATOR'],
