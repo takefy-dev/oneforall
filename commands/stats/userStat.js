@@ -10,7 +10,7 @@ module.exports = new Command({
     name: 'stat',
     description: "Show the stats of a member | Afficher les statistiques d'un membre",
     // Optionnals :
-    usage: '!stat [mention/id]',
+    usage: 'stat [mention/id]',
     category: 'stats',
     tags: ['guildOnly'],
     cooldown: 5
