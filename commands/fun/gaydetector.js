@@ -7,7 +7,7 @@ module.exports = class Test extends Command{
         super({
             name: 'gaydetector',
             description: 'A command for look a gay people | Une commande pour detecter les gays',
-            usage: '!gaydetector <id/member> ',
+            usage: 'gaydetector <id/member> ',
             category: 'fun',
             tags: ['guildOnly'],
             aliases: ['gay'],
