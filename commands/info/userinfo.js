@@ -8,7 +8,7 @@ module.exports = class Test extends Command {
         super({
             name: 'userinfo',
             description: "Get information about an user | Avoir des informations d'un utilisateur",
-            usage: '!userinfo [mention / id ]',
+            usage: 'userinfo [mention / id ]',
             category: 'info',
             clientPermissions: ['SEND_MESSAGES'],
             aliases: ['infouser'],
