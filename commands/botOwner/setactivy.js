@@ -8,7 +8,7 @@ module.exports = class Test extends Command {
         super({
             name: 'setactivity',
             description: 'defininr activite',
-            usage: '!setactivity',
+            usage: 'setactivity',
             category: 'botOwner',
             ownerOnly: true,
             clientPermissions: ['EMBED_LINKS'],
