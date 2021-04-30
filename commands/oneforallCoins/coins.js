@@ -11,7 +11,7 @@ module.exports = new Command({
     name: 'coins',
     description: 'Show how many coins you have | Affiche le nombre de coins que vous avez',
     // Optionnals :
-    usage: '!coins [mention/id]',
+    usage: 'coins [mention/id]',
     category: 'coins',
     tags: ['guildOnly'],
     aliases: ['balance', 'argent', 'money'],
