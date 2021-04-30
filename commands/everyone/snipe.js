@@ -10,7 +10,7 @@ module.exports = class Test extends Command{
         super({
             name: 'snipe',
             description: 'Show the last deleted message in a channel',
-            usage: '!snipe',
+            usage: 'snipe',
             category: 'everyone',
             cooldown: 5
 
