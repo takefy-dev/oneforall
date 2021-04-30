@@ -11,7 +11,7 @@ module.exports = class Test extends Command {
         super({
             name: 'reactrole',
             description: "Show the react role menu création | Affiche le menu de création d'un reactrole",
-            usage: '!reactrole',
+            usage: 'reactrole',
             category: 'moderation',
             tags: ['guildOnly'],
             clientPermissions: ['SEND_MESSAGES', 'ADD_REACTIONS', 'EMBED_LINKS'],
