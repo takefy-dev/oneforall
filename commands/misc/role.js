@@ -7,7 +7,7 @@ module.exports = class Test extends Command{
         super({
             name: 'role',
             description: 'Add / Remove a role of a member | Ajouter ou enlever un role a un membre',
-            usage: '!role <add / remove > <role> <mention / id>',
+            usage: 'role <add / remove > <role> <mention / id>',
             category: 'misc',
             userPermissions: ['MANAGE_ROLES'],
             aliases: ['rl'],
