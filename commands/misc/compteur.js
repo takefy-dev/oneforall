@@ -9,7 +9,7 @@ module.exports = class Test extends Command{
             name: 'counter',
             description: "Show the counter creation menu | Afficher le menu de création d'un compteur",
             // Optionnals :
-            usage: '!counter',
+            usage: 'counter',
             category: 'misc',
             aliases: ['compteur'],
             userPermissions: ['ADMINISTRATOR'],
