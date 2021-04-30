@@ -10,7 +10,7 @@ module.exports = class Test extends Command {
             name: 'warn-config',
             description: 'Configure the warn system | Configurer le system de warn',
             // Optionnals :
-            usage: '!warn-config',
+            usage: 'warn-config',
             category: 'warn',
             aliases: ['setwarn', 'warnconfig', 'warnsetup', 'warn-conf', 'warn config'],
             userPermissions: ['ADMINISTRATOR'],
