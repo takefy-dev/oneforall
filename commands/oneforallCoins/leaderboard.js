@@ -10,7 +10,7 @@ module.exports = new Command({
     name: 'leaderboard',
     description: 'Show the top 10 member with the most coins | Affiche le top 10 des membres avec le plus de coins',
     // Optionnals :
-    usage: '!leaderboard',
+    usage: 'leaderboard',
     category: 'coins',
     tags: ['guildOnly'],
     aliases: ['lb', 'classement'],
