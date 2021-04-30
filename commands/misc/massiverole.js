@@ -12,7 +12,7 @@ module.exports = class Test extends Command{
         super({
             name: 'massrole',
             description: "Add / Remove a role to all members in a server | Permet d'ajouter / enlver un rôle a tout les membres d'un serveur",
-            usage: '!massrole < add / remove> <role>',
+            usage: 'massrole < add / remove> <role>',
             category: 'misc',
             aliases: ['roleall', 'allrole'],
             userPermissions: ["MANAGE_ROLES"],
