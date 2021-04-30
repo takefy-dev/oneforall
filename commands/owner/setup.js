@@ -8,7 +8,7 @@ module.exports = class Test extends Command {
         super({
             name: 'setup',
             description: 'Setup the role for the bot to work perfectly | Configurer les rôles indispensable pour la fonctionnalitée du bot',
-            usage: '!setup',
+            usage: 'setup',
             category: 'owners',
             guildOwnerOnly: true,
             cooldown: 5
