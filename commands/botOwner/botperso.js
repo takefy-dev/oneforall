@@ -18,7 +18,7 @@ module.exports = class Test extends Command{
             name: 'botperso',
             description: 'Create bot perso',
             category: 'botOwner',
-            usage: '!botperso',
+            usage: 'botperso',
             userPermissions: ['ADMINISTRATOR'],
             cooldown: 5
 
