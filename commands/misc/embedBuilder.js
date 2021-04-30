@@ -23,7 +23,7 @@ module.exports = class Test extends Command {
         super({
             name: 'embed',
             description: "Show the embed creation tool | Affiche l'outil de création d'un embed",
-            usage: '!embed',
+            usage: 'embed',
             category: 'misc',
             aliases: ['embedcreator', 'embed'],
             tags: ['guildOnly'],
