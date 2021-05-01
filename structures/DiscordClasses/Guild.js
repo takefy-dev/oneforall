@@ -19,6 +19,7 @@ Structures.extend('Guild', (Guild) => {
             this.antiraidLimit = new Collection();
             this.reactRoles = new Collection();
             this.muted = new Collection();
+            this.tempVoc = {catId: "Non définie", chId: "Non définie", chName: "Non définie", isOn: false}
             this.permEnable = false;
             this.permSetup = false
             this.perm1 = null;
@@ -32,6 +33,7 @@ Structures.extend('Guild', (Guild) => {
             this.fetchAntiraidLimit()
             this.fetchReactoles()
             this.fetchMute()
+            this.fetchTempVoc()
 
             cron.schedule('0 0 * * *', async () => {
                 if (this.antiraidLimit.size < 1) return;
@@ -64,21 +66,21 @@ Structures.extend('Guild', (Guild) => {
                         guildId: this.guildID
                     }
                 }).then(() => {
-                    if(options.perm1){
+                    if (options.perm1) {
                         this.perm1 = options.perm1;
 
-                    }else if(options.perm2){
+                    } else if (options.perm2) {
                         this.perm2 = options.perm2;
 
-                    }else if(options.perm3){
+                    } else if (options.perm3) {
                         this.perm3 = options.perm3;
 
-                    }else if(options.perm4){
+                    } else if (options.perm4) {
                         this.perm4 = options.perm4;
                     }
                     this.permEnable = options.isOn
                 })
-            }else{
+            } else {
                 await this.client.database.models.perm.update({
                     perm1Command: options.perm1Command.toString(),
                     perm2Command: options.perm2Command.toString(),
@@ -91,16 +93,16 @@ Structures.extend('Guild', (Guild) => {
                     }
                 }).then((res) => {
                     this.perm.clear()
-                    for(const command of options.perm1Command){
+                    for (const command of options.perm1Command) {
                         this.perm.set(command, 'perm1')
                     }
-                    for(const command of options.perm2Command){
+                    for (const command of options.perm2Command) {
                         this.perm.set(command, 'perm2')
                     }
-                    for(const command of options.perm3Command){
+                    for (const command of options.perm3Command) {
                         this.perm.set(command, 'perm3')
                     }
-                    for(const command of options.perm4Command){
+                    for (const command of options.perm4Command) {
                         this.perm.set(command, 'perm4')
                     }
                 })
@@ -116,32 +118,36 @@ Structures.extend('Guild', (Guild) => {
                 perm2,
                 perm3,
                 perm4,
-                perm1Command: '',
-                perm2Command : '',
-                perm3Command : '',
-                perm4Command : '',
+                perm1Command: 'gstart, greroll, mute, tempmute, addemoji, warn, warnlist, allbans, clear, mutelist',
+                perm2Command: 'warn, kick, unban, allbans',
+                perm3Command: 'ban, lock, nuke, alladmins, tempban, removeemoji',
+                perm4Command: 'reactrole, shop-settings, embed, counter, massrole, soutien, webhook',
                 isOn,
                 setup: true,
                 guildId: this.guildID
             }).then((res) => {
-                const { dataValues } = res;
-                const { perm1Command, perm2Command, perm3Command, perm4Command } = dataValues
+                const {dataValues} = res;
+                let {perm1Command, perm2Command, perm3Command, perm4Command} = dataValues
                 this.perm1 = perm1;
                 this.perm2 = perm2;
                 this.perm3 = perm3;
                 this.perm4 = perm4;
                 this.permSetup = true;
                 this.permEnable = isOn;
-                for(const command of perm1Command){
+                perm1Command = perm1Command.split(',').filter(x => x !== "")
+                perm2Command = perm2Command.split(',').filter(x => x !== "")
+                perm3Command = perm3Command.split(',').filter(x => x !== "")
+                perm4Command = perm4Command.split(',').filter(x => x !== "")
+                for (const command of perm1Command) {
                     this.perm.set(command, 'perm1')
                 }
-                for(const command of perm2Command){
+                for (const command of perm2Command) {
                     this.perm.set(command, 'perm2')
                 }
-                for(const command of perm3Command){
+                for (const command of perm3Command) {
                     this.perm.set(command, 'perm3')
                 }
-                for(const command of perm4Command){
+                for (const command of perm4Command) {
                     this.perm.set(command, 'perm4')
                 }
             })
@@ -200,6 +206,57 @@ Structures.extend('Guild', (Guild) => {
                     }
                 }
             })
+        }
+
+        async fetchTempVoc() {
+            await this.client.database.models.tempvoc.findOne({
+                where: {
+                    guildId: this.guildID
+                }
+            }).then(res => {
+                if (!res) return;
+                const {dataValues} = res;
+                const {tempvocInfo} = dataValues
+                const {catId, chId, chName, isOn} = tempvocInfo;
+                this.tempVoc.catId = catId;
+                this.tempVoc.chId = chId;
+                this.tempVoc.chName = chName;
+                this.tempVoc.isOn = isOn;
+
+            })
+        }
+
+        async newTempvoc(tempvoc, isNew) {
+            if (isNew) {
+                await this.client.database.models.tempvoc.findOrCreate({
+                    defaults: {
+                        tempvocInfo: tempvoc,
+                        guildId: this.guildID,
+
+                    },
+                    where: {
+                        guildId: this.guildID,
+
+                    }
+
+                }).then((res) => {
+                    if (!res[0]._options.isNewRecord) {
+                        this.client.database.models.tempvoc.update({
+                            tempvocInfo: tempvoc,
+                        }, {where: {guildId: this.guildID}})
+                    }
+                    this.tempVoc = tempvoc
+                })
+            } else {
+                await this.client.database.models.tempvoc.destroy({
+                    where: {
+                        guildId: this.guildID
+                    }
+                }).then(res => {
+                    this.tempVoc = {catId: "Non définie", chId: "Non définie", chName: "Non définie", isOn: false}
+                })
+            }
+
         }
 
         async newReactrole(msgId, emojiRole) {
