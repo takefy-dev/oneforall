@@ -1,8 +1,6 @@
 const inviteChannel = new Map();
 const inviteMsg = new Map();
 const inviteOn = new Map();
-const guildOwner = new Map();
-const SqlString = require('sqlstring');
 const Command = require('../../structures/Handler/Command');
 const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
@@ -187,7 +185,9 @@ module.exports = class Test extends Command {
                         console.log(error)
                         message.reply(lang.invite.timeout2M)
                     })
-                } else if (reaction.emoji.name === "❌") {
+                }
+
+                else if (reaction.emoji.name === "❌") {
                     await data_res.stop()
                     return await msg.delete()
                 } else if (reaction.emoji.name === '✅') {

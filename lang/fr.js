@@ -1163,5 +1163,17 @@ module.exports = {
             .setColor(color),
 
 
+    },
+    perm: {
+        noPermEnough : `Vous n'avez pas assez de permissions`,
+        permNotFound : `La nom de la perm est invalide (1,2,3,4)`,
+        commandNotFound: `La nom de la commande est introuvable`,
+        noRoleConfig : `Aucun role n'est spécifié pour cette perm`,
+        noRole: `Aucun rôle`,
+        noCommand : `Aucune commandes`,
+        noSetup : (prefix) => `Les perm ne sont pas configuré veuillez faire la commande ${prefix}permconfig`,
+        successCommand : (name, perm) =>  `La commande **${name}** est maintenant en perm __${perm}__`,
+        setupPerm: (role, perm) => `Le role **${role}** est maintenant en perm **${perm}**`,
+        enable: (type) => `Les perm sont maintenant ${type}`
     }
 }

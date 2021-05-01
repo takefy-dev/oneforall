@@ -2,6 +2,7 @@ const Event = require('../../structures/Handler/Event');
 const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 const moment = require('moment')
+// TODO vanity custom
 
 module.exports = class Ready extends Event {
     constructor() {

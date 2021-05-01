@@ -18,12 +18,21 @@ Structures.extend('Guild', (Guild) => {
             this.cachedInv = new Collection()
             this.antiraidLimit = new Collection();
             this.reactRoles = new Collection();
-            this.muted = new Collection()
+            this.muted = new Collection();
+            this.permEnable = false;
+            this.permSetup = false
+            this.perm1 = null;
+            this.perm2 = null;
+            this.perm3 = null;
+            this.perm4 = null;
+            this.perm = new Collection();
+            this.fetchPerms()
             this.fetchConfig()
             this.fetchAntiraid()
             this.fetchAntiraidLimit()
             this.fetchReactoles()
             this.fetchMute()
+
             cron.schedule('0 0 * * *', async () => {
                 if (this.antiraidLimit.size < 1) return;
 
@@ -41,6 +50,138 @@ Structures.extend('Guild', (Guild) => {
             })
         }
 
+        async updatePerms(type, options) {
+            if (type === 'roles') {
+                await this.client.database.models.perm.update({
+                    perm1: options.perm1,
+                    perm2: options.perm2,
+                    perm3: options.perm3,
+                    perm4: options.perm4,
+                    isOn: options.isOn,
+
+                }, {
+                    where: {
+                        guildId: this.guildID
+                    }
+                }).then(() => {
+                    if(options.perm1){
+                        this.perm1 = options.perm1;
+
+                    }else if(options.perm2){
+                        this.perm2 = options.perm2;
+
+                    }else if(options.perm3){
+                        this.perm3 = options.perm3;
+
+                    }else if(options.perm4){
+                        this.perm4 = options.perm4;
+                    }
+                    this.permEnable = options.isOn
+                })
+            }else{
+                await this.client.database.models.perm.update({
+                    perm1Command: options.perm1Command.toString(),
+                    perm2Command: options.perm2Command.toString(),
+                    perm3Command: options.perm3Command.toString(),
+                    perm4Command: options.perm4Command.toString(),
+
+                }, {
+                    where: {
+                        guildId: this.guildID
+                    }
+                }).then((res) => {
+                    for(const command of options.perm1Command){
+                        this.perm.set(command, 'perm1')
+                    }
+                    for(const command of options.perm2Command){
+                        this.perm.set(command, 'perm2')
+                    }
+                    for(const command of options.perm3Command){
+                        this.perm.set(command, 'perm3')
+                    }
+                    for(const command of options.perm4Command){
+                        this.perm.set(command, 'perm4')
+                    }
+                })
+            }
+
+        }
+
+
+        async createPerms(perm1, perm2, perm3, perm4, isOn) {
+            if (this.perm1 && this.perm2 && this.perm3 && this.perm4) return false
+            await this.client.database.models.perm.create({
+                perm1,
+                perm2,
+                perm3,
+                perm4,
+                isOn,
+                setup: true,
+                guildId: this.guildID
+            }).then(() => {
+                this.perm1 = perm1;
+                this.perm2 = perm2;
+                this.perm3 = perm3;
+                this.perm4 = perm4;
+                this.permSetup = true;
+                this.permEnable = true;
+            })
+            return true
+        }
+
+        async fetchPerms() {
+            await this.client.database.models.perm.findOne({
+                where: {
+                    guildId: this.guildID
+                }
+            }).then(res => {
+                if (!res) return;
+                const {dataValues} = res;
+                let {
+                    perm1,
+                    perm1Command,
+                    perm2,
+                    perm2Command,
+                    perm3,
+                    perm3Command,
+                    perm4,
+                    perm4Command,
+                    setup,
+                    isOn
+                } = dataValues;
+                this.permEnable = isOn;
+                this.permSetup = setup
+                this.perm1 = perm1;
+                perm1Command = perm1Command.split(',').filter(x => x !== "")
+                if (perm1Command.length > 0) {
+                    for (const commandName of perm1Command) {
+                        this.perm.set(commandName, 'perm1')
+                    }
+                }
+                this.perm2 = perm2;
+                perm2Command = perm2Command.split(',').filter(x => x !== "")
+                if (perm2Command.length > 0) {
+                    for (const commandName of perm2Command) {
+                        this.perm.set(commandName, 'perm2')
+                    }
+                }
+                this.perm3 = perm3;
+                perm3Command = perm3Command.split(',').filter(x => x !== "")
+                if (perm3Command.length > 0) {
+                    for (const commandName of perm3Command) {
+                        this.perm.set(commandName, 'perm3')
+                    }
+                }
+                this.perm4 = perm4;
+                perm4Command = perm4Command.split(',').filter(x => x !== "")
+
+                if (perm4Command.length > 0) {
+                    for (const commandName of perm4Command) {
+                        this.perm.set(commandName, 'perm4')
+                    }
+                }
+            })
+        }
 
         async newReactrole(msgId, emojiRole) {
             if (emojiRole) {
@@ -287,6 +428,8 @@ Structures.extend('Guild', (Guild) => {
         }
 
         async fetchReactoles() {
+
+
             await this.client.database.models.reactrole.findAll({
                 where: {
                     guildId: this.guildID
@@ -341,11 +484,11 @@ Structures.extend('Guild', (Guild) => {
 
                     userId,
                     guildId: this.guildID,
-                    expireAt : time
+                    expireAt: time
 
                 }).then((res) => {
-                    const { dataValues } = res;
-                    const { expireAt } = dataValues
+                    const {dataValues} = res;
+                    const {expireAt} = dataValues
                     this.muted.set(userId, !expireAt ? 'lifetime' : expireAt)
                 }).catch(err => console.log(err))
             }

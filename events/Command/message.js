@@ -35,6 +35,7 @@ module.exports = class message extends Event {
                 return cmd.run(client, message, args)
             }
 
+
             if(cmd.cooldown > 0){
                 if(client.cooldown.has(message.author.id)){
                     const time = client.cooldown.get(message.author.id)
@@ -48,6 +49,40 @@ module.exports = class message extends Event {
             }
             if(client.maintenance){
                 return message.channel.send(client.lang(message.guild.lang).maintenance)
+            }
+
+            const { perm, permEnable, perm1, perm2, perm3, perm4 } = message.guild;
+            if(permEnable && perm.size > 0 && perm.has(cmd.name)){
+                const permPostion = {
+                    'perm1': 1,
+                    'perm2': 2,
+                    'perm3': 3,
+                    'perm4': 4,
+                }
+                const perms = perm.get(cmd.name);
+                let permOfUser = 0;
+                const rolePerm1 = message.guild.roles.cache.get(perm1);
+                const rolePerm2 = message.guild.roles.cache.get(perm2);
+                const rolePerm3 = message.guild.roles.cache.get(perm3);
+                const rolePerm4 = message.guild.roles.cache.get(perm4);
+                if(rolePerm4 && rolePerm4.members.has(message.member.id)){
+                    permOfUser = 4;
+                }
+                if(rolePerm3 && rolePerm3.members.has(message.member.id) && permOfUser < 4){
+                    permOfUser = 3
+                }
+                if(rolePerm2 && rolePerm2.members.has(message.member.id) && permOfUser < 4){
+                    permOfUser = 2
+                }
+                if(rolePerm1 && rolePerm1.members.has(message.member.id) && permOfUser < 4){
+                    permOfUser = 1
+                }
+                const permToHave = permPostion[perms];
+
+                if(permToHave > permOfUser){
+                    return message.channel.send(client.lang(message.guild.lang).perm.noPermEnough)
+                }
+
             }
             if(cmd.onlyTopGg && !client.botperso){
                 const dbl = new DBL(client.config.topGgToken, client)
@@ -63,7 +98,7 @@ module.exports = class message extends Event {
                     Logger.warn(`${message.author.tag} ${Logger.setColor(`white`, `tried the ownerOnly command: ${cmd.name}`)} `, `COMMAND`)
                     return await message.channel.send(client.lang(message.guild.lang).error.ownerOnly);
                 }
-            } else if (cmd.guildOwnerOnly) {
+            } else if (cmd.guildOwnerOnly  && !permEnable) {
                 if (message.guild.isGuildOwner(message.author.id)) {
                     Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white');
                     return cmd.run(client, message, args);
@@ -80,14 +115,16 @@ module.exports = class message extends Event {
                     return cmd.run(client, message, args);
                 }
             } else {
-                for (const commandPermissions of cmd.userPermissions) {
-                    if (!message.member.hasPermission(commandPermissions) && message.guild.ownerID !== message.author.id) {
-                        return message.channel.send(client.lang(message.guild.lang).error.userPermissions(commandPermissions))
+                if(!permEnable){
+                    for (const commandPermissions of cmd.userPermissions) {
+                        if (!message.member.hasPermission(commandPermissions) && message.guild.ownerID !== message.author.id) {
+                            return message.channel.send(client.lang(message.guild.lang).error.userPermissions(commandPermissions))
+                        }
                     }
-                }
-                for (const commandPermissions of cmd.clientPermissions) {
-                    if (!message.guild.me.hasPermission(commandPermissions)) {
-                        return message.channel.send(client.lang(message.guild.lang).error.clientPermissions(commandPermissions))
+                    for (const commandPermissions of cmd.clientPermissions) {
+                        if (!message.guild.me.hasPermission(commandPermissions)) {
+                            return message.channel.send(client.lang(message.guild.lang).error.clientPermissions(commandPermissions))
+                        }
                     }
                 }
                 cmd.run(client, message, args);

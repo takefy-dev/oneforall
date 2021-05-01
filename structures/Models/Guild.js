@@ -38,6 +38,7 @@ module.exports = (Sequelize, oneforall) => {
                 type: Sequelize.TEXT,
                 allowNull: true
             },
+
             inviteChannel :{
                 type: Sequelize.STRING(25),
                 allowNull: true
