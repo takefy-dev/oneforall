@@ -1166,7 +1166,7 @@ module.exports = {
     },
     perm: {
         noPermEnough : `Vous n'avez pas assez de permissions`,
-        permNotFound : `La nom de la perm est invalide (1,2,3,4)`,
+        permNotFound : `La nom de la perm est invalide (1,2,3,4,everyone)`,
         commandNotFound: `La nom de la commande est introuvable`,
         noRoleConfig : `Aucun role n'est spécifié pour cette perm`,
         noRole: `Aucun rôle`,

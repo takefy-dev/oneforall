@@ -98,7 +98,7 @@ module.exports = class message extends Event {
                     Logger.warn(`${message.author.tag} ${Logger.setColor(`white`, `tried the ownerOnly command: ${cmd.name}`)} `, `COMMAND`)
                     return await message.channel.send(client.lang(message.guild.lang).error.ownerOnly);
                 }
-            } else if (cmd.guildOwnerOnly  && !permEnable) {
+            } else if (cmd.guildOwnerOnly  && !permEnable || !perm.has(cmd.name) && cmd.guildOwnerOnly) {
                 if (message.guild.isGuildOwner(message.author.id)) {
                     Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white');
                     return cmd.run(client, message, args);
@@ -115,7 +115,7 @@ module.exports = class message extends Event {
                     return cmd.run(client, message, args);
                 }
             } else {
-                if(!permEnable){
+                if(!permEnable || !perm.has(cmd.name)){
                     for (const commandPermissions of cmd.userPermissions) {
                         if (!message.member.hasPermission(commandPermissions) && message.guild.ownerID !== message.author.id) {
                             return message.channel.send(client.lang(message.guild.lang).error.userPermissions(commandPermissions))

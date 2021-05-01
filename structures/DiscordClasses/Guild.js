@@ -90,6 +90,7 @@ Structures.extend('Guild', (Guild) => {
                         guildId: this.guildID
                     }
                 }).then((res) => {
+                    this.perm.clear()
                     for(const command of options.perm1Command){
                         this.perm.set(command, 'perm1')
                     }
@@ -115,16 +116,34 @@ Structures.extend('Guild', (Guild) => {
                 perm2,
                 perm3,
                 perm4,
+                perm1Command: '',
+                perm2Command : '',
+                perm3Command : '',
+                perm4Command : '',
                 isOn,
                 setup: true,
                 guildId: this.guildID
-            }).then(() => {
+            }).then((res) => {
+                const { dataValues } = res;
+                const { perm1Command, perm2Command, perm3Command, perm4Command } = dataValues
                 this.perm1 = perm1;
                 this.perm2 = perm2;
                 this.perm3 = perm3;
                 this.perm4 = perm4;
                 this.permSetup = true;
-                this.permEnable = true;
+                this.permEnable = isOn;
+                for(const command of perm1Command){
+                    this.perm.set(command, 'perm1')
+                }
+                for(const command of perm2Command){
+                    this.perm.set(command, 'perm2')
+                }
+                for(const command of perm3Command){
+                    this.perm.set(command, 'perm3')
+                }
+                for(const command of perm4Command){
+                    this.perm.set(command, 'perm4')
+                }
             })
             return true
         }
