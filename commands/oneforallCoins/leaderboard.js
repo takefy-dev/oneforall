@@ -1,4 +1,3 @@
-
 const userCoins = new Map();
 const Command = require('../../structures/Handler/Command');
 const {Logger} = require('advanced-command-handler')
@@ -19,23 +18,17 @@ module.exports = class Test extends Command {
     }
 
     async run(client, message, args) {
-        if(!message.guild.config.coinsOn) return;
-
-        const color = message.guild.color
+        if (!message.guild.config.coinsOn) return;
         const lang = client.lang(message.guild.lang)
-        const guildTotalCoins = userCoins.get(message.guild.id);
-        if (guildTotalCoins) {
-            const sortedTotalCoins = Object.entries(guildTotalCoins).sort((a, b) => b[1].coins - a[1].coins);
-            const lb = sortedTotalCoins.slice(0, 10)
-            const embed = new Discord.MessageEmbed()
-                .setTitle(lang.lb.title)
-                .setDescription(lb.map((user, i) => `${i + 1} . <@${user[1].userId}> : ${user[1].coins} coins`))
-                .setFooter(`OneForAll coins`)
-                .setColor(`${color}`)
-            message.channel.send(embed)
-        } else {
-            return message.channel.send(lang.lb.noCoins)
-        }
+        const lb = await message.guild.getLeaderBoard()
+        const color = message.guild.color;
+        const embed = new Discord.MessageEmbed()
+            .setTitle(lang.lb.title)
+            .setDescription(lb.map((user, i) => `${i + 1} . <@${user[1].userId}> : ${user[1].coins} coins`))
+            .setFooter(`OneForAll coins`)
+            .setColor(color)
+        message.channel.send(embed)
+
 
     }
 }

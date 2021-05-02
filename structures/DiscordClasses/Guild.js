@@ -62,15 +62,28 @@ Structures.extend('Guild', (Guild) => {
         }
 
 
-        async fetchCoins(){
+        async getLeaderBoard() {
+            let guildCoins = [];
+
+             await this.client.database.models.coins.findAll({where: {guildId: this.guildID}}).then((res) => {
+                 res.forEach(coins => {
+                     guildCoins.push(coins.dataValues)
+                 })
+             })
+            guildCoins = guildCoins.filter(x => !this.owners.includes(x.userId))
+            const sortedTotalCoins = Object.entries(guildCoins).sort((a, b) => b[1].coins - a[1].coins);
+            return sortedTotalCoins.slice(0, 10)
+        }
+
+        async fetchCoins() {
             await this.client.database.models.coinShop.findOne({
                 where: {
                     guildId: this.guildID
                 }
             }).then(res => {
-                if(!res) return;
-                const { dataValues } = res;
-                const { shop } = dataValues;
+                if (!res) return;
+                const {dataValues} = res;
+                const {shop} = dataValues;
                 this.shop = shop;
             })
         }
