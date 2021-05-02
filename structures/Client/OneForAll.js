@@ -23,12 +23,7 @@ module.exports = class OneForAll extends Client{
                 freezeTableName: true,
 
             },
-            pool: {
-                max: 9999999,
-                min: 0,
-                acquire: 60000,
-                idle: 10000
-            },
+          
             logging: false
         })
         logs(this)
@@ -89,15 +84,16 @@ module.exports = class OneForAll extends Client{
 
     initDatabase(){
         this.database.authenticate().then(async () => {
+              await this.database.sync({
+                alter: true,
+                force: false
+            })
             const modelsFile = fs.readdirSync('./structures/models');
             for await (const model of modelsFile){
                 await require(`../models/${model}`)(Sequelize, this)
                 Logger.log(`${Logger.setColor(`red`, `${model.split('.')[0]}`)}`, 'LOADED DATABASE')
             }
-            await this.database.sync({
-                alter: true,
-                force: false
-            })
+          
             await this.database.models.maintenance.findOrCreate({where: {client: this.user.id}}).then(res => {
                 this.maintenance = res[0].dataValues.enable;
             })
