@@ -329,9 +329,7 @@ module.exports = {
         successReactCh: (ch) => `Le salon pour logs des reactions a été définie pour ${ch}`,
         cancel: `Vous avez annulé la configuration des logs`,
         save: `Vous avez sauvegardé la configuration des logs`,
-        // channelQ : "<:720681705219817534:780540043033837622> \`SUCCÈS\` Mentionne le channel pour envoyer les logs de l'antiraid. (timeout dans 30s & \`cancel\` pour annuler)",
-        // success : (channelLogs) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le salon des logs de l'antiraid \`(${channelLogs.name})\` a bien été ajouté`,
-        // error: (channelLogs) =>`<:720681441670725645:780539422479351809> \`ERREUR\` Oupsi une erreur est survennue pour le salon des logs de l'antiraid \`(${channelLogs.name})\` dans la base de donnée`
+
     },
     owner: {
         noMember: `Veuillez spécifier un membre`,
@@ -640,15 +638,7 @@ module.exports = {
         errorNotServer: `Le serveur souhaité n'est pas dans la liste`
 
     },
-    nickall: {
-        errorTimer: `Vous devez patienter 30 min avant de pouvoir renommé tout le serveur`,
-        successRename: (name) => `J'ai bien renommé tout le monde par le pseudo **${name}**`,
-        successReset: `J'ai bien renommé tout le monde par leur pseudo original`,
-        title: (name, memberC) => `Edition du pseudo de ${memberC} membres pour **${name}** `,
-        description: (timeleft) => `Temps restant : ${timeleft}`,
-        noNickAll: `Aucun nickall est en cours ...`,
-        errorNobodyToNick: `Il y a personne à renommer sur ce serveur`
-    },
+
     say: {
         cantSendEmptyMsg: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne peux pas envoyer un message vide`
     },
@@ -826,6 +816,8 @@ module.exports = {
         active: `L'évènement a été activé`,
         deactive: `L'évènement a été desactivé`,
     },
+
+
     music: {
         requestedBy: `Demandé par:`,
         playing: `<a:music:822494244434214982> Entrain de jouer`,

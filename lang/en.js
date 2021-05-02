@@ -69,13 +69,13 @@ module.exports = {
     },
     ban: {
         noBan : "<:720681441670725645:780539422479351809> `ERROR` You must specify a member to ban (`\mention / id`\)",
-        errorRl : (tag) => `<:720681441670725645:780539422479351809> \`ERROR\` You cannot ban **\`${tag}\`** because they have roles above yours !`,
+        errorRl : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` You cannot ban **\`${member.tag}\`** because they have roles above yours !`,
         errorBanSelf : "<:720681441670725645:780539422479351809> \`ERROR\` You cannot ban yourself !",
         noReason : "No reason specified",
-        success : (member) => `<:720681705219817534:780540043033837622> \`SUCCES\` ${member} was banned.`,
-        error : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` Sorry, i just couldn't ban ${member}`,
+        success : (member) => `<:720681705219817534:780540043033837622> \`SUCCES\` ${member.tag} was banned.`,
+        error : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` Sorry, i just couldn't ban ${member.tag}`,
         alreadyBan : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member.tag}** is already ban`,
-        missingPerm : (member) => `<:720681441670725645:780539422479351809> \`ERROR\`I don't have enought permissions to ban **${member.tag}**`,
+        missingPerm : (member) => `<:720681441670725645:780539422479351809> \`ERROR\`I don't have enought permissions to ban **${member}**`,
         dm : (guildName, bannerName) => `You've been ban from ${guildName} by ${bannerName}`
     },
     banlist : {
@@ -91,11 +91,11 @@ module.exports = {
     derank: {
         errorNoMember : "<:720681441670725645:780539422479351809> `ERROR` You must specify a member to unrank (`\mention / id`\)",
         errorUnrankMe : "<:720681441670725645:780539422479351809> `ERROR` You can\'t unrank me.",
-        errorRl : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` You can't unrank **\`${member.user.tag}\`** ecause they have roles above yours`, 
+        errorRl : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` You can't unrank **\`${member}\`** ecause they have roles above yours`, 
         errorUnrankSelf : "<:720681441670725645:780539422479351809> \`ERROR\` You can't unrank yourself",
-        errorNoRl : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member.user.tag}** has no role !`,
+        errorNoRl : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member}** has no role !`,
         reason : (executor) => `OneForAll - Type: unrank by ${executor.user.tag}`,
-        success : (member) =>`<:720681705219817534:780540043033837622> \`SUCCES\` **${member.user.tag}** was unranked.`
+        success : (member) =>`<:720681705219817534:780540043033837622> \`SUCCES\` **${member}** was unranked.`
     },
     dero : {
         success : "<:720681705219817534:780540043033837622> \`SUCCES\` All waivers have been updated.",
@@ -157,20 +157,20 @@ module.exports = {
     massrole: {
         errorNoRl : "You must specify a role / id to add to all members!",
         errorRlAlready : (role) => `The role \`${role.name}\` is already added to all server members !`,
-        title : (role, member) => `I add the role ${role.name} to **${member.length}** members`,
+        title : (role, member) => `I add the role ${role.name} to **${memberlength}** members`,
         descriptionTimeLeft : (timeLeft) => `🕙 __Remaining time__ : **${prettyMilliseconds(timeLeft)}**`,
         descriptionFinish : `  🕙 __Remaining time__ : **Fini**`,
-        successAdd : (role, member) => `I added the role \`${role.name}\` to ${member.length} members`,
+        successAdd : (role, member) => `I added the role \`${role.name}\` to ${memberlength} members`,
         errorRlNot : (role) => `The role \`${role.name}\` is not added to anyone !`,
-        titleRm : (role, member) => `I remove the role ${role.name} from **${member.length}** members`,
+        titleRm : (role, member) => `I remove the role ${role.name} from **${memberlength}** members`,
         descriptionTimeLeft : (timeLeft) => `🕙 __Remaining time__ : **${prettyMilliseconds(timeLeft)}**`,
-        successRemove : (role, member) => `I took off the role \`${role.name}\` from ${member.length} members`
+        successRemove : (role, member) => `I took off the role \`${role.name}\` from ${memberlength} members`
     },
     mute : {
         errorNoMember : `<:720681441670725645:780539422479351809> \`ERROR\` You must specify a member to mute \`id/mention\`.`,
         errorCantFindRole : `<:720681441670725645:780539422479351809> \`ERROR\` I can't find the mute role.`,
-        errorAlreadyMute : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` You can't mute \`${member.user.tag}\` because he is already muted !`,
-        success : (member) => `<:720681705219817534:780540043033837622> \`SUCCES\` I mute \`${member.user.tag}\` !`
+        errorAlreadyMute : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` You can't mute \`${member}\` because he is already muted !`,
+        success : (member) => `<:720681705219817534:780540043033837622> \`SUCCES\` I mute \`${member}\` !`
     },
     nuke : {
         success : (member) => `💥 The channel was recreated by ${member}.`,
@@ -179,12 +179,12 @@ module.exports = {
     },
     role : {
         author : `Informations rôle`,
-        errorAlreadyRl : (member, role) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member.user.tag}** already has the role ${role.name}.`,
-        succcessAdd : (member, role) => `<:720681705219817534:780540043033837622> \`SUCCES\` I added the role (${role.name}) at **${member.user.tag}**`,
-        errorNoRl : (member, role) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member.user.tag}** does not have the role ${role.name}.`,
-        errorCantRm : (member) =>`<:720681441670725645:780539422479351809> \`ERROR\` There was an error I could not remove the role from **${member.user.tag}**`,
-        successRemove : (member, role) => `<:720681705219817534:780540043033837622> \`SUCCES\` I removed the role (${role.name}) from **${member.user.tag}**`,
-        error : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` There was an error I could not remove the role from **${member.user.tag}**`
+        errorAlreadyRl : (member, role) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member}** already has the role ${role.name}.`,
+        succcessAdd : (member, role) => `<:720681705219817534:780540043033837622> \`SUCCES\` I added the role (${role.name}) at **${member}**`,
+        errorNoRl : (member, role) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member}** does not have the role ${role.name}.`,
+        errorCantRm : (member) =>`<:720681441670725645:780539422479351809> \`ERROR\` There was an error I could not remove the role from **${member}**`,
+        successRemove : (member, role) => `<:720681705219817534:780540043033837622> \`SUCCES\` I removed the role (${role.name}) from **${member}**`,
+        error : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` There was an error I could not remove the role from **${member}**`
     },
     setcolor : {
         noColor : "<:720681441670725645:780539422479351809> `ERROR` You must specify a color !" ,
@@ -204,10 +204,10 @@ module.exports = {
         errorNoMember : `<:720681441670725645:780539422479351809> \`ERROR\` You must specify a member to mute \`id/mention\`.`,
         errorCantFindRole : `<:720681441670725645:780539422479351809> \`ERROR\` I can't find the mute role.`,
         errorTime : `You must specify a valid duration !`,
-        errorAlreadyMute : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` You can't mute \`${member.user.tag}\` because he is already muted !`,
-        success : (member, time) => `<:720681705219817534:780540043033837622> \`SUCCES\` I mute \`${member.user.tag}\` while **${prettyMilliseconds(ms(time))}**.`,
-        errorUnMute : (member, time) => `<:720681441670725645:780539422479351809> \`ERROR\` I tried to unmute \`${member.user.tag}\` after **${prettyMilliseconds(ms(time))}**, but he's already no longer muted...`,
-        successUnMute : (member, time) => `<:720681705219817534:780540043033837622> \`SUCCES\` \`${member.user.tag}\` no longer muted after **${prettyMilliseconds(ms(time))}**`
+        errorAlreadyMute : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` You can't mute \`${member}\` because he is already muted !`,
+        success : (member, time) => `<:720681705219817534:780540043033837622> \`SUCCES\` I mute \`${member}\` while **${prettyMilliseconds(ms(time))}**.`,
+        errorUnMute : (member, time) => `<:720681441670725645:780539422479351809> \`ERROR\` I tried to unmute \`${member}\` after **${prettyMilliseconds(ms(time))}**, but he's already no longer muted...`,
+        successUnMute : (member, time) => `<:720681705219817534:780540043033837622> \`SUCCES\` \`${member}\` no longer muted after **${prettyMilliseconds(ms(time))}**`
     },
     unban : {
         unbanAll : `I've unban everybody`,
@@ -222,8 +222,8 @@ module.exports = {
     unmute : {
         noMember : `<:720681441670725645:780539422479351809> \`ERROR\` You must specify a member to unmute \`id/mention\`.`,
         errorCantFindRole : `<:720681441670725645:780539422479351809> \`ERROR\` I can't find the mute role.`,
-        success : (member) =>`<:720681705219817534:780540043033837622> \`SUCCES\` I unmuted \`${member.user.tag}\` !`,
-        errorAlreadyUnMute : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` You can't unmute \`${member.user.tag}\` because he is already unmute !`
+        success : (member) =>`<:720681705219817534:780540043033837622> \`SUCCES\` I unmuted \`${member}\` !`,
+        errorAlreadyUnMute : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` You can't unmute \`${member}\` because he is already unmute !`
     },
     webhook : {
         replyMsg : (guild, webhooks) => '<:778353230589460530:780725963465687060> The server **' + guild.name + '** contient **' + webhooks.size + '** webhook.',
@@ -232,13 +232,14 @@ module.exports = {
     wl : {
         errorSyntax :"<:720681441670725645:780539422479351809> `ERROR` Syntax error : (!wl add/remove/list/clear @TAKEFY)",
         errorSyntaxAdd : "<:720681441670725645:780539422479351809> `ERROR` Syntax error : !wl\`<add/ remove/ list>\` \`<mention / id>\`",
-        errorAlreadyWl : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member.user.tag}** is already in the whitelist`,
-        successWl : (member) => `<:720681705219817534:780540043033837622> \`SUCCES\` I added **${member.user.tag}** to the whitelist`,
+        errorAlreadyWl : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member}** is already in the whitelist`,
+        successWl : (member) => `<:720681705219817534:780540043033837622> \`SUCCES\` I added **${member}** to the whitelist`,
         clearWl : `Are you sure you want to clear the whitelist ?`,
         successClearWl : `I have cleared the whitelist`,
         error :`Oops an error was detected, so I could not clear the whitelist`,
         cancel : `Move me in the channel you want me to move all people`,
-        
+        errorNotWl: (member) => `<:720681441670725645:780539422479351809> \`ERREUR\` **${member}** n'est pas dans les whitelist`,
+
     },
     voicemove : {
         success :  (author) => `<:720681705219817534:780540043033837622> \`SUCCES\` ${author}, move me in the channel you want me to move all people!`,
@@ -314,19 +315,31 @@ module.exports = {
 
     },
     owner : {
+        noMember: `Veuillez spécifier un membre`,
         errorSyntax :"<:720681441670725645:780539422479351809> `ERROR` Syntax error (!owner add/remove/list/clear @TAKEFY)",
         errorSyntaxAdd : "<:720681441670725645:780539422479351809> `ERROR` Syntax error : !owner\`<add/ remove/ list>\` \`<mention / id>\`",
-        errorAlreadyOwner : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member.user.tag}** is already in the owner list`,
-        successOwner : (member) => `<:720681705219817534:780540043033837622> \`SUCCES\` I added **${member.user.tag}** to the owner list`,
-        errorNotOwner : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member.user.tag}** it is not in the owner list`,
-        successRmOwner : (member) => `<:720681705219817534:780540043033837622> \`SUCCES\` I removed **${member.user.tag}** from owner list`,
+        errorAlreadyOwner : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member}** is already in the owner list`,
+        successOwner : (member) => `<:720681705219817534:780540043033837622> \`SUCCES\` I added **${member}** to the owner list`,
+        errorNotOwner : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member}** it is not in the owner list`,
+        successRmOwner : (member) => `<:720681705219817534:780540043033837622> \`SUCCES\` I removed **${member}** from owner list`,
         clearOwner : `Are you sure you want to clear the owner list?`,
         successClearOwner : `I have cleared the owner list`,
         error :`Oops an error was detected, so I could not clear the owner list`,
         cancel : `I have not cleared the owner list`,
-        errorNotOwner : (guild) => `<:720681441670725645:780539422479351809> \`ERROR\` Only the member who owns the ownership can execute this command (${guild.owner.user.username})!`,
         titleList : `<:778353230383546419:781153631881265173> List of owners`,
 
+    },
+    addinvite: {
+        noMember: `Je ne trouve pas ce membre`,
+        noNumber: `Veuillez spécifier un nombre correct à ajouter`,
+        success: (number, tag) => `J'ai ajouté **${number}** ${number > 1 ? 'invites' : 'invite'} à ${tag}`,
+    },
+    rminvite: {
+        success: (number, tag) => `J'ai enlevé **${number}** ${number > 1 ? 'invites' : 'invite'} à ${tag}`,
+
+    },
+    clearInv: {
+        success: (tag) => `J'ai clear les invites sur ${tag}`
     },
     invite : {
         countDesc : (author, userInviteCount, inv) => `
@@ -350,10 +363,15 @@ module.exports = {
         errorMsg : `<:720681441670725645:780539422479351809> \`ERROR\` I have not been able to change the welcome message to :`,
         timeout2M : "<:720681441670725645:780539422479351809> \`ERROR\` No response after 2 minutes operation will be canceled",
         helpTitle : `<:771462923855069204:784471984087236658> __Help on configuring the welcome message__`,
-        helpDesc : (invitedHelp, inviterHelp, countHelp, totalMemberHelp, space) => `
+        helpDesc: (invitedHelp, inviterHelp, invitedMention, inviterMention, accountCreate, countHelp, fakeHelp, leaveHelp, totalMemberHelp, space) => `
         ${invitedHelp} \n
         ${inviterHelp} \n
+        ${invitedMention}\n
+        ${inviterMention}\n
+        ${accountCreate}\n 
         ${countHelp} \n
+        ${fakeHelp}\n
+        ${leaveHelp}\n
         ${totalMemberHelp} \n
         ${space}  `,
         enableQ : `<a:2366_Loading_Pixels:784472554328555571> Do you want to activate welcome messages? Yes / No (cancel to cancel)`,
@@ -361,7 +379,10 @@ module.exports = {
         errorEnable : `<:720681441670725645:780539422479351809> \`ERROR\` I have not arrived to activate the welcome messages...`,
         successDisable : `<:720681705219817534:780540043033837622> \`SUCCES\` I have deactivated the welcome messages !`,
         errorDisable : `<:720681441670725645:780539422479351809> \`ERROR\` I have not been able to deactivate the welcome messages...`,
-
+        cantTrace: (invited) => `Je ne sais pas comment ${invited} a été invité sur le serveur`,
+        vanity: (invited) => `${invited} a été invité avec l'url personnalisé du serveur`,
+        syncSuccess: `Les invations ont bien été synchronisé`,
+        oauth: (invited) => `${invited} a été invité en utilisant l'oauth`
 
 
     },
@@ -440,10 +461,57 @@ module.exports = {
         error :`<:720681441670725645:780539422479351809> \`ERROR\` Oops, an error was detected, so I couldn't clear the blacklist`,
         cancel : `<:720681705219817534:780540043033837622> \`SUCCES\` I have not cleared the blacklist`,
         titleList : `<:778353230383546419:781153631881265173> Blacklist list`,
-        errorMe : `<:720681441670725645:780539422479351809> \`ERROR\` Sorry, you can't blacklist me!`
+        errorMe : `<:720681441670725645:780539422479351809> \`ERROR\` Sorry, you can't blacklist me!`,
+        errorNotInDb: (prefix) => `<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'êtes pas enregistré dans ma base de donnée veuillez utiliser \` ${prefix}bl on\``,
+
     },
     allbot : {
         title : (bots) => `Number of bots : ${bots}`,
+    },
+    warn: {
+        warnDm: (tag, reason, amount) => `Vous avez été warn par **${tag}** pour ${reason}, vous avez au total : \`${amount}\` warn(s)`,
+        warnSuccess: (tag, reason, amount) => `J'ai warn **${tag}** pour ${reason}, **${tag}** est actuellement à ${amount} warn(s)`,
+        banDm: (amount, serverName) => `Vous avez été banni de **${serverName}** car vous avez atteind la limite de warn avec \`(${amount})\` warn(s)  `,
+        kickDm: (amount, serverName) => `Vous avez été kick de **${serverName}** car vous avez atteind la limite de warn avec \`(${amount})\` warn(s)  `,
+        muteDm: (amount, serverName) => `Vous avez été mute de **${serverName}** car vous avez atteind la limite de warn avec \`(${amount})\` warn(s)  `,
+
+        settingsTitle: `Configuration des warns`,
+        description: (ban, kick, mute) => ` \n
+        Cliquez sur les reactions pour pouvoir configurer les warns !
+        Pour mettre aucune sanction il suffit de mettre __0__
+
+        \`💥\` ・ Modifier le nombre de warn avant de ban
+        ***${ban}***\n
+        \`💢\` ・ Modifier le nombre de warn avant de kick
+        ***${kick}***\n
+        \`😶\` ・ Modifié le  nombre de warn avant de mute
+        **${mute}**\n
+        
+        \`❌\` ・ Fermer le menu\n
+        \`✅\` ・ Sauvegarder la configuration
+        `,
+        banQ: `Quel doit être le nouveau nombre de warn avant de ban ? **Cancel pour annuler**`,
+        onlyNumber: `Vous devez entrer uniquement des nombres`,
+        kickQ: `Quel doit être le nouveau nombre de warn avant de kick ? **Cancel pour annuler**`,
+        muteQ: `Quel doit être le nouveau nombre de warn avant de mute ? **Cancel pour annuler**`,
+        cancel: `La configuration du nombre de warn a été annulé`,
+        save: `La configuration a été sauvegardé`,
+        error: `J'ai rencontré une erreur lors de la mis à jour`,
+        listTitle: (tag) => `Liste des warns de ${tag}`,
+        reason: `Raison`,
+        noWarn: `Aucun warn enregistré`,
+        nothingToClear: `Il n'y a aucun warn a clear sur ce membre`,
+        successClear: (tag) => `J'ai clear tout les warns de ${tag}`,
+        amountHigherThanWarnTotal: `Le nombre de warn à supprimer est supérieur au nombre total de warn que ce membre possède`,
+        successClearAmount: (tag, amount) => `J'ai clear __${amount}__ warn(s) de **${tag}**`,
+        warnNotFound: `Le warn n'existe pas`,
+        successDelete: (tag, amount) => `J'ai enlevé le warn numéro ${amount} a **${tag}**`,
+        noReason: "Aucune raison spécifique",
+        notNumber: `Vous devez entrer le numéro de warn à supprimer`,
+        noMember: "<:720681441670725645:780539422479351809> `ERREUR` Vous devez spécifier un membre (`\mention / id`\)",
+        noGuildWarn: `Aucun warn sur ce serveur`
+
+
     },
     counter : {
         embedTitle : `Counters Parameter`,
@@ -622,6 +690,8 @@ module.exports = {
     gaydetector : {
         title : `Machine de detecteur de gay`
     },
+ 
+
     addShop : {
         noItem : `Veuillez entrer un item en pour le shop`,
         noPrice : `Veuillez entrer un prix correct pour ajouter l'item au shop`,
@@ -679,6 +749,12 @@ module.exports = {
     },
 
     music:{
+        filter: {
+            noArgs: `<a:music:822494244434214982> \`ERREUR\` Vous devez choisir une option d'effet a appliqué \`3d, bassboost, echo, karaoke, nightcore, vaporwave, flanger, gate,haas, reverse, surround, mcompand, phaser, tremolo, earwax\``,
+            success: (addedFilter, filter) => `<a:music:822494244434214982> Succès le filtre ${addedFilter} a été ajouté a la liste des filtres (${filter || "Off"}) `,
+            successOff: `<a:music:822494244434214982> Le filtre est désactivé`,
+
+        },
         requestedBy : `Asked by:`,
         playing : `<a:music:822494244434214982> Playing`,
         nothingInQueue : `<a:music:822494244434214982> There is nothing in the queue at the moment `,
@@ -740,22 +816,281 @@ module.exports = {
             urlPlaylistQ: `<a:music:822494244434214982> What is the url of the playlist to import?`,
             provideOnlyValidUrl: `<a:music:822494244434214982> \`ERREUR\` Please enter only valid urls \`(youtube)\``,
             successAdd : (name) => `The music has been added to the playlist ${name}`,
-            playlistToLong : `The playlist contains more than 50 songs, I take the first 50 songs `
+            successImport: (name) => `<a:music:822494244434214982> La playlist a bien été importé avec le nom ${name}`,
+            successDelete: (name) => `<a:music:822494244434214982> La playlist ${name} a bien été supprimé`,
+            successRemove: (name) => `<a:music:822494244434214982> J'ai enlevé la music souhaité de ${name}`,
+            successCreate: (name) => `<a:music:822494244434214982> J'ai créé la playlist ${name}`,
+            playlistToLong: `<a:music:822494244434214982> La playlist comporte plus de 50 musics, je prend les 50 premières musics`,
+            removeQ: `<a:music:822494244434214982> Quel est l'url de la music à enlever (cancel pour annuler)`,
+            songNotFound: `<a:music:822494244434214982> La music à supprimer n'est pas dans cette playlist`,
+            toManyPlaylist: `<a:music:822494244434214982> \`ERREUR\` Vous ne pouvez pas avoir plus de 10 playlist`,
+            alreadyName: `<a:music:822494244434214982> \`ERREUR\` Une playlist comportant déjà ce nom existe veuillez choisir un autre nom de playlist`,
+            createQ: `<a:music:822494244434214982> Quel est la première music à ajouter dans votre playlist ?`
         },
         shuffle: `<a:music:822494244434214982> The musics will be played randomly `
     },
 
     logs: {
-        banCounter : {
-            title : "\`🚫\` Adding a ban to a member (command)",
-            description : (target, action, count, limit) => `\`👨‍💻\` Author : **${target.user.tag}** \`(${action.executor.id})\` banned :\n
-            \`\`\`${action.target.username}\`\`\`
-            \`🧾\` Counter : ${count} ban (${limit - count + 1} ban before executing the sanction)`
-        },
-        ban : {
-            title : "\`🚫\` Adding a ban to a member (command)",
-            description : (member, action) => `\`👨‍💻\` Author : **${action.author.tag}** \`(${action.author.id})\` banned :\n
-            \`\`\`${member.user.tag}\`\`\``
-        }
+        targetExecutorLogs: (type, executor, target, color, sanction) => new Discord.MessageEmbed()
+
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a ${type}: **${target.tag || target.username}**\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTarget = ${target.id}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+
+        editionMsg: (executor, before, after, color, extra) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a edité son message:`)
+            .addField(`Edition:`, `[Ce rendre sur le message](${extra})`)
+            .addField('AVANT:', before)
+            .addField('APRES:', after)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nMessage = ${extra.split('/')[6]}\nChannel = ${extra.split('/')[5]}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        edtionChannel: (executor, channel, before, after, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a edité le channel: <#${channel}>\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`Edition:`, `<#${channel}>`)
+            .addField('AVANT:', before)
+            .addField('APRES:', after)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        edtionRole: (executor, role, before, after, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a edité le rôle: <@&${role}>\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`Edition:`, `<@&${role}>`)
+            .addField('AVANT:', before)
+            .addField('APRES:', after)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nRole = ${role}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        guildNameUpdate: (executor, before, after, guild, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a edité le nom du serveur:\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField('AVANT:', before)
+            .addField('APRES:', after)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nGuild = ${guild}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        guildVanityUpdate: (executor, before, after, guild, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a edité l'url du serveur:\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField('AVANT:', before)
+            .addField('APRES:', after)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nGuild = ${guild}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        voiceChange: (executor, target, before, after, color) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} ${executor.id === target.id ? 'a changé de salon' : `a déplacé **${target.tag || target.username}**`}:`)
+            .addField('AVANT:', `<#${before}>`)
+            .addField('APRES:', `<#${after}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTarget = ${target.id}\noldChannel = ${before}\nnewChannel = ${after}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        voiceConnect: (executor, channel, color) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} s'est connecté: <#${channel}>`)
+            .addField('CHANNEL:', `<#${channel}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        voiceLeave: (executor, channel, color) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} s'est déconnecté: <#${channel}>`)
+            .addField('CHANNEL:', `<#${channel}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+
+        voiceMute: (executor, channel, color) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} s'est mute:`)
+            .addField('CHANNEL:', `<#${channel}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        voiceUnMute: (executor, channel, color) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} s'est unmute:`)
+            .addField('CHANNEL:', `<#${channel}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        messageDelete: (executor, target, channel, color, content) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} ${executor.id === target.id ? 'a son supprimé son message' : `a supprimé le message de **${target.tag || target.username}**`}:`)
+            .addField('CHANNEL:', `<#${channel}>`)
+            .addField('CONTENT:', content)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTarget = ${target.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        memberRole: (executor, target, role, color, sanction, type) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a ${type} le role <@&${role}> à: **${target.tag || target.username}**\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`${type}`, `<@&${role}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTarget = ${target.id}\nRole = ${role}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        webhookCreate: (executor, channel, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a créé un webhook\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`CHANNEL`, `<#${channel}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        roleCreate: (executor, roleName, roleId, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a créé un role\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`ROLE`, `${roleName}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nRole = ${roleId}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        roleDelete: (executor, roleName, roleId, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a supprimé un role\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`ROLE`, `${roleName}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nRole = ${roleId}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        channelCreate: (executor, channelName, channelId, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a créé un channel\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`CHANNEL`, `${channelName}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channelId}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        channelDelete: (executor, channelName, channelId, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a supprimé un channel\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`CHANNEL`, `${channelName}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channelId}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        antiDc: (executor, time, limit, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a créé son compte trop récemment\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`TEMPS`, `${time}`)
+            .addField(`LIMITE`, `${limit}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTime = ${time}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        botAdd: (executor, bot, id, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a ajouté le bot: **${bot}**\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`BOT`, `${bot}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nBot = ${id}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        blacklist: (executor, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a rejoins en étant blacklist:\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\n\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        changeRegion: (executor, oldRegion, newRegion, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a modifié la région du serveur:\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField('OLD', oldRegion)
+            .addField('NEW', newRegion)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\n\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        antiSpam: (executor, channel, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a été mute pour spam :\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField('CHANNEL', `<#${channel}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        antiLink: (executor, channel, link, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} a été posté un lien :\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField('LINK', link)
+            .addField('CHANNEL', `<#${channel}>`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        mute: (executor, target, time, color, type) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${target || target.tag || target.username} a été ${type}:`)
+            .addField('TIME', time)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTarget = ${target.id}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        unmute: (target, time, color) => new Discord.MessageEmbed()
+            .setAuthor(target.tag || target.username, target.tag ? target.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`**${target.tag || target.username}** a été unmute:`)
+            .addField('TIME', time)
+            .addField(`ID:`, `\`\`\`js\nTarget = ${target.id}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+
+    },
+    perm: {
+        noPermEnough : `Vous n'avez pas assez de permissions`,
+        permNotFound : `La nom de la perm est invalide (1,2,3,4,everyone)`,
+        commandNotFound: `La nom de la commande est introuvable`,
+        noRoleConfig : `Aucun role n'est spécifié pour cette perm`,
+        noRole: `Aucun rôle`,
+        noCommand : `Aucune commandes`,
+        noSetup : (prefix) => `Les perm ne sont pas configuré veuillez faire la commande ${prefix}permconfig`,
+        successCommand : (name, perm) =>  `La commande **${name}** est maintenant en perm __${perm}__`,
+        setupPerm: (role, perm) => `Le role **${role}** est maintenant en perm **${perm}**`,
+        enable: (type) => `Les perm sont maintenant ${type}`
     }
 }

@@ -4,7 +4,7 @@ const Event = require('../../structures/Handler/Event');
 const Discord = require('discord.js')
 const {Logger} = require("advanced-command-handler");
 const { GiveawaysManager } = require('discord-giveaways')
-
+const cron = require('node-cron')
 
 module.exports = class Ready extends Event {
     constructor() {
@@ -169,7 +169,8 @@ module.exports = class Ready extends Event {
 
         })
 
-        setInterval(() => {
+        cron.schedule('* * * * *', () => {
+            console.log('start counter')
             client.guilds.cache.filter(guild => guild.counter).forEach(async guild => {
 
                 const counterInfo = guild.counter;
@@ -180,10 +181,10 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            const key = guild.counter.indexOf(memberInfo);
-                            guild.counter[key] = {name: 'Non définie', type: `${memberInfo[0].type}`}
-                            console.log(guild.counter)
-                            return this.connection.query(`UPDATE guildConfig set memberCount = '${JSON.stringify({name: 'Non définie',type: `${memberInfo[0].type}`})}' WHERE guildId = '${guild.id}'`);
+                            guild.config.memberCount = {name: 'Non définie', type: `${memberInfo[0].type}`}
+
+                            return client.database.modelds.guildConfig.update({memberCount: {name: 'Non définie', type: `${botInfo[0].type}`}, where:{guildId: guild.id}})
+
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Member count error`);
                             return console.log(err);
@@ -201,10 +202,10 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            const key = guild.counter.indexOf(botInfo);
-                            guild.counter[key] = {name: 'Non définie', type: `${botInfo[0].type}`}
-                            console.log(guild.counter)
-                            return this.connection.query(`UPDATE guildConfig set botCount = '${JSON.stringify({name: 'Non définie',type: `${botInfo[0].type}`})}' WHERE guildId = '${guild.id}'`);
+                            guild.config.botCount = {name: 'Non définie', type: `${botInfo[0].type}`}
+
+                            return client.database.modelds.guildConfig.update({botCount: {name: 'Non définie', type: `${botInfo[0].type}`}, where:{guildId: guild.id}})
+
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Bot count error`);
                             return console.log(err);
@@ -226,10 +227,10 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            const key = guild.counter.indexOf(voiceInfo);
-                            guild.counter[key] = {name: 'Non définie', type: `${voiceInfo[0].type}`}
-                            console.log(guild.counter)
-                            return this.connection.query(`UPDATE guildConfig set voiceCount = '${JSON.stringify({name: 'Non définie',type: `${voiceInfo[0].type}`})}' WHERE guildId = '${guild.id}'`);
+                            guild.config.voiceCount = {name: 'Non définie', type: `${voiceInfo[0].type}`}
+
+                            return client.database.modelds.guildConfig.update({voiceCount: {name: 'Non définie', type: `${voiceInfo[0].type}`}, where:{guildId: guild.id}})
+
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Voice count error`);
                             return console.log(err);
@@ -251,10 +252,10 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            const key = guild.counter.indexOf(voiceInfo);
-                            guild.counter[key] = {name: 'Non définie', type: `${onlineInfo[0].type}`}
-                            console.log(guild.counter)
-                            return this.connection.query(`UPDATE guildConfig set onlineCount = '${JSON.stringify({name: 'Non définie',type: `${onlineInfo[0].type}`})}' WHERE guildId = '${guild.id}'`);
+                            guild.config.onlineCount = {name: 'Non définie', type: `${onlineInfo[0].type}`}
+
+                            return client.database.modelds.guildConfig.update({onlineCount: {name: 'Non définie', type: `${onlineInfo[0].type}`}, where:{guildId: guild.id}})
+
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Online count error`);
                             return console.log(err);
@@ -274,10 +275,9 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            const key = guild.counter.indexOf(voiceInfo);
-                            guild.counter[key] = {name: 'Non définie', type: `${offlineInfo[0].type}`}
-                            console.log(guild.counter)
-                            return this.connection.query(`UPDATE guildConfig set offlineCount = '${JSON.stringify({name: 'Non définie',type: `${offlineInfo[0].type}`})}' WHERE guildId = '${guild.id}'`);
+                            guild.config.offlineCount = {name: 'Non définie', type: `${offlineInfo[0].type}`}
+
+                            return client.database.modelds.guildConfig.update({offlineCount: {name: 'Non définie', type: `${offlineInfo[0].type}`}, where:{guildId: guild.id}})
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Offline count error`);
                             return console.log(err);
@@ -299,10 +299,9 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            const key = guild.counter.indexOf(voiceInfo);
-                            guild.counter[key] = {name: 'Non définie', type: `${channelInfo[0].type}`}
-                            console.log(guild.counter)
-                            return this.connection.query(`UPDATE guildConfig set channelCount = '${JSON.stringify({name: 'Non définie',type: `${channelInfo[0].type}`})}' WHERE guildId = '${guild.id}'`);
+                            guild.config.channelCount = {name: 'Non définie', type: `${channelInfo[0].type}`}
+
+                            return client.database.modelds.guildConfig.update({channelCount: {name: 'Non définie', type: `${channelInfo[0].type}`}, where:{guildId: guild.id}})
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Channel count error`);
                             return console.log(err);
@@ -323,10 +322,9 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            const key = guild.counter.indexOf(voiceInfo);
-                            guild.counter[key] = {name: 'Non définie', type: `${roleInfo[0].type}`}
-                            console.log(guild.counter)
-                            return this.connection.query(`UPDATE guildConfig set roleCount = '${JSON.stringify({name: 'Non définie',type: `${roleInfo[0].type}`})}' WHERE guildId = '${guild.id}'`);
+                            guild.config.roleCount = {name: 'Non définie', type: `${roleInfo[0].type}`}
+
+                            return client.database.modelds.guildConfig.update({roleCount: {name: 'Non définie', type: `${roleInfo[0].type}`}, where:{guildId: guild.id}})
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `role count error`);
                             return console.log(err);
@@ -348,10 +346,9 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            const key = guild.counter.indexOf(voiceInfo);
-                            guild.counter[key] = {name: 'Non définie', type: `${roleInfo[0].type}`}
-                            console.log(guild.counter)
-                            return this.connection.query(`UPDATE guildConfig set boosterCount = '${JSON.stringify({name: 'Non définie',type: `${roleInfo[0].type}`})}' WHERE guildId = '${guild.id}'`);
+                            guild.config.boosterCount = {name: 'Non définie', type: `${boosterInfo[0].type}`}
+
+                            return client.database.modelds.guildConfig.update({boosterCount: {name: 'Non définie', type: `${boosterInfo[0].type}`}, where:{guildId: guild.id}})
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Boost count error`);
                             return console.log(err);
@@ -368,16 +365,9 @@ module.exports = class Ready extends Event {
             })
 
 
-        }, 1000)
+        })
+
     }
 }
 
-
-
-// fetchCounter(counter, 'voice')
-// fetchCounter(counter, 'online')
-// fetchCounter(counter, 'offline')
-// fetchCounter(counter, 'channel')
-// fetchCounter(counter, 'role')
-// fetchCounter(counter, 'boost')
 

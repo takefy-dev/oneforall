@@ -52,6 +52,55 @@ Structures.extend('Guild', (Guild) => {
             })
         }
 
+        async updateCounter(memberCount, voiceCount, onlineCount, offlineCount, botCount, channelCount, roleCount, boosterCount) {
+            await this.client.database.models.guildConfig.update({
+                memberCount,
+                voiceCount,
+                onlineCount,
+                offlineCount,
+                botCount,
+                channelCount,
+                roleCount,
+                boosterCount,
+            }, {where: {guildId: this.guildID}}).then(() => {
+                this.config.memberCount = memberCount;
+                this.config.voiceCount = voiceCount;
+                this.config.onlineCount = onlineCount;
+                this.config.offlineCount = offlineCount;
+                this.config.botCount = botCount;
+                this.config.channelCount = channelCount;
+                this.config.roleCount = roleCount;
+                this.config.boosterCount = boosterCount;
+            })
+        }
+
+
+        get counter() {
+            const {
+                memberCount,
+                voiceCount,
+                onlineCount,
+                offlineCount,
+                botCount,
+                channelCount,
+                roleCount,
+                boosterCount
+            } = this.config;
+            return [
+                {id: memberCount.id, name: memberCount.name, type: 'member'},
+                {id: voiceCount.id, name: voiceCount.name, type: 'voice'},
+                {id: onlineCount.id, name: onlineCount.name, type: 'online'},
+                {id: offlineCount.id, name: offlineCount.name, type: 'offline'},
+                {id: botCount.id, name: botCount.name, type: 'bot'},
+                {id: channelCount.id, name: channelCount.name, type: 'channel'},
+                {id: roleCount.id, name: roleCount.name, type: 'role'},
+                {id: boosterCount.id, name: boosterCount.name, type: 'booster'},
+
+            ]
+
+        }
+
+
         async updatePerms(type, options) {
             if (type === 'roles') {
                 await this.client.database.models.perm.update({
@@ -522,6 +571,18 @@ Structures.extend('Guild', (Guild) => {
 
         async fetchConfig() {
             await this.client.database.models.guildConfig.findOrCreate({
+                defaults: {
+                    memberCount: {name: "Non définie"},
+                    voiceCount: {name: "Non définie"},
+                    onlineCount: {name: "Non définie"},
+                    offlineCount: {name: "Non définie"},
+                    botCount: {name: "Non définie"},
+                    channelCount: {name: "Non définie"},
+                    roleCount: {name: "Non définie"},
+                    boosterCount: {name: "Non définie"},
+
+
+                },
                 where: {
                     guildId: this.guildID
                 }
