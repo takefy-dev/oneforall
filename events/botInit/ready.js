@@ -169,11 +169,12 @@ module.exports = class Ready extends Event {
 
         })
 
-        cron.schedule('* * * * *', () => {
-            console.log('start counter')
-            client.guilds.cache.filter(guild => guild.counter).forEach(async guild => {
-
+        cron.schedule('*/10 * * * *', () => {
+            Logger.log('Counter starting', 'EDITING CHANNEL', 'red')
+            client.guilds.cache.forEach(async guild => {
                 const counterInfo = guild.counter;
+                console.log(counterInfo)
+
                 let memberInfo = counterInfo.filter(info => info.type === "member");
 
                 if (memberInfo[0].id) {
@@ -183,7 +184,7 @@ module.exports = class Ready extends Event {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guild.config.memberCount = {name: 'Non définie', type: `${memberInfo[0].type}`}
 
-                            return client.database.modelds.guildConfig.update({memberCount: {name: 'Non définie', type: `${botInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({memberCount: {name: 'Non définie', type: `${memberInfo[0].type}`}, where:{guildId: guild.id}})
 
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Member count error`);
@@ -204,7 +205,7 @@ module.exports = class Ready extends Event {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guild.config.botCount = {name: 'Non définie', type: `${botInfo[0].type}`}
 
-                            return client.database.modelds.guildConfig.update({botCount: {name: 'Non définie', type: `${botInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({botCount: {name: 'Non définie', type: `${botInfo[0].type}`}, where:{guildId: guild.id}})
 
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Bot count error`);
@@ -229,7 +230,7 @@ module.exports = class Ready extends Event {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guild.config.voiceCount = {name: 'Non définie', type: `${voiceInfo[0].type}`}
 
-                            return client.database.modelds.guildConfig.update({voiceCount: {name: 'Non définie', type: `${voiceInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({voiceCount: {name: 'Non définie', type: `${voiceInfo[0].type}`}, where:{guildId: guild.id}})
 
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Voice count error`);
@@ -254,7 +255,7 @@ module.exports = class Ready extends Event {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guild.config.onlineCount = {name: 'Non définie', type: `${onlineInfo[0].type}`}
 
-                            return client.database.modelds.guildConfig.update({onlineCount: {name: 'Non définie', type: `${onlineInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({onlineCount: {name: 'Non définie', type: `${onlineInfo[0].type}`}, where:{guildId: guild.id}})
 
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Online count error`);
@@ -277,7 +278,7 @@ module.exports = class Ready extends Event {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guild.config.offlineCount = {name: 'Non définie', type: `${offlineInfo[0].type}`}
 
-                            return client.database.modelds.guildConfig.update({offlineCount: {name: 'Non définie', type: `${offlineInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({offlineCount: {name: 'Non définie', type: `${offlineInfo[0].type}`}, where:{guildId: guild.id}})
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Offline count error`);
                             return console.log(err);
@@ -301,7 +302,7 @@ module.exports = class Ready extends Event {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guild.config.channelCount = {name: 'Non définie', type: `${channelInfo[0].type}`}
 
-                            return client.database.modelds.guildConfig.update({channelCount: {name: 'Non définie', type: `${channelInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({channelCount: {name: 'Non définie', type: `${channelInfo[0].type}`}, where:{guildId: guild.id}})
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Channel count error`);
                             return console.log(err);
@@ -324,7 +325,7 @@ module.exports = class Ready extends Event {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guild.config.roleCount = {name: 'Non définie', type: `${roleInfo[0].type}`}
 
-                            return client.database.modelds.guildConfig.update({roleCount: {name: 'Non définie', type: `${roleInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({roleCount: {name: 'Non définie', type: `${roleInfo[0].type}`}, where:{guildId: guild.id}})
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `role count error`);
                             return console.log(err);
@@ -348,7 +349,7 @@ module.exports = class Ready extends Event {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guild.config.boosterCount = {name: 'Non définie', type: `${boosterInfo[0].type}`}
 
-                            return client.database.modelds.guildConfig.update({boosterCount: {name: 'Non définie', type: `${boosterInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({boosterCount: {name: 'Non définie', type: `${boosterInfo[0].type}`}, where:{guildId: guild.id}})
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Boost count error`);
                             return console.log(err);
