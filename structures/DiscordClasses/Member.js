@@ -13,9 +13,49 @@ Structures.extend('GuildMember', (Member) => {
             this.invite = {join: 0, leave: 0, fake: 0, bonus: 0};
             this.inviter = null;
             this.fetched = false;
+            this.coins = 0;
             this.fetchWarns()
             this.fetchWarns()
             this.fetchInvite()
+            this.fetchCoins()
+        }
+
+        async fetchCoins(){
+            await this.client.database.models.guildConfig.findOne({
+                where:{
+                    guildId: this.guildId
+                }
+            }).then(res => {
+                const { dataValues } = res;
+                const { coinsOn } = dataValues;
+                if(!coinsOn) return;
+                this.client.database.models.coins.findOrCreate({
+                    where:{
+                        userId: this.user.id,
+                        guildId: this.guildId
+                    }
+                }).then((res) => {
+                    const { dataValues } = res[0];
+                    const { coins } = dataValues;
+                    this.coins = coins
+
+                })
+            })
+        }
+
+        set updateCoins(coins) {
+            this.client.database.models.coins.update(
+                {
+                    coins,
+                },
+                {
+                    where: {
+                        userId: this.user.id,
+                        guildId: this.guildId
+                    }
+                }).then(() => {
+                this.coins = coins
+            })
         }
 
         deleteWarn() {

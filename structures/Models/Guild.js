@@ -151,6 +151,21 @@ module.exports = (Sequelize, oneforall) => {
                 defaultValue: false,
                 allowNull: true
             },
+            coinsLogs: {
+                type: Sequelize.STRING(25),
+                allowNull: false,
+                defaultValue: 'Non définie'
+            },
+            muteDiviseur: {
+                type: Sequelize.FLOAT(),
+                allowNull: false,
+                defaultValue: 0.5
+            },
+            streamBoost: {
+                type: Sequelize.FLOAT,
+                allowNull: false,
+                defaultValue: 1.5
+            }
 
 
 

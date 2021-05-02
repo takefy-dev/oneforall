@@ -1,28 +1,29 @@
-// TODO - Redo coins systemes
 
-const Discord = require('discord.js')
-const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
-let embedsColor = require('../../function/embedsColor');
-const {Command} = require('advanced-command-handler');
-const guildLang = new Map();
-let langF = require('../../function/lang')
+
 const userCoins = new Map();
 const coinSettings = new Map();
 const guildShop = new Map();
 const guildInventory = new Map();
-module.exports = new Command({
-    name: 'buy',
-    description: 'Buy an item from the shop | Acheter un item du magasin',
-    // Optionnals :
-    usage: 'buy <itemId>',
-    category: 'coins',
-    tags: ['guildOnly'],
-    aliases: ['acheter'],
-    clientPermissions: ['EMBED_LINKS'],
-    cooldown: 4
-}, async(client, message, args) => {
-    this.connection = StateManager.connection;  
+const Command = require('../../structures/Handler/Command');
+const { Logger } = require('advanced-command-handler')
+const Discord = require('discord.js')
+
+module.exports = class Test extends Command{
+    constructor() {
+        super({
+            name: 'buy',
+            description: 'Buy an item from the shop | Acheter un item du magasin',
+            // Optionnals :
+            usage: 'buy <itemId>',
+            category: 'coins',
+            tags: ['guildOnly'],
+            aliases: ['acheter'],
+            clientPermissions: ['EMBED_LINKS'],
+            cooldown: 4
+        });
+    }
+    async run(client, message,args){
+
     const color = message.guild.color
     const lang = client.lang(message.guild.lang)
     const shopSettings = coinSettings.get(message.guild.id);
@@ -125,25 +126,5 @@ module.exports = new Command({
     }
     
     
-});
+}};
 
-embedsColor(guildEmbedColor);
-langF(guildLang);
-StateManager.on('coinSettings', (guildId, settings) => {
-    coinSettings.set(guildId, settings)
-})
-StateManager.on('guildCoins', (guildId, coins) => {
-    userCoins.set(guildId, coins)
-})
-StateManager.on('shopFetched', (guildId, shopArray) => {
-    guildShop.set(guildId, shopArray)
-})
-StateManager.on('shopUpdate', (guildId, shopArray) => {
-    guildShop.set(guildId, shopArray)
-})
-StateManager.on('shopDelete', (guildId) => {
-    guildShop.delete(guildId);
-})
-StateManager.on('inventory', (guildId, userInv) => {
-    guildInventory.set(guildId, userInv);
-})

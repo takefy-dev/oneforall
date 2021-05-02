@@ -1,111 +1,56 @@
-const Discord = require('discord.js')
-const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
-let embedsColor = require('../../function/embedsColor');
-const { Command } = require('advanced-command-handler');
-const guildLang = new Map();
-let langF = require('../../function/lang')
+
 const coinSettings = new Map();
 const userCoins = new Map();
-module.exports = new Command({
-    name: 'pay',
-    description: 'Pay a member | Payer un membre',
-    // Optionnals :
-    usage: 'pay <mention / id> <number coins>',
-    category: 'coins',
-    tags: ['guildOnly'],
-    cooldown: 4
-}, async (client, message, args) => {
-    this.connection = StateManager.connection;
-    const color = message.guild.color
-    const lang = client.lang(message.guild.lang)
-    const shopSettings = coinSettings.get(message.guild.id);
-    if (!shopSettings.enable) return message.channel.send(lang.buy.shoDisable).then(mp => mp.delete({ timeout: 4000 }))
-    let member;
-    let memberId = args[0];
-    const amountToGive = args[1];
-    if (!memberId) return message.channel.send(lang.pay.noMember).then(mp => mp.delete({ timeout: 4000 }));
-    if (!amountToGive) return message.channel.send(lang.pay.noCoinToGive).then(mp => mp.delete({ timeout: 4000 }));
-    if (parseInt(amountToGive) < 1) return message.channel.send(lang.pay.infZero).then(mp => mp.delete({ timeout: 4000 }))
-    member = message.mentions.members.first()
-    if (!member && !isNaN(memberId)) {
-        if (message.guild.members.cache.has(memberId)) {
-            member = message.guild.members.cache.get(memberId);
+const Command = require('../../structures/Handler/Command');
+const {Logger} = require('advanced-command-handler')
+const Discord = require('discord.js')
 
-        } else {
-            member = await message.guild.members.fetch(memberId)
-        }
+module.exports = class Test extends Command {
+    constructor() {
+        super({
+            name: 'pay',
+            description: 'Pay a member | Payer un membre',
+            // Optionnals :
+            usage: 'pay <mention / id> <number coins>',
+            category: 'coins',
+            cooldown: 2
+        });
     }
-    if (!member) return message.channel.send(lang.coins.userNotFound).then(mp => mp.delete({ timeout: 4000 }))
-    if (member.user.id === message.author.id) return message.channel.send(lang.pay.giverAndReceiverSame).then(mp => mp.delete({ timeout: 4000 }))
-    const guildCoins = userCoins.get(message.guild.id);
-    if(guildCoins){
-        const giverCoinsInfo = guildCoins.find(coins => coins.userId === message.author.id);
-        if(giverCoinsInfo.coins < parseInt(amountToGive)) return message.channel.send(lang.pay.cantPay)
-        let giverCoin = 0;
-        if (giverCoinsInfo) giverCoin = giverCoinsInfo.coins;
-        if (giverCoin < 1) return message.channel.send(lang.pay.giverNoCoins).then(mp => mp.delete({ timeout: 4000 }))
-        const receiverCoinsInfo = guildCoins.find(coins => coins.userId === member.user.id);
-        let receiverCoin = 0;
-        if (receiverCoinsInfo) receiverCoin = receiverCoinsInfo.coins;
-        
-        // remove  money to giver
-        giverCoin -= parseInt(amountToGive);
-    
-        const giverUserCoins = guildCoins.indexOf(giverCoinsInfo)
-        guildCoins[giverUserCoins].coins = giverCoin;
-    
-        // add  money to giver
-        receiverCoin += parseInt(amountToGive);
-        const receiverUserCoins = guildCoins.indexOf(receiverCoinsInfo);
-        let newUser = false;
-        if(receiverUserCoins !== -1){
-            guildCoins[receiverUserCoins].coins = receiverCoin;
-        }else{
-            const newReceiverArray = {userId : member.user.id, coins : receiverCoin}
-            guildCoins.push(newReceiverArray)
-            newUser = true;
+
+    async run(client, message, args) {
+        if (isNaN(args[0]) && !message.mentions.members.first()) return message.channel.send(client.lang(message.guild.lang).pay.noMember).then(mp => mp.delete({ timeout: 4000 }));
+        if (isNaN(args[1]) || !args[1]) return message.channel.send(client.lang(message.guild.lang).pay.noCoins).then(mp => mp.delete({ timeout: 4000 }));
+        if (args[1] < 0) return message.channel.send(client.lang(message.guild.lang).pay.coinsInf0)
+        if (args[1].includes('.')) {
+            if ((args[1].split('.')[1].split('').length > 2)) return message.channel.send(client.lang(message.guild.lang).pay.coinsDec2)
         }
-    
-        
-    
-        await this.connection.query(`UPDATE coins SET coins = '${giverCoin}' WHERE guildId = '${message.guild.id}' AND userId = '${message.author.id}'`).then(async () => {
-            if(!newUser){
-                await this.connection.query(`UPDATE coins SET coins = '${receiverCoin}' WHERE guildId = '${message.guild.id}' AND userId = '${member.user.id}'`).then(() => {
-                    message.channel.send(lang.pay.successPay(member, amountToGive)).then(() => {
-                        StateManager.emit('guildCoins', message.guild.id, userCoins.get(message.guild.id))
-                    })
-                })
-            }else{
-                await this.connection.query(`INSERT INTO coins (userId, guildId, coins) VALUES('${member.user.id}', '${message.guild.id}', '${receiverCoin}')`).then(() => {
-                    message.channel.send(lang.pay.successPay(member, amountToGive)).then(() => {
-                        StateManager.emit('guildCoins', message.guild.id, userCoins.get(message.guild.id))
-                    })
-                })
-            }
-            
-     
-        })
-        const logsChannel = message.guild.channels.cache.get(shopSettings.logs);
-        if (logsChannel && logsChannel.manageable) {
+
+
+        const member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
+        if (member.user.id === message.author.id) return message.channel.send(`Vous ne pouvez pas vous donner vous même des coins à donner`).then(mp => mp.delete({ timeout: 4000 }))
+        let receiverCoins = member.coins
+        let giverCoins =  message.member.coins
+        if(!giverCoins) return message.channel.send(client.lang(message.guild.lang).pay.noGoinsToGive)
+        if(giverCoins < args[1]) return message.channel.send(client.lang(message.guild.lang).pay.notEnoughtCoins(args[1]))
+        giverCoins -= parseFloat(args[1])
+        receiverCoins += parseFloat(args[1])
+        try{
+            member.updateCoins = receiverCoins
+            message.member.updateCoins = giverCoins
+            await message.lineReply(client.lang(message.guild.lang).pay.giveCoins(args[1], member))
+            const logs = message.guild.channels.cache.get(message.guild.logs);
+            if(!logs) return;
             const embed = new Discord.MessageEmbed()
-                .setDescription(lang.pay.payLog(message.member, member, amountToGive))
+                .setAuthor(message.author.tag,message.author.displayAvatarURL({dynamic: true}))
+                .setDescription(client.lang(message.guild.lang).pay.logs(args[1], message.member, member))
                 .setTimestamp()
-                .setColor(`${color}`)
-            logsChannel.send(embed)
+                .setColor(message.guild.color)
+                .setFooter(client.user.username)
+            logs.send(embed)
+        }catch (e) {
+            Logger.error('Pay player coins', 'WARNING ERROR')
+            console.log(e)
         }
-    }else{
-        message.channel.send(lang.lb.noCoins)
 
     }
-    
-});
-
-embedsColor(guildEmbedColor);
-langF(guildLang);
-StateManager.on('coinSettings', (guildId, settings) => {
-    coinSettings.set(guildId, settings)
-})
-StateManager.on('guildCoins', (guildId, coins) => {
-    userCoins.set(guildId, coins)
-})
+}

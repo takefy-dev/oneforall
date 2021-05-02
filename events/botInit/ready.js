@@ -5,7 +5,7 @@ const Discord = require('discord.js')
 const {Logger} = require("advanced-command-handler");
 const { GiveawaysManager } = require('discord-giveaways')
 const cron = require('node-cron')
-
+const Coins = require('../../utils/StartCoins')
 module.exports = class Ready extends Event {
     constructor() {
         super({
@@ -15,6 +15,7 @@ module.exports = class Ready extends Event {
 
     async run(client) {
         Logger.info(`${client.user.tag} logged in`, `CLIENT LOGIN`);
+        await new Coins(client).init()
         const Giveaway = class extends GiveawaysManager {
             async refreshStorage() {
                 // This should make all shard refreshing their cache with the updated database
@@ -169,11 +170,12 @@ module.exports = class Ready extends Event {
 
         })
 
+
+
         cron.schedule('*/10 * * * *', () => {
             Logger.log('Counter starting', 'EDITING CHANNEL', 'red')
             client.guilds.cache.forEach(async guild => {
                 const counterInfo = guild.counter;
-                console.log(counterInfo)
 
                 let memberInfo = counterInfo.filter(info => info.type === "member");
 

@@ -47,7 +47,7 @@ module.exports = class OneForAll extends Client{
 
 
     loadCommands(){
-        const commmandsFolder = fs.readdirSync('./commands/').filter(name => name !== 'oneforallCoins' && name !== 'stats');
+        const commmandsFolder = fs.readdirSync('./commands/').filter(name =>name !== 'stats');
         Logger.info(`Loading ${commmandsFolder.length} category`, `Starting`)
 
         for (const category of commmandsFolder){

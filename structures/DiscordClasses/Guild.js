@@ -15,6 +15,12 @@ Structures.extend('Guild', (Guild) => {
             this.whitelisted = [''];
             this.color = "#36393F";
             this.antiraid = null;
+            this.coinsFarmer = new Collection()
+            this.boost = {
+                "stream": 2,
+                "default": 1,
+                "mute": 0.5
+            }
             this.cachedInv = new Collection()
             this.antiraidLimit = new Collection();
             this.reactRoles = new Collection();
@@ -27,6 +33,9 @@ Structures.extend('Guild', (Guild) => {
             this.perm3 = null;
             this.perm4 = null;
             this.perm = new Collection();
+            this.shop = null;
+
+
             this.fetchPerms()
             this.fetchConfig()
             this.fetchAntiraid()
@@ -34,7 +43,7 @@ Structures.extend('Guild', (Guild) => {
             this.fetchReactoles()
             this.fetchMute()
             this.fetchTempVoc()
-
+            this.fetchCoins()
             cron.schedule('0 0 * * *', async () => {
                 if (this.antiraidLimit.size < 1) return;
 
@@ -49,6 +58,65 @@ Structures.extend('Guild', (Guild) => {
                         Logger.log(`Clear limit ${this.guildID}`, `CLEAR ANTIRAID LIMIT`, 'red')
                     })
                 }
+            })
+        }
+
+
+        async fetchCoins(){
+            await this.client.database.models.coinShop.findOne({
+                where: {
+                    guildId: this.guildID
+                }
+            }).then(res => {
+                if(!res) return;
+                const { dataValues } = res;
+                const { shop } = dataValues;
+                this.shop = shop;
+            })
+        }
+
+        async createShop() {
+            await this.client.database.models.coinShop.create({
+                guildId: this.guildID,
+                shop: [{id: 0, item: this.client.lang('fr').addShop.nothingInShop, prix: undefined, role: undefined}]
+            }).then((res) => {
+                this.shop = [{
+                    id: 0,
+                    item: this.client.lang('fr').addShop.nothingInShop,
+                    prix: undefined,
+                    role: undefined
+                }]
+            })
+        }
+
+        async deleteShop() {
+            await this.client.database.models.coinShop.destroy({
+                where: {
+                    guildId: this.guildID
+                }
+            }).then((res) => {
+                this.shop = null
+            })
+        }
+
+        async updateShop(shop) {
+            await this.client.database.models.coinShop.update({
+                shop,
+
+            }, {where: {guildId: this.guildID}}).then(() => this.shop = shop)
+        }
+
+        async updateShopSettings(streamBoost, muteDiviseur, coinsLogs, coinsOn) {
+            await this.client.database.models.guildConfig.update({
+                streamBoost,
+                muteDiviseur,
+                coinsLogs,
+                coinsOn
+            }, {where: {guildId: this.guildID}}).then(() => {
+                this.config.streamBoost = streamBoost;
+                this.config.muteDiviseur = muteDiviseur;
+                this.config.coinsOn = coinsOn;
+                this.config.coinsLogs = coinsLogs;
             })
         }
 
@@ -603,6 +671,8 @@ Structures.extend('Guild', (Guild) => {
                 this.owners = guildConfig.owner.split(',');
                 this.whitelisted = guildConfig.whitelisted.split(',');
                 this.prefix = guildConfig.prefix;
+                this.boost["stream"] = guildConfig.streamBoost;
+                this.boost["mute"] = guildConfig.muteDiviseur;
             })
         }
 
@@ -782,7 +852,7 @@ Structures.extend('Guild', (Guild) => {
                     guildId: this.guildID
                 }
             })
-            await this.client.database.models.coinshop.destroy({
+            await this.client.database.models.coins.destroy({
                 where: {
                     guildId: this.guildID
                 }

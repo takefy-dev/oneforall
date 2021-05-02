@@ -778,14 +778,14 @@ module.exports = {
         userNotFound: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas ce membre. Essayez un autre.`
     },
     pay: {
-        noMember: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez spécifier une mention ou un id a donner l'argent`,
-        noCoinToGive: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez spécifier un montant à donner`,
-        giverNoCoins: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous avez aucun coins à donner`,
-        giverAndReceiverSame: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne  pouvez pas vous donner vous même de l'argent`,
-        infZero: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas donner une somme inférieur à 1 coins`,
-        successPay: (receiver, amount) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez donné <a:coinsoneforall:823538178622488616> **${amount}** coins a ${receiver}`,
-        payLog: (giver, receiver, amount) => `${giver} a donné ${amount} coins à ${receiver}`,
-        cantPay: `Vous ne pouvez pas donner ce montant`
+        noMember : `Veuillez spécifier un membre à payer`,
+        noCoins : `Veuillez spécifier un nombre de coins à payer`,
+        coinsInf0 : `Veuillez spécifier un nombre de coins à payer supérieur a 0`,
+        coinsDec2 : `Le nombre de coins à trop de décimal 2 maximum`,
+        noGoinsToGive : `Vous n'avez pas de coins`,
+        notEnoughtCoins : (coins) => `Vous n'avez pas assé de coins pour donné ${coins}`,
+        giveCoins : (coins, member) => `Vous avez payé \`${coins}\` coins à ${member}`,
+        logs : (coins, giver, receiver) => `${giver} a donné \`${coins}\` coins à ${receiver}`
     },
     lb: {
         title: `Top des 10 membres ayant le plus de coins`,
