@@ -14,12 +14,12 @@ module.exports = class coins {
         this.client.channels.cache.filter(channel => channel.guild.config.coinsOn && channel.type === 'voice' && channel.members.filter(m => !m.bot).size > 0).forEach(channel => {
 
             for (const [, member] of channel.members){
-                if(member.voice.mute === true && member.voice.deaf === false){
+                if(member.voice.mute || member.voice.deaf){
                     status = "mute";
-                }
-                else if(member.voice.streaming === true){
+                }else if(member.voice.streaming || member.voice.selfVideo){
                     status = "stream"
                 }
+
                 if(channel.guild.coinsFarmer.has(member.id)) return;
 
                 channel.guild.coinsFarmer.set(member.id, {
@@ -41,7 +41,6 @@ module.exports = class coins {
                     if(memberCoins === null) return;
                     memberCoins+=status.boost;
                     member.updateCoins = memberCoins;
-                    console.log(memberCoins)
                 }
             }
         }, ms)
@@ -49,6 +48,6 @@ module.exports = class coins {
 
     async init(){
         await this.loadVoice();
-        await this.farmCoins(1000)
+        await this.farmCoins(60000)
     }
 }

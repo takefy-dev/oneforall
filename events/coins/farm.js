@@ -14,14 +14,12 @@ module.exports = class Ready extends Event {
         if (newState.bot) return;
         if (newState.channelID !== null) {
             let status = "default";
-            if (!oldState.streaming && newState.streaming || newState.selfVideo && !oldState.selfVideo || newState.selfVideo && oldState.selfVideo) {
-                status = "stream";
-
-            } else if (oldState.streaming && !newState.streaming && !newState.selfVideo && oldState.selfVideo && oldState.selfMute && !newState.selfMute && !oldState.serverMute && newState.serverMute && oldState.serverDeaf && !newState.serverDeaf && oldState.selfDeaf && !newState.selfDeaf) {
-                status = "default";
-            } else if (!oldState.selfMute && newState.selfMute || !oldState.serverMute && newState.serverMute || !oldState.serverDeaf && newState.serverDeaf) {
+            if(!oldState.mute && newState.mute || !oldState.deaf && newState.deaf){
                 status = "mute";
+            }else if(!oldState.streaming && newState.streaming || !oldState.selfVideo && newState.selfVideo){
+                status = "stream"
             }
+
             newState.guild.coinsFarmer.set(newState.id, {
                 status,
                 boost: newState.guild.boost[status]
