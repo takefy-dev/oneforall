@@ -1,14 +1,12 @@
-
-
 const userCoins = new Map();
 const coinSettings = new Map();
 const guildShop = new Map();
 const guildInventory = new Map();
 const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
+const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command{
+module.exports = class Test extends Command {
     constructor() {
         super({
             name: 'buy',
@@ -22,109 +20,79 @@ module.exports = class Test extends Command{
             cooldown: 4
         });
     }
-    async run(client, message,args){
 
-    const color = message.guild.color
-    const lang = client.lang(message.guild.lang)
-    const shopSettings = coinSettings.get(message.guild.id);
-    const idToBuy = args[0];
-    if(!shopSettings.enable) return message.channel.send(lang.buy.shoDisable).then(mp => mp.delete({timeout : 4000}))
-    if(!idToBuy) return message.channel.send(lang.buy.syntaxError).then(mp => mp.delete({timeout : 4000}))
-    const totalGuildCoins = userCoins.get(message.guild.id)
-    const shop = guildShop.get(message.guild.id);
-    if(totalGuildCoins){
-        const userCoinsArray = totalGuildCoins.filter(user => user.userId === message.author.id)[0];
-        if(!userCoinsArray) return message.channel.send(lang.buy.noCoins).then(mp => mp.delete({timeout : 4000}));
-        const coins = userCoinsArray.coins
-        if(coins < 1 || !coins) return message.channel.send(lang.buy.noCoins).then(mp => mp.delete({timeout : 4000}));
-        if(shop.find(shop => shop.id === 0)) return message.channel.send(lang.buy.nothingInShop).then(mp => mp.delete({timeout : 4000}));
-        if(shop.length < parseInt(idToBuy) || parseInt(idToBuy) < 1) return message.channel.send(lang.buy.itemNotInShop).then(mp => mp.delete({timeout : 4000}));
+    async run(client, message, args) {
+        if(!message.guild.config.coinsOn) return;
+        const color = message.guild.color
+        const lang = client.lang(message.guild.lang)
+        const shopSettings = coinSettings.get(message.guild.id);
+        const idToBuy = args[0];
+        if (!shopSettings.enable) return message.channel.send(lang.buy.shoDisable).then(mp => mp.delete({timeout: 4000}))
+        if (!idToBuy) return message.channel.send(lang.buy.syntaxError).then(mp => mp.delete({timeout: 4000}))
+        const shop = message.guild.shop;
+        let coins = message.member.coins
+        if (!coins) return message.channel.send(lang.buy.noCoins).then(mp => mp.delete({timeout: 4000}));
+        if (coins < 1 || !coins) return message.channel.send(lang.buy.noCoins).then(mp => mp.delete({timeout: 4000}));
+        if (shop.find(shop => shop.id === 0)) return message.channel.send(lang.buy.nothingInShop).then(mp => mp.delete({timeout: 4000}));
+        if (shop.length < parseInt(idToBuy) || parseInt(idToBuy) < 1) return message.channel.send(lang.buy.itemNotInShop).then(mp => mp.delete({timeout: 4000}));
 
-        const { price, role, item} = shop.filter(shop => shop.id === parseInt(idToBuy))[0]
-        if(price > coins) return message.channel.send(lang.buy.notEnoughCoins).then(mp => mp.delete({timeout : 4000}));
+        const {price, role, item} = shop.filter(shop => shop.id === parseInt(idToBuy))[0]
+        if (price > coins) return message.channel.send(lang.buy.notEnoughCoins).then(mp => mp.delete({timeout: 4000}));
         let roleCol;
-        if(role){
+        coins -= price
+
+        if (role) {
             roleCol = message.guild.roles.cache.get(item.replace('<@&', '').replace('>', ''));
-    
-            if(message.member.roles.cache.has(roleCol.id)) return message.channel.send(lang.buy.alreadyRole).then(mp => mp.delete({timeout : 4000}))
-    
-            const newUserCoins = parseInt(coins - price);
-            
-            const indexUserCoins = totalGuildCoins.indexOf(userCoinsArray)
-            totalGuildCoins[indexUserCoins].coins = newUserCoins;
-            await this.connection.query(`UPDATE coins SET coins = '${newUserCoins}' WHERE guildId = '${message.guild.id}' AND userId = '${message.author.id}'`).then(() =>{
-                
-                message.channel.send(lang.buy.success(`**${roleCol.name}**`, price)).then((mp) =>{
-                    mp.delete({timeout : 4000})
-                    message.member.roles.add(roleCol.id, `Coins shop`)
-                    StateManager.emit('guildCoins', message.guild.id, userCoins.get(message.guild.id))
-                })
-            })  
-        }else{
-            const newUserCoins = parseInt(coins - price);
-    
-            const indexUserCoins = totalGuildCoins.indexOf(userCoinsArray)
-            totalGuildCoins[indexUserCoins].coins = newUserCoins;
-            await this.connection.query(`UPDATE coins SET coins = '${newUserCoins}' WHERE guildId = '${message.guild.id}' AND userId = '${message.author.id}'`).then(() =>{
-                message.channel.send(lang.buy.success(item, price)).then(() =>{
-                    StateManager.emit('guildCoins', message.guild.id, userCoins.get(message.guild.id))
-                    let memberInvetory = guildInventory.get(message.guild.id);
-                    const itemBuyed = shop.filter(shop => shop.id === parseInt(idToBuy))[0]
-                    
-                    if(memberInvetory){ // if guild has some inventory 
-                        let messageMemberInvetory = memberInvetory.get(message.author.id);
-                        if(messageMemberInvetory){ // if already member has a inv
-                            // [{}, {}, {}, {}, {}, {}, {}, {}, {}]
-                            let itemOccurence = messageMemberInvetory.filter(inv => inv.id === itemBuyed.id);
-                         
 
-                            if(itemOccurence[0] && itemOccurence[0].amount >= 1) {
-                                const itemOccurenceCount = itemOccurence[0].amount;
-                           
-                                itemOccurence[0].amount = itemOccurenceCount  + 1;
+            if (message.member.roles.cache.has(roleCol.id)) return message.channel.send(lang.buy.alreadyRole).then(mp => mp.delete({timeout: 4000}))
 
-                            }else{
-                                messageMemberInvetory.push(itemBuyed);
-                            }
-                         
-                            
-                            guildInventory.get(message.guild.id).set(message.author.id, messageMemberInvetory);
-                            this.connection.query(`UPDATE inventory SET inventory = ? WHERE guildId = '${message.guild.id}' AND userId = '${message.author.id}'`, [JSON.stringify(messageMemberInvetory)]).then(() =>{
-                                StateManager.emit('inventory', message.guild.id, guildInventory.get(message.guild.id))
-                            })
-                        }else{
-                            memberInvetory.set(message.author.id, [itemBuyed]);
-                            this.connection.query(`INSERT INTO inventory (userId, guildId, inventory) VALUES ('${message.author.id}', '${message.guild.id}', ?)`, [JSON.stringify(messageMemberInvetory)]).then(() =>{
-                                StateManager.emit('inventory', message.guild.id, guildInventory.get(message.guild.id))
-                            })
-                        }
-                    }else{
-                        const tempInv = new Map();
-                        tempInv.set(message.author.id, [itemBuyed])
-                        guildInventory.set(message.guild.id, tempInv);
-                        const inventory = guildInventory.get(message.guild.id).get(message.author.id);
-                        this.connection.query(`INSERT INTO inventory (userId, guildId, inventory) VALUES ('${message.author.id}', '${message.guild.id}', ?)`, [JSON.stringify(inventory)]).then(() =>{
-                            StateManager.emit('inventory', message.guild.id, guildInventory.get(message.guild.id))
-                        })
-                        
+
+            message.channel.send(lang.buy.success(`**${roleCol.name}**`, price)).then((mp) => {
+                mp.delete({timeout: 4000})
+                message.member.roles.add(roleCol.id, `Coins shop`)
+            })
+        } else {
+
+            message.channel.send(lang.buy.success(item, price)).then(() => {
+                let memberInvetory = message.member.inventory
+                const itemBuyed = shop.filter(shop => shop.id === parseInt(idToBuy))[0]
+
+                let messageMemberInvetory = message.member.inventory
+                if (messageMemberInvetory) { // if already member has a inv
+                    // [{}, {}, {}, {}, {}, {}, {}, {}, {}]
+                    let itemOccurence = messageMemberInvetory.filter(inv => inv.id === itemBuyed.id);
+
+
+                    if (itemOccurence[0] && itemOccurence[0].amount >= 1) {
+                        const itemOccurenceCount = itemOccurence[0].amount;
+
+                        itemOccurence[0].amount = itemOccurenceCount + 1;
+
+                    } else {
+                        messageMemberInvetory.push(itemBuyed);
                     }
-                
-                })
+
+
+                    message.member.updateInventory = memberInvetory
+                } else {
+                    message.member.createInventory([itemBuyed])
+                }
+
+
             })
         }
+        message.member.updateCoins = coins;
+
         const logsChannel = message.guild.channels.cache.get(shopSettings.logs);
-        if(logsChannel && logsChannel.manageable){
+        if (logsChannel && logsChannel.manageable) {
             const embed = new Discord.MessageEmbed()
-            .setDescription(lang.buy.buyLog(message.member, !roleCol ? item : roleCol.name, price))
-            .setTimestamp()
-            .setColor(`${color}`)
+                .setDescription(lang.buy.buyLog(message.member, !roleCol ? item : roleCol.name, price))
+                .setTimestamp()
+                .setColor(`${color}`)
             logsChannel.send(embed)
         }
-    }else{
-        message.channel.send(lang.lb.noCoins)
+
 
     }
-    
-    
-}};
+};
 

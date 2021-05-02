@@ -775,17 +775,17 @@ module.exports = {
 
     },
     coins: {
-        userNotFound: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas ce membre. Essayez un autre.`
+        description: (coins) => `<a:coinsoneforall:823538178622488616> __${coins}__ coins`,
     },
     pay: {
-        noMember : `Veuillez spécifier un membre à payer`,
-        noCoins : `Veuillez spécifier un nombre de coins à payer`,
-        coinsInf0 : `Veuillez spécifier un nombre de coins à payer supérieur a 0`,
-        coinsDec2 : `Le nombre de coins à trop de décimal 2 maximum`,
-        noGoinsToGive : `Vous n'avez pas de coins`,
-        notEnoughtCoins : (coins) => `Vous n'avez pas assé de coins pour donné ${coins}`,
-        giveCoins : (coins, member) => `Vous avez payé \`${coins}\` coins à ${member}`,
-        logs : (coins, giver, receiver) => `${giver} a donné \`${coins}\` coins à ${receiver}`
+        noMember: `Veuillez spécifier un membre à payer`,
+        noCoins: `Veuillez spécifier un nombre de coins à payer`,
+        coinsInf0: `Veuillez spécifier un nombre de coins à payer supérieur a 0`,
+        coinsDec2: `Le nombre de coins à trop de décimal 2 maximum`,
+        noGoinsToGive: `Vous n'avez pas de coins`,
+        notEnoughtCoins: (coins) => `Vous n'avez pas assé de coins pour donné ${coins}`,
+        giveCoins: (coins, member) => `Vous avez payé \`${coins}\` coins à ${member}`,
+        logs: (coins, giver, receiver) => `${giver} a donné \`${coins}\` coins à ${receiver}`
     },
     lb: {
         title: `Top des 10 membres ayant le plus de coins`,
@@ -1157,14 +1157,14 @@ module.exports = {
 
     },
     perm: {
-        noPermEnough : `Vous n'avez pas assez de permissions`,
-        permNotFound : `La nom de la perm est invalide (1,2,3,4,everyone)`,
+        noPermEnough: `Vous n'avez pas assez de permissions`,
+        permNotFound: `La nom de la perm est invalide (1,2,3,4,everyone)`,
         commandNotFound: `La nom de la commande est introuvable`,
-        noRoleConfig : `Aucun role n'est spécifié pour cette perm`,
+        noRoleConfig: `Aucun role n'est spécifié pour cette perm`,
         noRole: `Aucun rôle`,
-        noCommand : `Aucune commandes`,
-        noSetup : (prefix) => `Les perm ne sont pas configuré veuillez faire la commande ${prefix}permconfig`,
-        successCommand : (name, perm) =>  `La commande **${name}** est maintenant en perm __${perm}__`,
+        noCommand: `Aucune commandes`,
+        noSetup: (prefix) => `Les perm ne sont pas configuré veuillez faire la commande ${prefix}permconfig`,
+        successCommand: (name, perm) => `La commande **${name}** est maintenant en perm __${perm}__`,
         setupPerm: (role, perm) => `Le role **${role}** est maintenant en perm **${perm}**`,
         enable: (type) => `Les perm sont maintenant ${type}`
     }

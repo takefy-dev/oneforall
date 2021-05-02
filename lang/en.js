@@ -731,8 +731,8 @@ module.exports = {
         buyLog : (memberPing, itemName, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${memberPing} a acheté **${itemName}** pour <a:coinsoneforall:819646518180446228> **${price}** coins.`
 
     },
-    coins : {
-        userNotFound : `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas ce membre. Essayez un autre.`
+    coins: {
+        description: (coins) => `__${coins}__ coins`,
     },
     pay: {
         noMember : `Veuillez spécifier un membre à payer`,

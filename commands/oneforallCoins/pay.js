@@ -18,6 +18,9 @@ module.exports = class Test extends Command {
     }
 
     async run(client, message, args) {
+        if(!message.guild.config.coinsOn) return;
+
+
         if (isNaN(args[0]) && !message.mentions.members.first()) return message.channel.send(client.lang(message.guild.lang).pay.noMember).then(mp => mp.delete({ timeout: 4000 }));
         if (isNaN(args[1]) || !args[1]) return message.channel.send(client.lang(message.guild.lang).pay.noCoins).then(mp => mp.delete({ timeout: 4000 }));
         if (args[1] < 0) return message.channel.send(client.lang(message.guild.lang).pay.coinsInf0)

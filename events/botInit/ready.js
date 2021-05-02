@@ -15,7 +15,6 @@ module.exports = class Ready extends Event {
 
     async run(client) {
         Logger.info(`${client.user.tag} logged in`, `CLIENT LOGIN`);
-        await new Coins(client).init()
         const Giveaway = class extends GiveawaysManager {
             async refreshStorage() {
                 // This should make all shard refreshing their cache with the updated database
@@ -369,6 +368,10 @@ module.exports = class Ready extends Event {
 
 
         })
+        setTimeout(async () => {
+            await new Coins(client).init()
+
+        }, 5000)
 
     }
 }

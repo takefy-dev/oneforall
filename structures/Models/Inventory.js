@@ -1,6 +1,6 @@
 module.exports = (Sequelize, oneforall) => {
     try{
-        oneforall.database.define('coins', {
+        oneforall.database.define('inventory', {
             id: {
                 type: Sequelize.INTEGER(1),
                 primaryKey: true,
@@ -16,11 +16,10 @@ module.exports = (Sequelize, oneforall) => {
                 type: Sequelize.STRING(25),
                 allowNull: false
             },
-            coins : {
-                type: Sequelize.FLOAT(255,2),
-                allowNull: false,
-                defaultValue: 0
-            },
+            inventory: {
+                type: Sequelize.JSON,
+                allowNull: true,
+            }
         })
         return oneforall.database.models
 
