@@ -21,15 +21,7 @@ Structures.extend('GuildMember', (Member) => {
             this.fetchCoins()
         }
 
-        createInventory(inventory) {
-            this.client.database.models.inventory.create({
-                inventory,
-                userId: this.user.id,
-                guildId: this.guildId
 
-
-            }).then(() => this.inventory = inventory)
-        }
 
         set updateInventory(inventory) {
             this.client.database.models.inventory.update({
@@ -42,6 +34,17 @@ Structures.extend('GuildMember', (Member) => {
             }).then(() => this.inventory = inventory)
         }
 
+
+        async createInventory(inventory) {
+            console.log("create")
+            this.client.database.models.inventory.create({
+                inventory,
+                userId: this.user.id,
+                guildId: this.guildId
+
+
+            }).then(() => this.inventory = inventory)
+        }
         async fetchCoins() {
             await this.client.database.models.guildConfig.findOne({
                 where: {
@@ -63,14 +66,16 @@ Structures.extend('GuildMember', (Member) => {
 
                 })
 
-                await this.client.database.models.inventory.findOrCreate({
+                await this.client.database.models.inventory.findOne({
                     where: {
                         userId: this.user.id,
                         guildId: this.guildId
                     }
                 }).then((res) => {
-                    const {dataValues} = res[0];
-                    const {inventory} = dataValues;
+                    if(!res) return;
+                    const {dataValues} = res;
+                    let {inventory} = dataValues;
+                    if(!inventory) return;
                     this.inventory = inventory
 
                 })

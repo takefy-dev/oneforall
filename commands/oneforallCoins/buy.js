@@ -25,9 +25,9 @@ module.exports = class Test extends Command {
         if(!message.guild.config.coinsOn) return;
         const color = message.guild.color
         const lang = client.lang(message.guild.lang)
-        const shopSettings = coinSettings.get(message.guild.id);
+
         const idToBuy = args[0];
-        if (!shopSettings.enable) return message.channel.send(lang.buy.shoDisable).then(mp => mp.delete({timeout: 4000}))
+        if (!message.guild.config.coinsOn) return message.channel.send(lang.buy.shoDisable).then(mp => mp.delete({timeout: 4000}))
         if (!idToBuy) return message.channel.send(lang.buy.syntaxError).then(mp => mp.delete({timeout: 4000}))
         const shop = message.guild.shop;
         let coins = message.member.coins
@@ -60,6 +60,8 @@ module.exports = class Test extends Command {
                 let messageMemberInvetory = message.member.inventory
                 if (messageMemberInvetory) { // if already member has a inv
                     // [{}, {}, {}, {}, {}, {}, {}, {}, {}]
+                    console.log(messageMemberInvetory)
+
                     let itemOccurence = messageMemberInvetory.filter(inv => inv.id === itemBuyed.id);
 
 
@@ -73,8 +75,9 @@ module.exports = class Test extends Command {
                     }
 
 
-                    message.member.updateInventory = memberInvetory
+                    message.member.updateInventory = messageMemberInvetory
                 } else {
+                    console.log('created')
                     message.member.createInventory([itemBuyed])
                 }
 
@@ -83,8 +86,8 @@ module.exports = class Test extends Command {
         }
         message.member.updateCoins = coins;
 
-        const logsChannel = message.guild.channels.cache.get(shopSettings.logs);
-        if (logsChannel && logsChannel.manageable) {
+        const logsChannel = message.guild.channels.cache.get(message.guild.config.coinsLogs);
+        if (logsChannel && logsChannel.manageable && !logsChannel.deleted) {
             const embed = new Discord.MessageEmbed()
                 .setDescription(lang.buy.buyLog(message.member, !roleCol ? item : roleCol.name, price))
                 .setTimestamp()
