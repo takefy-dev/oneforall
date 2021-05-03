@@ -507,9 +507,9 @@ module.exports = {
         warnNotFound: `Le warn n'existe pas`,
         successDelete: (tag, amount) => `J'ai enlevé le warn numéro ${amount} a **${tag}**`,
         noReason: "Aucune raison spécifique",
-        notNumber: `Vous devez entrer le numéro de warn à supprimer`,
-        noMember: "<:720681441670725645:780539422479351809> `ERREUR` Vous devez spécifier un membre (`\mention / id`\)",
-        noGuildWarn: `Aucun warn sur ce serveur`
+        notNumber: `You must enter the warn number to delete`,
+        noMember: "<:720681441670725645:780539422479351809> `ERROR` You must specify a member (`\mention / id`\)",
+        noGuildWarn: `No warn on this server `
 
 
     },
