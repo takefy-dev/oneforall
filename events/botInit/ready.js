@@ -153,11 +153,18 @@ module.exports = class Ready extends Event {
         // 		await client.users.fetch(process.env.OWNER, true)
         // 	}
         // }
-        // client.guilds.cache.forEach(guild => {
-        //     client.users.fetch(guild.owner.user.id, true)
-        //     Logger.log(`${guild.owner.user.username}`, `Fetching guild owners`, `white`)
+        setTimeout(() => {
+            client.guilds.cache.forEach(guild => {
+                const user = client.users.cache.get(guild.ownerID)
+                if(user.tag){
+                    user.fetchBlacklistedUsers();
+                }
+                // Logger.log(`${guild.owner.user.username}`, `Fetching guild owners`, `white`)
 
-        // })
+            })
+
+        }, 30000)
+
         client.guilds.cache.forEach(guild => {
             if(guild.deleted) return guild.leave();
             if(!guild.available )  return guild.leave();

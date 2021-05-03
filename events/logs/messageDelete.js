@@ -1,5 +1,4 @@
 
-const snipes = new Map();
 
 const Event = require('../../structures/Handler/Event');
 
@@ -15,15 +14,15 @@ module.exports = class messageDelete extends Event {
         if (message.author.bot) return;
         if (!message.guild) return;
         if (!message.guild.config) return;
-        // this.connection = StateManager.connection;
-        // // snipes.clear();
-        // snipes.set(message.channel.id, {
-        //     content: message.content,
-        //     author: message.author,
-        //     image: message.attachments.first() ? message.attachments.first().proxyURL : null,
-        //     date: new Date().toLocaleString('fr-FR', {dataStyle: 'full', timeStyle: 'short'})
-        // })
-        // StateManager.emit('snipes', message.guild.id, snipes)
+        if (message.partial) await message.fetch();
+        const { snipes } = message.guild;
+
+        snipes.set(message.channel.id, {
+            content: message.content,
+            author: message.author,
+            image: message.attachments.first() ? message.attachments.first().proxyURL : null,
+            date: new Date().toLocaleString('fr-FR', {dataStyle: 'full', timeStyle: 'short'})
+        })
         const color = message.guild.color
         let {msgLog } = message.guild.logs;
         if(msgLog === "Non définie") return msgLog = null

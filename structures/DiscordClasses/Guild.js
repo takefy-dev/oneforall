@@ -16,6 +16,7 @@ Structures.extend('Guild', (Guild) => {
             this.color = "#36393F";
             this.antiraid = null;
             this.coinsFarmer = new Collection()
+            this.snipes = new Collection()
             this.boost = {
                 "stream": 2,
                 "default": 1,

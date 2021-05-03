@@ -10,6 +10,7 @@ Structures.extend('User', (User) => {
             if(this.bot) return;
             this.blacklist = null;
             this.playlists = null;
+            this.blFetched = false;
             // this.fetchBlacklistedUsers();
 
         }
@@ -53,6 +54,7 @@ Structures.extend('User', (User) => {
         }
 
          async fetchBlacklistedUsers () {
+            if(this.blFetched) return
            await this.client.database.models.blacklist.findOne({
                where: {
                    userId : this.user.id
