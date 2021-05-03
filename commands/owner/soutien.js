@@ -21,7 +21,7 @@ module.exports = class Test extends Command {
     }
 
     async run(client, message, args) {
-        return;
+        if(!client.botperso) return;
         const lang = client.lang(message.guild.lang)
 
         const color = message.guild.color

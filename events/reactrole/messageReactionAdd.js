@@ -12,9 +12,9 @@ module.exports = class messageReactionAdd extends Event {
     async run(client, reaction, user) {
         const emojiRoleMapping = reaction.message.guild.reactRoles
         if (user.bot) return;
-        if(emojiRoleMapping.size < 1) return
+        if (emojiRoleMapping.size < 1) return
 
-            if (reaction.message.partial) await reaction.message.fetch();
+        if (reaction.message.partial) await reaction.message.fetch();
         if (reaction.partial) await reaction.fetch();
         // const guild = client.guilds.cache.get(reaction.message.guild.id)
         if (emojiRoleMapping.has(reaction.message.id)) {
@@ -27,7 +27,7 @@ module.exports = class messageReactionAdd extends Event {
                 role = reaction.message.guild.roles.cache.get(emojiRoleArray[reaction.emoji.id])
                 // console.log(role.name)
             } else {
-                return;
+                return
             }
             let member = reaction.message.guild.members.cache.get(user.id);
             if (role && member) {

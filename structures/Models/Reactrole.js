@@ -17,7 +17,7 @@ module.exports = (Sequelize, oneforall) => {
                     return JSON.parse(this.getDataValue('emojiRole'));
                 },
                 set: function (value) {
-                    this.setDataValue('emojiRole', JSON.stringify(value));
+                    return this.setDataValue('emojiRole', JSON.stringify(value));
                 },
             }
 

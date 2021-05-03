@@ -35,14 +35,12 @@ Structures.extend('Guild', (Guild) => {
             this.perm = new Collection();
             this.shop = null;
 
-
+            this.fetchReactoles()
             this.fetchPerms()
             this.fetchConfig()
             this.fetchAntiraid()
             this.fetchAntiraidLimit()
-            this.fetchReactoles()
             this.fetchMute()
-
             this.fetchTempVoc()
             this.fetchCoins()
 
@@ -646,9 +644,14 @@ Structures.extend('Guild', (Guild) => {
                 if (res.length < 1) return;
                 res.forEach(raw => {
                     const { dataValues } = raw;
-                    const { msgId, guildId, emojiRole } = dataValues
+                    let { msgId, guildId, emojiRole } = dataValues
+                    if(typeof emojiRole !== "Object"){ 
+                        emojiRole = JSON.parse(emojiRole)
+                        console.log("parsing reactrole");
+                    }
                     this.reactRoles.set(msgId, emojiRole)
                 })
+                Logger.log(`GUILD : ${this.guildID}`, `Fetched reactroles`, 'pink')
             })
         }
 
