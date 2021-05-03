@@ -24,7 +24,6 @@ module.exports = class Test extends Command {
 
         let configEmbed;
         let msg;
-        this.connection = StateManager.connection;
         const color = message.guild.color
         const lang = client.lang(message.guild.lang)
         const create = args[0] === "create";
@@ -43,9 +42,7 @@ module.exports = class Test extends Command {
             message.channel.send(helpEmbed)
         }
         if (create) {
-            const backupCountF = await this.connection.query(`SELECT backupId FROM backup WHERE userId = '${message.author.id}'`)
-            const backupCount = backupCountF[0]
-            if (backupCount.length >= 5) return message.channel.send(lang.backup.errorToManyBackup)
+
             const Discord = require('discord.js')
             const filter = (reaction, user) => ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '❌', '✅'].includes(reaction.emoji.name) && user.id === message.author.id,
                 dureefiltrer = response => {
