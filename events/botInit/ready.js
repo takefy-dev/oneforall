@@ -153,7 +153,6 @@ module.exports = class Ready extends Event {
         // 		await client.users.fetch(process.env.OWNER, true)
         // 	}
         // }
-        setTimeout(() => {
             client.guilds.cache.forEach(guild => {
                 const user = client.users.cache.get(guild.ownerID)
                 if(user.tag){
@@ -163,7 +162,6 @@ module.exports = class Ready extends Event {
 
             })
 
-        }, 30000)
 
         client.guilds.cache.forEach(guild => {
             if(guild.deleted) return guild.leave();

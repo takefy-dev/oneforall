@@ -63,6 +63,14 @@ Structures.extend('Guild', (Guild) => {
         }
 
 
+        updateSoutien(soutienId, soutienMsg, soutienOn){
+            this.client.database.models.guildConfig.update({
+                soutienMsg,
+                soutienOn,
+                soutienId
+            }, {where:{guildId: this.guildID}})
+        }
+
         async getLeaderBoard() {
             let guildCoins = [];
 
