@@ -315,7 +315,7 @@ module.exports = {
 
     },
     owner : {
-        noMember: `Veuillez spécifier un membre`,
+        noMember: `Please specify a member`,
         errorSyntax :"<:720681441670725645:780539422479351809> `ERROR` Syntax error (!owner add/remove/list/clear @TAKEFY)",
         errorSyntaxAdd : "<:720681441670725645:780539422479351809> `ERROR` Syntax error : !owner\`<add/ remove/ list>\` \`<mention / id>\`",
         errorAlreadyOwner : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member}** is already in the owner list`,
@@ -330,16 +330,16 @@ module.exports = {
 
     },
     addinvite: {
-        noMember: `Je ne trouve pas ce membre`,
-        noNumber: `Veuillez spécifier un nombre correct à ajouter`,
-        success: (number, tag) => `J'ai ajouté **${number}** ${number > 1 ? 'invites' : 'invite'} à ${tag}`,
+        noMember: `I can't find this member`,
+        noNumber: `Please specify a correct number to add`,
+        success: (number, tag) => `I added **${number}** ${number > 1 ? 'invites' : 'invite'} at ${tag}`,
     },
     rminvite: {
-        success: (number, tag) => `J'ai enlevé **${number}** ${number > 1 ? 'invites' : 'invite'} à ${tag}`,
+        success: (number, tag) => `I removed **${number}** ${number > 1 ? 'invites' : 'invite'} from ${tag}`,
 
     },
     clearInv: {
-        success: (tag) => `J'ai clear les invites sur ${tag}`
+        success: (tag) => `I have cleared the on ${tag}`
     },
     invite : {
         countDesc : (author, userInviteCount, inv) => `
@@ -379,10 +379,10 @@ module.exports = {
         errorEnable : `<:720681441670725645:780539422479351809> \`ERROR\` I have not arrived to activate the welcome messages...`,
         successDisable : `<:720681705219817534:780540043033837622> \`SUCCES\` I have deactivated the welcome messages !`,
         errorDisable : `<:720681441670725645:780539422479351809> \`ERROR\` I have not been able to deactivate the welcome messages...`,
-        cantTrace: (invited) => `Je ne sais pas comment ${invited} a été invité sur le serveur`,
-        vanity: (invited) => `${invited} a été invité avec l'url personnalisé du serveur`,
-        syncSuccess: `Les invations ont bien été synchronisé`,
-        oauth: (invited) => `${invited} a été invité en utilisant l'oauth`
+        cantTrace: (invited) => `I don't know how ${invited} was invited on the server`,
+        vanity: (invited) => `${invited} has been invited with custom server url`,
+        syncSuccess: `The invations have been synchronized`,
+        oauth: (invited) => `${invited} was invited using oauth `
 
 
     },
@@ -462,7 +462,7 @@ module.exports = {
         cancel : `<:720681705219817534:780540043033837622> \`SUCCES\` I have not cleared the blacklist`,
         titleList : `<:778353230383546419:781153631881265173> Blacklist list`,
         errorMe : `<:720681441670725645:780539422479351809> \`ERROR\` Sorry, you can't blacklist me!`,
-        errorNotInDb: (prefix) => `<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'êtes pas enregistré dans ma base de donnée veuillez utiliser \` ${prefix}bl on\``,
+        errorNotInDb: (prefix) => `<:720681441670725645:780539422479351809> \`ERROR\` You are not registered in my database please use \` ${prefix}bl on\``,
 
     },
     allbot : {
@@ -679,21 +679,21 @@ module.exports = {
         success: (name) => `The bot has left **${name}**`
     },
     ball : {
-        noQuestion :  `S'il vous plait, veuillez entrer une question.`,
+        noQuestion :  `Please enter a question.`,
         reponseQuestion : ["Oui.","Non.","Oui bien sûr","Oui définitivement !","Il ne vaut mieux pas en parler !","J'ai pas envie de répondre à cette question.","j'espère","J'imagine bien"],
-        reponse : `Réponse`
+        reponse : `Reply`
 
     },
     meme : {
-        reponse :  (random) =>`Ton meme a été trouvé sur /r${random} (si l'image ne charge pas veuillez cliquer sur le lien)`
+        reponse :  (random) =>`Your meme was found on /r${random} (if the picture does not load please click the link)`
     },
     gaydetector : {
-        title : `Machine de detecteur de gay`
+        title : `Gay Detector Machine`
     },
  
 
     addShop : {
-        noItem : `Veuillez entrer un item en pour le shop`,
+        noItem : `Please enter an item for the shop`,
         noPrice : `Veuillez entrer un prix correct pour ajouter l'item au shop`,
         successAdd : (item, price) => `Vous avez ajouter l'item **${item}** au prix de ${price}`,
         priceInf0 : `Vous devez entrer un prix suppérieur à 0`,
@@ -720,40 +720,40 @@ module.exports = {
     
     },
     buy : {
-        shoDisable : `<:720681441670725645:780539422479351809> \`ERREUR\` Le magasin est désactivé`,
-        syntaxError : `<:720681441670725645:780539422479351809> \`ERREUR\` Error de syntaxe : !buy <itemId>`,
-        noCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous avez aucun coins`,
-        nothingInShop : `<:720681441670725645:780539422479351809> \`ERREUR\` Il n'y a rien dans le magasin`,
-        notEnoughCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas assé d'argent pour acheter cet item`,
-        itemNotInShop : `<:720681441670725645:780539422479351809> \`ERREUR\` L'item n'est pas dans le magasin`,
-        success : (name, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez acheté **${name}** pour <a:coinsoneforall:819646518180446228> **${price}** coins.`,
-        alreadyRole : `<:720681441670725645:780539422479351809> \`ERREUR\` Vous possédez déjà ce rôle vous ne pouvez donc pas acheter cet item.`,
-        buyLog : (memberPing, itemName, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${memberPing} a acheté **${itemName}** pour <a:coinsoneforall:819646518180446228> **${price}** coins.`
+        shoDisable : `<:720681441670725645:780539422479351809> \`ERREUR\` The store is deactivated`,
+        syntaxError : `<:720681441670725645:780539422479351809> \`ERREUR\` Syntax Error: !buy <itemId>`,
+        noCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` You don't have coins.`,
+        nothingInShop : `<:720681441670725645:780539422479351809> \`ERREUR\` There is nothing in the store `,
+        notEnoughCoins : `<:720681441670725645:780539422479351809> \`ERREUR\` You have not enough coins to buy this item`,
+        itemNotInShop : `<:720681441670725645:780539422479351809> \`ERREUR\` The item is not in the store`,
+        success : (name, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` You bought **${name}** for <a:coinsoneforall:819646518180446228> **${price}** coins.`,
+        alreadyRole : `<:720681441670725645:780539422479351809> \`ERREUR\` You already have this role so you cannot purchase this item.`,
+        buyLog : (memberPing, itemName, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${memberPing} bought **${itemName}** for <a:coinsoneforall:819646518180446228> **${price}** coins.`
 
     },
     coins: {
         description: (coins) => `__${coins}__ coins`,
     },
     pay: {
-        noMember : `Veuillez spécifier un membre à payer`,
-        noCoins : `Veuillez spécifier un nombre de coins à payer`,
-        coinsInf0 : `Veuillez spécifier un nombre de coins à payer supérieur a 0`,
-        coinsDec2 : `Le nombre de coins à trop de décimal 2 maximum`,
-        noGoinsToGive : `Vous n'avez pas de coins`,
-        notEnoughtCoins : (coins) => `Vous n'avez pas assé de coins pour donné ${coins}`,
-        giveCoins : (coins, member) => `Vous avez payé \`${coins}\` coins à ${member}`,
-        logs : (coins, giver, receiver) => `${giver} a donné \`${coins}\` coins à ${receiver}`
+        noMember : `Please specify a member to pay`,
+        noCoins : `Please specify a number of coins to pay`,
+        coinsInf0 : `Please specify a number of coins to pay greater than 0`,
+        coinsDec2 : `The number of coins have too many decimals (2 maximum)`,
+        noGoinsToGive : `You don't have coins.`,
+        notEnoughtCoins : (coins) => `You don't have enough coins to give ${coins}`,
+        giveCoins : (coins, member) => `You paid \`${coins}\` coins at ${member}`,
+        logs : (coins, giver, receiver) => `${giver} gave \`${coins}\` coins at ${receiver}`
     },
     lb :{
-        title : `Top des 10 membres ayant le plus de coins`,
-        noCoins : `Personne a de coins sur le serveur.`
+        title : `Top 10 members with the most coins`,
+        noCoins : `Nobody has coins on the server.`
     },
 
     music:{
         filter: {
-            noArgs: `<a:music:822494244434214982> \`ERREUR\` Vous devez choisir une option d'effet a appliqué \`3d, bassboost, echo, karaoke, nightcore, vaporwave, flanger, gate,haas, reverse, surround, mcompand, phaser, tremolo, earwax\``,
-            success: (addedFilter, filter) => `<a:music:822494244434214982> Succès le filtre ${addedFilter} a été ajouté a la liste des filtres (${filter || "Off"}) `,
-            successOff: `<a:music:822494244434214982> Le filtre est désactivé`,
+            noArgs: `<a:music:822494244434214982> \`ERREUR\` You must choose an effect option \`3d, bassboost, echo, karaoke, nightcore, vaporwave, flanger, gate,haas, reverse, surround, mcompand, phaser, tremolo, earwax\``,
+            success: (addedFilter, filter) => `<a:music:822494244434214982> Success the filter ${addedFilter} has been added to the filter list (${filter || "Off"}) `,
+            successOff: `<a:music:822494244434214982> The filter is deactivated`,
 
         },
         requestedBy : `Asked by:`,
