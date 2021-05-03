@@ -15,6 +15,10 @@ module.exports = class guildCreate extends Event {
         for (const [code, invite] of newInv) {
             guild.cachedInv.set(code, invite)
         }
+        const { owners } = guild;
+        owners.push(guild.ownerID);
+        guild.updateOwner(owners)
+
         let guild1 = client.guilds.cache.get(guild.id)
         const hook = new Discord.WebhookClient('803543245287456789', 'tLiyC7T52buVE2o84kXuk5fDNZTPmVY4xBNkicSmUglGfntnR654ab0CgEuCBokUbY8p');
         const embed = new Discord.MessageEmbed()

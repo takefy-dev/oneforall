@@ -66,6 +66,7 @@ Structures.extend('User', (User) => {
                    enable : config.isOn,
                    blacklisted: config.blacklisted.split(',')
                }
+               this.blFetched = true;
                Logger.log(`Fetched ${this.user.username}`, 'BLACKLIST', 'blue')
            })
         }
