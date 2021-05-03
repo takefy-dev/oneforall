@@ -31,7 +31,7 @@ module.exports = class guildVanityUpdate extends Event {
         if (isWlBypass) var isWl = guild.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `VANITY UPDATE`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
-            const member = guild.members.cache.get(action.executor.id)
+            const member = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
             const channel = guild.channels.cache.get(antiraidLog)
             try {
                 await fetch(`https://discord.com/api/v8/guilds/${guild.id}/vanity-url`, {
@@ -87,7 +87,7 @@ module.exports = class guildVanityUpdate extends Event {
                    await guild.member(action.executor.id).roles.cache
                         .map(role => roles.push(role.id))
 
-                    await guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: guildUpdate - vanityUrl`)
+                    await guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: guildUpdate - vanityUrl`)
                     if (action.executor.bot) {
                         let botRole = member.roles.cache.filter(r => r.managed)
                         for (const [id] of botRole) {

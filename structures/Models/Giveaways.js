@@ -9,11 +9,18 @@ module.exports = (Sequelize, oneforall) => {
             },
             message_id: {
                 type: Sequelize.STRING(25),
-                allowNull: false
+                allowNull: false,
+                
             },
             data: {
-                type: Sequelize.JSON(),
-                allowNull: false
+                type: Sequelize.TEXT,
+                allowNull: false,
+                get: function () {
+                    return JSON.parse(this.getDataValue('data'));
+                },
+                set: function (value) {
+                    return this.setDataValue('data', JSON.stringify(value));
+                },
             }
         })
         return oneforall.database.models

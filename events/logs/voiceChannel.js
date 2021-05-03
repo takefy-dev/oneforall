@@ -12,6 +12,7 @@ module.exports = class Ready extends Event {
 
     async run(client, oldState, newState) {
         const guild = oldState.guild;
+        if(!oldState.guild.config) return
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
         let {voiceLog} = guild.logs;
         const {logs} = client.lang(guild.lang)

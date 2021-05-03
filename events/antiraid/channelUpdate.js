@@ -38,7 +38,7 @@ module.exports = class channelUpdate extends Event {
         if (diff <= 1000 ) {
 
            if (isWlBypass && !isWl || !isWlBypass) {
-               const member = guild.members.cache.get(action.executor.id)
+               const member = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
                const channel = guild.channels.cache.get(antiraidLog)
                 try {
                     oldChannel.edit({
@@ -76,7 +76,7 @@ module.exports = class channelUpdate extends Event {
                         await guild.member(action.executor.id).roles.cache
                             .map(role => roles.push(role.id))
 
-                        await guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: ${this.name}`)
+                        await guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: ${this.name}`)
                         if (action.executor.bot) {
                             let botRole = member.roles.cache.filter(r => r.managed)
                             // let r = guild.roles.cache.get(botRole.id)

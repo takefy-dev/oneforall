@@ -7,10 +7,18 @@ module.exports = (Sequelize, oneforall) => {
                 primaryKey: true
             },
             shop: {
-                type: Sequelize.JSON,
+                type: Sequelize.TEXT,
                 allowNull: true,
+                get: function () {
+                    return JSON.parse(this.getDataValue('shop'));
+                },
+                set: function (value) {
+                    this.setDataValue('shop', JSON.stringify(value));
+                },
 
             }
+        }, {
+            tableName: 'coinShop'
         })
         return oneforall.database.models
 

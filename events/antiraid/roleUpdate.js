@@ -40,7 +40,7 @@ module.exports = class roleUpdate extends Event {
 
 
         if (isWlBypass && !isWl || !isWlBypass) {
-            const member = guild.members.cache.get(action.executor.id)
+            const member = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
             const channel = guild.channels.cache.get(antiraidLog)
 
             try {
@@ -80,7 +80,7 @@ module.exports = class roleUpdate extends Event {
                     let roles = []
                     await guild.member(action.executor.id).roles.cache
                         .map(role => roles.push(role.id))
-                    await guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: roleUpdate`)
+                    await guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: roleUpdate`)
                     if (action.executor.bot) {
                         let botRole = member.roles.cache.filter(r => r.managed)
                         // let r = guild.roles.cache.get(botRole.id)

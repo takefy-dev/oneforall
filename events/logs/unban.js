@@ -10,6 +10,7 @@ module.exports = class Ready extends Event{
         });
     }
     async run(client, guild, user){
+        if(!guild.config) return
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
         let { modLog } = guild.logs;
         const { logs } = client.lang(guild.lang)
@@ -20,7 +21,7 @@ module.exports = class Ready extends Event{
         if(channel){
             const color = guild.color
 
-            const executor = guild.members.cache.get(action.executor.id);
+            const executor = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id);
             channel.send(logs.targetExecutorLogs('unban',executor, action.target, color))
         }
     }

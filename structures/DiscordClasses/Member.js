@@ -3,6 +3,7 @@ const {Logger} = require('advanced-command-handler');
 const StateManager = require('../../utils/StateManager');
 
 Structures.extend('GuildMember', (Member) => {
+  
     class CustomMember extends Member {
         constructor(client, data, guild) {
             super(client, data, guild)
@@ -12,13 +13,38 @@ Structures.extend('GuildMember', (Member) => {
             this.warns = [];
             this.invite = {join: 0, leave: 0, fake: 0, bonus: 0};
             this.inviter = null;
-            this.fetched = false;
             this.coins = null;
             this.inventory = null;
-            this.fetchWarns()
-            this.fetchWarns()
-            this.fetchInvite()
-            this.fetchCoins()
+            // this.fetchWarns()
+         
+
+            // this.fetchInvite()
+            // this.fetchCoins()
+            StateManager.on('coinsFetched', (guildId,  userId, coins) => {
+                if(guildId !== this.guildId) return;
+                if(userId !== this.user.id) return;
+                this.coins = coins
+            })
+            StateManager.on('inventoryFetched', (guildId,  userId, inventory) => {
+                if(guildId !== this.guildId) return;
+                if(userId !== this.user.id) return;
+                if(!inventory) return;
+                this.inventory = inventory
+
+            })
+            StateManager.on('inviteFecthed', (guildId,  userId, invite) => {
+                if(guildId !== this.guildId) return;
+                if(userId !== this.user.id) return;
+                this.invite = invite
+            })
+            StateManager.on('warnFetched', (guildId,  userId, warn) => {
+                if(guildId !== this.guildId) return;
+                if(userId !== this.user.id) return;
+                this.warns = warn.split(',')
+            })
+
+
+
         }
 
 

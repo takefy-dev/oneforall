@@ -17,8 +17,14 @@ module.exports = (Sequelize, oneforall) => {
                 allowNull: false
             },
             inventory: {
-                type: Sequelize.JSON,
+                type: Sequelize.TEXT,
                 allowNull: true,
+                get: function () {
+                    return JSON.parse(this.getDataValue('inventory'));
+                },
+                set: function (value) {
+                    this.setDataValue('inventory', JSON.stringify(value));
+                },
             }
         })
         return oneforall.database.models

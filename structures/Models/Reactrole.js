@@ -11,10 +11,18 @@ module.exports = (Sequelize, oneforall) => {
                 allowNull: false
             },
             emojiRole : {
-                type: Sequelize.JSON,
-                allowNull: false
+                type: Sequelize.TEXT,
+                allowNull: false,
+                get: function () {
+                    return JSON.parse(this.getDataValue('emojiRole'));
+                },
+                set: function (value) {
+                    this.setDataValue('emojiRole', JSON.stringify(value));
+                },
             }
 
+        }, {
+            tableName: 'reactRole'
         })
         return oneforall.database.models
 

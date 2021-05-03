@@ -15,6 +15,7 @@ module.exports = class messageUpdate extends Event {
         if (oldMessage.author.bot || newMessage.author.bot) return;
         if (!newMessage.guild) return;
         if(oldMessage.embeds.length < 1 && newMessage.embeds.length > 0) return;
+        if(!oldMessage.guild.config) return
         const {logs} = client.lang(oldMessage.guild.lang);
         let {msgLog} = oldMessage.guild.logs;
         if (msgLog === "Non définie") return msgLog = null;

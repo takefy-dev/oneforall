@@ -32,7 +32,7 @@ module.exports = class roleDelete extends Event {
 		if (isWlBypass) var isWl = guild.isGuildWl(action.executor.id);
 		if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `ROLE_DELETE`, 'pink');
 		if (isWlBypass && !isWl || !isWlBypass) {
-			const member = guild.members.cache.get(action.executor.id)
+			const member = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
 			const channel = guild.channels.cache.get(antiraidLog)
 			try {
 				await guild.roles.create({
@@ -74,7 +74,7 @@ module.exports = class roleDelete extends Event {
 					await guild.member(action.executor.id).roles.cache
 						.map(role => roles.push(role.id))
 
-					await guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: roleDelete`)
+					await guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: roleDelete`)
 					if (action.executor.bot) {
 						let botRole = member.roles.cache.filter(r => r.managed)
 

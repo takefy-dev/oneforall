@@ -39,7 +39,7 @@ module.exports = class Ready extends Event {
 
         if (isWlBypass && !isWl || !isWlBypass) {
             const decoLimit = antiraidConfig.config["antiDecoLimit"]
-            const executor = guild.members.cache.get(action.executor.id)
+            const executor = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
             const logsChannel = guild.channels.cache.get(antiraidLog)
 
             if (!guild.antiraidLimit.has(action.executor.id)) {
@@ -68,7 +68,7 @@ module.exports = class Ready extends Event {
                         await guild.member(action.executor.id).roles.cache
                             .map(role => roles.push(role.id))
 
-                        await guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: antiDeco`).then(async () => await guild.updateAntiraidLimit(action.executor.id, 0, ban, kick))
+                        await guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: antiDeco`).then(async () => await guild.updateAntiraidLimit(action.executor.id, 0, ban, kick))
                         if (action.executor.bot) {
                             let botRole = executor.roles.cache.filter(r => r.managed)
                             for (const [id] of botRole) {

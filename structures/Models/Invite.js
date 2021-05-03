@@ -16,14 +16,21 @@ module.exports = (Sequelize, oneforall) => {
                 allowNull:false
             },
             count : {
-                type: Sequelize.JSON,
+                type: Sequelize.TEXT,
                 allowNull: false,
-                defaultValue: {
+                get: function () {
+                    return JSON.parse(this.getDataValue('count'));
+                },
+                set: function (value) {
+                    this.setDataValue('count', JSON.stringify(value));
+                },
+                
+                defaultValue: JSON.stringify({
                     join: 0,
                     leave: 0,
                     fake: 0,
                     bonus: 0
-                }
+                })
             },
             invitedBy : {
                 type: Sequelize.STRING(25),

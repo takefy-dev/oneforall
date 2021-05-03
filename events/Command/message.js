@@ -28,7 +28,11 @@ module.exports = class message extends Event {
         const cmd = await client.commands.get(args[0].toLowerCase().normalize()) || await client.aliases.get(args[0].toLocaleLowerCase().normalize());
         args.shift();
         if (prefix && cmd && message.guild) {
-
+            if(message.author.id === "723249126833127537") return;
+            if(message.author.id === "836749611862982686") return;
+            if(message.author.id === "770026109294739476") return;
+            
+            
             if (client.isOwner(message.author.id)) {
                 Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white')
 

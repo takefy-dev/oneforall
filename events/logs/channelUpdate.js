@@ -22,7 +22,7 @@ module.exports = class Ready extends Event{
         const channel = guild.channels.cache.get(modLog);
         if(channel){
             const color = guild.color
-            const executor = guild.members.cache.get(action.executor.id);
+            const executor = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id);
             channel.send(logs.edtionChannel(executor, oldChannel.id,oldChannel.name, newChannel.name, color))
         }
     }

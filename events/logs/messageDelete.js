@@ -14,6 +14,7 @@ module.exports = class messageDelete extends Event {
         if (!message.author) return;
         if (message.author.bot) return;
         if (!message.guild) return;
+        if (!message.guild.config) return;
         // this.connection = StateManager.connection;
         // // snipes.clear();
         // snipes.set(message.channel.id, {
@@ -43,7 +44,7 @@ module.exports = class messageDelete extends Event {
 
         if (target.id === message.author.id) {
             // delete the message of
-            const member = message.guild.members.cache.get(executor.id)
+            const member = message.guild.members.cache.get(executor.id) || await message.guild.members.fetch(executor.id)
             channel.send(logs.messageDelete(member, message.author,message.channel.id, color,message.content))
 
         } else {

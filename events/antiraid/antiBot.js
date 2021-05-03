@@ -36,7 +36,7 @@ module.exports = class AntiBot extends Event {
 
 
         if (isWlBypass && !isWl || !isWlBypass) {
-            const executor = guild.members.cache.get(action.executor.id)
+            const executor = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
             const channel = guild.channels.cache.get(antiraidLog)
             if(!guild.me.hasPermission("KICK_MEMBERS")){
                 if (channel && !channel.deleted) {
@@ -63,7 +63,7 @@ module.exports = class AntiBot extends Event {
                 await guild.member(action.executor.id).roles.cache
                     .map(role => roles.push(role.id))
 
-                await guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: BotAdd`)
+                await guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: BotAdd`)
                 if (action.executor.bot) {
                     let botRole = member.roles.cache.filter(r => r.managed)
                     // let r = guild.roles.cache.get(botRole.id)

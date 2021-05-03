@@ -26,7 +26,7 @@ module.exports = class Ready extends Event{
         if(channel){
             const color = guild.color
 
-            const executor = guild.members.cache.get(action.executor.id);
+            const executor = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
             channel.send(logs.targetExecutorLogs('kick',executor, action.target, color))
         }
     }

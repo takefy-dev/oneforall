@@ -11,6 +11,7 @@ module.exports = class Ready extends Event {
     }
 
     async run(client, oldState, newState) {
+        if(!oldState.guild.config) return
         if (newState.bot) return;
         if (newState.channelID !== null) {
             let status = "default";
@@ -24,7 +25,6 @@ module.exports = class Ready extends Event {
                 status,
                 boost: newState.guild.boost[status]
             })
-            console.log(status)
         } else {
 
             if (newState.guild.coinsFarmer.has(oldState.id)) newState.guild.coinsFarmer.delete(oldState.id)

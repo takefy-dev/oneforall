@@ -7,8 +7,14 @@ module.exports = (Sequelize, oneforall) => {
                 primaryKey: true
             },
             tempvocInfo : {
-                type: Sequelize.JSON,
+                type: Sequelize.TEXT,
                 allowNull: false,
+                get: function () {
+                    return JSON.parse(this.getDataValue('tempvocInfo'));
+                },
+                set: function (value) {
+                    this.setDataValue('tempvocInfo', JSON.stringify(value));
+                },
                 defaultValue: {catId: "Non définie", chId: "Non définie", chName: "Non définie", isOn: false}
             },
 

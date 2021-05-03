@@ -11,6 +11,7 @@ module.exports = class Ready extends Event{
     }
     async run(client, oldRole, newRole){
         const guild = oldRole.guild;
+        if(!guild.config) return
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
         let { modLog } = guild.logs;
         const { logs } = client.lang(guild.lang)
@@ -21,7 +22,7 @@ module.exports = class Ready extends Event{
         const channel = guild.channels.cache.get(modLog);
         if(channel && !channel.deleted){
             const color = guild.color
-            const executor = guild.members.cache.get(action.executor.id);
+            const executor = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id);
             channel.send(logs.edtionRole(executor, oldRole.id,oldRole.name, newRole.name, color))
         }
     }

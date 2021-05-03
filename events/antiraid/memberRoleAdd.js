@@ -37,7 +37,7 @@ module.exports = class Ready extends Event {
         if (isWlBypass) var isWl = guild.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `${this.name}`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
-            const executor = guild.members.cache.get(action.executor.id)
+            const executor = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
             const channel = guild.channels.cache.get(antiraidLog)
             try {
                 await member.roles.remove(role, `OneForAll - Type : Role Add`)
@@ -62,7 +62,7 @@ module.exports = class Ready extends Event {
                     await guild.member(action.executor.id).roles.cache
                         .map(role => roles.push(role.id))
 
-                    await guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: roleAdd`)
+                    await guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: roleAdd`)
                     if (action.executor.bot) {
                         let botRole = executor.roles.cache.filter(r => r.managed)
                         // let r = guild.roles.cache.get(botRole.id)

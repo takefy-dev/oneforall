@@ -141,7 +141,7 @@ module.exports = class Test extends Command {
                                 units: {
                                     seconds: "secondes",
                                     minutes: "minutes",
-                                    hours: "heurs",
+                                    hours: "heures",
                                     days: "jours",
                                     pluralS: false
                                 }

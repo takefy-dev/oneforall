@@ -21,7 +21,13 @@ module.exports = (Sequelize, oneforall) => {
             },
             guildData : {
                 type: Sequelize.JSON,
-                allowNull: true
+                allowNull: true,
+                get: function () {
+                    return JSON.parse(this.getDataValue('guildData'));
+                },
+                set: function (value) {
+                    this.setDataValue('guildData', JSON.stringify(value));
+                },
             }
         })
         return oneforall.database.models

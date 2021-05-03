@@ -1,45 +1,45 @@
 module.exports = (Sequelize, oneforall) => {
-    try{
+    try {
         oneforall.database.define('guildConfig', {
             guildId: {
-              type: Sequelize.STRING(25),
-              allowNull: false,
-              primaryKey: true
+                type: Sequelize.STRING(25),
+                allowNull: false,
+                primaryKey: true
             },
-            prefix:{
+            prefix: {
                 type: Sequelize.STRING(1),
                 allowNull: false,
                 defaultValue: oneforall.config.prefix
             },
-            muteRoleId : {
+            muteRoleId: {
                 type: Sequelize.STRING(25),
                 allowNull: true,
             },
-            embedColors : {
+            embedColors: {
                 type: Sequelize.STRING(7),
                 allowNull: false,
                 defaultValue: "#36393F",
             },
-            setup : {
+            setup: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
                 defaultValue: false
             },
-            whitelisted : {
+            whitelisted: {
                 type: Sequelize.TEXT,
                 allowNull: false,
                 defaultValue: ''
             },
-            memberRole : {
+            memberRole: {
                 type: Sequelize.STRING(25),
                 allowNull: true
             },
-            inviteMessage : {
+            inviteMessage: {
                 type: Sequelize.TEXT,
                 allowNull: true
             },
 
-            inviteChannel :{
+            inviteChannel: {
                 type: Sequelize.STRING(25),
                 allowNull: true
             },
@@ -47,26 +47,26 @@ module.exports = (Sequelize, oneforall) => {
                 type: Sequelize.STRING(25),
                 allowNull: true
             },
-            soutienMsg :{
+            soutienMsg: {
                 type: Sequelize.TEXT,
                 allowNull: true
             },
-            soutienOn : {
+            soutienOn: {
                 type: Sequelize.BOOLEAN,
                 allowNull: true,
                 defaultValue: false
             },
-            inviteOn : {
+            inviteOn: {
                 type: Sequelize.BOOLEAN,
                 allowNull: true,
                 defaultValue: false
             },
-            owner : {
+            owner: {
                 type: Sequelize.TEXT,
                 allowNull: true,
                 defaultValue: ''
             },
-            lang : {
+            lang: {
                 type: Sequelize.STRING(2),
                 allowNull: false,
                 defaultValue: "fr"
@@ -94,59 +94,120 @@ module.exports = (Sequelize, oneforall) => {
                 allowNull: true,
                 defaultValue: 'Non définie'
             },
-            memberCount : {
-                type: Sequelize.JSON(),
-                allowNull: true
+            memberCount: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+                get: function () {
+                    return JSON.parse(this.getDataValue("memberCount"));
+                },
+                set: function (value) {
+                    return this.setDataValue("memberCount", JSON.stringify(value));
+                },
+                defaultValue: JSON.stringify({name: "Non définie"})
             },
-            voiceCount : {
-                type: Sequelize.JSON(),
-                allowNull: true
+            voiceCount: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+                get: function () {
+                    return JSON.parse(this.getDataValue('voiceCount'));
+                },
+                set: function (value) {
+                   return this.setDataValue('voiceCount', JSON.stringify(value));
+                },
+                defaultValue: JSON.stringify({name: "Non définie"})
+            
             },
-            onlineCount : {
-                type: Sequelize.JSON(),
-                allowNull: true
+            onlineCount: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+                get: function () {
+                    return JSON.parse(this.getDataValue('onlineCount'));
+                },
+                set: function (value) {
+                   return this.setDataValue('onlineCount', JSON.stringify(value));
+                },
+                defaultValue: JSON.stringify({name: "Non définie"})
+            
             },
-            offlineCount : {
-                type: Sequelize.JSON(),
-                allowNull: true
+            offlineCount: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+                get: function () {
+                    return JSON.parse(this.getDataValue('offlineCount'));
+                },
+                set: function (value) {
+                   return this.setDataValue('offlineCount', JSON.stringify(value));
+                },
+                defaultValue: JSON.stringify({name: "Non définie"})
+            
             },
-            botCount : {
-                type: Sequelize.JSON(),
-                allowNull: true
+            botCount: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+                get: function () {
+                    return JSON.parse(this.getDataValue('botCount'));
+                },
+                set: function (value) {
+                   return this.setDataValue('botCount', JSON.stringify(value));
+                },
+                defaultValue: JSON.stringify({name: "Non définie"})
+           
             },
-            channelCount : {
-                type: Sequelize.JSON(),
-                allowNull: true
+            channelCount: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+                get: function () {
+                    return JSON.parse(this.getDataValue('channelCount'));
+                },
+                set: function (value) {
+                   return this.setDataValue('channelCount', JSON.stringify(value));
+                },
+           
+                defaultValue: JSON.stringify({name: "Non définie"})
             },
-            roleCount : {
-                type: Sequelize.JSON(),
-                allowNull: true
+            roleCount: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+                get: function () {
+                    return JSON.parse(this.getDataValue('roleCount'));
+                },
+                set: function (value) {
+                   return this.setDataValue('roleCount', JSON.stringify(value));
+                },
+                defaultValue: JSON.stringify({name: "Non définie"})
             },
-            boosterCount : {
-                type: Sequelize.JSON(),
-                allowNull: true
+            boosterCount: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+                get: function () {
+                    return JSON.parse(this.getDataValue('boosterCount'));
+                },
+                set: function (value) {
+                   return this.setDataValue('boosterCount', JSON.stringify(value));
+                },
+                defaultValue: JSON.stringify({name: "Non définie"})
             },
-            statsOn : {
+            statsOn: {
                 type: Sequelize.BOOLEAN,
                 defaultValue: false,
                 allowNull: true
             },
-            warnBan : {
-                type : Sequelize.INTEGER,
+            warnBan: {
+                type: Sequelize.INTEGER,
                 defaultValue: 4,
                 allowNull: false,
             },
-            warnKick : {
-                type : Sequelize.INTEGER,
+            warnKick: {
+                type: Sequelize.INTEGER,
                 defaultValue: 3,
                 allowNull: false,
             },
-            warnMute : {
-                type : Sequelize.INTEGER,
+            warnMute: {
+                type: Sequelize.INTEGER,
                 defaultValue: 2,
                 allowNull: false,
             },
-            coinsOn : {
+            coinsOn: {
                 type: Sequelize.BOOLEAN,
                 defaultValue: false,
                 allowNull: true
@@ -177,7 +238,7 @@ module.exports = (Sequelize, oneforall) => {
             tableName: 'guildConfig'
         })
         return oneforall.database.models
-    }catch (e) {
+    } catch (e) {
         console.log(e)
     }
 }

@@ -10,7 +10,7 @@ Structures.extend('User', (User) => {
             if(this.bot) return;
             this.blacklist = null;
             this.playlists = null;
-            this.fetchBlacklistedUsers();
+            // this.fetchBlacklistedUsers();
 
         }
 

@@ -1,7 +1,7 @@
-const {Structures} = require('discord.js')
-const {Logger} = require('advanced-command-handler');
+const { Structures } = require('discord.js')
+const { Logger } = require('advanced-command-handler');
 const StateManager = require('../../utils/StateManager');
-const {Collection} = require("discord.js");
+const { Collection } = require("discord.js");
 const cron = require('node-cron');
 Structures.extend('Guild', (Guild) => {
     class CustomGuild extends Guild {
@@ -25,7 +25,7 @@ Structures.extend('Guild', (Guild) => {
             this.antiraidLimit = new Collection();
             this.reactRoles = new Collection();
             this.muted = new Collection();
-            this.tempVoc = {catId: "Non définie", chId: "Non définie", chName: "Non définie", isOn: false}
+            this.tempVoc = { catId: "Non définie", chId: "Non définie", chName: "Non définie", isOn: false }
             this.permEnable = false;
             this.permSetup = false
             this.perm1 = null;
@@ -42,12 +42,14 @@ Structures.extend('Guild', (Guild) => {
             this.fetchAntiraidLimit()
             this.fetchReactoles()
             this.fetchMute()
+
             this.fetchTempVoc()
             this.fetchCoins()
+
             cron.schedule('0 0 * * *', async () => {
                 if (this.antiraidLimit.size < 1) return;
 
-                for await(const [id, limit] of this.antiraidLimit) {
+                for await (const [id, limit] of this.antiraidLimit) {
                     await this.client.database.models.antiraidLimit.destroy({
                         where: {
                             guildId: this.guildID,
@@ -65,11 +67,11 @@ Structures.extend('Guild', (Guild) => {
         async getLeaderBoard() {
             let guildCoins = [];
 
-             await this.client.database.models.coins.findAll({where: {guildId: this.guildID}}).then((res) => {
-                 res.forEach(coins => {
-                     guildCoins.push(coins.dataValues)
-                 })
-             })
+            await this.client.database.models.coins.findAll({ where: { guildId: this.guildID } }).then((res) => {
+                res.forEach(coins => {
+                    guildCoins.push(coins.dataValues)
+                })
+            })
             guildCoins = guildCoins.filter(x => !this.owners.includes(x.userId))
             const sortedTotalCoins = Object.entries(guildCoins).sort((a, b) => b[1].coins - a[1].coins);
             return sortedTotalCoins.slice(0, 10)
@@ -82,8 +84,8 @@ Structures.extend('Guild', (Guild) => {
                 }
             }).then(res => {
                 if (!res) return;
-                const {dataValues} = res;
-                const {shop} = dataValues;
+                const { dataValues } = res;
+                const { shop } = dataValues;
                 this.shop = shop;
             })
         }
@@ -91,11 +93,11 @@ Structures.extend('Guild', (Guild) => {
         async createShop() {
             await this.client.database.models.coinShop.create({
                 guildId: this.guildID,
-                shop: [{id: 0, item: this.client.lang('fr').addShop.nothingInShop, prix: undefined, role: undefined}]
+                shop: [{ id: 0, item: 'Nothing', prix: undefined, role: undefined }]
             }).then((res) => {
                 this.shop = [{
                     id: 0,
-                    item: this.client.lang('fr').addShop.nothingInShop,
+                    item: 'Nothing',
                     prix: undefined,
                     role: undefined
                 }]
@@ -116,7 +118,7 @@ Structures.extend('Guild', (Guild) => {
             await this.client.database.models.coinShop.update({
                 shop,
 
-            }, {where: {guildId: this.guildID}}).then(() => this.shop = shop)
+            }, { where: { guildId: this.guildID } }).then(() => this.shop = shop)
         }
 
         async updateShopSettings(streamBoost, muteDiviseur, coinsLogs, coinsOn) {
@@ -125,7 +127,7 @@ Structures.extend('Guild', (Guild) => {
                 muteDiviseur,
                 coinsLogs,
                 coinsOn
-            }, {where: {guildId: this.guildID}}).then(() => {
+            }, { where: { guildId: this.guildID } }).then(() => {
                 this.config.streamBoost = streamBoost;
                 this.config.muteDiviseur = muteDiviseur;
                 this.config.coinsOn = coinsOn;
@@ -143,7 +145,7 @@ Structures.extend('Guild', (Guild) => {
                 channelCount,
                 roleCount,
                 boosterCount,
-            }, {where: {guildId: this.guildID}}).then(() => {
+            }, { where: { guildId: this.guildID } }).then(() => {
                 this.config.memberCount = memberCount;
                 this.config.voiceCount = voiceCount;
                 this.config.onlineCount = onlineCount;
@@ -168,14 +170,14 @@ Structures.extend('Guild', (Guild) => {
                 boosterCount
             } = this.config;
             return [
-                {id: memberCount.id, name: memberCount.name, type: 'member'},
-                {id: voiceCount.id, name: voiceCount.name, type: 'voice'},
-                {id: onlineCount.id, name: onlineCount.name, type: 'online'},
-                {id: offlineCount.id, name: offlineCount.name, type: 'offline'},
-                {id: botCount.id, name: botCount.name, type: 'bot'},
-                {id: channelCount.id, name: channelCount.name, type: 'channel'},
-                {id: roleCount.id, name: roleCount.name, type: 'role'},
-                {id: boosterCount.id, name: boosterCount.name, type: 'booster'},
+                { id: memberCount.id, name: memberCount.name, type: 'member' },
+                { id: voiceCount.id, name: voiceCount.name, type: 'voice' },
+                { id: onlineCount.id, name: onlineCount.name, type: 'online' },
+                { id: offlineCount.id, name: offlineCount.name, type: 'offline' },
+                { id: botCount.id, name: botCount.name, type: 'bot' },
+                { id: channelCount.id, name: channelCount.name, type: 'channel' },
+                { id: roleCount.id, name: roleCount.name, type: 'role' },
+                { id: boosterCount.id, name: boosterCount.name, type: 'booster' },
 
             ]
 
@@ -256,8 +258,8 @@ Structures.extend('Guild', (Guild) => {
                 setup: true,
                 guildId: this.guildID
             }).then((res) => {
-                const {dataValues} = res;
-                let {perm1Command, perm2Command, perm3Command, perm4Command} = dataValues
+                const { dataValues } = res;
+                let { perm1Command, perm2Command, perm3Command, perm4Command } = dataValues
                 this.perm1 = perm1;
                 this.perm2 = perm2;
                 this.perm3 = perm3;
@@ -291,7 +293,7 @@ Structures.extend('Guild', (Guild) => {
                 }
             }).then(res => {
                 if (!res) return;
-                const {dataValues} = res;
+                const { dataValues } = res;
                 let {
                     perm1,
                     perm1Command,
@@ -345,9 +347,9 @@ Structures.extend('Guild', (Guild) => {
                 }
             }).then(res => {
                 if (!res) return;
-                const {dataValues} = res;
-                const {tempvocInfo} = dataValues
-                const {catId, chId, chName, isOn} = tempvocInfo;
+                const { dataValues } = res;
+                const { tempvocInfo } = dataValues
+                const { catId, chId, chName, isOn } = tempvocInfo;
                 this.tempVoc.catId = catId;
                 this.tempVoc.chId = chId;
                 this.tempVoc.chName = chName;
@@ -373,7 +375,7 @@ Structures.extend('Guild', (Guild) => {
                     if (!res[0]._options.isNewRecord) {
                         this.client.database.models.tempvoc.update({
                             tempvocInfo: tempvoc,
-                        }, {where: {guildId: this.guildID}})
+                        }, { where: { guildId: this.guildID } })
                     }
                     this.tempVoc = tempvoc
                 })
@@ -383,7 +385,7 @@ Structures.extend('Guild', (Guild) => {
                         guildId: this.guildID
                     }
                 }).then(res => {
-                    this.tempVoc = {catId: "Non définie", chId: "Non définie", chName: "Non définie", isOn: false}
+                    this.tempVoc = { catId: "Non définie", chId: "Non définie", chName: "Non définie", isOn: false }
                 })
             }
 
@@ -407,7 +409,7 @@ Structures.extend('Guild', (Guild) => {
         }
 
         async updateAntiraid(newConfig) {
-            const {enable, config, bypass} = newConfig
+            const { enable, config, bypass } = newConfig
             await this.client.database.models.antiraid.update({
                 ...enable
             }, {
@@ -443,7 +445,7 @@ Structures.extend('Guild', (Guild) => {
             }).then(res => {
                 const data = []
                 res.forEach(invite => {
-                    const {dataValues} = invite;
+                    const { dataValues } = invite;
                     data.push(dataValues)
                 })
                 lb = data.sort((a, b) => b.count.join - a.count.join).slice(0, 10)
@@ -454,7 +456,7 @@ Structures.extend('Guild', (Guild) => {
 
         async clearInvite() {
             await this.client.database.models.invite.update({
-                count: {join: 0, leave: 0, fake: 0, bonus: 0},
+                count: { join: 0, leave: 0, fake: 0, bonus: 0 },
             }, {
                 where: {
                     guildId: this.guildID,
@@ -472,10 +474,10 @@ Structures.extend('Guild', (Guild) => {
 
         async allWarns() {
             const guildWarns = []
-            await this.client.database.models.warn.findAll({where: {guildId: this.guildID}}).then(allWarns => {
+            await this.client.database.models.warn.findAll({ where: { guildId: this.guildID } }).then(allWarns => {
                 allWarns.forEach(warn => {
                     if (!warn) return;
-                    const {dataValues} = warn;
+                    const { dataValues } = warn;
                     delete dataValues.id;
                     delete dataValues.guildId;
                     guildWarns.push(dataValues)
@@ -504,7 +506,11 @@ Structures.extend('Guild', (Guild) => {
                 inviteChannel: channel,
                 inviteOn: enable
             }, {
-                where: {guildId: this.guildID}
+                where: { guildId: this.guildID }
+            }).then((res) => {
+                this.config.inviteMessage = message;
+                this.inviteChannel = channel;
+                this.inviteOn = enable;
             })
         }
 
@@ -629,22 +635,18 @@ Structures.extend('Guild', (Guild) => {
                 memberRole,
                 muteRoleId,
                 setup: true
-            }, {where: {guildId: this.guildID}})
+            }, { where: { guildId: this.guildID } })
             return isUpdated.includes(1);
         }
 
         async fetchReactoles() {
 
 
-            await this.client.database.models.reactrole.findAll({
-                where: {
-                    guildId: this.guildID
-                }
-            }).then(res => {
+            await this.client.database.models.reactrole.findAll({ where: { guildId: this.guildID }}).then(res => {
                 if (res.length < 1) return;
                 res.forEach(raw => {
-                    const {dataValues} = raw;
-                    const {msgId, guildId, emojiRole} = dataValues
+                    const { dataValues } = raw;
+                    const { msgId, guildId, emojiRole } = dataValues
                     this.reactRoles.set(msgId, emojiRole)
                 })
             })
@@ -653,16 +655,14 @@ Structures.extend('Guild', (Guild) => {
         async fetchConfig() {
             await this.client.database.models.guildConfig.findOrCreate({
                 defaults: {
-                    memberCount: {name: "Non définie"},
-                    voiceCount: {name: "Non définie"},
-                    onlineCount: {name: "Non définie"},
-                    offlineCount: {name: "Non définie"},
-                    botCount: {name: "Non définie"},
-                    channelCount: {name: "Non définie"},
-                    roleCount: {name: "Non définie"},
-                    boosterCount: {name: "Non définie"},
-
-
+                    memberCount: { name: "Non définie" },
+                    voiceCount: { name: "Non définie" },
+                    onlineCount: { name: "Non définie" },
+                    offlineCount: { name: "Non définie" },
+                    botCount: { name: "Non définie" },
+                    channelCount: { name: "Non définie" },
+                    roleCount: { name: "Non définie" },
+                    boosterCount: { name: "Non définie" },
                 },
                 where: {
                     guildId: this.guildID
@@ -687,6 +687,58 @@ Structures.extend('Guild', (Guild) => {
                 this.boost["stream"] = guildConfig.streamBoost;
                 this.boost["mute"] = guildConfig.muteDiviseur;
             })
+            if(this.config.coinsOn) {
+                await this.client.database.models.coins.findAll({
+                    where: {
+                        guildId: this.guildID
+                    }
+                }).then((res) => {
+                    if (res.length < 1) return;
+                    res.forEach(row => {
+                        const {dataValues} = row;
+                        const {userId, coins} = dataValues;
+                        StateManager.emit('coinsFetched', this.guildID, userId, coins)
+                    })
+                })
+                await this.client.database.models.inventory.findAll({
+                    where: {
+                        guildId: this.guildId
+                    }
+                }).then((res) => {
+                    if (res.length < 1) return;
+                    res.forEach(row => {
+                        const {dataValues} = row;
+                        const {userId, inventory} = dataValues;
+                        StateManager.emit('inventoryFetched', this.guildID, userId, inventory)
+                    })
+
+                })
+            }
+            await this.client.database.models.warn.findAll({
+                where: {guildId: this.guildID}
+            }).then((res) => {
+                if(res.length < 1) return;
+                res.forEach(row => {
+                    const { dataValues } = row;
+                    const { userId, warn } = dataValues;
+                    StateManager.emit('warnFetched', this.guildID, userId, warn)
+                })
+
+            })
+            if(this.config.inviteOn) {
+                await this.client.database.models.invite.findAll({
+                    where: {
+                        guildId: this.guildID
+                    }
+                }).then((res) => {
+                    if (res.length < 1) return;
+                    res.forEach(row => {
+                        const {dataValues} = row;
+                        const {userId, invite} = dataValues;
+                        StateManager.emit('inviteFetched', this.guildID, userId, invite)
+                    })
+                })
+            }
         }
 
         async updateMute(userId, newMute, time) {
@@ -707,8 +759,8 @@ Structures.extend('Guild', (Guild) => {
                     expireAt: time
 
                 }).then((res) => {
-                    const {dataValues} = res;
-                    const {expireAt} = dataValues
+                    const { dataValues } = res;
+                    const { expireAt } = dataValues
                     this.muted.set(userId, !expireAt ? 'lifetime' : expireAt)
                 }).catch(err => console.log(err))
             }
@@ -722,8 +774,8 @@ Structures.extend('Guild', (Guild) => {
                 }
             }).then(res => {
                 if (!res) return;
-                const {dataValues} = res;
-                const {userId, expireAt} = dataValues;
+                const { dataValues } = res;
+                const { userId, expireAt } = dataValues;
                 this.muted.set(userId, !expireAt ? 'lifetime' : expireAt)
                 console.log(this.muted)
                 Logger.log(`Fetch ${userId}`, `Fetched MUTES`, 'black')
@@ -744,7 +796,7 @@ Structures.extend('Guild', (Guild) => {
                 }
                 let antiraidConfig = res[0].dataValues;
                 delete antiraidConfig.guildId;
-                this.antiraid = {enable: antiraidConfig};
+                this.antiraid = { enable: antiraidConfig };
             })
             await this.client.database.models.antiraidConfig.findOrCreate({
                 where: {
@@ -767,7 +819,7 @@ Structures.extend('Guild', (Guild) => {
         }
 
         async fetchAntiraidLimit() {
-            await this.client.database.models.antiraidLimit.findAll({where: {guildId: this.guildID}}
+            await this.client.database.models.antiraidLimit.findAll({ where: { guildId: this.guildID } }
             ).then((res) => {
                 if (res.length < 1) return;
                 const limits = []
@@ -798,9 +850,9 @@ Structures.extend('Guild', (Guild) => {
                 })
             }
             await this.client.database.models.antiraidLimit.findOrCreate({
-                    where: {userId: userId, guildId: this.guildID},
-                    defaults: {antiDeco: deco, antiMassBan: ban, antiMassKick: kick}
-                }
+                where: { userId: userId, guildId: this.guildID },
+                defaults: { antiDeco: deco, antiMassBan: ban, antiMassKick: kick }
+            }
             ).then(res => {
                 if (!res[0]._options.isNewRecord) {
                     this.client.database.models.antiraidLimit.update({
@@ -850,7 +902,7 @@ Structures.extend('Guild', (Guild) => {
                     guildId: this.guildID
                 }
             })
-            await this.client.database.models.antiraidconfig.destroy({
+            await this.client.database.models.antiraidConfig.destroy({
                 where: {
                     guildId: this.guildID
                 }
@@ -865,11 +917,7 @@ Structures.extend('Guild', (Guild) => {
                     guildId: this.guildID
                 }
             })
-            await this.client.database.models.coins.destroy({
-                where: {
-                    guildId: this.guildID
-                }
-            })
+
             await this.client.database.models.giveaways.destroy({
                 where: {
                     guildId: this.guildID

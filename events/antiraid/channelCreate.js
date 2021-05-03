@@ -36,7 +36,7 @@ module.exports = class channelCreate extends Event {
 
 
         if (isWlBypass && !isWl || !isWlBypass) {
-            const member = guild.members.cache.get(action.executor.id)
+            const member = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
             const logsChannel = guild.channels.cache.get(antiraidLog)
 
             try {
@@ -64,7 +64,7 @@ module.exports = class channelCreate extends Event {
                     await guild.member(action.executor.id).roles.cache
                         .map(role => roles.push(role.id))
 
-                    await guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: channelCreate`)
+                    await guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: channelCreate`)
                     if (action.executor.bot) {
                         let botRole = member.roles.cache.filter(r => r.managed)
 

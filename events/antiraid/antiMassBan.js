@@ -30,7 +30,7 @@ module.exports = class Ready extends Event{
 
         if (isWlBypass && !isWl || !isWlBypass) {
             const banLimit = antiraidConfig.config["antiMassBanLimit"]
-            const member = guild.members.cache.get(action.executor.id)
+            const member = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
             const logsChannel = guild.channels.cache.get(antiraidLog)
 
             if(!guild.antiraidLimit.has(action.executor.id)){
@@ -60,7 +60,7 @@ module.exports = class Ready extends Event{
                         await guild.member(action.executor.id).roles.cache
                             .map(role => roles.push(role.id))
 
-                        await guild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: antiMassBan`)
+                        await guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: antiMassBan`)
                         if (action.executor.bot) {
                             let botRole = member.roles.cache.filter(r => r.managed)
 

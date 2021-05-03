@@ -21,9 +21,9 @@ module.exports = class Test extends Command {
     }
 
     async run(client, message, args) {
+        return;
         const lang = client.lang(message.guild.lang)
 
-        this.connection = StateManager.connection;
         const color = message.guild.color
         const config = args[0] === "config";
         const count = args[0] === "count"

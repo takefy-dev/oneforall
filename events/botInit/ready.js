@@ -2,7 +2,7 @@
 const { DateTime } = require('luxon');
 const Event = require('../../structures/Handler/Event');
 const Discord = require('discord.js')
-const {Logger} = require("advanced-command-handler");
+const { Logger } = require("advanced-command-handler");
 const { GiveawaysManager } = require('discord-giveaways')
 const cron = require('node-cron')
 const Coins = require('../../utils/StartCoins')
@@ -28,7 +28,9 @@ module.exports = class Ready extends Event {
                     client.database.models.giveaways.findAll({
                         attributes: ['data']
                     }).then(res => {
-                        const giveaways = res.map((row) => row.data);
+                        const giveaways = res.map((row) => {
+                            return row.dataValues.data
+                        });
                         resolve(giveaways);
                     }).catch(err => console.log(err))
 
@@ -42,7 +44,7 @@ module.exports = class Ready extends Event {
                     client.database.models.giveaways.create({
                         message_id: messageID,
                         data: giveawayData
-                    }).then(() =>{
+                    }).then(() => {
                         resolve(true)
                     }).catch(err => console.log(err))
 
@@ -53,11 +55,11 @@ module.exports = class Ready extends Event {
                 return new Promise(function (resolve, reject) {
                     client.database.models.giveaways.update({
                         data: giveawayData
-                    },{
+                    }, {
                         where: {
                             message_id: messageID
                         }
-                    }).then(() =>{
+                    }).then(() => {
                         resolve(true)
                     }).catch(err => console.log(err))
 
@@ -71,7 +73,7 @@ module.exports = class Ready extends Event {
                         where: {
                             message_id: messageID
                         }
-                    }).then(() =>{
+                    }).then(() => {
                         resolve(true)
                     }).catch(err => console.log(err))
 
@@ -98,62 +100,50 @@ module.exports = class Ready extends Event {
         await musicEventsLauncher.musicEvent(client.music, client);
 
 
-        // setInterval(function () {
-        //     StateManager.emit('banCountReset')
-        // }, 8.64 * 10 ** 7);
-        // setInterval(function () {
-        // 	StateManager.emit('banCountReset')
-        // }, 60000);
-        // setInterval(function () {
-        //     StateManager.emit('kickCountReset')
-        // }, 4, 32 * 10 ** 7);
-        // setInterval(async function () {
-        // 	this.botperso = BotPerso.botperso;
-        // 	let guildArray;
-        // 	let guildCount;
-        // 	let channelArray;
-        // 	let userArray;
-        // 	await client.shard.fetchClientValues("guilds.cache.size").then((res) => {
-        // 		guildArray = res
-        // 	});
-        // 	await client.shard.fetchClientValues("channels.cache.size").then((res) => {
-        // 		channelArray = res
-        // 	});
-        // 	await client.shard.broadcastEval('this.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)')
-        // 		.then(results => {
-        // 			userArray = results.reduce((acc, memberCount) => acc + memberCount, 0).toLocaleString()
-        // 		})
-        // 	// await this.botperso.query(`UPDATE stats SET guildCount = '${guildArray.reduce((acc, guildCount) => acc + guildCount, 0).toLocaleString()}'`)
-        // 	// await this.botperso.query(`UPDATE stats SET channelCount = '${channelArray.reduce((acc, channelCount) => acc + channelCount, 0).toLocaleString()}'`)
-        // 	// await this.botperso.query(`UPDATE stats SET userCount = '${userArray}'`)
-        // 	// await this.botperso.query(`UPDATE stats SET guildCount = '${client.guilds.cache.size.toLocaleString()}'`)
-        // 	// await this.botperso.query(`UPDATE stats SET channelCount = '${client.channels.cache.size.toLocaleString()}'`)
-        // 	// await this.botperso.query(`UPDATE stats SET userCount = '${client.guilds.cache.filter(g => g.available).reduce((a, b) => a + b.memberCount, 0).toLocaleString()}'`)
-        // }, 20000)
+
+        setInterval(async function () {
+            let guildArray;
+            let guildCount;
+            let channelArray;
+            let userArray;
+            await client.shard.fetchClientValues("guilds.cache.size").then((res) => {
+                guildArray = res
+            });
+            await client.shard.fetchClientValues("channels.cache.size").then((res) => {
+                channelArray = res
+            });
+            await client.shard.broadcastEval('this.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)')
+                .then(results => {
+                    userArray = results.reduce((acc, memberCount) => acc + memberCount, 0).toLocaleString()
+                })
+            // await this.botperso.query(`UPDATE stats SET guildCount = '${guildArray.reduce((acc, guildCount) => acc + guildCount, 0).toLocaleString()}'`)
+            // await this.botperso.query(`UPDATE stats SET channelCount = '${channelArray.reduce((acc, channelCount) => acc + channelCount, 0).toLocaleString()}'`)
+            // await this.botperso.query(`UPDATE stats SET userCount = '${userArray}'`)
+            // await this.botperso.query(`UPDATE stats SET guildCount = '${client.guilds.cache.size.toLocaleString()}'`)
+            // await this.botperso.query(`UPDATE stats SET channelCount = '${client.channels.cache.size.toLocaleString()}'`)
+            // await this.botperso.query(`UPDATE stats SET userCount = '${client.guilds.cache.filter(g => g.available).reduce((a, b) => a + b.memberCount, 0).toLocaleString()}'`)
+        }, 20000)
 
         /**
          * Log information of the bot in the console.
          * @returns {void}
          */
-        function log() {
-            Logger.event(`Date : ${Logger.setColor('yellow', DateTime.local().toFormat('TT'))}`);
-            Logger.event(`RAM used  : ${Logger.setColor('magenta', (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2))} ` + Logger.setColor('magenta', 'MB'));
-        }
+  
 
         Logger.event(
             Logger.setColor('#c0433f', `Client online ! Client ${Logger.setColor('orange', client.user.username, '#c0433f')} has ${client.guilds.cache.size + Logger.setColor('#c0433f')
-            } guilds, it sees ${client.users.cache.size + Logger.setColor('#c0433f')
-            } users.`)
+                } guilds, it sees ${client.users.cache.size + Logger.setColor('#c0433f')
+                } users.`)
         );
-        // setInterval(async() => {
-        // 	let guildArray;
+        setInterval(async() => {
+        	let guildArray;
 
-        // 	await client.shard.fetchClientValues("guilds.cache.size").then((res) => {
-        // 		guildArray = res
-        // 	});
+        	await client.shard.fetchClientValues("guilds.cache.size").then((res) => {
+        		guildArray = res
+        	});
 
-        // 	client.user.setActivity(`${guildArray.reduce((prev, guildCount) => prev + guildCount, 0)} Servers | !help`, { type: 'WATCHING' })
-        // }, 60000); // Runs this every 60 seconds.
+        	client.user.setActivity(`${guildArray.reduce((prev, guildCount) => prev + guildCount, 0)} Servers | !help`, { type: 'WATCHING' })
+        }, 60000); // Runs this every 60 seconds.
         // if(client.BotPerso) {
         // 	const fs = require('fs');
         // 	const path = './config.json';
@@ -163,12 +153,15 @@ module.exports = class Ready extends Event {
         // 		await client.users.fetch(process.env.OWNER, true)
         // 	}
         // }
+        // client.guilds.cache.forEach(guild => {
+        //     client.users.fetch(guild.owner.user.id, true)
+        //     Logger.log(`${guild.owner.user.username}`, `Fetching guild owners`, `white`)
+
+        // })
         client.guilds.cache.forEach(guild => {
-            client.users.fetch(guild.owner.user.id, true)
-            Logger.log(`${guild.owner.user.username}`, `Fetching guild owners`, `white`)
-
+            if(guild.deleted) return guild.leave();
+            if(!guild.available )  return guild.leave();
         })
-
 
 
         cron.schedule('*/10 * * * *', () => {
@@ -183,9 +176,9 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            guild.config.memberCount = {name: 'Non définie', type: `${memberInfo[0].type}`}
+                            guild.config.memberCount = { name: 'Non définie', type: `${memberInfo[0].type}` }
 
-                            return client.database.models.guildConfig.update({memberCount: {name: 'Non définie', type: `${memberInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({ memberCount: { name: 'Non définie', type: `${memberInfo[0].type}` }, where: { guildId: guild.id } })
 
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Member count error`);
@@ -204,9 +197,9 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            guild.config.botCount = {name: 'Non définie', type: `${botInfo[0].type}`}
+                            guild.config.botCount = { name: 'Non définie', type: `${botInfo[0].type}` }
 
-                            return client.database.models.guildConfig.update({botCount: {name: 'Non définie', type: `${botInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({ botCount: { name: 'Non définie', type: `${botInfo[0].type}` }, where: { guildId: guild.id } })
 
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Bot count error`);
@@ -229,9 +222,9 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            guild.config.voiceCount = {name: 'Non définie', type: `${voiceInfo[0].type}`}
+                            guild.config.voiceCount = { name: 'Non définie', type: `${voiceInfo[0].type}` }
 
-                            return client.database.models.guildConfig.update({voiceCount: {name: 'Non définie', type: `${voiceInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({ voiceCount: { name: 'Non définie', type: `${voiceInfo[0].type}` }, where: { guildId: guild.id } })
 
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Voice count error`);
@@ -254,9 +247,9 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            guild.config.onlineCount = {name: 'Non définie', type: `${onlineInfo[0].type}`}
+                            guild.config.onlineCount = { name: 'Non définie', type: `${onlineInfo[0].type}` }
 
-                            return client.database.models.guildConfig.update({onlineCount: {name: 'Non définie', type: `${onlineInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({ onlineCount: { name: 'Non définie', type: `${onlineInfo[0].type}` }, where: { guildId: guild.id } })
 
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Online count error`);
@@ -277,9 +270,9 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            guild.config.offlineCount = {name: 'Non définie', type: `${offlineInfo[0].type}`}
+                            guild.config.offlineCount = { name: 'Non définie', type: `${offlineInfo[0].type}` }
 
-                            return client.database.models.guildConfig.update({offlineCount: {name: 'Non définie', type: `${offlineInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({ offlineCount: { name: 'Non définie', type: `${offlineInfo[0].type}` }, where: { guildId: guild.id } })
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Offline count error`);
                             return console.log(err);
@@ -301,9 +294,9 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            guild.config.channelCount = {name: 'Non définie', type: `${channelInfo[0].type}`}
+                            guild.config.channelCount = { name: 'Non définie', type: `${channelInfo[0].type}` }
 
-                            return client.database.models.guildConfig.update({channelCount: {name: 'Non définie', type: `${channelInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({ channelCount: { name: 'Non définie', type: `${channelInfo[0].type}` }, where: { guildId: guild.id } })
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Channel count error`);
                             return console.log(err);
@@ -324,9 +317,9 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            guild.config.roleCount = {name: 'Non définie', type: `${roleInfo[0].type}`}
+                            guild.config.roleCount = { name: 'Non définie', type: `${roleInfo[0].type}` }
 
-                            return client.database.models.guildConfig.update({roleCount: {name: 'Non définie', type: `${roleInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({ roleCount: { name: 'Non définie', type: `${roleInfo[0].type}` }, where: { guildId: guild.id } })
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `role count error`);
                             return console.log(err);
@@ -348,9 +341,9 @@ module.exports = class Ready extends Event {
                     if (!channel) {
                         try {
                             Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
-                            guild.config.boosterCount = {name: 'Non définie', type: `${boosterInfo[0].type}`}
+                            guild.config.boosterCount = { name: 'Non définie', type: `${boosterInfo[0].type}` }
 
-                            return client.database.models.guildConfig.update({boosterCount: {name: 'Non définie', type: `${boosterInfo[0].type}`}, where:{guildId: guild.id}})
+                            return client.database.models.guildConfig.update({ boosterCount: { name: 'Non définie', type: `${boosterInfo[0].type}` }, where: { guildId: guild.id } })
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Boost count error`);
                             return console.log(err);
@@ -371,7 +364,7 @@ module.exports = class Ready extends Event {
         setTimeout(async () => {
             await new Coins(client).init()
 
-        }, 5000)
+        }, 10000)
 
     }
 }
