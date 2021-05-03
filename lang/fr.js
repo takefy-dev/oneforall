@@ -24,7 +24,9 @@ module.exports = {
         notGuildOwner: `Seulement le propiétaire du serveur peut executer cette action`,
         voiceChat: `Vous devez être dans un salon vocal pour executer cette commande`,
         MissingPermission: `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
-        includesEveryoneMention: `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`
+        includesEveryoneMention: `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`,
+         userPermissions : (perm) => `Vous n'avez pas la permission requise \`${perm}\``,
+        clientPermissions : (perm) => `Je n'ai pas la permission requise \`${perm}\``
     },
     ping: {
         pinging: "Pinging...",
