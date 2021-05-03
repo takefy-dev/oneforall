@@ -20,10 +20,18 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
         let owner = message.guild.ownerID;
-
+        if(client.botperso) {
+            const fs = require('fs');
+            const path = './config.json';
+            if (fs.existsSync(path)) {
+                owner = require('../../config.json').owner
+            } else {
+                owner = process.env.OWNER
+            }
+        }
         const color = message.guild.color
         const lang = client.lang(message.guild.lang)
-        let guildOwner = await client.users.cache.get(owner)
+        let guildOwner = await client.users.cache.get(owner) || await client.users.fetch(owner, true)
 
         let guildOwnerBlacklisted = guildOwner.blacklist;
         let tempdata = !guildOwnerBlacklisted ? null : guildOwnerBlacklisted.blacklisted;
