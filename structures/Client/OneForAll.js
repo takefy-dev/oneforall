@@ -42,8 +42,8 @@ module.exports = class OneForAll extends Client {
         this.database = new Sequelize(name, user,pass, {
             dialect: 'mysql',
             define: {
-                charset: "utf8",
-                collate: "utf8_general_ci",
+                charset: 'utf8',
+                collate: 'utf8_general_ci',
                 timestamps: false,
                 freezeTableName: true,
 
@@ -59,7 +59,7 @@ module.exports = class OneForAll extends Client {
             //     acquire: 60000,
             //     idle: 10000
             // },
-            logging: false
+            logging: true
         })
         logs(this)
         this.loadCommands();

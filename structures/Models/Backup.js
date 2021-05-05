@@ -26,6 +26,7 @@ module.exports = (Sequelize, oneforall) => {
                     return JSON.parse(this.getDataValue('guildData'));
                 },
                 set: function (value) {
+                    console.log(value)
                     return this.setDataValue('guildData', JSON.stringify(value));
                 },
             }

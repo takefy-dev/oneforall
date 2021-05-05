@@ -168,6 +168,7 @@ module.exports = class Test extends Command {
                             doNotBackup: doNotBackup.get(message.author.id),
                             jsonSave: false // so the backup won't be saved to a json file
                         }).then(async (backupData) => {
+                            console.log(backupData)
                             await message.author.createBackup(backupData.id, message.guild.name, backupData).then(() =>{
                                 doNotBackup.delete(message.author.id)
                                 message.guild.edit({

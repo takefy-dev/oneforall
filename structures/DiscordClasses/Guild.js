@@ -691,7 +691,7 @@ Structures.extend('Guild', (Guild) => {
                 } else {
                     Logger.log(`GUILD : ${this.guildID}`, `Fetched`, 'pink')
                 }
-                let guildConfig = res[0].dataValues;
+                let guildConfig = res[0].get();
                 delete guildConfig.guildId;
                 this.config = guildConfig;
                 this.prefix = guildConfig.prefix;

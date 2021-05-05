@@ -71,7 +71,7 @@ module.exports = class Test extends Command {
             const color = guild.color;
 
             if (channel && !channel.deleted) {
-                channel.send(channel.send(logs.targetExecutorLogs("ban", message.member, member, color)))
+                channel.send(channel.send(logs.targetExecutorLogs("ban", message.member, user, color)))
             }
             const antiraidConfig = guild.antiraid;
             let {antiraidLog} = guild.logs;
@@ -120,13 +120,13 @@ module.exports = class Test extends Command {
 
                         }
                         if (logsChannel && !logsChannel.deleted) {
-                            logsChannel.send(logs.targetExecutorLogs("ban", message.member, member, color, sanction))
+                            logsChannel.send(logs.targetExecutorLogs("ban", message.member, user, color, sanction))
                         }
                         await guild.updateAntiraidLimit(message.author.id, deco, 0, kick)
 
                     } else {
                         if (logsChannel && !logsChannel.deleted) {
-                            logsChannel.send(logs.targetExecutorLogs("ban", message.member, member, color, "Je n'ai pas assé de permissions"))
+                            logsChannel.send(logs.targetExecutorLogs("ban", message.member, user, color, "Je n'ai pas assé de permissions"))
                         }
                         await guild.updateAntiraidLimit(message.author.id, deco, 0, kick)
 

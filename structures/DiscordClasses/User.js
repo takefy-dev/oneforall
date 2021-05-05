@@ -91,7 +91,8 @@ Structures.extend('User', (User) => {
         async getBackup(backupId){
             const  backup = await this.client.database.models.backup.findOne({where: {backupId}})
             if(!backup) return null
-            return backup.dataValues
+            console.log(backup)
+            return backup.get()
         }
 
         async deleteBackup(backupId){
