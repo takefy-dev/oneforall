@@ -45,7 +45,7 @@ module.exports = class Test extends Command {
             .setColor(color)
             .addField('<a:fleche:786340501531262977> **INFORMATIONS:**', [
                 `Date de création: **${utc(client.user.createdTimestamp).format('Do MMMM YYYY HH:mm:ss')}**`,
-                `Developers: **TAKEFY#9831, rh#0002, qzzzz#0101**`,
+                `Developers: **TAKEFY#9831, baby#1337, qzzzz#0101**`,
                 `Node.js: **${process.version}**`,
                 `Version: **v${version}**`,
                 `Discord.js: **v${djsversion}**`,
