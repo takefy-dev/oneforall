@@ -22,7 +22,7 @@ module.exports = class Test extends Command {
 
         let owner = message.guild.ownerID;
 
-        if (client.BotPerso) {
+        if (client.botperso) {
             const fs = require('fs');
             const path = './config.json';
             if (fs.existsSync(path)) {

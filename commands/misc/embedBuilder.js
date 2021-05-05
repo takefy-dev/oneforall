@@ -480,7 +480,7 @@ module.exports = class Test extends Command {
                             .then(async cld => {
                                 let msgs = cld.first();
                                 const channel = msgs.mentions.channels.first() || msgs.guild.channels.cache.get(msgs.content);
-                                if (!client.BotPerso) {
+                                if (!client.botperso) {
                                     if (thumbnail.get(message.guild.id) != undefined) {
                                         client.shard.broadcastEval(`
                                     (async () => {

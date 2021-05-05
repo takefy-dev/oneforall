@@ -59,7 +59,7 @@ module.exports = class OneForAll extends Client {
             //     acquire: 60000,
             //     idle: 10000
             // },
-            logging: true
+            logging: false
         })
         logs(this)
         this.loadCommands();

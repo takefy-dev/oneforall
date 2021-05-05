@@ -65,7 +65,7 @@ module.exports = class Test extends Command {
         }
         if (add) {
             let memberUser = message.mentions.users.first() || await client.users.fetch(args[1], true)
-            if (!memberUser && !client.BotPerso) {
+            if (!memberUser && !client.botperso) {
                 client.shard.broadcastEval(`this.users.cache.get('${args[1]}')`).then((res) => {
                     memberUser = res.filter(user => user !== null);
                 })
@@ -137,7 +137,7 @@ module.exports = class Test extends Command {
             })
         } else if (remove) {
             let memberUser = message.mentions.users.first() || await client.users.fetch(args[1], true)
-            if (!memberUser && !client.BotPerso) {
+            if (!memberUser && !client.botperso) {
                 client.shard.broadcastEval(`this.users.cache.get('${args[1]}')`).then((res) => {
                     memberUser = res.filter(user => user !== null);
                 })
@@ -170,7 +170,7 @@ module.exports = class Test extends Command {
                         .then(() => {
                             message.channel.send(lang.blacklist.successUnBanBl(memberUser)).then(async () => {
                                 try {
-                                    if (client.BotPerso) {
+                                    if (client.botperso) {
                                         let guildCount = client.guilds.cache.filter(guild => guild.ownerID === owner && guild.id !== message.guild.id).size;
                                         await client.guilds.cache.filter(guild => guild.members.cache.has(owner) && guild.id !== message.guild.id).forEach(guild => {
                                             guild.members.unban(memberUser.id, {reason: `UnBlacklist par ${message.author.tag}`,})
@@ -216,7 +216,7 @@ module.exports = class Test extends Command {
                 const tempMember = []
                 for (let ids of tempdata) {
                     let user;
-                    if (client.BotPerso) {
+                    if (client.botperso) {
                         if (!client.users.cache.has(ids)) {
                             user = await client.users.fetch(ids)
 

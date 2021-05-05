@@ -24,18 +24,8 @@ module.exports = class Test extends Command {
 
         const lang = client.lang(message.guild.lang)
 
-        let owner = message.guild.ownerID;
 
-        if (client.BotPerso) {
-            const fs = require('fs');
-            const path = './config.json';
-            if (fs.existsSync(path)) {
-                owner = require('../../config.json').owner;
-            } else {
-                owner = process.env.OWNER
-            }
-        }
-            const color = message.guild.color
+        const color = message.guild.color
         const principalMsg = await message.channel.send(lang.loading)
         const emoji = ['🎥', '😶', '💌', '❌', '🌀', '✅']
         for (const em of emoji) {

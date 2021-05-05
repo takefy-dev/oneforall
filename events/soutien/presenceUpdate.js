@@ -13,7 +13,7 @@ module.exports = class presenceUpdate extends Event {
 
     async run(client, oldMember, newMember) {
         this.connection = StateManager.connection;
-        if (!client.BotPerso) return;
+        if (!client.botperso) return;
         client.guilds.cache.forEach(guild => {
 
             if (!oldMember) return;

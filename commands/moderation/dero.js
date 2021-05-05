@@ -24,17 +24,8 @@ module.exports = class Test extends Command {
         const color = message.guild.color
         const lang = client.lang(message.guild.lang)
         let success;
-        let owner = message.guild.ownerID;
 
-        if (client.BotPerso) {
-            const fs = require('fs');
-            const path = './config.json';
-            if (fs.existsSync(path)) {
-                owner = require('../../config.json').owner;
-            } else {
-                owner = process.env.OWNER
-            }
-        }
+
 
         if (args[0].toLowerCase() !== 'off') {
             const channels = message.guild.channels.cache
