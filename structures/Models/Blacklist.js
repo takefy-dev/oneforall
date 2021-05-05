@@ -12,13 +12,13 @@ module.exports = (Sequelize, oneforall) => {
                 defaultValue: false,
             },
             blacklisted: {
-                type : Sequelize.TEXT,
+                type : Sequelize.TEXT("text"),
                 allowNull: false,
                 defaultValue: ''
             }
         }, {
             tableName: 'blacklist'
-        })+0
+        })
         return oneforall.database.models
     }catch (e) {
         console.log(e)

@@ -47,7 +47,7 @@ module.exports = class Test extends Command {
                 .setTimestamp();
             return message.channel.send(hEmbed)
         }
-        const memberRole = message.guild.roles.cache.get(guildMemberRole.get(message.guild.id));
+        const memberRole = message.guild.roles.cache.get(message.guild.config.memberRole);
         if (lockAllOn) {
             channels.forEach(channel => {
                 channel.updateOverwrite(memberRole, {

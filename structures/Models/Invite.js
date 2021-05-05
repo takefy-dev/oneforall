@@ -22,7 +22,7 @@ module.exports = (Sequelize, oneforall) => {
                     return JSON.parse(this.getDataValue('count'));
                 },
                 set: function (value) {
-                    this.setDataValue('count', JSON.stringify(value));
+                    return this.setDataValue('count', JSON.stringify(value));
                 },
                 
                 defaultValue: JSON.stringify({

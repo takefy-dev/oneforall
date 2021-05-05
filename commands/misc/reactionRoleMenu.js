@@ -210,7 +210,7 @@ module.exports = class Test extends Command {
                                                 emojiRoleMapping.set(emoji.name, role.id)
                                                 updateEmbed()
                                                 setTimeout(async () => {
-                                                    msg.delete()
+                                                    await msg.delete()
                                                     mp.delete()
                                                     mps.delete()
                                                 }, 2000)
@@ -218,7 +218,7 @@ module.exports = class Test extends Command {
                                             }
                                             if (emoji.id != null) {
                                                 let emojis;
-                                                if (client.BotPerso) {
+                                                if (client.botperso) {
                                                     emojis = client.emojis.cache.get(emoji.id)
 
                                                 } else {
@@ -226,7 +226,7 @@ module.exports = class Test extends Command {
                                                         emojis = result.filter(em => em !== null)[0]
                                                     })
                                                 }
-                                                if (emojis == undefined) {
+                                                if (emojis === undefined) {
                                                     await message.channel.send(lang.reactionRole.emojiDoesNotExist).then(async mp => {
                                                         mp.channel.awaitMessages(dureefiltrer, {
                                                             max: 1,

@@ -16,17 +16,17 @@ module.exports = (Sequelize, oneforall) => {
                 allowNull: false
             },
             guildName : {
-                type : Sequelize.TEXT,
+                type : Sequelize.TEXT("long"),
                 allowNull: false
             },
             guildData : {
-                type: Sequelize.JSON,
+                type: Sequelize.TEXT('long'),
                 allowNull: true,
                 get: function () {
                     return JSON.parse(this.getDataValue('guildData'));
                 },
                 set: function (value) {
-                    this.setDataValue('guildData', JSON.stringify(value));
+                    return this.setDataValue('guildData', JSON.stringify(value));
                 },
             }
         })

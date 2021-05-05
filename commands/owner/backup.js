@@ -1,6 +1,5 @@
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
 const backup = require('discord-backup')
 const DateFormat = require('fast-date-format');
 let loadTimeout = new Map();
@@ -42,7 +41,7 @@ module.exports = class Test extends Command {
             message.channel.send(helpEmbed)
         }
         if (create) {
-
+        
             const Discord = require('discord.js')
             const filter = (reaction, user) => ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '❌', '✅'].includes(reaction.emoji.name) && user.id === message.author.id,
                 dureefiltrer = response => {

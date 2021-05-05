@@ -20,19 +20,11 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
         let owner = message.guild.ownerID;
-        if(client.botperso) {
-            const fs = require('fs');
-            const path = './config.json';
-            if (fs.existsSync(path)) {
-                owner = require('../../config.json').owner
-            } else {
-                owner = process.env.OWNER
-            }
-        }
+
         const color = message.guild.color
         const lang = client.lang(message.guild.lang)
         let guildOwner = await client.users.cache.get(owner) || await client.users.fetch(owner, true)
-
+        await guildOwner.fetchBlacklistedUsers()
         let guildOwnerBlacklisted = guildOwner.blacklist;
         let tempdata = !guildOwnerBlacklisted ? null : guildOwnerBlacklisted.blacklisted;
 
@@ -109,7 +101,7 @@ module.exports = class Test extends Command {
                         .then(() => {
                             message.channel.send(lang.blacklist.successBanBl(memberUser)).then(async () => {
                                 try {
-                                    if (client.BotPerso) {
+                                    if (client.botperso) {
                                         let guildCount = client.guilds.cache.filter(guild => guild.ownerID === owner && guild.id !== message.guild.id).size;
                                         await client.guilds.cache.filter(guild => guild.members.cache.has(owner) && guild.id !== message.guild.id).forEach(guild => {
                                             guild.members.ban(memberUser.id, {reason: `Blacklist par ${message.author.tag}`,})

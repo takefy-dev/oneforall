@@ -1,3 +1,4 @@
+const StateManager = require('../../utils/StateManager');
 const Discord = require('discord.js')
 
 
@@ -11,8 +12,10 @@ module.exports = class presenceUpdate extends Event {
     }
 
     async run(client, oldMember, newMember) {
-        if (!client.botperso) return;
+        this.connection = StateManager.connection;
+        if (!client.BotPerso) return;
         client.guilds.cache.forEach(guild => {
+
             if (!oldMember) return;
             const msg = guild.config.soutienMsg
             const roleId = guild.config.soutienId

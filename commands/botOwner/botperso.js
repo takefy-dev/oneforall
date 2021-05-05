@@ -37,14 +37,11 @@ module.exports = class Test extends Command{
                 name: 'takefy',
                 auth: 'RerVzLrdYXBrC479'
             },
-            '443812465772462090': {
+            '831248681004171305': {
                 name: 'kpri',
                 auth: 'A6nhLtkA8cwP3tGG'
             },
-            '743853024312819816': {
-                name: 'alpha',
-                auth: 'UQE9Rjp8Xx5yxmm7'
-            },
+           
             '771891030814490624': {
                 name: 'rheus',
                 auth: 'ytAMTQMRH5TtB5fA'
@@ -104,26 +101,9 @@ module.exports = class Test extends Command{
             }
             const formattime = dateFormater.formatDate(new Date(time), 'yyyy-MM-dd');
             console.log(time)
-            const discordName = member.nickname === null ? member.user.username : member.nickname;
+            const discordName = !member.nickname ? member.user.username : member.nickname;
             const botpersoSqlPath = `/home/oneforall/assets/botperso.sql`
-            try {
-                this.botperso.query(`CREATE DATABASE ${discordName}`).then(() => {
-                    importer.config({
-                        'host': 'localhost',
-                        'user': process.env.DB_USER,
-                        'password': process.env.DB_PASS,
-                        'database': discordName
-                    })
-                    importer.importSQL(botpersoSqlPath).then(() => {
-                        console.log('Dump database')
-                    }).catch(err => {
-                        console.log(`error: ${err}`)
-                    })
-
-                })
-            } catch (err) {
-                return message.channel.send(`J'ai pas pu créer la db`)
-            }
+          
 
             try {
                 const newBot = {

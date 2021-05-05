@@ -354,13 +354,14 @@ Structures.extend('Guild', (Guild) => {
                 }
             }).then(res => {
                 if (!res) return;
-                const { dataValues } = res;
-                const { tempvocInfo } = dataValues
-                const { catId, chId, chName, isOn } = tempvocInfo;
+
+
+                const { catId, chId, chName, isOn } = res.get().tempvocInfo;
                 this.tempVoc.catId = catId;
                 this.tempVoc.chId = chId;
                 this.tempVoc.chName = chName;
                 this.tempVoc.isOn = isOn;
+
 
             })
         }
@@ -642,7 +643,11 @@ Structures.extend('Guild', (Guild) => {
                 memberRole,
                 muteRoleId,
                 setup: true
-            }, { where: { guildId: this.guildID } })
+            }, { where: { guildId: this.guildID } }).then(() => {
+                this.config.memberRole = memberRole;
+                this.config.muteRoleId = muteRoleId;
+                this.config.setup = true;
+            })
             return isUpdated.includes(1);
         }
 
@@ -654,7 +659,7 @@ Structures.extend('Guild', (Guild) => {
                 res.forEach(raw => {
                     const { dataValues } = raw;
                     let { msgId, guildId, emojiRole } = dataValues
-                    if(typeof emojiRole !== "Object"){ 
+                    if(typeof emojiRole !== "object"){
                         emojiRole = JSON.parse(emojiRole)
                         console.log("parsing reactrole");
                     }

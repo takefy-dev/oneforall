@@ -154,7 +154,7 @@ module.exports = class Ready extends Event {
 
         client.guilds.cache.forEach( guild => {
             const user = client.users.cache.get(guild.ownerID)
-            if (user.tag) {
+            if (user) {
                 user.fetchBlacklistedUsers();
             }
             // Logger.log(`${guild.owner.user.username}`, `Fetching guild owners`, `white`)

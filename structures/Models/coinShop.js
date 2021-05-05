@@ -7,13 +7,13 @@ module.exports = (Sequelize, oneforall) => {
                 primaryKey: true
             },
             shop: {
-                type: Sequelize.TEXT,
+                type: Sequelize.TEXT("long"),
                 allowNull: true,
                 get: function () {
                     return JSON.parse(this.getDataValue('shop'));
                 },
                 set: function (value) {
-                    this.setDataValue('shop', JSON.stringify(value));
+                    return this.setDataValue('shop', JSON.stringify(value));
                 },
 
             }

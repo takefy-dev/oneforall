@@ -17,7 +17,7 @@ module.exports = (Sequelize, oneforall) => {
                 allowNull: false
             },
             inventory: {
-                type: Sequelize.TEXT,
+                type: Sequelize.TEXT("long"),
                 allowNull: true,
                 get: function () {
                     return JSON.parse(this.getDataValue('inventory'));

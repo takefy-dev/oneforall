@@ -28,7 +28,7 @@ module.exports = class Test extends Command {
 
         if (!giveaway) return message.channel.send("Je ne trouve pas de giveaway avec cette ID/nom");
 
-        client.giveaways.reroll(giveaway.messageID)
+        client.giveaway.reroll(giveaway.messageID)
             .then(() => {
                 message.channel.send('Le giveaway a été **__reroll__**')
             })

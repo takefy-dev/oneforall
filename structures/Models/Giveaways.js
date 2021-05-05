@@ -13,7 +13,7 @@ module.exports = (Sequelize, oneforall) => {
                 
             },
             data: {
-                type: Sequelize.TEXT,
+                type: Sequelize.TEXT("long"),
                 allowNull: false,
                 get: function () {
                     return JSON.parse(this.getDataValue('data'));

@@ -17,7 +17,7 @@ module.exports = (Sequelize, oneforall) => {
                 allowNull: false
             },
             coins : {
-                type: Sequelize.FLOAT(999999,2),
+                type: Sequelize.FLOAT(255,2),
                 allowNull: false,
                 defaultValue: 0
             },

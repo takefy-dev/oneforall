@@ -1,4 +1,3 @@
-const StateManager = require('../../utils/StateManager');
 
 const Command = require('../../structures/Handler/Command');
 const {Logger} = require('advanced-command-handler')

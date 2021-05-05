@@ -13,7 +13,7 @@ module.exports = (Sequelize, oneforall) => {
                     return JSON.parse(this.getDataValue('tempvocInfo'));
                 },
                 set: function (value) {
-                    this.setDataValue('tempvocInfo', JSON.stringify(value));
+                    return this.setDataValue('tempvocInfo', JSON.stringify(value));
                 },
                 defaultValue: {catId: "Non définie", chId: "Non définie", chName: "Non définie", isOn: false}
             },
