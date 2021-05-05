@@ -787,10 +787,9 @@ Structures.extend('Guild', (Guild) => {
                 }
             }).then(res => {
                 if (!res) return;
-                const {dataValues} = res;
-                const {userId, expireAt} = dataValues;
+
+                const {userId, expireAt} = res.get();
                 this.muted.set(userId, !expireAt ? 'lifetime' : expireAt)
-                console.log(this.muted)
                 Logger.log(`Fetch ${userId}`, `Fetched MUTES`, 'black')
             })
         }
@@ -816,7 +815,7 @@ Structures.extend('Guild', (Guild) => {
                     guildId: this.guildID
                 }
             }).then((res) => {
-                let antiraidConfig = res[0].dataValues;
+                let antiraidConfig = res[0].get();
                 delete antiraidConfig.guildId;
                 this.antiraid.config = antiraidConfig;
             }).catch(err => console.log(err))
@@ -825,7 +824,7 @@ Structures.extend('Guild', (Guild) => {
                     guildId: this.guildID
                 }
             }).then((res) => {
-                let antiraidConfig = res[0].dataValues;
+                let antiraidConfig = res[0].get();
                 delete antiraidConfig.guildId;
                 this.antiraid.bypass = antiraidConfig;
             })
@@ -838,7 +837,7 @@ Structures.extend('Guild', (Guild) => {
                 const limits = []
 
                 res.forEach(raw => {
-                    limits.push(raw.dataValues)
+                    limits.push(raw.get())
                 })
                 limits.forEach(limit => {
                     this.antiraidLimit.set(limit.userId, {
