@@ -658,7 +658,6 @@ Structures.extend('Guild', (Guild) => {
                 if (res.length < 1) return;
                 res.forEach(raw => {
                     let {msgId, guildId, emojiRole} = raw.get()
-                    emojiRole = JSON.parse(emojiRole)
                     this.reactRoles.set(msgId, emojiRole)
                 })
                 Logger.log(`GUILD : ${this.guildID}`, `Fetched reactroles`, 'pink')
