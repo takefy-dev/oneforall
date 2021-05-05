@@ -921,7 +921,7 @@ module.exports = {
         editionMsg: (executor, before, after, color, extra) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
             .setDescription(`${executor || executor.user.tag || executor.user.username} a edité son message:`)
-            .addField(`Edition:`, `[Ce rendre sur le message](${extra})`)
+            .addField(`Edition:`, `[Se rendre sur le message](${extra})`)
             .addField('AVANT:', before)
             .addField('APRES:', after)
             .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nMessage = ${extra.split('/')[6]}\nChannel = ${extra.split('/')[5]}\`\`\``)
