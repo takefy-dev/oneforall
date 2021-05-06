@@ -1,5 +1,5 @@
 const {Logger} = require("advanced-command-handler");
-
+const cron = require('node-cron')
 // TODO : FIX BOOST
 module.exports = class coins {
     constructor(client) {
@@ -31,8 +31,8 @@ module.exports = class coins {
         })
         Logger.log(`${loadedVoice}`, `Loaded voice`, 'white');
     }
-    async farmCoins(ms){
-        setInterval(async () => {
+    async farmCoins(){
+        cron.schedule('* * * * *', async () => {
             const guildWithFarmers = this.client.guilds.cache.filter(guild => guild.config && guild.config.coinsOn && guild.coinsFarmer.size > 0);
             for await(const [, guild] of guildWithFarmers){
                 for await (const [id, status] of guild.coinsFarmer){
@@ -44,11 +44,12 @@ module.exports = class coins {
                     console.log(memberCoins)
                 }
             }
-        }, ms)
+        })
+
     }
 
     async init(){
         await this.loadVoice();
-        await this.farmCoins(60000)
+        await this.farmCoins()
     }
 }

@@ -1,4 +1,4 @@
-
+const Discord = require('discord.js')
 const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms')
 module.exports = {
@@ -53,15 +53,15 @@ module.exports = {
         support: `Support Server`,
     },
     vocal: {
-        msg: (count, muteCount, streamingCount, muteHeadSetCount, openMicCount) => 
-        `<:voc:801123036576612353> Stats vocal :
+        msg: (count, muteCount, streamingCount, muteHeadSetCount, openMicCount) =>
+            `<:voc:801123036576612353> Stats vocal :
         > <:unmute:801122798629945354> Open microphone : **${openMicCount}**
         > <:stream:801122725602000946> Streaming : **${streamingCount}**
         > <:mutecasque:801123005287628890> Headphone mute : **${muteHeadSetCount}**
         > <:mutemic:801122908445212723> Mute microphone : **${muteCount}**\n\n<:sageata:788796887121657877> Total of members in voice channel : **${count}**`,
     },
     authorinfo: {
-        description: `__**OneforAll**__\n\n*OneforAll is a bot owned by* \`TAKEFY#9831\`\n\n**Developers :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n[!" Iroz (pause)#0001](https://discord.gg/h69YZHB7Nh) -> Communication\n`,
+        description: `__**OneforAll**__\n\n*OneforAll is a bot owned by* \`TAKEFY#9831\`\n\n**Developers :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby.#0006](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n[!" Iroz (pause)#0001](https://discord.gg/h69YZHB7Nh) -> Communication\n`,
     },
     alladmins: {
         error : `There is 0 admins on server.`,
@@ -91,7 +91,7 @@ module.exports = {
     derank: {
         errorNoMember : "<:720681441670725645:780539422479351809> `ERROR` You must specify a member to unrank (`\mention / id`\)",
         errorUnrankMe : "<:720681441670725645:780539422479351809> `ERROR` You can\'t unrank me.",
-        errorRl : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` You can't unrank **\`${member}\`** ecause they have roles above yours`, 
+        errorRl : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` You can't unrank **\`${member}\`** ecause they have roles above yours`,
         errorUnrankSelf : "<:720681441670725645:780539422479351809> \`ERROR\` You can't unrank yourself",
         errorNoRl : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` **${member}** has no role !`,
         reason : (executor) => `OneForAll - Type: unrank by ${executor.user.tag}`,
@@ -104,9 +104,9 @@ module.exports = {
         loading : `Loading... <a:2366_Loading_Pixels:784472554328555571>`,
         title : `Embed creation menu !`,
         description : ` <a:dboatsSharkDance:788375939234398218> Welcome to the embed creation menu ! \n<a:image0:789413382591348738> Cliquez sur les reactions pour pouvoir personnaliser votre embed !`,
-        
+
         titleField: `・Allows you to edit the title`,
-        descriptionField : `・Allows you to modify the description`, 
+        descriptionField : `・Allows you to modify the description`,
         authorField : `・Allows you to modify the author`,
         footerField : `・Allows you to modify the footer`,
         thumbnailField : `・Allows you to edit the thumbnail`,
@@ -146,12 +146,12 @@ module.exports = {
         noReason : "No specific reason",
         success : (member) => `<:720681705219817534:780540043033837622> \`SUCCES\` ${member} was kicked.`,
         error : (member) => `<:720681441670725645:780539422479351809> \`ERROR\` Sorry, i didn't manage to kick ${member}`
-     
+
     },
     lock : {
         successLockAll : "<:720681705219817534:780540043033837622> \`SUCCES\` All channels have been closed.",
         successOpenAll : "<:720681705219817534:780540043033837622> \`SUCCES\` All channels have been opened.",
-        successLock : "<:720681705219817534:780540043033837622> \`SUCCES\` The channel was closed.", 
+        successLock : "<:720681705219817534:780540043033837622> \`SUCCES\` The channel was closed.",
         successOpen : "<:720681705219817534:780540043033837622> \`SUCCES\` The channel was opened.",
     },
     massrole: {
@@ -174,7 +174,7 @@ module.exports = {
     },
     nuke : {
         success : (member) => `💥 The channel was recreated by ${member}.`,
-        
+
 
     },
     role : {
@@ -259,9 +259,9 @@ module.exports = {
         success : (response) => `<:720681705219817534:780540043033837622> \`SUCCES\` Supporters will now receive the role: ${response}.`,
         errorAdd : (response) =>`<:720681441670725645:780539422479351809> \`ERROR\` I have not been able to define the role where the supporters will receive                                               ${response}`,
         errorTimeOut : "<:720681441670725645:780539422479351809> \`ERROR\` No response after 30 seconds operation will be canceled",
-        msgQ : `<a:2366_Loading_Pixels:784472554328555571> Please define your message to acquire the support role (cancel to cancel)`, 
+        msgQ : `<a:2366_Loading_Pixels:784472554328555571> Please define your message to acquire the support role (cancel to cancel)`,
         successEditRl : `<:720681705219817534:780540043033837622> \`SUCCES\` I have changed the support message to : `,
-        rmAllRlQ : `<a:2366_Loading_Pixels:784472554328555571> You have changed the support message. Do you want to remove the role from all the people who have the support role? Yes / No (cancel to cancel)`, 
+        rmAllRlQ : `<a:2366_Loading_Pixels:784472554328555571> You have changed the support message. Do you want to remove the role from all the people who have the support role? Yes / No (cancel to cancel)`,
         errorRmAllRl : (rlId) => `I didn't manage to remove the role <@&${rlId}> to the supports`,
         successNo : "The support role is therefore not taken away from former support",
         removingRl : (rlId) => `I am removing the whole role <@&${rlId}> support (this may take a little time!).`,
@@ -300,7 +300,7 @@ module.exports = {
             ✅ ・ Save the logs
         `,
         errorNotChannel : `You've specified a invalid channel or an id `,
-        
+
         raidChQ : `What is the channel for the raid logs ?`,
         successRaidCh : (ch) => `You've defined the raid logs for ${ch}`,
         disable : (type) => `The logs ${type} has been disable`,
@@ -359,7 +359,7 @@ module.exports = {
         errorCh : (response) => `<:720681441670725645:780539422479351809> \`ERROR\` I have not been able to define the channel where the welcome messages will be sent to ${response}`,
         timeout : "<:720681441670725645:780539422479351809> \`ERROR\` No response after 30 seconds operation will be canceled",
         msgQ : `<a:2366_Loading_Pixels:784472554328555571> Please define your welcome message (cancel to cancel)`,
-        successMsg : `<:720681705219817534:780540043033837622> \`SUCCES\` I have modified the welcome message to :`, 
+        successMsg : `<:720681705219817534:780540043033837622> \`SUCCES\` I have modified the welcome message to :`,
         errorMsg : `<:720681441670725645:780539422479351809> \`ERROR\` I have not been able to change the welcome message to :`,
         timeout2M : "<:720681441670725645:780539422479351809> \`ERROR\` No response after 2 minutes operation will be canceled",
         helpTitle : `<:771462923855069204:784471984087236658> __Help on configuring the welcome message__`,
@@ -437,7 +437,7 @@ module.exports = {
         timeout : `<:720681441670725645:780539422479351809> \`ERROR\` You must wait \`20 minutes\` before you can load a backup !`
     },
     blacklist : {
-        errorCantFindMember : `<:720681441670725645:780539422479351809> \`ERROR\` I can't find this member mentioned try with member id! `, 
+        errorCantFindMember : `<:720681441670725645:780539422479351809> \`ERROR\` I can't find this member mentioned try with member id! `,
         successEnable : `<:720681705219817534:780540043033837622> \`SUCCES\` I activated the blacklist for owner(s)!`,
         successDisable : `<:720681705219817534:780540043033837622> \`SUCCES\` I deactivated the blacklist for owner(s)`,
         errorAlreadyOff : `<:720681441670725645:780539422479351809> \`ERROR\` The blacklist is already deactivated.`,
@@ -541,17 +541,17 @@ module.exports = {
         `,
         notVoice : `<:720681441670725645:780539422479351809> \`ERROR\` The desired channel is not a vocal channel`,
         nameQ : `What must be the name of the **salon** \`ex : 💥・ Members:\`?`,
-       
+
         errorNotChannel : `<:720681441670725645:780539422479351809> \`ERROR\` You must specify a valid channel or id`,
         disable : (type) => `<:720681705219817534:780540043033837622> \`SUCCES\` The counter ${type} has been disabled`,
         successMemberCh : (ch) => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the members counter to ${ch}`,
         memberChQ : `What is the voice channel for the members counter ?`,
         successMemberName : (name) => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the name of the channel for the members counter to ${name}`,
-        
+
         botChQ : `What is the voice channel for the bots counter ?`,
         successBotName : (name) => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the name of the channel for the bots counter to ${name}`,
         successBotCh : (ch) => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the bots to ${ch}`,
-        
+
         vocalChQ : `What is the voice channel for the voice connections counter?`,
         successVocalName : (name) => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the name of the channel for the voice connections counter to ${name}`,
         successVocalCh : (ch) => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the voice connections counter to ${ch}`,
@@ -567,7 +567,7 @@ module.exports = {
         channelChQ : `What is the voice channel for the channels counter?`,
         successChannelName : (name) => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel name for the channels counter to ${name}`,
         successChannelCh : (ch) => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the channels counter to ${ch}`,
-        
+
         roleChQ : `What is the voice channel for the roles counter?`,
         successRoleName : (name) => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel name for the roles counter to ${name}`,
         successRoleCh : (ch) => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the roles counter to ${ch}`,
@@ -576,7 +576,7 @@ module.exports = {
         successBoostName : (name) => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel name for the boosts counter to ${name}`,
         successBoostCh : (ch) => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the boosts counter to ${ch}`,
 
-        
+
     },
     reactionRole :{
         embedTitle: `Role reaction creation menu`,
@@ -675,7 +675,7 @@ module.exports = {
     },
     serverlist: {
         title: `List of all the guild`,
-        leave : `To remove the bot from a guild do !serverlist <the number associate to the guild>`, 
+        leave : `To remove the bot from a guild do !serverlist <the number associate to the guild>`,
         success: (name) => `The bot has left **${name}**`
     },
     ball : {
@@ -690,7 +690,7 @@ module.exports = {
     gaydetector : {
         title : `Gay Detector Machine`
     },
- 
+
 
     addShop : {
         noItem : `Please enter an item for the shop`,
@@ -717,7 +717,7 @@ module.exports = {
         noModification : `You have not modified anything in the item`,
         successEdit : `<:720681705219817534:780540043033837622> \`SUCCES\` The item has been modified`,
         shopDesc : (guildName) => `:shopping_cart: Store on the server **${guildName}**.\n<a:coinsoneforall:819646518180446228> Buy an item with the \`buy [number]\` command.`
-    
+
     },
     buy : {
         shoDisable : `<:720681441670725645:780539422479351809> \`ERREUR\` The store is deactivated`,
@@ -793,7 +793,7 @@ module.exports = {
                 add: (songName, time, url) => `<a:music:822494244434214982> I added [${songName} - \`${time}\`](${url}) in the queue`
             },
             empty : `No one is in the channel. I leave him`,
-            
+
 
         },
         importPlaylist:{

@@ -697,35 +697,35 @@ Structures.extend('Guild', (Guild) => {
                 this.prefix = guildConfig.prefix;
                 this.boost["stream"] = guildConfig.streamBoost;
                 this.boost["mute"] = guildConfig.muteDiviseur;
-
-                if (guildConfig.coinsOn) {
-                    this.client.database.models.coins.findAll({
-                        where: {
-                            guildId: this.guildID
-                        }
-                    }).then((res) => {
-                        if (res.length < 1) return;
-                        res.forEach(row => {
-                            const {dataValues} = row;
-                            const {userId, coins} = dataValues;
-                            StateManager.emit('coinsFetched', this.guildID, userId, coins)
-                        })
-                    })
-
-                    this.client.database.models.inventory.findAll({
-                        where: {
-                            guildId: this.guildId
-                        }
-                    }).then((res) => {
-                        if (res.length < 1) return;
-                        res.forEach(row => {
-                            const {dataValues} = row;
-                            const {userId, inventory} = dataValues;
-                            StateManager.emit('inventoryFetched', this.guildID, userId, inventory)
-                        })
-
-                    })
-                }
+                StateManager.emit('coinsFetched', this.guildID, guildConfig.coinsOn)
+                // if (guildConfig.coinsOn) {
+                //     this.client.database.models.coins.findAll({
+                //         where: {
+                //             guildId: this.guildID
+                //         }
+                //     }).then((res) => {
+                //         if (res.length < 1) return;
+                //         res.forEach(row => {
+                //             const {dataValues} = row;
+                //             const {userId, coins} = dataValues;
+                //             StateManager.emit('coinsFetched', this.guildID, userId, coins)
+                //         })
+                //     })
+                //
+                //     this.client.database.models.inventory.findAll({
+                //         where: {
+                //             guildId: this.guildId
+                //         }
+                //     }).then((res) => {
+                //         if (res.length < 1) return;
+                //         res.forEach(row => {
+                //             const {dataValues} = row;
+                //             const {userId, inventory} = dataValues;
+                //             StateManager.emit('inventoryFetched', this.guildID, userId, inventory)
+                //         })
+                //
+                //     })
+                // }
 
                 this.client.database.models.warn.findAll({
                     where: {guildId: this.guildID}

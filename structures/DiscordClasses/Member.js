@@ -1,9 +1,9 @@
-const {Structures} = require('discord.js')
-const {Logger} = require('advanced-command-handler');
+const { Structures } = require('discord.js')
+const { Logger } = require('advanced-command-handler');
 const StateManager = require('../../utils/StateManager');
 
 Structures.extend('GuildMember', (Member) => {
-  
+
     class CustomMember extends Member {
         constructor(client, data, guild) {
             super(client, data, guild)
@@ -11,38 +11,36 @@ Structures.extend('GuildMember', (Member) => {
             if (this.user.bot) return;
             this.guildId = guild.id;
             this.warns = [];
-            this.invite = {join: 0, leave: 0, fake: 0, bonus: 0};
+            this.invite = { join: 0, leave: 0, fake: 0, bonus: 0 };
             this.inviter = null;
             this.coins = null;
+            this.coinsEnable = false;
             this.inventory = null;
             // this.fetchWarns()
-         
+
 
             // this.fetchInvite()
             // this.fetchCoins()
-            StateManager.on('coinsFetched', (guildId,  userId, coins) => {
-                console.log(guildId)
-                if(guildId !== this.guildId) return;
-                if(userId !== this.user.id) return;
-                this.coins = coins
+            StateManager.on('coinsFetched', (guildId, enable) => {
+                if (guildId !== this.guildId) return;
+                this.coinsEnable = enable
+                if(enable) this.fetchCoins()
             })
-            StateManager.on('inventoryFetched', (guildId,  userId, inventory) => {
-                if(guildId !== this.guildId) return;
-                if(userId !== this.user.id) return;
-                if(!inventory) return;
-                this.inventory = inventory
+            // StateManager.on('inventoryFetched', (guildId,  userId, inventory) => {
+            //     if(guildId !== this.guildId) return;
+            //     if(userId !== this.user.id) return;
+            //     if(!inventory) return;
+            //     this.inventory = inventory
 
-            })
-            StateManager.on('inviteFecthed', (guildId,  userId, invite) => {
-                if(guildId !== this.guildId) return;
-                if(userId !== this.user.id) return;
+            // })
+            StateManager.on('inviteFecthed', (guildId, userId, invite) => {
+                if (guildId !== this.guildId) return;
+                if (userId !== this.user.id) return;
                 this.invite = invite
             })
-            StateManager.on('warnFetched', (guildId,  userId, warn) => {
-                console.log(this.guildId)
-
-                if(guildId !== this.guildId) return;
-                if(userId !== this.user.id) return;
+            StateManager.on('warnFetched', (guildId, userId, warn) => {
+                if (guildId !== this.guildId) return;
+                if (userId !== this.user.id) return;
                 this.warns = warn.split(',')
             })
 
@@ -75,45 +73,39 @@ Structures.extend('GuildMember', (Member) => {
             }).then(() => this.inventory = inventory)
         }
         async fetchCoins() {
-            await this.client.database.models.guildConfig.findOne({
+            if(!this.coinsEnable) return
+            await this.client.database.models.coins.findOrCreate({
                 where: {
+                    userId: this.user.id,
                     guildId: this.guildId
                 }
-            }).then(async res => {
-                const {dataValues} = res;
-                const {coinsOn} = dataValues;
-                if (!coinsOn) return;
-                await this.client.database.models.coins.findOrCreate({
-                    where: {
-                        userId: this.user.id,
-                        guildId: this.guildId
-                    }
-                }).then((res) => {
-                    const {dataValues} = res[0];
-                    const {coins} = dataValues;
-                    this.coins = coins
+            }).then((res) => {
+                const { coins } = res[0].get();
+                this.coins = coins
 
-                })
-
-                await this.client.database.models.inventory.findOne({
-                    where: {
-                        userId: this.user.id,
-                        guildId: this.guildId
-                    }
-                }).then((res) => {
-                    if(!res) return;
-                    const {dataValues} = res;
-                    let {inventory} = dataValues;
-                    if(!inventory) return;
-                    this.inventory = inventory
-
-                })
             })
+            Logger.log(`GUILD : ${this.guildID} ${this.user.username}`, `Fetched coins`, 'yellow')
+
+            await this.client.database.models.inventory.findOne({
+                where: {
+                    userId: this.user.id,
+                    guildId: this.guildId
+                }
+            }).then((res) => {
+                if (!res) return;
+                const { dataValues } = res;
+                let { inventory } = dataValues;
+                if (!inventory) return;
+                this.inventory = inventory
+
+            })
+
         }
 
         set updateCoins(coins) {
+            if(isNaN(coins)) return;
             this.client.database.models.coins.findOrCreate({
-                    where: {userId: this.user.id, guildId: this.guildId},
+                    where: { userId: this.user.id, guildId: this.guildId },
                 }
             ).then(res => {
                 if (!res[0]._options.isNewRecord) {
@@ -146,8 +138,8 @@ Structures.extend('GuildMember', (Member) => {
 
         set updateWarn(warn) {
             this.client.database.models.warn.findOrCreate({
-                    where: {userId: this.user.id, guildId: this.guildId},
-                    defaults: {warn: warn.toString()}
+                    where: { userId: this.user.id, guildId: this.guildId },
+                    defaults: { warn: warn.toString() }
                 }
             ).then(res => {
                 if (!res[0]._options.isNewRecord) {
@@ -196,17 +188,17 @@ Structures.extend('GuildMember', (Member) => {
         clearMemberInvite(resetOnlyMember) {
             if (resetOnlyMember) {
                 this.client.database.models.invite.update({
-                    count: {join: 0, leave: 0, fake: 0, bonus: 0},
+                    count: { join: 0, leave: 0, fake: 0, bonus: 0 },
                 }, {
                     where: {
                         guildId: this.guildId,
                         userId: this.user.id
                     }
                 }).then(() => {
-                    this.invite = {join: 0, leave: 0, fake: 0, bonus: 0};
+                    this.invite = { join: 0, leave: 0, fake: 0, bonus: 0 };
                 })
             } else {
-                this.invite = {join: 0, leave: 0, fake: 0, bonus: 0}
+                this.invite = { join: 0, leave: 0, fake: 0, bonus: 0 }
             }
         }
 
@@ -229,9 +221,9 @@ Structures.extend('GuildMember', (Member) => {
             if (!this.guild.config.inviteOn) return;
 
             await this.client.database.models.invite.findOrCreate({
-                where: {userId: this.user.id, guildId: this.guildId}
+                where: { userId: this.user.id, guildId: this.guildId }
             }).then(res => {
-                const {count, invitedBy} = res[0].dataValues;
+                const { count, invitedBy } = res[0].dataValues;
                 this.invite = count;
                 this.inviter = invitedBy;
                 Logger.log(`Fetch ${this.user.username}`, `Fetched INVITES`, 'grey')
