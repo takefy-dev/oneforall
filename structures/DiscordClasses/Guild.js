@@ -648,7 +648,6 @@ Structures.extend('Guild', (Guild) => {
                 this.config.muteRoleId = muteRoleId;
                 this.config.setup = true;
             })
-            return isUpdated.includes(1);
         }
 
         async fetchReactoles() {
@@ -698,59 +697,65 @@ Structures.extend('Guild', (Guild) => {
                 this.prefix = guildConfig.prefix;
                 this.boost["stream"] = guildConfig.streamBoost;
                 this.boost["mute"] = guildConfig.muteDiviseur;
-            })
-            if (this.config.coinsOn) {
-                await this.client.database.models.coins.findAll({
-                    where: {
-                        guildId: this.guildID
-                    }
-                }).then((res) => {
-                    if (res.length < 1) return;
-                    res.forEach(row => {
-                        const {dataValues} = row;
-                        const {userId, coins} = dataValues;
-                        StateManager.emit('coinsFetched', this.guildID, userId, coins)
+                if (guildConfig.coinsOn) {
+                    this.client.database.models.coins.findAll({
+                        where: {
+                            guildId: this.guildID
+                        }
+                    }).then((res) => {
+                        if (res.length < 1) return;
+                        res.forEach(row => {
+                            const {dataValues} = row;
+                            const {userId, coins} = dataValues;
+                            StateManager.emit('coinsFetched', this.guildID, userId, coins)
+                        })
                     })
-                })
-                await this.client.database.models.inventory.findAll({
-                    where: {
-                        guildId: this.guildId
-                    }
+
+                    this.client.database.models.inventory.findAll({
+                        where: {
+                            guildId: this.guildId
+                        }
+                    }).then((res) => {
+                        if (res.length < 1) return;
+                        res.forEach(row => {
+                            const {dataValues} = row;
+                            const {userId, inventory} = dataValues;
+                            StateManager.emit('inventoryFetched', this.guildID, userId, inventory)
+                        })
+
+                    })
+                }
+
+                this.client.database.models.warn.findAll({
+                    where: {guildId: this.guildID}
                 }).then((res) => {
                     if (res.length < 1) return;
                     res.forEach(row => {
                         const {dataValues} = row;
-                        const {userId, inventory} = dataValues;
-                        StateManager.emit('inventoryFetched', this.guildID, userId, inventory)
+                        const {userId, warn} = dataValues;
+                        StateManager.emit('warnFetched', this.guildID, userId, warn)
                     })
 
                 })
-            }
-            await this.client.database.models.warn.findAll({
-                where: {guildId: this.guildID}
-            }).then((res) => {
-                if (res.length < 1) return;
-                res.forEach(row => {
-                    const {dataValues} = row;
-                    const {userId, warn} = dataValues;
-                    StateManager.emit('warnFetched', this.guildID, userId, warn)
-                })
+
+
+                if (guildConfig.inviteOn) {
+                    this.client.database.models.invite.findAll({
+                        where: {
+                            guildId: this.guildID
+                        }
+                    }).then((res) => {
+                        if (res.length < 1) return;
+                        res.forEach(row => {
+                            const {dataValues} = row;
+                            const {userId, invite} = dataValues;
+                            StateManager.emit('inviteFetched', this.guildID, userId, invite)
+                        })
+                    })
+                }
 
             })
-            if (this.config.inviteOn) {
-                await this.client.database.models.invite.findAll({
-                    where: {
-                        guildId: this.guildID
-                    }
-                }).then((res) => {
-                    if (res.length < 1) return;
-                    res.forEach(row => {
-                        const {dataValues} = row;
-                        const {userId, invite} = dataValues;
-                        StateManager.emit('inviteFetched', this.guildID, userId, invite)
-                    })
-                })
-            }
+
         }
 
         async updateMute(userId, newMute, time) {
@@ -794,6 +799,7 @@ Structures.extend('Guild', (Guild) => {
         }
 
         async fetchAntiraid() {
+
             await this.client.database.models.antiraid.findOrCreate({
                 where: {
                     guildId: this.guildID
@@ -805,10 +811,12 @@ Structures.extend('Guild', (Guild) => {
                 } else {
                     Logger.log(`ANTIRAID : ${this.guildID}`, `Fetched`, 'pink')
                 }
-                let antiraidConfig = res[0].dataValues;
+
+                let antiraidConfig = res[0].get();
                 delete antiraidConfig.guildId;
                 this.antiraid = {enable: antiraidConfig};
             })
+
             await this.client.database.models.antiraidConfig.findOrCreate({
                 where: {
                     guildId: this.guildID
@@ -830,6 +838,7 @@ Structures.extend('Guild', (Guild) => {
         }
 
         async fetchAntiraidLimit() {
+
             await this.client.database.models.antiraidLimit.findAll({where: {guildId: this.guildID}}
             ).then((res) => {
                 if (res.length < 1) return;

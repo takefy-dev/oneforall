@@ -41,6 +41,7 @@ module.exports = class coins {
                     if(memberCoins === null) return;
                     memberCoins+=status.boost;
                     member.updateCoins = memberCoins;
+                    console.log(memberCoins)
                 }
             }
         }, ms)

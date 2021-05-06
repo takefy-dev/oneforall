@@ -21,6 +21,7 @@ Structures.extend('GuildMember', (Member) => {
             // this.fetchInvite()
             // this.fetchCoins()
             StateManager.on('coinsFetched', (guildId,  userId, coins) => {
+                console.log(guildId)
                 if(guildId !== this.guildId) return;
                 if(userId !== this.user.id) return;
                 this.coins = coins
@@ -38,6 +39,8 @@ Structures.extend('GuildMember', (Member) => {
                 this.invite = invite
             })
             StateManager.on('warnFetched', (guildId,  userId, warn) => {
+                console.log(this.guildId)
+
                 if(guildId !== this.guildId) return;
                 if(userId !== this.user.id) return;
                 this.warns = warn.split(',')

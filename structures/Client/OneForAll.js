@@ -40,7 +40,7 @@ module.exports = class OneForAll extends Client {
         this.owners = owner;
         this.cooldown = new Collection();
         this.database = new Sequelize(name, user,pass, {
-            dialect: 'mariadb',
+            dialect: 'mysql',
             define: {
                 charset: 'utf8',
                 collate: 'utf8_general_ci',
