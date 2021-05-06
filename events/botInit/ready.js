@@ -186,8 +186,8 @@ module.exports = class Ready extends Event {
                                 memberCount: {
                                     name: 'Non définie',
                                     type: `${memberInfo[0].type}`
-                                }, where: {guildId: guild.id}
-                            })
+                                }
+                            },{ where: {guildId: guild.id}})
 
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Member count error`);
@@ -212,8 +212,8 @@ module.exports = class Ready extends Event {
                                 botCount: {
                                     name: 'Non définie',
                                     type: `${botInfo[0].type}`
-                                }, where: {guildId: guild.id}
-                            })
+                                }
+                            },{ where: {guildId: guild.id}})
 
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Bot count error`);
@@ -242,8 +242,8 @@ module.exports = class Ready extends Event {
                                 voiceCount: {
                                     name: 'Non définie',
                                     type: `${voiceInfo[0].type}`
-                                }, where: {guildId: guild.id}
-                            })
+                                }
+                            },{ where: {guildId: guild.id}})
 
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Voice count error`);
@@ -272,8 +272,8 @@ module.exports = class Ready extends Event {
                                 onlineCount: {
                                     name: 'Non définie',
                                     type: `${onlineInfo[0].type}`
-                                }, where: {guildId: guild.id}
-                            })
+                                }
+                            },{ where: {guildId: guild.id}})
 
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Online count error`);
@@ -300,8 +300,8 @@ module.exports = class Ready extends Event {
                                 offlineCount: {
                                     name: 'Non définie',
                                     type: `${offlineInfo[0].type}`
-                                }, where: {guildId: guild.id}
-                            })
+                                }
+                            },{ where: {guildId: guild.id}})
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Offline count error`);
                             return console.log(err);
@@ -329,8 +329,8 @@ module.exports = class Ready extends Event {
                                 channelCount: {
                                     name: 'Non définie',
                                     type: `${channelInfo[0].type}`
-                                }, where: {guildId: guild.id}
-                            })
+                                }
+                            },{ where: {guildId: guild.id}})
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Channel count error`);
                             return console.log(err);
@@ -357,8 +357,8 @@ module.exports = class Ready extends Event {
                                 roleCount: {
                                     name: 'Non définie',
                                     type: `${roleInfo[0].type}`
-                                }, where: {guildId: guild.id}
-                            })
+                                }
+                            },{ where: {guildId: guild.id}})
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `role count error`);
                             return console.log(err);
@@ -386,8 +386,8 @@ module.exports = class Ready extends Event {
                                 boosterCount: {
                                     name: 'Non définie',
                                     type: `${boosterInfo[0].type}`
-                                }, where: {guildId: guild.id}
-                            })
+                                }
+                            },{ where: {guildId: guild.id}})
                         } catch (err) {
                             Logger.error(`Counter error mysql`, `Boost count error`);
                             return console.log(err);

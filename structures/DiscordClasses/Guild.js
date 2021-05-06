@@ -697,6 +697,7 @@ Structures.extend('Guild', (Guild) => {
                 this.prefix = guildConfig.prefix;
                 this.boost["stream"] = guildConfig.streamBoost;
                 this.boost["mute"] = guildConfig.muteDiviseur;
+
                 if (guildConfig.coinsOn) {
                     this.client.database.models.coins.findAll({
                         where: {
