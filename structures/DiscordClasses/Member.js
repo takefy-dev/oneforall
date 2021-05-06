@@ -20,12 +20,13 @@ Structures.extend('GuildMember', (Member) => {
 
 
             // this.fetchInvite()
-            // this.fetchCoins()
-            StateManager.on('coinsFetched', (guildId, enable) => {
-                if (guildId !== this.guildId) return;
-                this.coinsEnable = enable
-                if(enable) this.fetchCoins()
-            })
+            this.fetchCoins()
+            // StateManager.on('coinsFetched', (guildId, enable) => {
+            //     console.log(this.guildId, guildId)
+            //     if (guildId !== this.guildId) return;
+            //     this.coinsEnable = enable
+            //     if(enable) this.fetchCoins()
+            // })
             // StateManager.on('inventoryFetched', (guildId,  userId, inventory) => {
             //     if(guildId !== this.guildId) return;
             //     if(userId !== this.user.id) return;
@@ -63,7 +64,6 @@ Structures.extend('GuildMember', (Member) => {
 
 
         async createInventory(inventory) {
-            console.log("create")
             this.client.database.models.inventory.create({
                 inventory,
                 userId: this.user.id,
@@ -73,7 +73,7 @@ Structures.extend('GuildMember', (Member) => {
             }).then(() => this.inventory = inventory)
         }
         async fetchCoins() {
-            if(!this.coinsEnable) return
+            if(!this.guild.config.coinsOn) return;
             await this.client.database.models.coins.findOrCreate({
                 where: {
                     userId: this.user.id,
@@ -84,7 +84,7 @@ Structures.extend('GuildMember', (Member) => {
                 this.coins = coins
 
             })
-            Logger.log(`GUILD : ${this.guildID} ${this.user.username}`, `Fetched coins`, 'yellow')
+            Logger.log(`GUILD : ${this.guildId} ${this.user.username}`, `Fetched coins`, 'yellow')
 
             await this.client.database.models.inventory.findOne({
                 where: {

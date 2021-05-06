@@ -32,19 +32,22 @@ module.exports = class coins {
         Logger.log(`${loadedVoice}`, `Loaded voice`, 'white');
     }
     async farmCoins(){
-        cron.schedule('* * * * *', async () => {
-            const guildWithFarmers = this.client.guilds.cache.filter(guild => guild.config && guild.config.coinsOn && guild.coinsFarmer.size > 0);
-            for await(const [, guild] of guildWithFarmers){
-                for await (const [id, status] of guild.coinsFarmer){
-                    const member =guild.members.cache.get(id);
-                    let memberCoins = member.coins;
-                    if(memberCoins === null) return;
-                    memberCoins+=status.boost;
-                    member.updateCoins = memberCoins;
-                    console.log(memberCoins)
-                }
-            }
-        })
+    // * * * * *
+       setInterval(async() => {
+           const guildWithFarmers = this.client.guilds.cache.filter(guild => guild.config && guild.config.coinsOn && guild.coinsFarmer.size > 0);
+           for await(const [, guild] of guildWithFarmers){
+               for await (const [id, status] of guild.coinsFarmer){
+                   const member =guild.members.cache.get(id);
+                   let memberCoins = member.coins;
+                   if(memberCoins === null) return;
+                   memberCoins+=status.boost;
+                   member.updateCoins = memberCoins;
+                   console.log(status, memberCoins)
+
+               }
+           }
+       }, 1000)
+
 
     }
 
