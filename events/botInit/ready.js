@@ -408,7 +408,7 @@ module.exports = class Ready extends Event {
         setTimeout(async () => {
             await new Coins(client).init()
 
-        }, 10000)
+        }, 5000)
 
     }
 }

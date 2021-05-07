@@ -22,12 +22,27 @@ module.exports = class Test extends Command {
     }
 
     async run(client, message, args) {
-        if(!message.guild.config.coinsOn) return;
+        if (!message.guild.config.coinsOn) return;
         const color = message.guild.color
         const lang = client.lang(message.guild.lang)
 
         const idToBuy = args[0];
         if (!message.guild.config.coinsOn) return message.channel.send(lang.buy.shoDisable).then(mp => mp.delete({timeout: 4000}))
+        if (!args[0]) {
+            const showShop = (shop) => {
+                const embed = new Discord.MessageEmbed()
+                    .setAuthor(message.author.tag, message.author.displayAvatarURL)
+                    .setDescription(lang.addShop.shopDesc(message.guild.name))
+                    .addField('\u200b', shop.map(shop => !shop.price ? lang.addShop.nothingInShop : `\`${shop.id}\` ${shop.item} — [⏣ ${shop.price.toLocaleString()}](https://discord.gg/n2EvRECf88) coins`))
+                    .setColor(`${color}`)
+                    .setTimestamp()
+                    .setFooter(`⏣ OneForAll coins`);
+
+
+                return message.channel.send(embed)
+            }
+            return showShop(message.guild.shop)
+        }
         if (!idToBuy) return message.channel.send(lang.buy.syntaxError).then(mp => mp.delete({timeout: 4000}))
         const shop = message.guild.shop;
         let coins = message.member.coins

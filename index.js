@@ -8,6 +8,8 @@ require('./structures/DiscordClasses/User');
 require('./structures/DiscordClasses/Guild');
 require('./structures/DiscordClasses/Member');
 const client = new Client({partials:  ['MESSAGE', 'CHANNEL', 'REACTION'],  restTimeOffset: 0,})
+
+
 require('events').EventEmitter.defaultMaxListeners = 0;
 moment.locale('fr')
 

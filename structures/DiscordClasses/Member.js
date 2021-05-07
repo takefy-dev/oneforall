@@ -13,14 +13,14 @@ Structures.extend('GuildMember', (Member) => {
             this.warns = [];
             this.invite = { join: 0, leave: 0, fake: 0, bonus: 0 };
             this.inviter = null;
-            this.coins = null;
+            this.coins = 0;
             this.coinsEnable = false;
             this.inventory = null;
             // this.fetchWarns()
 
 
             // this.fetchInvite()
-            this.fetchCoins()
+            // this.fetchCoins()
             // StateManager.on('coinsFetched', (guildId, enable) => {
             //     console.log(this.guildId, guildId)
             //     if (guildId !== this.guildId) return;
@@ -34,16 +34,18 @@ Structures.extend('GuildMember', (Member) => {
             //     this.inventory = inventory
 
             // })
-            StateManager.on('inviteFecthed', (guildId, userId, invite) => {
-                if (guildId !== this.guildId) return;
-                if (userId !== this.user.id) return;
-                this.invite = invite
-            })
-            StateManager.on('warnFetched', (guildId, userId, warn) => {
-                if (guildId !== this.guildId) return;
-                if (userId !== this.user.id) return;
-                this.warns = warn.split(',')
-            })
+            //     this.client.on('inviteFecthed', (guildId, userId, invite) => {
+            //         console.log(guildId)
+            //         if (guildId !== this.guildId) return;
+            //         if (userId !== this.user.id) return;
+            //         this.invite = invite
+            //     })
+            //
+            // StateManager.on('warnFetched', (guildId, userId, warn) => {
+            //     if (guildId !== this.guildId) return;
+            //     if (userId !== this.user.id) return;
+            //     this.warns = warn.split(',')
+            // })
 
 
 
@@ -73,7 +75,7 @@ Structures.extend('GuildMember', (Member) => {
             }).then(() => this.inventory = inventory)
         }
         async fetchCoins() {
-            if(!this.guild.config.coinsOn) return;
+            if(!this.coinsEnable) return;
             await this.client.database.models.coins.findOrCreate({
                 where: {
                     userId: this.user.id,
@@ -84,8 +86,6 @@ Structures.extend('GuildMember', (Member) => {
                 this.coins = coins
 
             })
-            Logger.log(`GUILD : ${this.guildId} ${this.user.username}`, `Fetched coins`, 'yellow')
-
             await this.client.database.models.inventory.findOne({
                 where: {
                     userId: this.user.id,
@@ -93,8 +93,7 @@ Structures.extend('GuildMember', (Member) => {
                 }
             }).then((res) => {
                 if (!res) return;
-                const { dataValues } = res;
-                let { inventory } = dataValues;
+                let { inventory } = res.get();
                 if (!inventory) return;
                 this.inventory = inventory
 

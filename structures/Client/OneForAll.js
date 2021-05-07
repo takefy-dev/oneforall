@@ -31,7 +31,7 @@ if(config.botperso){
 module.exports = class OneForAll extends Client {
     constructor(options) {
         super(options);
-        this.login(config.token);
+        this.login(token);
 
         this.commands = new Collection();
         this.events = new Collection();
@@ -42,8 +42,8 @@ module.exports = class OneForAll extends Client {
         this.database = new Sequelize(name, user,pass, {
             dialect: 'mysql',
             define: {
-                charset: 'utf8',
-                collate: 'utf8_general_ci',
+                charset: 'utf8mb4',
+                collate: 'utf8mb4_general_ci',
                 timestamps: false,
                 freezeTableName: true,
 
@@ -51,8 +51,8 @@ module.exports = class OneForAll extends Client {
             dialectOptions: {
 
                 connectTimeout: 60000
-              
-              },
+
+            },
             // pool: {
             //     max: 9999999,
             //     min: 0,
@@ -121,7 +121,7 @@ module.exports = class OneForAll extends Client {
     initDatabase() {
         this.database.authenticate().then(async () => {
             console.log("login");
-           
+
             const modelsFile = fs.readdirSync('./structures/Models');
             for await (const model of modelsFile) {
                 await require(`../Models/${model}`)(Sequelize, this)
@@ -133,10 +133,10 @@ module.exports = class OneForAll extends Client {
             })
             setTimeout(async () => {
                 await this.database.models.maintenance.findOrCreate({where: {client: this.user.id}}).then(res => {
-                    this.maintenance = res[0].dataValues.enable;
+                    this.maintenance = res[0].get().enable;
                 })
             }, 10000)
-           
+
 
         })
     }

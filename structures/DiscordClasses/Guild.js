@@ -15,6 +15,7 @@ Structures.extend('Guild', (Guild) => {
             this.whitelisted = [''];
             this.color = "#36393F";
             this.antiraid = null;
+            this.coinsFetched = false;
             this.coinsFarmer = new Collection()
             this.snipes = new Collection()
             this.boost = {
@@ -76,7 +77,7 @@ Structures.extend('Guild', (Guild) => {
 
             await this.client.database.models.coins.findAll({where: {guildId: this.guildID}}).then((res) => {
                 res.forEach(coins => {
-                    guildCoins.push(coins.dataValues)
+                    guildCoins.push(coins.get())
                 })
             })
             guildCoins = guildCoins.filter(x => !this.owners.includes(x.userId))
@@ -91,8 +92,7 @@ Structures.extend('Guild', (Guild) => {
                 }
             }).then(res => {
                 if (!res) return;
-                const {dataValues} = res;
-                const {shop} = dataValues;
+                const {shop} = res.get();
                 this.shop = shop;
             })
         }
@@ -697,35 +697,34 @@ Structures.extend('Guild', (Guild) => {
                 this.prefix = guildConfig.prefix;
                 this.boost["stream"] = guildConfig.streamBoost;
                 this.boost["mute"] = guildConfig.muteDiviseur;
-                StateManager.emit('coinsFetched', this.guildID, guildConfig.coinsOn)
-                // if (guildConfig.coinsOn) {
-                //     this.client.database.models.coins.findAll({
-                //         where: {
-                //             guildId: this.guildID
-                //         }
-                //     }).then((res) => {
-                //         if (res.length < 1) return;
-                //         res.forEach(row => {
-                //             const {dataValues} = row;
-                //             const {userId, coins} = dataValues;
-                //             StateManager.emit('coinsFetched', this.guildID, userId, coins)
-                //         })
-                //     })
-                //
-                //     this.client.database.models.inventory.findAll({
-                //         where: {
-                //             guildId: this.guildId
-                //         }
-                //     }).then((res) => {
-                //         if (res.length < 1) return;
-                //         res.forEach(row => {
-                //             const {dataValues} = row;
-                //             const {userId, inventory} = dataValues;
-                //             StateManager.emit('inventoryFetched', this.guildID, userId, inventory)
-                //         })
-                //
-                //     })
-                // }
+
+
+                if (guildConfig.coinsOn) {
+                    this.client.database.models.coins.findAll({
+                        where: {
+                            guildId: this.guildID
+                        }
+                    }).then((res) => {
+                        if (res.length < 1) return;
+                        res.forEach(row => {
+                            const {userId, coins} = row.get();
+                            this.client.emit('coinsFetched', this.guildID, userId, coins)
+                        })
+                    })
+
+                    this.client.database.models.inventory.findAll({
+                        where: {
+                            guildId: this.guildID
+                        }
+                    }).then((res) => {
+                        if (res.length < 1) return;
+                        res.forEach(row => {
+                            const {userId, inventory} = row.get();
+                            this.client.emit('inventoryFetched', this.guildID, userId, inventory)
+                        })
+
+                    })
+                }
 
                 this.client.database.models.warn.findAll({
                     where: {guildId: this.guildID}
@@ -734,7 +733,7 @@ Structures.extend('Guild', (Guild) => {
                     res.forEach(row => {
                         const {dataValues} = row;
                         const {userId, warn} = dataValues;
-                        StateManager.emit('warnFetched', this.guildID, userId, warn)
+                        this.client.emit('warnFetched', this.guildID, userId, warn)
                     })
 
                 })
@@ -750,7 +749,7 @@ Structures.extend('Guild', (Guild) => {
                         res.forEach(row => {
                             const {dataValues} = row;
                             const {userId, invite} = dataValues;
-                            StateManager.emit('inviteFetched', this.guildID, userId, invite)
+                            this.client.emit('inviteFetched', this.guildID, userId, invite)
                         })
                     })
                 }
