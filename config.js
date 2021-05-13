@@ -1,5 +1,5 @@
 module.exports = {
-    token: "NzgzMDM4MDM3NDE5NjIyNDEx.X8U7AA.OvLF5ecWtAyv__TGZM7br_1BMqg",
+    token: "NzgzMDM4MDM3NDE5NjIyNDEx.X8U7AA.P0arYgZKOuZjIiN10l9hDzxO27E",
     prefix: '!',
     database : {
         user: 'takefydev',
