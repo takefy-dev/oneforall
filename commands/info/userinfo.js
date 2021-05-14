@@ -21,18 +21,18 @@ module.exports = class Test extends Command {
 
         const flags = {
             DISCORD_EMPLOYEE: 'Discord Employee',
-            DISCORD_PARTNER: '<:Z_Partenaire2:816749957771427861>',
-            BUGHUNTER_LEVEL_1: '<:XDM_BugHunter:816750123996282882>',
-            BUGHUNTER_LEVEL_2: '<:level2bug:817023897378488350>',
-            HYPESQUAD_EVENTS: '<:YLM_Hypesquad:816750048838418462>',
-            HOUSE_BRAVERY: '<:bravery:817024570166214748>',
-            HOUSE_BRILLIANCE: '<:briliance:817024700273786900>',
-            HOUSE_BALANCE: '<:balance:817024823330996225>',
-            EARLY_SUPPORTER: '<:earlysupporter:783422670107836446>',
-            TEAM_USER: '<:XDM_Staff:816750074750828545>',
-            SYSTEM: '<:YLM_Shield:816750007776575499>',
-            VERIFIED_BOT: '<:verifiedbot:783422173003776030>',
-            VERIFIED_DEVELOPER: '<:dev:783422756854300713>'
+        DISCORD_PARTNER: 'Discord Partner',
+        BUGHUNTER_LEVEL_1: 'Bug Hunter (Level 1)',
+        BUGHUNTER_LEVEL_2: 'Bug Hunter (Level 2)',
+        HYPESQUAD_EVENTS: 'HypeSquad Events',
+        HOUSE_BRAVERY: 'House of Bravery',
+        HOUSE_BRILLIANCE: 'House of Brilliance',
+        HOUSE_BALANCE: 'House of Balance',
+        EARLY_SUPPORTER: 'Early Supporter',
+        TEAM_USER: 'Team User',
+        SYSTEM: 'System',
+        VERIFIED_BOT: 'Verified Bot',
+        VERIFIED_DEVELOPER: 'Verified Bot Developer'
         };
 
         const argument = args[0];
