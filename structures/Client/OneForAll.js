@@ -5,12 +5,14 @@ const logs = require('discord-logs')
 const fs = require('fs')
 const {Logger} = require('advanced-command-handler')
 const Distube = require('distube');
-let user =  config.database.user;
+let user = config.database.user;
 let name = config.database.name;
 let pass = config.database.password;
 let token = config.token;
+const io = require('socket.io-client')
+
 let owner = [...config.owners];
-if(config.botperso){
+if (config.botperso) {
     const path = './config.json';
     if (fs.existsSync(path)) {
         const configs = require('../../config.json')
@@ -39,7 +41,24 @@ module.exports = class OneForAll extends Client {
         this.config = config;
         this.owners = owner;
         this.cooldown = new Collection();
-        this.database = new Sequelize(name, user,pass, {
+        this.unavailableGuilds = 0;
+        if (!this.botperso) {
+            this.oneforallSocket = io("http://localhost:3000")
+            // socket.on('connect', () => {
+            //     console.log(`Logged to websocket ${socket.id}`)
+            //     socket.emit('send-commands', client.commands.filter(cm => cm.category !== "botOwner" && cm.category !== "test" && cm.category !== "botperso"));
+            // })
+            // socket.on('get-status', (cb) => {
+            //     console.log("getting status in bot")
+            //     const upTime = client.uptime
+            //     const apiLatency = Math.round(client.ws.ping)
+            //     const guilds = []
+            //     client.guilds.cache.forEach(g => guilds.push(g.id))
+            //     cb(upTime, apiLatency, parseInt(client.shard.ids.toString()) + 1, guilds);
+            // })
+        }
+
+        this.database = new Sequelize(name, user, pass, {
             dialect: 'mysql',
             define: {
                 charset: 'utf8mb4',
@@ -64,6 +83,7 @@ module.exports = class OneForAll extends Client {
         logs(this)
         this.loadCommands();
         this.loadEvents();
+        this.loadWebsocket();
         this.initDatabase()
         this.botperso = config.botperso;
         this.maintenance = false;
@@ -106,16 +126,26 @@ module.exports = class OneForAll extends Client {
             Logger.comment(`${Logger.setColor('red', `Loading: ${eventsFile.length} events in ${category}`)}`, `Loading events`)
 
             for (const event of eventsFile) {
-
                 const EventFile = require(`../../events/${category}/${event}`);
                 const Event = new EventFile(this);
                 this.on(Event.name, (...args) => Event.run(this, ...args))
                 this.events.set(Event.name, Event);
-
                 Logger.comment(`${Logger.setColor('green', `Bind: ${event.split('.js')[0]}`)}`, `Binding events`)
             }
         }
 
+    }
+
+    loadWebsocket() {
+        const eventsFile = fs.readdirSync('./events/websocket').filter(file => file.endsWith('.js'))
+        Logger.info(`Loading ${eventsFile.length} websocket events`, `Starting`)
+
+        for (const event of eventsFile) {
+            const EventFile = require(`../../events/websocket/${event}`);
+            const Event = new EventFile(this);
+            this.oneforallSocket.on(Event.name, (...args) => Event.run(this.oneforallSocket, this, ...args))
+            Logger.comment(`${Logger.setColor('green', `Bind: ${event.split('.js')[0]}`)}`, `Binding websocket events`)
+        }
     }
 
     initDatabase() {

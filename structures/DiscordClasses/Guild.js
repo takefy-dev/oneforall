@@ -731,8 +731,7 @@ Structures.extend('Guild', (Guild) => {
                 }).then((res) => {
                     if (res.length < 1) return;
                     res.forEach(row => {
-                        const {dataValues} = row;
-                        const {userId, warn} = dataValues;
+                        const {userId, warn} = row.get();
                         this.client.emit('warnFetched', this.guildID, userId, warn)
                     })
 
@@ -747,8 +746,7 @@ Structures.extend('Guild', (Guild) => {
                     }).then((res) => {
                         if (res.length < 1) return;
                         res.forEach(row => {
-                            const {dataValues} = row;
-                            const {userId, invite} = dataValues;
+                            const {userId, invite} = row.get();
                             this.client.emit('inviteFetched', this.guildID, userId, invite)
                         })
                     })

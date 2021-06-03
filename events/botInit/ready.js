@@ -13,6 +13,7 @@ module.exports = class Ready extends Event {
     }
 
     async run(client) {
+
         Logger.info(`${client.user.tag} logged in`, `CLIENT LOGIN`);
         const Giveaway = class extends GiveawaysManager {
             async refreshStorage() {

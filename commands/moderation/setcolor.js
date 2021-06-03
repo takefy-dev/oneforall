@@ -2,14 +2,7 @@
 const Command = require('../../structures/Handler/Command');
 const { Logger } = require('advanced-command-handler')
 const Discord = require('discord.js')
-function hexColorCheck(a) {
-    var check = hexColorRegex().test(a);
-    var checkVerify = false;
-    if (check == true) {
-        checkVerify = true;
-    }
-    return checkVerify;
-}
+let hexColorRegex = require('hex-color-regex');
 module.exports = class Test extends Command{
     constructor() {
         super({

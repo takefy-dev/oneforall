@@ -3,7 +3,7 @@ require('dotenv').config();
 const Discord = require('discord.js')
 const shards = new ShardingManager("./index.js", {
     token: process.env.TOKEN,
-    totalShards: 2,   
+    totalShards: 2,
     execArgv: ['--trace-warnings'],
 	shardArgs: ['--ansi', '--color'],
 });
@@ -29,7 +29,6 @@ shards.on('shardCreate', shard => {
         // hook.send(`\`[${new Date().toString().split(" ", 5).join(" ")}]\` <:away2:464520569862357002> Shard \`#$shard.id + 1}\` se reconnecte  \n▬▬▬▬▬▬▬▬  `)
 
     });
-    
     console.log(`[${new Date().toString().split(" ", 5).join(" ")}] Lancé shard #${shard.id}`);
     const hook = new Discord.WebhookClient('801060243785383936', 'foWpfz4X8OEwrZ4SQfOR1khPOH0YdF1AsHzjfIqFW_iRpTSqtPfDwFJYUOx91Y4xv5oq');
     // hook.send(`\`[${new Date().toString().split(" ", 5).join(" ")}]\` <:away2:464520569862357002> Shard \`#${shard.id + 1}\`  démarre`)
