@@ -3,7 +3,7 @@ require('dotenv').config();
 const Discord = require('discord.js')
 const shards = new ShardingManager("./index.js", {
     token: process.env.TOKEN,
-    totalShards: 2,
+    totalShards: 7,
     execArgv: ['--trace-warnings'],
 	shardArgs: ['--ansi', '--color'],
 });

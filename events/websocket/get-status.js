@@ -15,6 +15,7 @@ module.exports = class connect extends Event {
         const apiLatency = Math.round(client.ws.ping)
         const guilds = []
         client.guilds.cache.forEach(g => guilds.push(g.id))
+
         const unavailableGuilds = client.unavailableGuilds;
         cb(upTime, apiLatency, parseInt(client.shard.ids.toString()) + 1, guilds, unavailableGuilds);
     }

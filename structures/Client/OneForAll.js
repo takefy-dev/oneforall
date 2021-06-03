@@ -42,22 +42,8 @@ module.exports = class OneForAll extends Client {
         this.owners = owner;
         this.cooldown = new Collection();
         this.unavailableGuilds = 0;
-        if (!this.botperso) {
-            this.oneforallSocket = io("http://localhost:3000")
-            // socket.on('connect', () => {
-            //     console.log(`Logged to websocket ${socket.id}`)
-            //     socket.emit('send-commands', client.commands.filter(cm => cm.category !== "botOwner" && cm.category !== "test" && cm.category !== "botperso"));
-            // })
-            // socket.on('get-status', (cb) => {
-            //     console.log("getting status in bot")
-            //     const upTime = client.uptime
-            //     const apiLatency = Math.round(client.ws.ping)
-            //     const guilds = []
-            //     client.guilds.cache.forEach(g => guilds.push(g.id))
-            //     cb(upTime, apiLatency, parseInt(client.shard.ids.toString()) + 1, guilds);
-            // })
-        }
-
+        this.botperso = config.botperso;
+        if (!this.botperso) this.oneforallSocket = io("http://localhost:3000")
         this.database = new Sequelize(name, user, pass, {
             dialect: 'mysql',
             define: {
@@ -83,9 +69,9 @@ module.exports = class OneForAll extends Client {
         logs(this)
         this.loadCommands();
         this.loadEvents();
-        this.loadWebsocket();
+        if(!this.botperso) this.loadWebsocket();
+
         this.initDatabase()
-        this.botperso = config.botperso;
         this.maintenance = false;
         this.music = new Distube(this, {searchSongs: false, leaveOnEmpty: true});
 
