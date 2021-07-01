@@ -1,4 +1,6 @@
 - repair 1 perm per role (takefy)
 - repair music on bot perso (takefy)
+- add ban message after bot ban user (takefy / baby)
+- stop deleting message after unban member (takefy / baby)
 - translate in ro (baby)
 - new no args etc design (baby)
