@@ -1,0 +1,4 @@
+- repair 1 perm per role (takefy)
+- repair music on bot perso (takefy)
+- translate in ro (baby)
+- new no args etc design (baby)
