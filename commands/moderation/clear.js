@@ -24,7 +24,7 @@ module.exports = class Test extends Command{
 
     if (isNaN(args[0]) || parseInt(args[0]) <= 0) { return message.reply(lang.clear.errorNaN)}
 
-    if (parseInt(args[0]) >= 101) {
+    if (parseInt(args[0]) > 105) {
         return message.reply(lang.clear.error100)
     } else {
         deleteAmount = parseInt(args[0]);
