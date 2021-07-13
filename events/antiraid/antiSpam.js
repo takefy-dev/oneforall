@@ -13,16 +13,16 @@ module.exports = class Message extends Event{
         });
     }
     async run(client, message){
-        if (message.guild == null) return;
+        if (!message.guild) return;
         if(message.webhookID) return;
-        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
-        const { muteRoleId } = guildData;
+        const { muteRoleId } = message.guild.config;
         const muteRole = message.guild.roles.cache.get(muteRoleId);
         if(!muteRoleId || !muteRole || muteRole.deleted || muteRole.managed) return;
-        const color = message.guild.color;
-        const antiraidConfig = message.guild.antiraid;
-        let {antiraidLog} = message.guild.logs;
-        let {logs} = client.lang(message.guild.lang)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
+        const color = guildData.get('color');
+        const antiraidConfig = guildData.get('antiraid');
+        let antiraidLog = guildData.get('logs').antiraid;
+        let {logs} = guildData.lang
         const isOn = antiraidConfig.enable["antiSpam"];
         if(!isOn) return;
 
@@ -30,18 +30,17 @@ module.exports = class Message extends Event{
         if (message.author.id === client.user.id) return
         if(message.guild.ownerID === message.author.id) return
 
-        let isGuildOwner = message.guild.isGuildOwner(message.author.id);
+        let isGuildOwner = guildData.isGuildOwner(message.author.id);
         let isBotOwner = client.isOwner(message.author.id);
 
 
         let isWlBypass = antiraidConfig.bypass["antiSpam"];
-        if (isWlBypass) var isWl = message.guild.isGuildWl(message.author.id);
+        if (isWlBypass) var isWl = guildData.isGuildWl(message.author.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
 
 
         if (isWlBypass && !isWl || !isWlBypass) {
             const { member } = message;
-
             if (spammer.has(message.author.id)) {
                 const userData = spammer.get(message.author.id);
                 const {lastMessage, timer} = userData;

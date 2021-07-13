@@ -43,7 +43,7 @@ module.exports = class Test extends Command {
         const membersGuild = message.guild.members.cache;
         const channelsGuild = message.guild.channels.cache;
         const emojisGuild = message.guild.emojis.cache;
-        const color = message.guild.color
+        const color = guildData.get('color')
 
         let rolemap = message.guild.roles.cache
             .sort((a, b) => b.position - a.position)

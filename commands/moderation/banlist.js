@@ -18,7 +18,7 @@ module.exports = class Test extends Command{
     }
     async run(client, message,args){
 
-    const color =message.guild.color
+    const color =guildData.get('color')
       const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;
 
@@ -26,7 +26,7 @@ module.exports = class Test extends Command{
     message.guild.fetchBans()
         .then(banned => {
             let list = banned.map(ban => ban.user.tag).join('\n');
-            const color =message.guild.color
+            const color =guildData.get('color')
 
             if (list.length >= 1950) list = `${list.slice(0, 1948)}...`;
             const embed = new Discord.MessageEmbed()

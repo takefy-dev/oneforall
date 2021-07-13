@@ -22,7 +22,7 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-        const color = message.guild.color
+        const color = guildData.get('color')
         let guildArray;
         let guildCount;
         let channelArray;

@@ -17,7 +17,7 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-        const color = message.guild.color
+        const color = guildData.get('color')
           const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;
         let member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
@@ -35,14 +35,15 @@ module.exports = class Test extends Command {
             const channel = message.guild.channels.cache.get(modLog);
             const guild = message.guild;
 
-            let {logs} = client.lang(guild.lang)
-            const color = guild.color;
+            let {logs} = guildData.lang
+            const color = guildData.get('color');
 
             if (channel && !channel.deleted) {
                 channel.send(channel.send(logs.targetExecutorLogs("kick", message.member, member, color)))
             }
-            const antiraidConfig = guild.antiraid;
-            let {antiraidLog} = guild.logs;
+            const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
+ const antiraidConfig = guildData.get('antiraid');
+            let antiraidLog = guildData.get('logs').antiraid;
             const isOn = antiraidConfig.enable["antiMassKick"];
             if (!isOn) return;
             if (guild.ownerID === message.author.id) return Logger.log(`No sanction crown`, `kick`, 'pink');

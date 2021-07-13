@@ -11,8 +11,9 @@ module.exports = class Ready extends Event{
     }
     async run(client, oldGuild, newGuild){
         if (!oldGuild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-        let { modLog } = oldGuild.logs;
-        const { logs } = client.lang(oldGuild.lang)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(oldGuild.id)
+        let  modLog  = guildData.get('logs');
+        const { logs } = guildData.lang
         if(modLog === "Non définie") return modLog = null;
         const action = await oldGuild.fetchAuditLogs({type: "GUILD_UPDATE"}).then(async (audit) => audit.entries.first());
         if(action.executor.id === client.user.id) return;
@@ -20,7 +21,7 @@ module.exports = class Ready extends Event{
         const channel = oldGuild.channels.cache.get(modLog);
         if(channel){
             const color = oldGuild.color
-            const executor = oldGuild.members.cache.get(action.executor.id);
+            const executor = oldGuild.members.resolve(action.executor.id);
             channel.send(logs.guildNameUpdate(executor, oldGuild.name, newGuild.name, oldGuild.id, color))
         }
     }

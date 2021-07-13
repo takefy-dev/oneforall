@@ -1,4 +1,3 @@
-
 const Command = require('../../structures/Handler/Command');
 const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
@@ -20,8 +19,8 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
 
 
         let regex = /^[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{1}$/igm;
@@ -31,7 +30,7 @@ module.exports = class Test extends Command {
         const [cmdName, newPrefix] = message.content.split(" ");
         if (newPrefix) {
             try {
-                message.guild.updatePrefix = newPrefix
+                guildData.set('prefix', newPrefix).save()
                 message.channel.send(lang.setprefix.success(newPrefix));
             } catch (err) {
                 console.log(err);

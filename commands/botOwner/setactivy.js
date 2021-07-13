@@ -19,7 +19,7 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
 
-        const color = message.guild.color
+        const color = guildData.get('color')
         const activityName = args.join(" ");
         if (args[0] === "streaming") {
             client.user.setPresence({

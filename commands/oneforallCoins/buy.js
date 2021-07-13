@@ -23,7 +23,7 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
         if (!message.guild.config.coinsOn) return;
-        const color = message.guild.color
+        const color = guildData.get('color')
           const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;
 

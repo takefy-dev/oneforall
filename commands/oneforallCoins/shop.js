@@ -31,7 +31,7 @@ module.exports = class Test extends Command {
                 owner = process.env.OWNER
             }
         }
-        const color = message.guild.color
+        const color = guildData.get('color')
           const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;;
         let shop;

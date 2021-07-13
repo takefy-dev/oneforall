@@ -9,15 +9,16 @@ module.exports = class roleCreate extends Event {
     }
 
     async run(client, role) {
-        if(role.managed) return;
+        if (role.managed) return;
         let guild = role.guild;
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-        const color = guild.color
-        let {antiraidLog} = guild.logs;
-        let {logs} = client.lang(guild.lang)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
+        const color = guildData.get('color')
+        let antiraidLog = guildData.get('logs').antiraid;
+        let {logs} = guildData.lang
 
 
-        const antiraidConfig = guild.antiraid;
+        const antiraidConfig = guildData.get('antiraid');
         const isOn = antiraidConfig.enable[this.name];
         if (!isOn) return;
         let action = await guild.fetchAuditLogs({type: "ROLE_CREATE"}).then(async (audit) => audit.entries.first());
@@ -25,14 +26,14 @@ module.exports = class roleCreate extends Event {
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
         if (guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
 
-        let isGuildOwner = guild.isGuildOwner(action.executor.id);
+        let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
         let isWlBypass = antiraidConfig.bypass[this.name];
-        if (isWlBypass) var isWl = guild.isGuildWl(action.executor.id);
+        if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `ROLE_CREATEE`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
-            const member = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
+            const member = await guild.members.resolve(action.executor.id)
             const channel = guild.channels.cache.get(antiraidLog)
             try {
                 role.delete(`OneForall - Type : roleCreate`);
@@ -40,8 +41,8 @@ module.exports = class roleCreate extends Event {
             } catch (e) {
                 if (e.toString().toLowerCase().includes('missing permissions')) {
 
-                    if(channel){
-                        channel.send(logs.roleCreate(member, role.name, role.id,color, "Je n'ai pas assé de permissions"))
+                    if (channel && !channel.deleted) {
+                        channel.send(logs.roleCreate(member, role.name, role.id, color, "Je n'ai pas assé de permissions"))
                     }
 
 
@@ -55,15 +56,15 @@ module.exports = class roleCreate extends Event {
                 if (sanction === 'ban') {
                     await guild.members.ban(action.executor.id, {reason: "OneForAll - Type : roleCreate"})
                 } else if (sanction === 'kick') {
-                    guild.member(action.executor.id).kick(
+                    member.kick(
                         `OneForAll - Type: roleCreate `
                     )
                 } else if (sanction === 'unrank') {
                     let roles = []
-                  await guild.member(action.executor.id).roles.cache
+                    await member.roles.cache
                         .map(role => roles.push(role.id))
 
-                    await guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: roleCreate`)
+                    await member.roles.remove(roles, `OneForAll - Type: roleCreate`)
                     if (action.executor.bot) {
                         let botRole = member.roles.cache.filter(r => r.managed)
 
@@ -73,13 +74,13 @@ module.exports = class roleCreate extends Event {
                         await botRole.setPermissions(0, `OneForAll - Type: roleCreate`)
                     }
                 }
-               if(channel){
-                   channel.send(logs.roleCreate(member, role.name, role.id, color, sanction))
-               }
+                if (channel && !channel.deleted) {
+                    channel.send(logs.roleCreate(member, role.name, role.id, color, sanction))
+                }
             } else {
 
-                if(channel){
-                    channel.send(logs.roleCreate(member, role.name,role.id, color, "Je n'ai pas assé de permissions"))
+                if (channel && !channel.deleted) {
+                    channel.send(logs.roleCreate(member, role.name, role.id, color, "Je n'ai pas assé de permissions"))
                 }
             }
         }

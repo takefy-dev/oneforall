@@ -20,7 +20,7 @@ module.exports = class Test extends Command{
       const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;;
 
-    const color = message.guild.color
+    const color = guildData.get('color')
     let isSetup = message.guild.setup;
     if (!isSetup) return message.channel.send(lang.error.noSetup);
     const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);

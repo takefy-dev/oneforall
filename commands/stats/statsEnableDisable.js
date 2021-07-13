@@ -18,7 +18,7 @@ module.exports = new Command({
 }, async(client, message, args) => {
     return;
     this.connection = StateManager.connection;
-    const color = message.guild.color
+    const color = guildData.get('color')
       const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;
     if(args[0] === "on"){

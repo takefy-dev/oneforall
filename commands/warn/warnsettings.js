@@ -26,7 +26,7 @@ module.exports = class Test extends Command {
             kick : message.guild.config.warnKick,
             mute : message.guild.config.warnMute
         })
-        const color = message.guild.color
+        const color = guildData.get('color')
         const warnBan = warnSanction.get(message.guild.id).ban
         const warnKick = warnSanction.get(message.guild.id).kick
         const warnMute = warnSanction.get(message.guild.id).mute

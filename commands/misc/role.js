@@ -20,7 +20,7 @@ module.exports = class Test extends Command{
 
       const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;
-    const color = message.guild.color
+    const color = guildData.get('color')
     const add = args[0] === 'add';
         const remove = args[0] === 'remove';
         // if(!message.member.hasPermission('MANAGE_ROLES')) return message.channel.send("<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas la permission requise \`MANAGER_ROLES\`");

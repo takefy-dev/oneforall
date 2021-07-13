@@ -11,11 +11,11 @@ module.exports = class roleDelete extends Event {
     async run(client, role) {
         if (role.managed) return;
         let guild = role.guild;
-        if(!guild.config) return
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-        const color = guild.color
-        let {modLog} = guild.logs;
-        let {logs} = client.lang(guild.lang)
+        const color = guildData.get('color')
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
+        const modLog = guildData.get('logs').mod
+        let {logs} = guildData.lang
 
 
         if(modLog === "Non définie") return
@@ -24,7 +24,7 @@ module.exports = class roleDelete extends Event {
 
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
 
-        const member = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
+        const member = await guild.members.resolve(action.executor.id)
         const channel = guild.channels.cache.get(modLog)
 
         if (channel && !channel.deleted) {

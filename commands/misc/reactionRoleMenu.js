@@ -32,7 +32,7 @@ module.exports = class Test extends Command {
         chs.set(message.guild.id, 'Non définie',)
         // isDelete.set(message.guild.id, false)
 
-        const color = message.guild.color
+        const color = guildData.get('color')
         const msg = await message.channel.send(lang.loading)
         await msg.react('📖')
         await msg.react('🆔')

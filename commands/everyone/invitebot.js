@@ -18,7 +18,7 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
           const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;
-        const color = message.guild.color
+        const color = guildData.get('color')
         const embed = new discord.MessageEmbed()
             .setAuthor(lang.inviteBot.invite, `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
             .setColor(`${color}`)

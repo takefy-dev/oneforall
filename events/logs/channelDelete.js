@@ -10,18 +10,20 @@ module.exports = class channelDelete extends Event {
     }
 
     async run(client, channel) {
-        let guild = channel.guild
         if (channel.type === "dm") return;
+        let guild = channel.guild
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-        const color = guild.color;
-        let {modLog} = guild.logs;
-        let {logs} = client.lang(guild.lang)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
+
+        const color = guildData.get('color');
+        const {logs} = guildData.lang
+        const modLog = guildData.get('logs').mod
         if (modLog === "Non définie") return
         let action = await channel.guild.fetchAuditLogs({type: "CHANNEL_DELETE"}).then(async (audit) => audit.entries.first());
 
         if (action.executor.id === client.user.id) return
 
-        const member = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
+        const member = await guild.members.resolve(action.executor.id)
         const logsChannel = guild.channels.cache.get(modLog)
 
 

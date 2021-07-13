@@ -1,4 +1,3 @@
-
 const Command = require('../../structures/Handler/Command');
 const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
@@ -18,8 +17,8 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
 
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
 
 
         message.channel.send(lang.setup.muteQ)
@@ -48,15 +47,16 @@ module.exports = class Test extends Command {
 
         let muteRole = CollectedMuteRole.mentions.roles.first() || message.guild.roles.cache.get(CollectedMuteRole.content);
         let muteRoleId = muteRole.id;
-        if(!muteRole) return  message.channel.send(lang.setup.dontFindMute)
+        if (!muteRole) return message.channel.send(lang.setup.dontFindMute)
 
         let memberRole = CollectedMembreRole.mentions.roles.first() || message.guild.roles.cache.get(CollectedMembreRole.content);
         let memberRoleId = memberRole.id
-        if(!memberRole) return message.channel.send(lang.setup.dontFindMember)
+        if (!memberRole) return message.channel.send(lang.setup.dontFindMember)
 
         try {
-
-            await message.guild.updateSetup(muteRoleId, memberRoleId)
+            guildData.set('muteRoleId', muteRoleId)
+            guildData.set('memberRole', memberRoleId)
+            guildData.save()
             message.channel.send(lang.setup.success(muteRoleId, memberRoleId))
             message.guild.channels.cache.forEach(channel => {
                 if (channel.type === 'text') {
@@ -64,6 +64,20 @@ module.exports = class Test extends Command {
                         SEND_MESSAGES: false,
                         ADD_REACTIONS: false
                     }, `Setup par ${message.author.tag}`)
+                    channel.updateOverwrite(message.guild.roles.everyone, {
+                        SEND_MESSAGES: null,
+                        ADD_REACTIONS: null
+                    })
+                    channel.updateOverwrite(memberRole, {
+                        SEND_MESSAGES: null,
+                        ADD_REACTIONS: null
+                    })
+                    memberRole.edit({
+                        permissions: 'SEND_MESSAGES'
+                    },`Setup par ${message.author.tag}`)
+                    message.guild.roles.everyone.edit({
+                        permissions: 'SEND_MESSAGES'
+                    },`Setup par ${message.author.tag}`)
                 }
                 if (channel.type === 'voice') {
                     channel.updateOverwrite(muteRole, {
@@ -72,7 +86,7 @@ module.exports = class Test extends Command {
                 }
             })
         } catch (err) {
-            console.log(err)
+            console.error(err)
             message.channel.send(lang.setup.error(muteRoleId, memberRole))
         }
     }

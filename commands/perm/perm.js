@@ -51,7 +51,7 @@ module.exports = class Test extends Command {
                 .addField(`Perm2:`, options.perm2Command.length < 1 ? lang.perm.noCommand : options.perm2Command.map((name, i) => `${i + 1} - ${name}\n`))
                 .addField(`Perm3:`, options.perm3Command.length < 1 ? lang.perm.noCommand : options.perm3Command.map((name, i) => `${i + 1} - ${name}\n`))
                 .addField(`Perm4:`, options.perm4Command.length < 1 ? lang.perm.noCommand : options.perm4Command.map((name, i) => `${i + 1} - ${name}\n`))
-                .setColor(message.guild.color)
+                .setColor(guildData.get('color'))
                 .setTimestamp()
                 .setFooter(client.user.username, message.author.displayAvatarURL({dynamic: true}))
             return await message.channel.send(embed)

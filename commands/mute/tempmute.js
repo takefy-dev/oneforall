@@ -40,7 +40,7 @@ module.exports = class Test extends Command {
 
         if (member.roles.cache.has(muteRole.id)) return message.channel.send(lang.tempmute.errorAlreadyMute(member));
         member.roles.add(muteRole, `Mute by ${message.author.tag}`).then(async () => {
-            const color = message.guild.color
+            const color = guildData.get('color')
 
             message.channel.send(lang.tempmute.success(member, time));
 

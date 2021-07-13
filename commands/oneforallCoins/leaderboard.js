@@ -22,7 +22,7 @@ module.exports = class Test extends Command {
           const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;
         const lb = await message.guild.getLeaderBoard()
-        const color = message.guild.color;
+        const color = guildData.get('color');
         const embed = new Discord.MessageEmbed()
             .setTitle(lang.lb.title)
             .setDescription(lb.map((user, i) => `${i + 1} . <@${user[1].userId}> : ${user[1].coins} coins`))

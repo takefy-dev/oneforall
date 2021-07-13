@@ -14,12 +14,13 @@ module.exports = class Ready extends Event {
         const guild = oldState.guild;
         if(!oldState.guild.config) return
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-        let {voiceLog} = guild.logs;
-        const {logs} = client.lang(guild.lang)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
+        let voiceLog = guildData.get('logs').voice;
+        const {logs} = guildData.lang
         if (voiceLog === "Non définie") return voiceLog = null;
         // const action = await guild.fetchAuditLogs({type: "MEMBER_BAN_ADD"}).then(async (audit) => audit.entries.first());
         // if (action.executor.id === client.user.id) return;
-        const color = guild.color
+        const color = guildData.get('color')
         const channel = guild.channels.cache.get(voiceLog);
         if(!channel) return;
         if (oldState.channelID == null && newState.channelID != null) {
@@ -38,7 +39,7 @@ module.exports = class Ready extends Event {
             }).then(async (audit) => audit.entries.first());
             const {executor, target} = action
             // self move
-            const member = guild.members.cache.get(executor.id)
+            const member = await guild.members.resolve(executor.id)
             if(!action || executor.id === oldState.id){
                 console.log("ok")
                 return channel.send(logs.voiceChange(member, member.user, oldState.channelID, newState.channelID, color))

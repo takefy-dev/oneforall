@@ -20,7 +20,7 @@ module.exports = class Test extends Command {
 
         const voiceChannels = message.guild.channels.cache.filter(c => c.type === 'voice');
         const members = message.guild.members.cache.filter(m => !m.bot && m.voice.channelID != null);
-        const color = message.guild.color
+        const color = guildData.get('color')
           const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;
 

@@ -20,6 +20,11 @@ module.exports =  (database, DataTypes, modelName, config) => {
                 type: DataTypes.JSON,
                 allowNull: true,
                 defaultValue: {ban : 0, deco: 0, kick:0}
+            },
+            mute : {
+                type: DataTypes.JSON,
+                allowNull: true,
+                defaultValue: {muted: false, createdAt: new Date(), expireAt: null}
             }
 
 

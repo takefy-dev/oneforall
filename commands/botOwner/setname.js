@@ -20,7 +20,7 @@ module.exports = class Test extends Command{
     async run(client, message,args) {
 
 
-        const color = message.guild.color
+        const color = guildData.get('color')
 
         if (args.length) {
             let str_content = args.join(" ")

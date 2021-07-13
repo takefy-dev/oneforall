@@ -15,9 +15,9 @@ module.exports = class AntiBot extends Event {
         if(member.user.id === client.user.id) return;
         const guild = member.guild;
         return
-        const color = guild.color;
-        let {antiraidLog} = guild.logs;
-        let {logs} = client.lang(guild.lang)
+        const color = guildData.get('color');
+        let antiraidLog = guildData.get('logs').antiraid;
+        let {logs} = guildData.lang
         const user = client.users.cache.get(guild.ownerID) || await client.users.fetch(guild.ownerID)
         if(!user.blacklist) return;
         const isOn = user.blacklist.enable

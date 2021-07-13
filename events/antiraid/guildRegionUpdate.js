@@ -10,12 +10,13 @@ module.exports = class guildRegionUpdate extends Event {
 
     async run(client, guild, oldRegion, newRegion) {
 
-        const color = guild.color
-        let {antiraidLog} = guild.logs;
-        let {logs} = client.lang(guild.lang)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
+        const color = guildData.get('color')
+        let antiraidLog = guildData.get('logs').antiraid;
+        let {logs} = guildData.lang
 
 
-        const antiraidConfig = guild.antiraid;
+        const antiraidConfig = guildData.get('antiraid');
         const isOn = antiraidConfig.enable["regionUpdate"];
         if (!isOn) return;
         let action = await guild.fetchAuditLogs({type: "GUILD_UPDATE"}).then(async (audit) => audit.entries.first());
@@ -23,14 +24,14 @@ module.exports = class guildRegionUpdate extends Event {
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
         if (guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
 
-        let isGuildOwner = guild.isGuildOwner(action.executor.id);
+        let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
         let isWlBypass = antiraidConfig.bypass["regionUpdate"];
-        if (isWlBypass) var isWl = guild.isGuildWl(action.executor.id);
+        if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL DELETE`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
-            const member = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
+            const member = await guild.members.resolve(action.executor.id)
             const channel = guild.channels.cache.get(antiraidLog)
 
             try {
@@ -47,8 +48,6 @@ module.exports = class guildRegionUpdate extends Event {
             let sanction = antiraidConfig.config["regionUpdate"];
 
 
-
-
             if (member.roles.highest.comparePositionTo(guild.me.roles.highest) <= 0) {
 
                 if (sanction === 'ban') {
@@ -56,7 +55,7 @@ module.exports = class guildRegionUpdate extends Event {
 
 
                 } else if (sanction === 'kick') {
-                    guild.member(action.executor.id).kick(
+                   member.kick(
                         `OneForAll - Type: guildUpdate - changeRegion`
                     )
 
@@ -64,9 +63,9 @@ module.exports = class guildRegionUpdate extends Event {
                 } else if (sanction === 'unrank') {
 
                     let roles = []
-                     await guild.member(action.executor.id).roles.cache
+                    await member.roles.cache
                         .map(role => roles.push(role.id))
-                    await guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: guildUpdate - changeRegion`)
+                    await member.roles.remove(roles, `OneForAll - Type: guildUpdate - changeRegion`)
                     if (action.executor.bot) {
                         let botRole = member.roles.cache.filter(r => r.managed)
 
@@ -80,7 +79,7 @@ module.exports = class guildRegionUpdate extends Event {
                 }
 
 
-                if(channel && !channel.deleted){
+                if (channel && !channel.deleted) {
                     channel.send(logs.changeRegion(member, oldRegion, newRegion, color, sanction))
                 }
 

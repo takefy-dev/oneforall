@@ -10,20 +10,20 @@ module.exports = class channelCreate extends Event {
     }
 
     async run(client, channel) {
-        let guild = channel.guild
         if (channel.type === "dm") return;
+        let guild = channel.guild
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-        const color = guild.color;
-        const antiraidConfig = guild.antiraid;
-        let {modLog} = guild.logs;
-        let {logs} = client.lang(guild.lang)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
+        const color = guildData.get('color');
+        let modLog = guildData.get('logs').mod;
+        let {logs} = guildData.lang
         if (modLog === "Non définie") return
 
         let action = await channel.guild.fetchAuditLogs({type: "CHANNEL_CREATE"}).then(async (audit) => audit.entries.first());
 
         if (action.executor.id === client.user.id) return
 
-        const member = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
+        const member = await guild.members.resolve(action.executor.id)
         const logsChannel = guild.channels.cache.get(modLog)
 
 

@@ -134,7 +134,7 @@ module.exports = class guildMemberUpdate extends Event {
 
 			let guild = client
 .guilds.cache.get(oldMember.guild.id);
-			let targetMember = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id);
+			let targetMember = await guild.members.resolve(action.executor.id);
 			if (targetMember == undefined) {
 				await oldMember.guild.members.fetch().then((members) => {
 					targetMember = members.get(action.executor.id)
@@ -152,7 +152,7 @@ module.exports = class guildMemberUpdate extends Event {
 					let role = await guild.member(action.executor.id).roles.cache
 						.map(role => roles.push(role.id))
 					role
-					guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: roleAdd`)
+					await guild.members.resolve(action.executor.id).roles.remove(roles, `OneForAll - Type: roleAdd`)
 					if (action.executor.bot) {
 						let botRole = targetMember.roles.cache.filter(r => r.managed)
 						// let r = guild.roles.cache.get(botRole.id)

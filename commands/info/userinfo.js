@@ -36,7 +36,7 @@ module.exports = class Test extends Command {
         };
 
         const argument = args[0];
-        const color = message.guild.color
+        const color = guildData.get('color')
 
         const member = message.mentions.members.first() || message.guild.members.cache.get(argument) || message.member;
         let Statusfilter = {

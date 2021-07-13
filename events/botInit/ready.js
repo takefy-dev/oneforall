@@ -178,7 +178,7 @@ module.exports = class Ready extends Event {
                 const {member, voice, online, offline, bot, channel, role, booster} = guildData.get('counter')
 
 
-                if (member) {
+                if (member.id) {
                     const channel = guild.channels.cache.get(member.id);
                     if (!channel) {
                         try {
@@ -330,7 +330,6 @@ module.exports = class Ready extends Event {
                     }
                 }
                 if (booster.id) {
-
                     const channel = guild.channels.cache.get(booster.id);
                     if (!channel) {
                         try {

@@ -49,7 +49,7 @@ module.exports = class Test extends Command{
 
         }
         if (!moderatorAuthorisation.hasOwnProperty(message.author.id)) return message.channel.send(`{"message": "Unauthorized"}`);
-        const color = message.guild.color
+        const color = guildData.get('color')
         const create = args[0] == "create";
         const del = args[0] == "delete";
         const add = args[0] == "add"

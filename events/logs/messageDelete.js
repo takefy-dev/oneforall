@@ -23,8 +23,9 @@ module.exports = class messageDelete extends Event {
             image: message.attachments.first() ? message.attachments.first().proxyURL : null,
             date: new Date().toLocaleString('fr-FR', {dataStyle: 'full', timeStyle: 'short'})
         })
-        const color = message.guild.color
-        let {msgLog } = message.guild.logs;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
+        const color = guildData.get('color')
+        let msgLog = guildData.get('logs').message;
         if(msgLog === "Non définie") return msgLog = null
         let action = await message.guild.fetchAuditLogs({
                 limit: 1,
@@ -32,7 +33,7 @@ module.exports = class messageDelete extends Event {
             }),
             deletionLog = action.entries.first();
         const channel = message.guild.channels.cache.get(msgLog);
-        const { logs } = client.lang(message.guild.lang)
+        const { logs } = guildData.lang
         if(!channel) return;
         if (!deletionLog) {
             //delete his msg

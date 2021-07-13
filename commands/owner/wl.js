@@ -25,7 +25,7 @@ module.exports = class Test extends Command {
             whitelisted.shift()
         }
 
-        const color = message.guild.color
+        const color = guildData.get('color')
         const clear = args[0] === 'clear'
 
         const add = args[0] === "add";

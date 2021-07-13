@@ -51,7 +51,7 @@ class GuildManager {
             ...this.where,
             prefix: values.prefix ? values.prefix : '!',
             lang: values.lang ? values.lang : 'fr',
-            whitelist: values.whitelisted ? values.whitelisted : [],
+            whitelisted: values.whitelisted ? values.whitelisted : [],
             owners: values.owners ? values.owners : [],
             antiraid: values.antiraid ? values.antiraid :
                 {
@@ -120,7 +120,7 @@ class GuildManager {
                         vanityUpdate: false,
                     }
                 },
-            color: values.embedColors ? values.embedColors : "#36393F",
+            color: values.color ? values.color : "#36393F",
             setup: values.setup ? values.setup : false,
             muteRoleId: values.muteRoleId ? values.muteRoleId : null,
             memberRole: values.memberRole ? values.memberRole : null,
@@ -209,8 +209,8 @@ class GuildManager {
         return !!this.values.owners.includes(id) || !!this.guildManager.OneForAll.isOwner(id);
     }
 
-    isWhitelisted(id) {
-        return !!this.values.whitelist.includes(id) || !!this.guildManager.OneForAll.isOwner(id);
+    isGuildWl(id) {
+        return !!this.values.whitelisted.includes(id) || !!this.guildManager.OneForAll.isOwner(id);
     }
 
     async save() {

@@ -20,7 +20,7 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-        const color = message.guild.color
+        const color = guildData.get('color')
         const msgId = args[0];
         if (!msgId) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` Veuillez spécifiez l'id du message de giveaway !`)
 

@@ -48,7 +48,8 @@ class UserManager {
         this.values = {
             ...this.where,
             invite : values.invite ? values.invite : {join:0, leave:0, fake:0, bonus:0, invitedBy: null},
-            antiraidLimit: values.antiraidLimit ? values.antiraidLimit : {ban:0, kick:0, deco:0}
+            antiraidLimit: values.antiraidLimit ? values.antiraidLimit : {ban:0, kick:0, deco:0},
+            mute: values.mute ? values.mute : {muted: false, createdAt: new Date(), expireAt: null}
         }
 
     }

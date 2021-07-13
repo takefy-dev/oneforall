@@ -85,7 +85,7 @@ module.exports =  (database, DataTypes, modelName, config) => {
                 type: DataTypes.STRING(25),
                 allowNull: true,
             },
-            embedColors: {
+            color: {
                 type: DataTypes.STRING(7),
                 allowNull: false,
                 defaultValue: "#36393F",

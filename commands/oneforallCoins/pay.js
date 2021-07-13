@@ -47,7 +47,7 @@ module.exports = class Test extends Command {
                 .setAuthor(message.author.tag,message.author.displayAvatarURL({dynamic: true}))
                 .setDescription(client.lang(message.guild.lang).pay.logs(args[1], message.member, member))
                 .setTimestamp()
-                .setColor(message.guild.color)
+                .setColor(guildData.get('color'))
                 .setFooter(client.user.username)
             logs.send(embed)
         }catch (e) {

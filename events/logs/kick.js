@@ -12,8 +12,9 @@ module.exports = class Ready extends Event{
     async run(client, member){
         const { guild } = member
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-        let { modLog } = guild.logs;
-        const { logs } = client.lang(guild.lang)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
+        let modLog = guildData.get('logs').mod;
+        const { logs } = guildData.lang
         if(modLog === "Non définie") return modLog = null;
         const action = await guild.fetchAuditLogs({type: "MEMBER_KICK"}).then(async (audit) => audit.entries.first());
         if(action.executor.id === client.user.id) return;
@@ -23,10 +24,10 @@ module.exports = class Ready extends Event{
 
         if(diff > 1000) return
         const channel = guild.channels.cache.get(modLog);
-        if(channel){
-            const color = guild.color
+        if(channel && !channel.deleted){
+            const color = guildData.get('color')
 
-            const executor = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
+            const executor = await guild.members.resolve(action.executor.id)
             channel.send(logs.targetExecutorLogs('kick',executor, action.target, color))
         }
     }

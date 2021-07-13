@@ -21,7 +21,7 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
         let lang = client.lang(message.guild.lang);
 
-        const color = message.guild.color
+        const color = guildData.get('color')
         if (args[0] === "on") {
             const {enable} = message.guild.antiraid;
             for (const [name, _] of Object.entries(enable)) {

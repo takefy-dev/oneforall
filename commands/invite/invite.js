@@ -25,7 +25,7 @@ module.exports = class Test extends Command {
         const lang = guildData.lang;
 
         const config = args[0] === "config";
-        const color = message.guild.color
+        const color = guildData.get('color')
         let userData;
         if (!args[0]) {
             userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${message.author.id}`)

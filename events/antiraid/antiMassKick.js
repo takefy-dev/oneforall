@@ -10,10 +10,11 @@ module.exports = class Ready extends Event{
     async run(client, member){
         const guild = member.guild;
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-        const color = guild.color;
-        const antiraidConfig = guild.antiraid;
-        let {antiraidLog} = guild.logs;
-        let {logs} = client.lang(guild.lang)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
+        const color = guildData.get('color');
+        const antiraidConfig = guildData.get('antiraid');
+        let antiraidLog = guildData.get('logs').antiraid;
+        let {logs} = guildData.lang
         const isOn = antiraidConfig.enable["antiKick"];
         if(!isOn) return;
         let action = await guild.fetchAuditLogs({type: "MEMBER_KICK"}).then(async (audit) => audit.entries.first());
@@ -24,29 +25,30 @@ module.exports = class Ready extends Event{
         if (action.executor.id === client.user.id)  return Logger.log(`No sanction oneforall`, `masskick`, 'pink');
         if(guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `masskick`, 'pink');
 
-        let isGuildOwner = guild.isGuildOwner(action.executor.id);
+        let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
 
         let isWlBypass = antiraidConfig.bypass[this.name];
-        if (isWlBypass) var isWl = guild.isGuildWl(action.executor.id);
+        if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
 
 
         if (isWlBypass && !isWl || !isWlBypass) {
             const kickLimit = antiraidConfig.config["antiKickLimit"]
-            const member = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
+            const member = await guild.members.resolve(action.executor.id)
             const logsChannel = guild.channels.cache.get(antiraidLog)
-
-            if(!guild.antiraidLimit.has(action.executor.id)){
-                await guild.updateAntiraidLimit(action.executor.id, 0, 0, 1).then(res => console.log(res))
+            const userData = client.managers.userManager.getAndCreateIfNotExists(`${guild.id}-${member.id}`)
+            const antiraidLimit = userData.get('antiraidLimit')
+            if(!antiraidLimit.kick){
+                antiraidLimit.kick +=1
             }
-            console.log( guild.antiraidLimit)
-            const { deco, ban, kick } = guild.antiraidLimit.get(action.executor.id)
-            if(kick < kickLimit){
-                await guild.updateAntiraidLimit(action.executor.id, deco, ban, kick+1);
+
+
+            if(antiraidLimit.kick < kickLimit){
+                antiraidLimit.kick +=1
                 if(logsChannel && !logsChannel.deleted){
-                    logsChannel.send(logs.targetExecutorLogs("kick", member, action.target, color, `${kick + 1 === kickLimit ? `Aucun kick restant` : `${kick+1}/${kickLimit}`} before sanction`))
+                    logsChannel.send(logs.targetExecutorLogs("kick", member, action.target, color, `${antiraidLimit.kick + 1 === kickLimit ? `Aucun kick restant` : `${antiraidLimit.kick+1}/${kickLimit}`} before sanction`))
                 }
             }else{
                 let sanction = antiraidConfig.config["antiKick"];
@@ -54,17 +56,17 @@ module.exports = class Ready extends Event{
 
                 if (member.roles.highest.comparePositionTo(guild.me.roles.highest) <= 0) {
                     if (sanction === 'ban') {
-                        await guild.members.ban(action.executor.id, {reason: 'OneForAll - Type : antiMassKick'}).then(async () => await guild.updateAntiraidLimit(action.executor.id, deco, ban, 0))
+                        await guild.members.ban(action.executor.id, {reason: 'OneForAll - Type : antiMassKick'}).then(async () => antiraidLimit.kick = 0)
                     } else if (sanction === 'kick') {
-                        guild.member(action.executor.id).kick(
+                       member.kick(
                             `OneForAll - Type: antiMassKick `
-                        ).then(async () => await guild.updateAntiraidLimit(action.executor.id, deco, ban, 0))
+                        ).then(async () => antiraidLimit.kick = 0)
                     } else if (sanction === 'unrank') {
                         let roles = []
-                        await guild.member(action.executor.id).roles.cache
+                        await member.roles.cache
                             .map(role => roles.push(role.id))
 
-                        await guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: antiMassKick`).then(async () => await guild.updateAntiraidLimit(action.executor.id, deco, ban, 0))
+                        member.roles.remove(roles, `OneForAll - Type: antiMassKick`).then(async () => antiraidLimit.kick = 0)
                         if (action.executor.bot) {
                             let botRole = member.roles.cache.filter(r => r.managed)
 
@@ -83,10 +85,11 @@ module.exports = class Ready extends Event{
                     if(logsChannel && !logsChannel.deleted){
                         logsChannel.send(logs.targetExecutorLogs("kick", member, action.target, color, "Je n'ai pas assé de permissions"))
                     }
-                    await guild.updateAntiraidLimit(action.executor.id, deco, ban, 0)
+                    antiraidLimit.kick = 0
 
                 }
             }
+            userData.save()
 
 
         }

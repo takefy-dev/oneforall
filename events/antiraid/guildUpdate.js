@@ -10,12 +10,13 @@ module.exports = class guildUpdate extends Event {
     async run(client, oldGuild, newGuild) {
 
         if (!oldGuild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-        const color = oldGuild.color
-        let {antiraidLog} = oldGuild.logs;
-        let {logs} = client.lang(oldGuild.lang)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(oldGuild.id)
+        const color = guildData.get('color')
+        let {antiraidLog} = guildData.get('logs').antiraid;
+        let {logs} = guildData.lang
 
 
-        const antiraidConfig = oldGuild.antiraid;
+        const antiraidConfig = guildData.get('antiraid');
         const isOn = antiraidConfig.enable["nameUpdate"];
         if (!isOn) return;
         let action = await oldGuild.fetchAuditLogs({type: "GUILD_UPDATE"}).then(async (audit) => audit.entries.first());
@@ -23,14 +24,14 @@ module.exports = class guildUpdate extends Event {
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
         if (oldGuild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
 
-        let isGuildOwner = oldGuild.isGuildOwner(action.executor.id);
+        let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
         let isWlBypass = antiraidConfig.bypass["nameUpdate"];
-        if (isWlBypass) var isWl = oldGuild.isGuildWl(action.executor.id);
+        if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `oldGuild owner list or bot owner`}`, `CHANNEL DELETE`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
-            const member = oldGuild.members.cache.get(action.executor.id)
+            const member = oldGuild.members.resolve(action.executor.id)
             const channel = oldGuild.channels.cache.get(antiraidLog)
             const oldName = action.changes[0].old;
             const newName = action.changes[0].new
@@ -39,7 +40,7 @@ module.exports = class guildUpdate extends Event {
             } catch (e) {
 
                 if (e.toString().toLowerCase().includes('missing permissions')) {
-                    if(channel){
+                    if(channel && !channel.deleted){
                         channel.send(logs.guildNameUpdate(member, oldName, newName, oldGuild.id, color, "Je n'ai pas assé de permissions"))
                     }
 
@@ -56,7 +57,7 @@ module.exports = class guildUpdate extends Event {
 
 
                 } else if (sanction === 'kick') {
-                    oldGuild.member(action.executor.id).kick(
+                    member.kick(
                         `OneForAll - Type: guildUpdate - changeName`
                     )
 
@@ -64,10 +65,10 @@ module.exports = class guildUpdate extends Event {
                 } else if (sanction === 'unrank') {
 
                     let roles = []
-                    await oldGuild.member(action.executor.id).roles.cache
+                    await member.roles.cache
                         .map(role => roles.push(role.id))
 
-                    await oldGuild.members.cache.get(action.executor.id).roles.remove(roles, `OneForAll - Type: guildUpdate - changeName`)
+                    await member.roles.remove(roles, `OneForAll - Type: guildUpdate - changeName`)
                     if (action.executor.bot) {
                         let botRole = member.roles.cache.filter(r => r.managed)
 
@@ -82,13 +83,13 @@ module.exports = class guildUpdate extends Event {
                 }
 
 
-                if(channel){
+                if(channel && !channel.deleted){
                     channel.send(logs.guildNameUpdate(member, oldName, newName, oldGuild.id, color, sanction))
                 }
 
             } else {
 
-                if(channel){
+                if(channel && !channel.deleted){
                     channel.send(logs.guildNameUpdate(member, oldName, newName, oldGuild.id, color, "Je n'ai pas assé de permissions"))
                 }
             }

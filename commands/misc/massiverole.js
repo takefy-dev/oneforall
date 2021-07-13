@@ -26,7 +26,7 @@ module.exports = class Test extends Command{
 
           const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;
-        const color = message.guild.color
+        const color = guildData.get('color')
 
 
         let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[1]);

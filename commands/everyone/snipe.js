@@ -29,7 +29,7 @@ module.exports = class Test extends Command {
 
         }
 
-        const color = message.guild.color
+        const color = guildData.get('color')
         let msg;
 
         try {

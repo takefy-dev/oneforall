@@ -23,7 +23,7 @@ module.exports = class Test extends Command {
         this.connection = StateManager.connection;
           const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;
-        const color = message.guild.color
+        const color = guildData.get('color')
 
         const user = message.mentions.users.first() || await client.users.fetch(args[0]).catch(async err => {
             return await message.channel.send(lang.ban.noBan).then(mp => mp.delete({timeout: 4000}));
@@ -68,14 +68,15 @@ module.exports = class Test extends Command {
             const channel = message.guild.channels.cache.get(modLog);
             const guild = message.guild;
 
-            let {logs} = client.lang(guild.lang)
-            const color = guild.color;
+            let {logs} = guildData.lang
+            const color = guildData.get('color');
 
             if (channel && !channel.deleted) {
                 channel.send(channel.send(logs.targetExecutorLogs("ban", message.member, user, color)))
             }
-            const antiraidConfig = guild.antiraid;
-            let {antiraidLog} = guild.logs;
+            const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
+ const antiraidConfig = guildData.get('antiraid');
+            let antiraidLog = guildData.get('logs').antiraid;
             const isOn = antiraidConfig.enable["antiMassBan"];
             if (!isOn) return;
             if (guild.ownerID === message.author.id) return Logger.log(`No sanction crown`, `MassBAN`, 'pink');

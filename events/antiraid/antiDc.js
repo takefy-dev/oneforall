@@ -13,15 +13,15 @@ module.exports = class AntiDc extends Event {
 
     async run(client, member) {
         const guild = member.guild;
-        return
-        const color = guild.color;
-        const antiraidConfig = guild.antiraid;
-        let {antiraidLog} = guild.logs;
-        let {logs} = client.lang(guild.lang)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
+        const color = guildData.get('color');
+        const antiraidConfig = guildData.get('antiraid');
+        let antiraidLog = guildData.get('logs').antiraid;
+        let {logs} = guildData.lang
         const isOn = antiraidConfig.enable["antiDc"];
         if (!isOn) return;
         const limit = ms(antiraidConfig.config["antiDcLimit"]);
-        const user = client.users.cache.get(member.user.id)
+        const user = client.users.resolve(member.user.id)
         const time = Date.now() - user.createdAt;
         if (time < limit){
             const logsChannel = guild.channels.cache.get(antiraidLog)

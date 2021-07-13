@@ -37,7 +37,7 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
         timestamp.set(message.guild.id, false)
-        const color = message.guild.color
+        const color = guildData.get('color')
           const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;
         const embed = new Discord.MessageEmbed()

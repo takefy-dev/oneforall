@@ -12,12 +12,13 @@ module.exports = class webhookUpdate extends Event {
     async run(client, channel) {
         let guild = channel.guild
 
-        const color = guild.color
-        let {antiraidLog} = guild.logs;
-        let {logs} = client.lang(guild.lang)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
+        const color = guildData.get('color')
+        let antiraidLog = guildData.get('logs').antiraid;
+        let {logs} = guildData.lang
 
 
-        const antiraidConfig = guild.antiraid;
+        const antiraidConfig = guildData.get('antiraid');
         const isOn = antiraidConfig.enable[this.name];
         if (!isOn) return;
         let action = await guild.fetchAuditLogs({
@@ -28,14 +29,14 @@ module.exports = class webhookUpdate extends Event {
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
         if (guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
 
-        let isGuildOwner = guild.isGuildOwner(action.executor.id);
+        let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
         let isWlBypass = antiraidConfig.bypass[this.name];
-        if (isWlBypass) var isWl = guild.isGuildWl(action.executor.id);
+        if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `wb update`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
-            const executor = guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id)
+            const executor = await guild.members.resolve(action.executor.id)
             const logsChannel = guild.channels.cache.get(antiraidLog)
             try {
                 await channel.delete(`OneForAll - Type : webhookCreate`);
@@ -45,7 +46,7 @@ module.exports = class webhookUpdate extends Event {
                 })
                 await newChannel.setPosition(channel.rawPosition)
 
-                if(newChannel){
+                if (newChannel) {
                     const embed = new Discord.MessageEmbed()
                         .setDescription('👩‍💻 Une création de webhook a été détecté le channel a donc été renew [oneforall antiraid](https://discord.gg/rdrTpVeGWX)')
                         .setColor(color)
@@ -57,7 +58,7 @@ module.exports = class webhookUpdate extends Event {
 
             } catch (e) {
                 if (e.toString().toLowerCase().includes('missing permissions')) {
-                    if(logsChannel && newChannel){
+                    if (logsChannel && newChannel) {
                         logsChannel.send(logs.webhookCreate(executor, newChannel.id, color, "Je n'ai pas assé de permissions"))
                     }
                 }
@@ -71,7 +72,7 @@ module.exports = class webhookUpdate extends Event {
 
 
                 } else if (sanction === 'kick') {
-                    guild.member(action.executor.id).kick(
+                    executor.kick(
                         `OneForAll - Type: webhookCreate `
                     )
 
@@ -79,10 +80,10 @@ module.exports = class webhookUpdate extends Event {
                 } else if (sanction === 'unrank') {
 
                     let roles = []
-                     await guild.member(action.executor.id).roles.cache
+                    await executor.roles.cache
                         .map(role => roles.push(role.id))
 
-                    await guild.members.cache.get(action.executor.id) || await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: webhookCreate`)
+                    await executor.roles.remove(roles, `OneForAll - Type: webhookCreate`)
                     if (action.executor.bot) {
                         let botRole = executor.roles.cache.filter(r => r.managed)
                         for (const [id] of botRole) {
@@ -94,11 +95,11 @@ module.exports = class webhookUpdate extends Event {
 
                 }
 
-                if(logsChannel && newChannel) {
-                    logsChannel.send(logs.webhookCreate(executor, newChannel.id, color,sanction))
+                if (logsChannel && newChannel) {
+                    logsChannel.send(logs.webhookCreate(executor, newChannel.id, color, sanction))
                 }
             } else {
-                if(logsChannel && newChannel){
+                if (logsChannel && newChannel) {
                     logsChannel.send(logs.webhookCreate(executor, newChannel.id, color, "Je n'ai pas assé de permissions"))
                 }
             }

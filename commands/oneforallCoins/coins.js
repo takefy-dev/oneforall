@@ -28,7 +28,7 @@ module.exports = class Test extends Command {
         let coins = !member.coins ? 'Aucun' : member.coins;
         const embed = new Discord.MessageEmbed()
             .setAuthor(member.user.tag, member.user.displayAvatarURL({dynamic: true}))
-            .setColor(message.guild.color)
+            .setColor(guildData.get('color'))
             .setFooter(client.user.username)
             .setTimestamp()
             .setDescription(client.lang(message.guild.lang).coins.description(coins));
