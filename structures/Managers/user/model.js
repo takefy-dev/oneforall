@@ -4,7 +4,8 @@ module.exports =  (database, DataTypes, modelName, config) => {
             guildId: {
                 type: DataTypes.STRING(25),
                 allowNull: false,
-                primaryKey: true
+                primaryKey: false
+
             },
             userId: {
                 type: DataTypes.STRING(25),

@@ -18,7 +18,8 @@ module.exports = class Test extends Command{
     }
     async run(client, message,args){
 
-    const lang = client.lang(message.guild.lang)
+      const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
 
     
     const color = args[0];

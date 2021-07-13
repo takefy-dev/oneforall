@@ -15,7 +15,7 @@ module.exports = class AntiBot extends Event {
         if(!member.user.bot) return
         const guild = member.guild;
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-
+        return
         const color = guild.color;
         const antiraidConfig = guild.antiraid;
         let {antiraidLog} = guild.logs;

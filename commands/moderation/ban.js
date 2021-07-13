@@ -21,7 +21,8 @@ module.exports = class Test extends Command {
 
 
         this.connection = StateManager.connection;
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         const color = message.guild.color
 
         const user = message.mentions.users.first() || await client.users.fetch(args[0]).catch(async err => {

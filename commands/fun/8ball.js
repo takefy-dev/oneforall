@@ -21,7 +21,8 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
         const color = message.guild.color
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
 
         if (!args[0]) return message.channel.send(lang.ball.noQuestion)
         let replies = lang.ball.reponseQuestion

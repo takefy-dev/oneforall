@@ -19,7 +19,8 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
         const permToPutCommand = args[0];
         let commandName = args[1];
-        const lang = client.lang(message.guild.lang);
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;;
         if (!message.guild.permSetup) return message.channel.send(lang.perm.noSetup(message.guild.prefix))
         const {perm} = message.guild;
         const options = {

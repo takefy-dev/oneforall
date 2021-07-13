@@ -24,7 +24,8 @@ module.exports = class Test extends Command {
         let owner = message.guild.ownerID;
 
 
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         const color = message.guild.color
         const logs = message.guild.logs;
         modLog.set(message.guild.id, logs.modLog)

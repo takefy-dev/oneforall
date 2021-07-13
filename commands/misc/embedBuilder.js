@@ -38,7 +38,8 @@ module.exports = class Test extends Command {
 
         timestamp.set(message.guild.id, false)
         const color = message.guild.color
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         const embed = new Discord.MessageEmbed()
             .setDescription()
         const editEmbed = await message.channel.send(embed)

@@ -31,7 +31,8 @@ module.exports = class Test extends Command {
         const warnKick = warnSanction.get(message.guild.id).kick
         const warnMute = warnSanction.get(message.guild.id).mute
         tempWarn.set(message.guild.id, warnSanction.get(message.guild.id))
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
 
 
         const principalMsg = await message.channel.send(lang.loading)

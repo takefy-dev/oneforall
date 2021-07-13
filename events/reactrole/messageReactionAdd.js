@@ -10,6 +10,7 @@ module.exports = class messageReactionAdd extends Event {
     }
 
     async run(client, reaction, user) {
+        return;
         const emojiRoleMapping = reaction.message.guild.reactRoles
         if (user.bot) return;
         if (emojiRoleMapping.size < 1) return

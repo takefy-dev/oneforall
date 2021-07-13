@@ -15,16 +15,18 @@ module.exports = class Test extends Command{
         });
     }
     async run(client, message,args){
-        const lang = client.lang(message.guild.lang);
-        const member = message.mentions.members.first() || await message.guild.members.cache.get(args[0]) || await message.guild.members.fetch(args[0])
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
+        const member = message.mentions.members.first() || await message.guild.members.resolve(args[0]);
 
         if(!member) return message.channel.send(lang.addinvite.noMember)
         const numberToAdd = args[1];
         if(!numberToAdd) return message.channel.send(lang.addinvite.noNumber)
-        let count = member.invite;
+        let userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${member.user.id}`)
+        const count = userData.get('invite');
         count.join += parseInt(numberToAdd);
         count.bonus += parseInt(numberToAdd)
-        member.updateInvite = count;
+        userData.set('invite', count).save()
         message.channel.send(lang.addinvite.success(numberToAdd, member.user.tag || member.user.username))
 
 

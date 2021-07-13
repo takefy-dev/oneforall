@@ -24,7 +24,8 @@ module.exports = class Test extends Command {
         let configEmbed;
         let msg;
         const color = message.guild.color
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         const create = args[0] === "create";
         const list = args[0] === 'list';
         const load = args[0] === 'load';

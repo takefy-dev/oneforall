@@ -19,7 +19,8 @@ module.exports = class Test extends Command{
     async run(client, message,args){
 
     const color =message.guild.color
-    const lang = client.lang(message.guild.lang)
+      const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
 
 
     message.guild.fetchBans()

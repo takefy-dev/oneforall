@@ -124,10 +124,10 @@ class GuildManager {
             setup: values.setup ? values.setup : false,
             muteRoleId: values.muteRoleId ? values.muteRoleId : null,
             memberRole: values.memberRole ? values.memberRole : null,
-            invite: values.invite ? values.invite : {id: null, message: null, enable: false},
+            invite: values.invite ? values.invite : {id: 'Non définie', message: 'Non définie', enable: false},
             soutien: values.soutien ? values.soutien : {
-                roleId: null,
-                message: null,
+                roleId: 'Non définie',
+                message: 'Non définie',
                 enable: false
             },
             logs: values.logs ? values.logs : {
@@ -181,6 +181,7 @@ class GuildManager {
                 }
             ]
         }
+        this.cachedInv = new Collection()
 
 
     }
@@ -205,11 +206,11 @@ class GuildManager {
     }
 
     isGuildOwner(id) {
-        return !!this.values.owners.includes(id);
+        return !!this.values.owners.includes(id) || !!this.guildManager.OneForAll.isOwner(id);
     }
 
     isWhitelisted(id) {
-        return !!this.values.whitelist.includes(id);
+        return !!this.values.whitelist.includes(id) || !!this.guildManager.OneForAll.isOwner(id);
     }
 
     async save() {

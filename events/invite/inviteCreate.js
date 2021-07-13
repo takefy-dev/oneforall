@@ -10,10 +10,11 @@ module.exports = class inviteCreate extends Event {
 
     async run(client, invite) {
         const guild = invite.guild;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
         const guildInv = await guild.fetchInvites()
         for(const [code, invite] of guildInv){
-            guild.cachedInv.set(code, invite)
+            guildData.cachedInv.set(code, invite)
         }
-        if(guild.vanityURLCode) guild.cachedInv.set(guild.vanityURLCode, await guild.fetchVanityData());
+        if(guild.vanityURLCode) guildData.cachedInv.set(guild.vanityURLCode, await guild.fetchVanityData());
     }
 };

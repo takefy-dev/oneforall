@@ -23,7 +23,8 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         this.connection = StateManager.connection;
         let isSetup = message.guild.setup;
         if (!isSetup) return message.channel.send(lang.error.noSetup);

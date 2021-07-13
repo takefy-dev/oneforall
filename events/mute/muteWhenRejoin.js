@@ -12,6 +12,7 @@ module.exports = class Ready extends Event {
 
     async run(client, member) {
         const guild = member.guild;
+        return
         const { muted } = guild;
         const { muteRoleId } = guild.config
         if(muted.has(member.id)){

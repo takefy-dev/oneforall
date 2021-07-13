@@ -19,7 +19,8 @@ module.exports = class Test extends Command{
 
     const tempdata = []
     const color =message.guild.color
-    const lang = client.lang(message.guild.lang)
+      const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
     const admins = message.guild.members.cache.filter(
         (m) => m.hasPermission('ADMINISTRATOR')
     ).map(m => tempdata.push(m.user.id))

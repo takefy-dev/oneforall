@@ -13,48 +13,58 @@ module.exports = class Ready extends Event {
 
     async run(client, member) {
         const guild = member.guild;
-        const {inviteMessage, inviteChannel, inviteOn} = guild.config;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
+        const {id, message, enable} = guildData.get('invite');
 
-        if (!inviteOn || !inviteMessage || !inviteChannel) return;
-        const channel = guild.channels.cache.get(inviteChannel);
-        const lang = client.lang(guild.lang);
-        const cachedInv = guild.cachedInv;
+        if (!id || !message || !enable) return;
+        setInterval(() => {
+            console.log(guildData.get('invite'))
+        }, 6000)
+        const channel = guild.channels.cache.get(id);
+        const lang = guildData.lang;
+        const {cachedInv} = guildData;
         const newInv = await guild.fetchInvites()
+
         const usedInv = newInv.find(inv => cachedInv.get(inv.code) ? cachedInv.get(inv.code).uses < inv.uses : undefined);
         for (const [code, invite] of newInv) {
-            guild.cachedInv.set(code, invite)
+            cachedInv.set(code, invite)
         }
         let finalMsg;
         if (!usedInv) {
+            finalMsg = lang.invite.cantTrace(member)
+
             if (guild.vanityURLCode) {
                 finalMsg = lang.invite.vanity(member)
-            } else if (member.user.bot) {
+            }
+            if (member.user.bot) {
                 finalMsg = lang.invite.oauth(member)
-            } else {
-                finalMsg = lang.invite.cantTrace(member)
             }
         } else {
             const fake = (Date.now() - member.createdAt) / (1000 * 60 * 60 * 24) <= 3;
-            let inviter = guild.members.cache.get(usedInv.inviter.id);
+            let inviter = guild.members.resolve(usedInv.inviter.id);
             if (inviter) {
-                let count = inviter.invite;
+                const userData = client.managers.userManager.getAndCreateIfNotExists(`${guild.id}-${usedInv.inviter.id}`)
+
+                let count = userData.get('invite');
                 count.join += 1;
                 if (fake) count.fake += 1;
-                inviter.updateInvite = count
-                member.invitedBy = inviter.id;
+                userData.set('invite', count).save()
+                const invitedData = client.managers.userManager.getAndCreateIfNotExists(`${guild.id}-${member.id}`);
+                invitedData.values.invite.invitedBy = inviter.id
+                invitedData.save()
                 let space = "\n"
                 let join = `${count.join}`;
                 let memberTotal = `${guild.memberCount}`
 
-                finalMsg = inviteMessage.replace("${invitedMention}", member).replace("${inviterTag}", inviter.user.tag || inviter.user.username).replace("${count}", join).replace("${memberTotal}", memberTotal).replace("${invitedTag}", member.user.tag || member.user.username).replace("${inviterMention}", inviter).replace("${fake}", count.fake).replace("${leave}", count.leave).replace("${creation}", moment(member.user.createdAt).format("DD/MM/YYYY"));
-                while (finalMsg.includes("${space}")) {
-                    finalMsg.replace("${space}", space)
+                finalMsg = message.replace(/{invitedMention}/g, member).replace(/{inviterTag}/g, inviter.user.tag || inviter.user.username).replace(/{count}/g, join).replace(/{memberTotal}/g, memberTotal).replace(/{invitedTag}/g, member.user.tag || member.user.username).replace(/{inviterMention}/g, inviter).replace("${fake}", count.fake).replace(/{leave}/g, count.leave).replace(/{creation}/g, moment(member.user.createdAt).format("DD/MM/YYYY"));
+                while (finalMsg.includes("{space}")) {
+                    finalMsg.replace(/{space}/g, space)
                 }
 
 
             }
         }
-        if (channel) channel.send(finalMsg);
+        if (channel && !channel.deleted) channel.send(finalMsg).catch(console.log);
 
 
     }

@@ -24,7 +24,8 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
         this.connection = StateManager.connection;
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
 
         // if(!message.member.hasPermission('MANAGE_CHANNELS')) return message.channel.send("<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas la permission requise \`MANAGE_CHANNELS\`")
         let isSetup = message.guild.setup

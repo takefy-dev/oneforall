@@ -355,9 +355,9 @@ module.exports = {
         titleConfig: `<:771462923855069204:784471984087236658> __Paramètre des invitations__`,
         descConfig: (inviteChannel, guild, isOnS, inviteMsg) => `
         1 ・Configurer le channel où les messages seront envoyés\n
-            __Channel actuel__ : **<#${inviteChannel.get(guild.id)}>**\n
+            __Channel actuel__ : **<#${inviteChannel}>**\n
         2 ・ Configurer le message de bienvenue\n
-            __Message Actuel__ : **${inviteMsg.get(guild.id)}** \n
+            __Message Actuel__ : **${inviteMsg}** \n
         3 ・ Aide sur le message de bienvenue  \n
 
         4 ・ Activer ou désactiver le message de bienvenue \n

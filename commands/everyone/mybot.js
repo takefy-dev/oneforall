@@ -21,7 +21,8 @@ module.exports = class Test extends Command {
 
 
         const color = message.guild.color
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         const moderatorAuthorisation = {
             '659038301331783680': {
                 name: 'baby',

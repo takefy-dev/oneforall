@@ -20,7 +20,8 @@ module.exports = class Test extends Command{
 
         let tempName = [];
         const color = message.guild.color
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         let count = 0
 
         client.guilds.cache.forEach(guild => {

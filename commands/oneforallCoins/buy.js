@@ -24,7 +24,8 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
         if (!message.guild.config.coinsOn) return;
         const color = message.guild.color
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
 
         const idToBuy = args[0];
         if (!message.guild.config.coinsOn) return message.channel.send(lang.buy.shoDisable).then(mp => mp.delete({timeout: 4000}))

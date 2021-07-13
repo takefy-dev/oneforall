@@ -16,7 +16,8 @@ module.exports = class Test extends Command {
     }
     async run(client, message, args) {
         const color = message.guild.color
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         let user = message.mentions.users.first();
         if (!isNaN(args[0])) user = await client.users.fetch(args[0]).catch()
         if (!user) user = message.author;

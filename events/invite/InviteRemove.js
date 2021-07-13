@@ -10,19 +10,20 @@ module.exports = class Ready extends Event{
         });
     }
     async run(client, member){
-        const { guild } = member
-        const newInv = await guild.fetchInvites()
-        for(const [code, invite] of newInv){
-            guild.cachedInv.set(code, invite)
+        const {guild} = member;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
+        const guildInv = await guild.fetchInvites()
+        for(const [code, invite] of guildInv){
+            guildData.cachedInv.set(code, invite)
         }
-        if(!member.inviter || member.user.bot) return;
-        const invitedBy = member.guild.members.cache.get(member.inviter)
-        if(!invitedBy) return;
-        let count = invitedBy.invite;
+        if(guild.vanityURLCode) guildData.cachedInv.set(guild.vanityURLCode, await guild.fetchVanityData());
+        const userData = client.managers.userManager.getAndCreateIfNotExists(`${guild.id}-${member.id}`)
+        const invite = userData.get('invite');
+        if(!invite.invitedBy || member.user.bot) return;
+        const invitedByData = client.managers.userManager.getAndCreateIfNotExists(`${guild.id}-${member.id}`);
+        let count = invitedByData.get('invite');
         count.leave += 1
-        invitedBy.updateInvite = count;
-
-
+        invitedByData.set('invite', count)
 
     }
 }

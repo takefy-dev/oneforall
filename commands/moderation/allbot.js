@@ -23,7 +23,8 @@ module.exports = class Test extends Command {
         const color = message.guild.color
         const tempdata = []
 
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         let bots;
         let noms;
         await message.guild.members.fetch().then((members) => {

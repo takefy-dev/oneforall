@@ -14,7 +14,7 @@ module.exports = class AntiBot extends Event {
     async run(client, member) {
         if(member.user.id === client.user.id) return;
         const guild = member.guild;
-
+        return
         const color = guild.color;
         let {antiraidLog} = guild.logs;
         let {logs} = client.lang(guild.lang)

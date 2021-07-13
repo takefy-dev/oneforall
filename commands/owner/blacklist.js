@@ -22,7 +22,8 @@ module.exports = class Test extends Command {
         let owner = message.guild.ownerID;
 
         const color = message.guild.color
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         let guildOwner = await client.users.cache.get(owner) || await client.users.fetch(owner, true)
         await guildOwner.fetchBlacklistedUsers()
         let guildOwnerBlacklisted = guildOwner.blacklist;

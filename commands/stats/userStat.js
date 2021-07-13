@@ -18,7 +18,8 @@ module.exports = new Command({
     return;
     const color = message.guild.color
     this.connection = StateManager.connection;
-    const lang = client.lang(message.guild.lang)
+      const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
     let member = message.mentions.members.first()
     if (member === undefined && args[0]) {
         if (message.guild.members.cache.has(args[0])) {

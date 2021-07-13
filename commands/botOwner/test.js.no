@@ -18,7 +18,8 @@ module.exports = new Command({
     clientPermissions: [],
 }, async (client, message, args) => {
     const color = message.guild.color
-    const lang = client.lang(message.guild.lang)
+      const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
     const play = client.music.playlist(args[0], message.author);
 
     console.log(play)

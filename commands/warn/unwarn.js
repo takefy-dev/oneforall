@@ -15,7 +15,8 @@ module.exports = class Test extends Command{
         });
     }
     async run(client, message,args){
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         const member = await message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if(!member) return message.channel.send(lang.warn.noMember)
         let memberWarns = member.warns;

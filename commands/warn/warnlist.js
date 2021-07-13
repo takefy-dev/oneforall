@@ -19,7 +19,8 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
         const color = message.guild.color
         const warnedMember = await message.mentions.members.first() || await message.guild.members.cache.get(args[0]);
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         if (warnedMember) {
             const warnsMember = warnedMember.warns;
             const embed = new Discord.MessageEmbed()

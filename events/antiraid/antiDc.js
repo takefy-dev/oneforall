@@ -13,6 +13,7 @@ module.exports = class AntiDc extends Event {
 
     async run(client, member) {
         const guild = member.guild;
+        return
         const color = guild.color;
         const antiraidConfig = guild.antiraid;
         let {antiraidLog} = guild.logs;

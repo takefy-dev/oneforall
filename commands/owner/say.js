@@ -17,7 +17,8 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
         const color = message.guild.color
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         const toSay = args.slice(0).join(' ')
         await message.delete()
         if (toSay.length < 1) return message.channel.send(lang.say.cantSendEmptyMsg).then(mp => mp.delete({timeout: 4000}))

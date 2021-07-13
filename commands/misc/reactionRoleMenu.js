@@ -26,7 +26,8 @@ module.exports = class Test extends Command {
 
         const emojiRoleMapping = new Map();
 
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         msgId.set(message.guild.id, 'Non définie')
         chs.set(message.guild.id, 'Non définie',)
         // isDelete.set(message.guild.id, false)

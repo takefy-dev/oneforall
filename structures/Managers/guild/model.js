@@ -108,8 +108,8 @@ module.exports =  (database, DataTypes, modelName, config) => {
                 type: DataTypes.JSON,
                 allowNull: true,
                 defaultValue: {
-                    id: null,
-                    message: null,
+                    id: 'Non définie',
+                    message: 'Non définie',
                     enable: false,
                 }
             },
@@ -117,8 +117,8 @@ module.exports =  (database, DataTypes, modelName, config) => {
                 type : DataTypes.JSON,
                 allowNull: true,
                 defaultValue: {
-                    roleId: null,
-                    message : null,
+                    roleId: 'Non définie',
+                    message : 'Non définie',
                     enable: false
                 }
 

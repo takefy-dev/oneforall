@@ -9,7 +9,9 @@ class User extends Collection {
     }
 
     addUser(key, values = {}) {
-        return this.set(key, new UserManager(this, values)).get(key)
+        const guildId = key.split('-')[0].toString()
+        const userId = key.split('-')[1].toString()
+        return this.set(key, new UserManager(this, {guildId, userId,...values})).get(key);
     }
 
     getAndCreateIfNotExists(key, values = {}) {
@@ -45,7 +47,7 @@ class UserManager {
         }
         this.values = {
             ...this.where,
-            invite : values.invite ? values.invite : {join:0, leave:0, fake:0, bonus:0},
+            invite : values.invite ? values.invite : {join:0, leave:0, fake:0, bonus:0, invitedBy: null},
             antiraidLimit: values.antiraidLimit ? values.antiraidLimit : {ban:0, kick:0, deco:0}
         }
 
@@ -62,7 +64,8 @@ class UserManager {
 
     async save() {
         this.userManager.OneForAll.functions.updateOrCreate(this.userManager.OneForAll.database.models[this.userManager.modelName], this.where, this.values).then(() => {
-        }).catch(() => {
+        }).catch((e) => {
+            console.log(e)
         });
         return this;
     }

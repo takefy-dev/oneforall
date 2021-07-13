@@ -24,7 +24,8 @@ module.exports = class Test extends Command {
         if (!message.guild.config.coinsOn) return;
 
         const color = message.guild.color
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
 
         const memberInvetory = message.member.inventory
         const formatedInventory = !memberInvetory? `Inventaire vide` : memberInvetory.map((inv) => `**${inv.item}**  •  x\`${inv.amount}\``); // inv.item == itemName and inv.amount = number of 1 item

@@ -16,12 +16,24 @@ module.exports = class Test extends Command {
     }
 
     async run(client, message, args) {
-        const lb = await message.guild.topInvite()
+
+        let data = await client.database.models.users.findAll({
+            attributes: ['userId', 'invite'],
+            where: {
+                guildId: message.guild.id
+            }
+        })
+        const tempData = []
+        data.forEach(data => {
+            tempData.push(data.get())
+        })
+        const lb = tempData.sort((a, b) => b.invite.join - a.invite.join).slice(0, 10)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         if(!lb) return message.channel.send(`Can't find top 10 invites`)
-        const color = message.guild.color;
+        const color = guildData.get('color');
         const embed = new Discord.MessageEmbed()
             .setTitle(`Top 10 invites ${message.guild.name}`)
-            .setDescription(lb.map((invite, i) => `${i+1} - <@${invite.userId}> : **${invite.count.join}** join,**${invite.count.leave}** leave, **${invite.count.fake}** fake, **${invite.count.bonus}** bonus\n`))
+            .setDescription(lb.map((invite, i) => `${i+1} - <@${invite.userId}> : **${invite.invite.join}** join,**${invite.invite.leave}** leave, **${invite.invite.fake}** fake, **${invite.invite.bonus}** bonus\n`))
             .setTimestamp()
             .setFooter(message.guild.name)
             .setColor(color)

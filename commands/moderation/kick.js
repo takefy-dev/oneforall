@@ -18,7 +18,8 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
         const color = message.guild.color
-        const lang = client.lang(message.guild.lang)
+          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+  const lang = guildData.lang;
         let member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (member === message.member) return message.channel.send()
         if (!member) return message.channel.send(lang.kick.noKick)
