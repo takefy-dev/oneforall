@@ -43,6 +43,7 @@ module.exports = class Test extends Command {
         const membersGuild = message.guild.members.cache;
         const channelsGuild = message.guild.channels.cache;
         const emojisGuild = message.guild.emojis.cache;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const color = guildData.get('color')
 
         let rolemap = message.guild.roles.cache
@@ -71,6 +72,7 @@ module.exports = class Test extends Command {
             .addField(`**MEMBERS (${message.guild.memberCount}):**`, `<:online_il:786325180070625311> ${online} : <:charliewave_dnd:786331160744689704> ${dnd} : <:charliewave_idle:786331151144714291> ${idle} : <:charliewave_offline:786331156010106890> ${offline} : <:775305392787685378:780731436771573770> ${membersGuild.filter(member => member.user.bot).size}`, false)
             .addField(`**EMOJIS (${emojisGuild.size}):**`, `Normal Emojis: ${emojisGuild.filter(emoji => !emoji.animated).size}\nAnimated Emojis: ${emojisGuild.filter(emoji => emoji.animated).size}`, true)
             .addField(`**ROLES (${rolesGuild.length}):**`, `${rolemap}`, false)
+            .addField(`SHARD`, `${message.guild.shardID + 1}`)
             .setThumbnail(message.guild.iconURL())
             .setFooter(client.user.username)
             .setImage(message.guild.bannerURL({size: 1024}))

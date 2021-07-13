@@ -23,16 +23,15 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
-        this.connection = StateManager.connection;
-        let isSetup = message.guild.setup;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
+        let isSetup = guildData.get('setup');
         if (!isSetup) return message.channel.send(lang.error.noSetup);
 
-        const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+        const member = message.mentions.members.first() || message.guild.members.resolve(args[0]);
         if (!member) return message.channel.send(lang.tempmute.errorNoMember);
 
-        const muteRole = message.guild.roles.cache.get(message.guild.config.muteRoleId);
+        const muteRole = message.guild.roles.cache.get(guildData.get('muteRoleId'));
         if (!muteRole) return message.channel.send(lang.tempmute.errorCantFindRole);
 
         const time = args[1];
@@ -51,14 +50,19 @@ module.exports = class Test extends Command {
             const muteEnd = now.add(numberT, dateF)
 
             try {
-                await message.guild.updateMute(member.id, true, muteEnd)
+                const userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${member.id}`)
+                const mute = userData.get('mute');
+                mute.expireAt = muteEnd;
+                mute.createdAt = new Date()
+                mute.muted = true;
+                userData.set('mute', mute).save()
             } catch (err) {
                 console.log(err)
             }
-            const { logs } = lang
-            const { modLog } = message.guild.logs;
+            const {logs} = lang
+            const {modLog} = guildData.get('logs').mod;
             const channel = message.guild.channels.cache.get(modLog);
-            if(channel && !channel.deleted){
+            if (channel && !channel.deleted) {
                 channel.send(logs.mute(message.member, member.user, time, color, "tempmute"))
             }
 

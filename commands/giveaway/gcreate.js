@@ -10,7 +10,7 @@ const vc = new Map();
 const winner = new Map();
 const prettyMilliseconds = require('pretty-ms');
 const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
+const {Logger} = require('advanced-command-handler')
 
 module.exports = class Test extends Command {
     constructor() {
@@ -30,8 +30,8 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
 
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
 
         const color = guildData.get('color')
         const filter = (reaction, user) => ['🕙', '🏷️', '🎁', '✅', '🕵️'].includes(reaction.emoji.name) && user.id === message.author.id,

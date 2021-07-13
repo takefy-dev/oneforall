@@ -1,8 +1,8 @@
 const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
+const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command{
+module.exports = class Test extends Command {
     constructor() {
         super({
             name: 'gaydetector',
@@ -16,21 +16,22 @@ module.exports = class Test extends Command{
 
         });
     }
-    async run(client, message,args){
 
-    const color = guildData.get('color')
-      const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+    async run(client, message, args) {
 
-    let member = message.mentions.users.first() || message.author
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const color = guildData.get('color')
+        const lang = guildData.lang;
 
-    let rng = Math.floor(Math.random() * 100)
-    const gaydetectorembed = new Discord.MessageEmbed()
-    .setTitle(lang.gaydetector.title)
-    .setDescription(`**${member.username}** est gay à ${rng}% 🏳️‍🌈`)
-    .setColor(`${color}`)
+        let member = message.mentions.users.first() || message.author
 
-    message.channel.send(gaydetectorembed)
+        let rng = Math.floor(Math.random() * 100)
+        const gaydetectorembed = new Discord.MessageEmbed()
+            .setTitle(lang.gaydetector.title)
+            .setDescription(`**${member.username}** est gay à ${rng}% 🏳️‍🌈`)
+            .setColor(`${color}`)
+
+        message.channel.send(gaydetectorembed)
 
     }
 };

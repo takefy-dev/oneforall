@@ -20,12 +20,11 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
 
-        this.connection = StateManager.connection;
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
         const color = guildData.get('color')
 
-        const user = message.mentions.users.first() || await client.users.fetch(args[0]).catch(async err => {
+        const user = message.mentions.users.first() || await client.users.resolve(args[0]).catch(async err => {
             return await message.channel.send(lang.ban.noBan).then(mp => mp.delete({timeout: 4000}));
         })
         if (user.id === message.author.id) {
@@ -64,7 +63,8 @@ module.exports = class Test extends Command {
 
 
         message.guild.members.ban(user, {reason}).then(async () => {
-            const {modLog} = message.guild.logs;
+            message.channel.send(lang.ban.success(user));
+            const {modLog} = guildData.get('logs').logs;
             const channel = message.guild.channels.cache.get(modLog);
             const guild = message.guild;
 
@@ -75,32 +75,34 @@ module.exports = class Test extends Command {
                 channel.send(channel.send(logs.targetExecutorLogs("ban", message.member, user, color)))
             }
             const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
- const antiraidConfig = guildData.get('antiraid');
+            const antiraidConfig = guildData.get('antiraid');
             let antiraidLog = guildData.get('logs').antiraid;
             const isOn = antiraidConfig.enable["antiMassBan"];
             if (!isOn) return;
             if (guild.ownerID === message.author.id) return Logger.log(`No sanction crown`, `MassBAN`, 'pink');
-            let isGuildOwner = guild.isGuildOwner(message.author.id);
+            let isGuildOwner = guildData.isGuildOwner(message.author.id);
             let isBotOwner = client.isOwner(message.author.id);
 
 
             let isWlBypass = antiraidConfig.bypass["antiMassBan"];
-            if (isWlBypass) var isWl = guild.isGuildWl(message.author.id);
+            if (isWlBypass) var isWl = guildData.isGuildWl(message.author.id);
             if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
 
 
             if (isWlBypass && !isWl || !isWlBypass) {
                 const banLimit = antiraidConfig.config["antiMassBanLimit"]
                 const logsChannel = guild.channels.cache.get(antiraidLog)
-                if (!guild.antiraidLimit.has(message.author.id)) {
-                    await guild.updateAntiraidLimit(message.author.id, 0, 1, 0);
+                const userData = client.managers.userManager.get(`${message.guild.id}-${message.author.id}`)
+                const antiraidLimit = userData.get('antiraidLimit')
+                if (!antiraidLimit.ban) {
+                    antiraidLimit.ban += 1
 
                 }
-                const {deco, ban, kick} = guild.antiraidLimit.get(message.author.id)
-                if (ban < banLimit) {
-                    await guild.updateAntiraidLimit(message.author.id, deco, ban + 1, kick);
+
+                if (antiraidLimit.ban < banLimit) {
+                    antiraidLimit.ban += 1
                     if (logsChannel && !logsChannel.deleted) {
-                        logsChannel.send(logs.targetExecutorLogs("ban", message.member, member, color, `${ban + 1 === banLimit ? `Aucun ban restant` : `${ban + 1}/${banLimit}`} before sanction`))
+                        logsChannel.send(logs.targetExecutorLogs("ban", message.member, member, color, `${antiraidLimit.ban + 1 === banLimit ? `Aucun ban restant` : `${antiraidLimit.ban + 1}/${banLimit}`} before sanction`))
                     }
                 } else {
                     let sanction = antiraidConfig.config["antiMassBan"];
@@ -110,31 +112,31 @@ module.exports = class Test extends Command {
                         if (sanction === 'ban') {
                             await guild.members.ban(message.author.id, {reason: 'OneForAll - Type : antiMassBan'})
                         } else if (sanction === 'kick') {
-                            guild.member(message.author.id).kick(
+                            await message.member.kick(
                                 `OneForAll - Type: antiMassBan `
                             )
                         } else if (sanction === 'unrank') {
                             let roles = []
-                            await guild.member(message.author.id).roles.cache
+                            await message.member.roles.cache
                                 .map(role => roles.push(role.id))
 
-                            await guild.members.cache.get(message.author.id).roles.remove(roles, `OneForAll - Type: antiMassBan`)
+                            await message.member.roles.remove(roles, `OneForAll - Type: antiMassBan`)
 
                         }
                         if (logsChannel && !logsChannel.deleted) {
                             logsChannel.send(logs.targetExecutorLogs("ban", message.member, user, color, sanction))
                         }
-                        await guild.updateAntiraidLimit(message.author.id, deco, 0, kick)
+                        antiraidLimit.ban = 0
 
                     } else {
                         if (logsChannel && !logsChannel.deleted) {
                             logsChannel.send(logs.targetExecutorLogs("ban", message.member, user, color, "Je n'ai pas assé de permissions"))
                         }
-                        await guild.updateAntiraidLimit(message.author.id, deco, 0, kick)
+                        antiraidLimit.ban = 0
 
                     }
                 }
-                message.channel.send(lang.ban.success(user));
+                userData.save()
             }
         })
 
@@ -143,6 +145,8 @@ module.exports = class Test extends Command {
                 if (err.toString().includes('Missing Permission')) return message.channel.send(lang.error.MissingPermission)
                 message.channel.send(lang.ban.error(user))
             })
+
+
     }
 };
 

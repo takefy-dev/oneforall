@@ -1,8 +1,8 @@
 const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
+const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command{
+module.exports = class Test extends Command {
     constructor() {
         super({
             name: 'allbans',
@@ -16,38 +16,40 @@ module.exports = class Test extends Command{
 
         });
     }
-    async run(client, message,args){
 
-    const color =guildData.get('color')
-      const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+    async run(client, message, args) {
+
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const color = guildData.get('color')
+        const lang = guildData.lang;
 
 
-    message.guild.fetchBans()
-        .then(banned => {
-            let list = banned.map(ban => ban.user.tag).join('\n');
-            const color =guildData.get('color')
+        message.guild.fetchBans()
+            .then(banned => {
+                let list = banned.map(ban => ban.user.tag).join('\n');
+                const color = guildData.get('color')
 
-            if (list.length >= 1950) list = `${list.slice(0, 1948)}...`;
-            const embed = new Discord.MessageEmbed()
-                .setTimestamp()
-                .setFooter(client.user.tag)
-                .setTitle(lang.banlist.title(message.guild))
-                .setDescription(lang.banlist.description(banned, list))
-                .setColor(`${color}`)
-            const embedinf = new Discord.MessageEmbed()
-                .setTimestamp()
-                .setTitle(lang.banlist.title(message.guild))
-                .setFooter(client.user.tag)
-                .setDescription(lang.banlist.descriptionInf(banned))
-                .setColor(`${color}`)
-            if (list.length > 0) {
-                message.channel.send(embed);
+                if (list.length >= 1950) list = `${list.slice(0, 1948)}...`;
+                const embed = new Discord.MessageEmbed()
+                    .setTimestamp()
+                    .setFooter(client.user.tag)
+                    .setTitle(lang.banlist.title(message.guild))
+                    .setDescription(lang.banlist.description(banned, list))
+                    .setColor(`${color}`)
+                const embedinf = new Discord.MessageEmbed()
+                    .setTimestamp()
+                    .setTitle(lang.banlist.title(message.guild))
+                    .setFooter(client.user.tag)
+                    .setDescription(lang.banlist.descriptionInf(banned))
+                    .setColor(`${color}`)
+                if (list.length > 0) {
+                    message.channel.send(embed);
 
-            } else {
-                message.channel.send(embedinf);
+                } else {
+                    message.channel.send(embedinf);
 
-            }
-        })
+                }
+            })
 
-}}
+    }
+}

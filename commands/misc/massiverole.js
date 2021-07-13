@@ -4,10 +4,10 @@ let member = new Map();
 let counts = new Map();
 let done = new Map();
 const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
+const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command{
+module.exports = class Test extends Command {
     constructor() {
         super({
             name: 'massrole',
@@ -22,15 +22,16 @@ module.exports = class Test extends Command{
 
         });
     }
-    async run(client, message,args){
 
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+    async run(client, message, args) {
+
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
         const color = guildData.get('color')
 
 
         let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[1]);
-        if(role){
+        if (role) {
             if (role.permissions.has("KICK_MEMBERS") || role.permissions.has("BAN_MEMBERS") || role.permissions.has("ADMINISTRATOR") || role.permissions.has("MANAGE_CHANNELS") || role.permissions.has("MANAGE_GUILD") || role.permissions.has("MANAGE_ROLES")) return message.channel.send(lang.massrole.highPermRole(role.name))
 
         }
@@ -48,7 +49,7 @@ module.exports = class Test extends Command{
         }
         if (!role) return message.channel.send(lang.massrole.errorNoRl);
         if (add) {
-            await message.guild.members.fetch().then((members) =>{
+            await message.guild.members.fetch().then((members) => {
                 member.set(message.guild.id, members.filter(member => member.roles.highest.comparePositionTo(message.guild.me.roles.highest) <= 0 && !member.roles.cache.has(role.id)))
             })
 
@@ -69,16 +70,16 @@ module.exports = class Test extends Command{
 
             member.get(message.guild.id).forEach((members) => {
                 const adding = setTimeout(async () => {
-                    if(done.has(message.guild.id)){
-                        members.roles.add(role, `Massrole add all par ${message.author.username}`).then(() =>{
+                    if (done.has(message.guild.id)) {
+                        members.roles.add(role, `Massrole add all par ${message.author.username}`).then(() => {
                             const addD = done.get(message.guild.id) + 1
-                            if(member.has(message.guild.id)){
+                            if (member.has(message.guild.id)) {
                                 done.set(message.guild.id, addD)
 
                             }
 
                         })
-                        if(done.get(message.guild.id) === member.get(message.guild.id).size - 1) {
+                        if (done.get(message.guild.id) === member.get(message.guild.id).size - 1) {
 
                             message.channel.send(lang.massrole.successAdd(role, member.get(message.guild.id).size))
                             counts.delete(message.guild.id)
@@ -92,18 +93,16 @@ module.exports = class Test extends Command{
 
                 }, counts.get(message.guild.id) * 1200)
                 const addC = counts.get(message.guild.id) + 1
-                counts.set(message.guild.id,  addC)
+                counts.set(message.guild.id, addC)
             })
-
-
 
 
             setTimeout(async () => {
                 timer.delete(message.guild.id)
-            },1.8e+6)
+            }, 1.8e+6)
 
-        }  else if (remove) {
-            await message.guild.members.fetch().then((members) =>{
+        } else if (remove) {
+            await message.guild.members.fetch().then((members) => {
                 member.set(message.guild.id, members.filter(member => member.roles.highest.comparePositionTo(message.guild.me.roles.highest) <= 0 && member.roles.cache.has(role.id)))
             })
 
@@ -124,16 +123,16 @@ module.exports = class Test extends Command{
 
             member.get(message.guild.id).forEach((members) => {
                 const adding = setTimeout(async () => {
-                    if(done.has(message.guild.id)){
-                        members.roles.remove(role, `Massrole remove all par ${message.author.username}`).then(() =>{
+                    if (done.has(message.guild.id)) {
+                        members.roles.remove(role, `Massrole remove all par ${message.author.username}`).then(() => {
                             const addD = done.get(message.guild.id) + 1
-                            if(member.has(message.guild.id)){
+                            if (member.has(message.guild.id)) {
                                 done.set(message.guild.id, addD)
 
                             }
 
                         })
-                        if(done.get(message.guild.id) === member.get(message.guild.id).size - 1) {
+                        if (done.get(message.guild.id) === member.get(message.guild.id).size - 1) {
 
                             message.channel.send(lang.massrole.successRemove(role, member.get(message.guild.id).size))
                             counts.delete(message.guild.id)
@@ -147,21 +146,18 @@ module.exports = class Test extends Command{
 
                 }, counts.get(message.guild.id) * 1200)
                 const addC = counts.get(message.guild.id) + 1
-                counts.set(message.guild.id,  addC)
+                counts.set(message.guild.id, addC)
             })
-
-
 
 
             setTimeout(async () => {
                 timer.delete(message.guild.id)
-            },1.8e+6)
+            }, 1.8e+6)
 
 
+        } else if (args[0] === 'status') {
 
-        }else if(args[0] === 'status'){
-
-            if(!done.has(message.guild.id) || !member.has(message.guild.id)) return message.channel.send(lang.nickall.noMassrole)
+            if (!done.has(message.guild.id) || !member.has(message.guild.id)) return message.channel.send(lang.nickall.noMassrole)
             let timeLeft = ms(`${member.get(message.guild.id).size - done.get(message.guild.id)}s`)
             const status = new Discord.MessageEmbed()
                 .setTitle('Status')
@@ -173,8 +169,6 @@ module.exports = class Test extends Command{
         }
 
 
-
-
-
-    }};
+    }
+};
 

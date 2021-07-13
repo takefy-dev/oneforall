@@ -1,9 +1,9 @@
 const randomPuppy = require('random-puppy')
 const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
+const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command{
+module.exports = class Test extends Command {
     constructor() {
         super({
             name: 'meme',
@@ -17,21 +17,23 @@ module.exports = class Test extends Command{
 
         });
     }
-    async run(client, message,args){
 
-    const color = guildData.get('color')
-      const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
-    const subReddits = ["dankememe", "meme", "memes"]
-    const random = subReddits[Math.floor(Math.random() * 3) ]
+    async run(client, message, args) {
 
-    const img = await randomPuppy(random)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const color = guildData.get('color')
+        const lang = guildData.lang;
+        const subReddits = ["dankememe", "meme", "memes"]
+        const random = subReddits[Math.floor(Math.random() * 3)]
 
-    const embed = new Discord.MessageEmbed()
-        .setColor(`${color}`)
-        .setImage(img)
-        .setTitle(lang.meme.reponse(random))
-        .setURL(`https://reddit.com/r/${random}`)
+        const img = await randomPuppy(random)
 
-    message.channel.send(embed)
-}};
+        const embed = new Discord.MessageEmbed()
+            .setColor(`${color}`)
+            .setImage(img)
+            .setTitle(lang.meme.reponse(random))
+            .setURL(`https://reddit.com/r/${random}`)
+
+        message.channel.send(embed)
+    }
+};

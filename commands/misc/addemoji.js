@@ -1,4 +1,3 @@
-
 const {Util} = require('discord.js')
 const Command = require('../../structures/Handler/Command');
 const {Logger} = require('advanced-command-handler')
@@ -22,9 +21,9 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
 
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const lang = guildData.lang;
         const emoji = args[0];
         let custom = Util.parseEmoji(emoji);
 
@@ -38,7 +37,7 @@ module.exports = class Test extends Command {
         if (name && (name.length < 2 || name > 32)) {
             return message.channel.send(lang.addemoji.invalidName);
         }
-        if(!name) name = custom.id
+        if (!name) name = custom.id
 
         let link = args[0]
         if (custom.id) {

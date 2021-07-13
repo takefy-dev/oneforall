@@ -56,6 +56,7 @@ module.exports = class Test extends Command {
         try {
             guildData.set('muteRoleId', muteRoleId)
             guildData.set('memberRole', memberRoleId)
+            guildData.set('setup', true)
             guildData.save()
             message.channel.send(lang.setup.success(muteRoleId, memberRoleId))
             message.guild.channels.cache.forEach(channel => {

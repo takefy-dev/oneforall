@@ -1,4 +1,3 @@
-
 const Command = require('../../structures/Handler/Command');
 const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
@@ -19,12 +18,11 @@ module.exports = class Test extends Command {
     }
 
     async run(client, message, args) {
-
-        const color = guildData.get('color')
+        const guildDtata = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const msgId = args[0];
         if (!msgId) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` Veuillez spécifiez l'id du message de giveaway !`)
 
-        let giveaway = client.giveaways.giveaways.find((g) => g.prize === args.join(" ")) || client.giveawaysManager.giveaways.find((g) => g.messageID === args[0]);
+        let giveaway = client.giveaway.giveaways.find((g) => g.prize === args.join(" ")) || client.giveaway.giveaways.find((g) => g.messageID === args[0]);
 
         if (!giveaway) return message.channel.send("Je ne trouve pas de giveaway avec cette ID/nom");
 

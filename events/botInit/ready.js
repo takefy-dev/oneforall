@@ -103,9 +103,9 @@ module.exports = class Ready extends Event {
         // });
 
 
-        //launc check mute
-        // const checkMute = require('../../utils/Mute')
-        // await checkMute.startChecking(client)
+        // launc check mute
+        const checkMute = require('../../utils/Mute')
+        await checkMute.startChecking(client)
         //
         // // Launch event of music
         // const musicEventsLauncher = require("../../function/music/event");

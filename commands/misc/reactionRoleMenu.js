@@ -1,4 +1,3 @@
-
 const chs = new Map();
 const msgId = new Map();
 const {Util} = require('discord.js')
@@ -26,8 +25,8 @@ module.exports = class Test extends Command {
 
         const emojiRoleMapping = new Map();
 
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
         msgId.set(message.guild.id, 'Non définie')
         chs.set(message.guild.id, 'Non définie',)
         // isDelete.set(message.guild.id, false)
@@ -451,8 +450,6 @@ module.exports = class Test extends Command {
                                                     }).catch(err => console.log(err))
 
                                                 }
-
-
 
 
                                             }

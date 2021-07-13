@@ -22,9 +22,9 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
 
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const lang = guildData.lang;
         const msg = await message.channel.send(lang.loading);
         const emojis = ['🕳', '💬', '💨', '💥', '❌', '✅']
         for (const emoji of emojis) {

@@ -19,8 +19,8 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
         const del = args[0] === 'delete';
         if (!args[0]) {
             const embed = new Discord.MessageEmbed()

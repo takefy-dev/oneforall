@@ -21,22 +21,20 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
         const mutedData = [];
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const lang = guildData.lang;
 
         let now = Date.now();
-        const {muted} = message.guild;
-
-
-        if (muted.size !== 0) {
-           for (const [id, expireAt] of muted) {
-               let timeLeft = expireAt
-                if(expireAt !== "lifetime"){
-                    timeLeft = prettyMilliseconds(expireAt.getTime() - now)
+        const muted = client.managers.userManager.filter(m => m.values.mute.muted)
+        if (muted.size > 0) {
+            for (const [id, mute] of muted) {
+                let timeLeft = mute.values.mute.expireAt
+                if (timeLeft !== "lifetime") {
+                    timeLeft = prettyMilliseconds(new Date(timeLeft).getTime() - now)
                 }
-               mutedData.push(`<@${id}> ・ ${timeLeft}`)
-           }
+                mutedData.push(`<@${mute.values.userId}> ・ ${timeLeft}`)
+            }
         } else {
             mutedData.push('No data')
         }

@@ -1,4 +1,3 @@
-
 const title = new Map();
 const description = new Map();
 const author = new Map();
@@ -37,9 +36,9 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
         timestamp.set(message.guild.id, false)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const lang = guildData.lang;
         const embed = new Discord.MessageEmbed()
             .setDescription()
         const editEmbed = await message.channel.send(embed)

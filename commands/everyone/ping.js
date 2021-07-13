@@ -17,8 +17,8 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
         message.channel.send(lang.ping.pinging).then(m => {
             let ping = m.createdTimestamp - message.createdTimestamp; //calculate the ping of the bot
             m.edit(lang.ping.success(ping, client));

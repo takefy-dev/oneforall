@@ -1,5 +1,5 @@
 const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
+const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
 module.exports = class Test extends Command {
@@ -20,9 +20,9 @@ module.exports = class Test extends Command {
 
         const voiceChannels = message.guild.channels.cache.filter(c => c.type === 'voice');
         const members = message.guild.members.cache.filter(m => !m.bot && m.voice.channelID != null);
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const lang = guildData.lang;
 
         let count = 0;
         let muteCount = 0;

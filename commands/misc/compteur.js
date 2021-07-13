@@ -20,7 +20,6 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-        
         const color = guildData.get('color');
         const lang = guildData.lang;
         const msg = await message.channel.send(lang.loading)
@@ -90,7 +89,7 @@ module.exports = class Test extends Command {
                                         }, 2000)
 
                                     })
-                         
+
                                     message.channel.send(lang.counter.nameQ).then((messageReply) => {
                                         messageReply.channel.awaitMessages(dureefiltrer, {
                                             max: 1,
@@ -103,7 +102,7 @@ module.exports = class Test extends Command {
                                                     id: ch.id,
                                                     name: `${msg.content}`
                                                 }
-                                               
+
                                                 const replayMsg = message.channel.send(lang.counter.successMemberName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -179,7 +178,7 @@ module.exports = class Test extends Command {
                                                     id: ch.id,
                                                     name: `${msg.content}`
                                                 }
-                                       
+
                                                 const replayMsg = message.channel.send(lang.counter.successBotName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -211,7 +210,7 @@ module.exports = class Test extends Command {
                                             id: undefined,
                                             name: `Non définie`
                                         }
-                                     
+
                                         updateEmbed()
 
                                         return setTimeout(() => {
@@ -287,7 +286,7 @@ module.exports = class Test extends Command {
                                             id: undefined,
                                             name: `Non définie`
                                         }
-                                  
+
                                         updateEmbed()
 
                                         return setTimeout(() => {
@@ -333,7 +332,7 @@ module.exports = class Test extends Command {
                                                     id: ch.id,
                                                     name: `${msg.content}`
                                                 }
-                                          
+
                                                 const replayMsg = message.channel.send(lang.counter.successOnlineName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -409,7 +408,7 @@ module.exports = class Test extends Command {
                                                     id: ch.id,
                                                     name: `${msg.content}`
                                                 }
-                                               
+
                                                 const replayMsg = message.channel.send(lang.counter.successOfflineName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -440,7 +439,7 @@ module.exports = class Test extends Command {
                                             id: undefined,
                                             name: `Non définie`
                                         }
-                                       
+
                                         updateEmbed()
 
                                         return setTimeout(() => {
@@ -487,7 +486,7 @@ module.exports = class Test extends Command {
                                                     id: ch.id,
                                                     name: `${msg.content}`
                                                 }
-                                                
+
                                                 const replayMsg = message.channel.send(lang.counter.successChannelName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -596,7 +595,7 @@ module.exports = class Test extends Command {
                                             id: undefined,
                                             name: `Non définie`
                                         }
-                                
+
                                         updateEmbed()
 
                                         return setTimeout(() => {
@@ -642,7 +641,7 @@ module.exports = class Test extends Command {
                                                     id: ch.id,
                                                     name: `${msg.content}`
                                                 }
-                                              
+
                                                 const replayMsg = message.channel.send(lang.counter.successBoostName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -689,7 +688,7 @@ module.exports = class Test extends Command {
                             const botCh = message.guild.channels.cache.get(bot.id)
                             botCh.setName(`${bot.name} ${message.guild.members.cache.filter(m => m.user.bot).size}`, 'BotCount')
                         }
-                        if (voice.id ) {
+                        if (voice.id) {
                             let count = 0;
 
                             const voiceChannels = message.guild.channels.cache.filter(c => c.type === 'voice');
@@ -700,7 +699,7 @@ module.exports = class Test extends Command {
                         if (online.id) {
                             const onlineCh = message.guild.channels.cache.get(online.id)
                             onlineCh.setName(`${online.name} ${message.guild.members.cache.filter(member => member.presence.status === "dnd" || member.presence.status === "idle" || member.presence.status === "online").size}`, 'OnlineCount')
-                         
+
                         }
                         if (offline.id) {
                             const offlineCh = message.guild.channels.cache.get(offline.id)

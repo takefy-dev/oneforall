@@ -1,4 +1,3 @@
-
 const Command = require('../../structures/Handler/Command');
 const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
@@ -19,8 +18,8 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
 
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
 
         function hasDiscordInvite(string) {
             let discordInvite = /(https:\/\/)?(www\.)?(discord\.gg|discord\.me|discordapp\.com\/invite|discord\.com\/invite)\/([a-z0-9-.]+)?/i;

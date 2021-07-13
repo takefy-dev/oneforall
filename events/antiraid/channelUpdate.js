@@ -11,8 +11,8 @@ module.exports = class channelUpdate extends Event {
         let guild = oldChannel.guild;
 
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-        const color = guildData.get('color')
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
+        const color = guildData.get('color')
         let antiraidLog = guildData.get('logs').antiraid;
         let {logs} = guildData.lang
 
