@@ -11,7 +11,7 @@ module.exports = class messageReactionAdd extends Event {
 
     async run(client, id, unavailableGuilds) {
         console.log(`Shard ${id} is ready with ${unavailableGuilds}`)
-        client.oneforallSocket.emit('send-commands', client.commands.filter(cm => cm.category !== "botOwner" && cm.category !== "test" && cm.category !== "botperso"));
+        // client.oneforallSocket.emit('send-commands', client.commands.filter(cm => cm.category !== "botOwner" && cm.category !== "test" && cm.category !== "botperso"))
         if(!unavailableGuilds) return;
         client.unavailableGuilds = unavailableGuilds;
     }

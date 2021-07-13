@@ -15,7 +15,8 @@ module.exports = class Message extends Event{
     async run(client, message){
         if (message.guild == null) return;
         if(message.webhookID) return;
-        const { muteRoleId } = message.guild.config;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
+        const { muteRoleId } = guildData;
         const muteRole = message.guild.roles.cache.get(muteRoleId);
         if(!muteRoleId || !muteRole || muteRole.deleted || muteRole.managed) return;
         const color = message.guild.color;

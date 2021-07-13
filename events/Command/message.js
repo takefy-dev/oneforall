@@ -9,9 +9,9 @@ module.exports = class message extends Event {
     }
 
     async run(client, message) {
-
-        let prefix = message.guild.prefix;
-
+        if(!message.guild) return;
+        let guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const prefix = guildData.get('prefix')
         const botMention = message.mentions.has(client.user)
 
 
@@ -55,39 +55,39 @@ module.exports = class message extends Event {
                 return message.channel.send(client.lang(message.guild.lang).maintenance)
             }
 
-            const { perm, permEnable, perm1, perm2, perm3, perm4 } = message.guild;
-            if(permEnable && perm.size > 0 && perm.has(cmd.name)){
-                const permPostion = {
-                    'perm1': 1,
-                    'perm2': 2,
-                    'perm3': 3,
-                    'perm4': 4,
-                }
-                const perms = perm.get(cmd.name);
-                let permOfUser = 0;
-                const rolePerm1 = message.guild.roles.cache.get(perm1);
-                const rolePerm2 = message.guild.roles.cache.get(perm2);
-                const rolePerm3 = message.guild.roles.cache.get(perm3);
-                const rolePerm4 = message.guild.roles.cache.get(perm4);
-                if(rolePerm4 && rolePerm4.members.has(message.member.id)){
-                    permOfUser = 4;
-                }
-                if(rolePerm3 && rolePerm3.members.has(message.member.id) && permOfUser < 4){
-                    permOfUser = 3
-                }
-                if(rolePerm2 && rolePerm2.members.has(message.member.id) && permOfUser < 4){
-                    permOfUser = 2
-                }
-                if(rolePerm1 && rolePerm1.members.has(message.member.id) && permOfUser < 4){
-                    permOfUser = 1
-                }
-                const permToHave = permPostion[perms];
-
-                if(permToHave > permOfUser){
-                    return message.channel.send(client.lang(message.guild.lang).perm.noPermEnough)
-                }
-
-            }
+            // const { perm, permEnable, perm1, perm2, perm3, perm4 } = message.guild;
+            // if(permEnable && perm.size > 0 && perm.has(cmd.name)){
+            //     const permPostion = {
+            //         'perm1': 1,
+            //         'perm2': 2,
+            //         'perm3': 3,
+            //         'perm4': 4,
+            //     }
+            //     const perms = perm.get(cmd.name);
+            //     let permOfUser = 0;
+            //     const rolePerm1 = message.guild.roles.cache.get(perm1);
+            //     const rolePerm2 = message.guild.roles.cache.get(perm2);
+            //     const rolePerm3 = message.guild.roles.cache.get(perm3);
+            //     const rolePerm4 = message.guild.roles.cache.get(perm4);
+            //     if(rolePerm4 && rolePerm4.members.has(message.member.id)){
+            //         permOfUser = 4;
+            //     }
+            //     if(rolePerm3 && rolePerm3.members.has(message.member.id) && permOfUser < 4){
+            //         permOfUser = 3
+            //     }
+            //     if(rolePerm2 && rolePerm2.members.has(message.member.id) && permOfUser < 4){
+            //         permOfUser = 2
+            //     }
+            //     if(rolePerm1 && rolePerm1.members.has(message.member.id) && permOfUser < 4){
+            //         permOfUser = 1
+            //     }
+            //     const permToHave = permPostion[perms];
+            //
+            //     if(permToHave > permOfUser){
+            //         return message.channel.send(client.lang(message.guild.lang).perm.noPermEnough)
+            //     }
+            //
+            // }
             if(cmd.onlyTopGg && !client.botperso){
                 const dbl = new DBL(client.config.topGgToken, client)
                 let hasVoted = await dbl.hasVoted(message.author.id)

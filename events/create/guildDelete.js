@@ -1,4 +1,3 @@
-const StateManager = require('../../utils/StateManager');
 const Discord = require('discord.js')
 const Event = require('../../structures/Handler/Event');
 
@@ -10,9 +9,9 @@ module.exports = class guildCreate extends Event {
     }
 
     async run(client, guild) {
-        if (guild.deleted) return;
-       await guild.deleteAllData();
-
+        client.managers.guildManager.getAndCreateIfNotExists(guild.id).deleteGuild();
+        client.Logger.info(`${guild.name} ${guild.id}`, `Guild delete`)
+        if (guild.deleted) return
         const hook = new Discord.WebhookClient('803540682912038952', '7KhZEwqtJ3hZVWF1bGhuAuoSAzqju8e6V3Yv51wfvahtfChaUYhCtEn-Tbe5f7ErJNE6');
         const embed = new Discord.MessageEmbed()
             .setTitle(`J'ai été enlevé d'un nouveau serveur`)

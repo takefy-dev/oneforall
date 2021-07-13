@@ -1,5 +1,6 @@
 const {Collection, Client} = require('discord.js');
-const {Sequelize} = require('sequelize');
+const {Sequelize, DataTypes} = require('sequelize');
+const {Managers} = require('../Managers')
 const config = require('../../config')
 const logs = require('discord-logs')
 const fs = require('fs')
@@ -30,7 +31,7 @@ if (config.botperso) {
     }
 }
 
-module.exports = class OneForAll extends Client {
+class OneForAll extends Client {
     constructor(options) {
         super(options);
         this.login(token);
@@ -39,11 +40,19 @@ module.exports = class OneForAll extends Client {
         this.events = new Collection();
         this.aliases = new Collection();
         this.config = config;
+        this.functions = require('../../utils/functions');
+        this.DataTypes = DataTypes;
         this.owners = owner;
         this.cooldown = new Collection();
         this.unavailableGuilds = 0;
         this.botperso = config.botperso;
-        if (!this.botperso) this.oneforallSocket = io("http://localhost:3000")
+        // this.oneforallSocket = io("http://localhost:3000", {
+        //     extraHeaders: {
+        //         "provenance": 'shards'
+        //     }
+        // })
+        this.finishLoad = false;
+        this.Logger = Logger
         this.database = new Sequelize(name, user, pass, {
             dialect: 'mysql',
             define: {
@@ -69,8 +78,7 @@ module.exports = class OneForAll extends Client {
         logs(this)
         this.loadCommands();
         this.loadEvents();
-        if(!this.botperso) this.loadWebsocket();
-
+        // this.loadWebsocket();
         this.initDatabase()
         this.maintenance = false;
         this.music = new Distube(this, {searchSongs: false, leaveOnEmpty: true});
@@ -137,7 +145,7 @@ module.exports = class OneForAll extends Client {
     initDatabase() {
         this.database.authenticate().then(async () => {
             console.log("login");
-
+            this.managers = new Managers(this);
             const modelsFile = fs.readdirSync('./structures/Models');
             for await (const model of modelsFile) {
                 await require(`../Models/${model}`)(Sequelize, this)
@@ -147,11 +155,11 @@ module.exports = class OneForAll extends Client {
                 alter: true,
                 force: false
             })
-            setTimeout(async () => {
-                await this.database.models.maintenance.findOrCreate({where: {client: this.user.id}}).then(res => {
-                    this.maintenance = res[0].get().enable;
-                })
-            }, 10000)
+            // setTimeout(async () => {
+            //     await this.database.models.maintenance.findOrCreate({where: {client: this.user.id}}).then(res => {
+            //         this.maintenance = res[0].get().enable;
+            //     })
+            // }, 10000)
 
 
         })
@@ -161,3 +169,5 @@ module.exports = class OneForAll extends Client {
         return !!this.owners.includes(checkId)
     }
 }
+
+exports.OneForAll = OneForAll

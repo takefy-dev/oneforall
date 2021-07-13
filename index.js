@@ -3,12 +3,12 @@ const express = require('express')
 
 require('dotenv').config();
 require('discord-reply')
-const Client = require('./structures/Client/OneForAll')
+const {OneForAll} = require('./structures/Client/OneForAll')
 // Structures
-require('./structures/DiscordClasses/User');
-require('./structures/DiscordClasses/Guild');
-require('./structures/DiscordClasses/Member');
-const client = new Client({partials:  ['MESSAGE', 'CHANNEL', 'REACTION'],  restTimeOffset: 0,})
+// require('./structures/Managers/User');
+// require('./structures/Managers/Guild');
+// require('./structures/Managers/Member');
+new OneForAll({partials:  ['MESSAGE', 'CHANNEL', 'REACTION'],  restTimeOffset: 0,})
 
 
 require('events').EventEmitter.defaultMaxListeners = 0;

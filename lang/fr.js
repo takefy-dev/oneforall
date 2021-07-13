@@ -490,26 +490,26 @@ module.exports = {
     },
     counter: {
         embedTitle: `Paramètre des compteurs`,
-        embedDescription: (member, bot, voc, online, offline, channel, role, booster) => `
+        embedDescription: ({member, bot, voice, online, offline, channel, role, booster}) => `
         \n
             Pour désactiver un compteur il suffit de mettre off comme channel !
             
             \`👥\`・ Compteur de membres
-            ***${member}***\n
+            ***${member.name}***\n
             \`🤖\` ・ Compteur de robots
-            ***${bot}***\n
+            ***${bot.name}***\n
             \`🔊\`・ Compteur de membre en vocal
-            ***${voc}***\n
+            ***${voice.name}***\n
             \`🟢\` ・ Compteur de membre en ligne
-            ***${online}***\n
+            ***${online.name}***\n
             \`⭕\` ・ Compteur de membre en hors-ligne
-            ***${offline}***\n
+            ***${offline.name}***\n
             \`📖\` ・ Compteur de salons
-            ***${channel}***\n
+            ***${channel.name}***\n
             \`✨\` ・ Compteur de roles
-            ***${role}***\n
+            ***${role.name}***\n
             \`💠\` ・ Compteur de booster
-            ***${booster}***\n
+            ***${booster.name}***\n
            
             \`❌\` ・ Fermer le menu\n
             \`✅\` ・ Sauvegarder les compteurs

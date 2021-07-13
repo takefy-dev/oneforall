@@ -19,38 +19,23 @@ module.exports = class Test extends Command {
     }
 
     async run(client, message, args) {
-
-        let memberCount = new Map();
-        let botCount = new Map();
-        let voiceCount = new Map();
-        let onlineCount = new Map();
-        let offlineCount = new Map();
-        let channelCount = new Map();
-        let roleCount = new Map();
-        let boosterCount = new Map();
-        const color = message.guild.color;
-        const lang = client.lang(message.guild.lang)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        
+        const color = guildData.get('color');
+        const lang = guildData.lang;
         const msg = await message.channel.send(lang.loading)
         const emoji = ['👥', '🤖', '🔊', '🟢', '⭕', '📖', '✨', '💠', '❌', '✅']
         for (const em of emoji) {
             await msg.react(em)
         }
-
-        memberCount.set(message.guild.id, message.guild.config.memberCount)
-        botCount.set(message.guild.id, message.guild.config.botCount)
-        voiceCount.set(message.guild.id, message.guild.config.voiceCount)
-        onlineCount.set(message.guild.id, message.guild.config.onlineCount)
-        offlineCount.set(message.guild.id, message.guild.config.offlineCount)
-        channelCount.set(message.guild.id, message.guild.config.channelCount)
-        roleCount.set(message.guild.id, message.guild.config.roleCount)
-        boosterCount.set(message.guild.id, message.guild.config.boosterCount)
+        let tempCounter = {...guildData.get('counter')};
         const filter = (reaction, user) => emoji.includes(reaction.emoji.name) && user.id === message.author.id,
             dureefiltrer = response => {
                 return response.author.id === message.author.id
             };
         const embed = new Discord.MessageEmbed()
             .setTitle(lang.counter.embedTitle)
-            .setDescription(lang.counter.embedDescription(memberCount.get(message.guild.id).name, botCount.get(message.guild.id).name, voiceCount.get(message.guild.id).name, onlineCount.get(message.guild.id).name, offlineCount.get(message.guild.id).name, channelCount.get(message.guild.id).name, roleCount.get(message.guild.id).name, boosterCount.get(message.guild.id).name))
+            .setDescription(lang.counter.embedDescription(guildData.get('counter')))
             .setTimestamp()
             .setColor(color)
             .setFooter(client.user.username)
@@ -68,10 +53,10 @@ module.exports = class Test extends Command {
                                 }
                                 if (msg.content === 'off') {
                                     await message.channel.send(lang.counter.disable("de membre")).then((e) => {
-                                        memberCount.set(message.guild.id, {
+                                        tempCounter.member = {
                                             id: undefined,
                                             name: `Non définie`
-                                        })
+                                        }
                                         updateEmbed()
 
                                         return setTimeout(() => {
@@ -105,11 +90,7 @@ module.exports = class Test extends Command {
                                         }, 2000)
 
                                     })
-                                    // const memberInfo = {
-                                    //     id: ch.id,
-                                    //     name:
-                                    // }
-
+                         
                                     message.channel.send(lang.counter.nameQ).then((messageReply) => {
                                         messageReply.channel.awaitMessages(dureefiltrer, {
                                             max: 1,
@@ -118,10 +99,11 @@ module.exports = class Test extends Command {
                                         })
                                             .then(async cld => {
                                                 let msg = cld.first();
-                                                memberCount.set(message.guild.id, {
+                                                tempCounter.member = {
                                                     id: ch.id,
                                                     name: `${msg.content}`
-                                                })
+                                                }
+                                               
                                                 const replayMsg = message.channel.send(lang.counter.successMemberName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -148,10 +130,10 @@ module.exports = class Test extends Command {
                                 }
                                 if (msg.content === 'off') {
                                     await message.channel.send(lang.counter.disable("de bots")).then((e) => {
-                                        botCount.set(message.guild.id, {
+                                        tempCounter.bot = {
                                             id: undefined,
                                             name: `Non définie`
-                                        });
+                                        }
                                         updateEmbed()
 
                                         return setTimeout(() => {
@@ -193,10 +175,11 @@ module.exports = class Test extends Command {
                                         })
                                             .then(async cld => {
                                                 let msg = cld.first();
-                                                botCount.set(message.guild.id, {
+                                                tempCounter.bot = {
                                                     id: ch.id,
                                                     name: `${msg.content}`
-                                                })
+                                                }
+                                       
                                                 const replayMsg = message.channel.send(lang.counter.successBotName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -224,10 +207,11 @@ module.exports = class Test extends Command {
                                 }
                                 if (msg.content === 'off') {
                                     await message.channel.send(lang.counter.disable("de membre en vocal")).then((e) => {
-                                        voiceCount.set(message.guild.id, {
+                                        tempCounter.voice = {
                                             id: undefined,
                                             name: `Non définie`
-                                        });
+                                        }
+                                     
                                         updateEmbed()
 
                                         return setTimeout(() => {
@@ -269,10 +253,10 @@ module.exports = class Test extends Command {
                                         })
                                             .then(async cld => {
                                                 let msg = cld.first();
-                                                voiceCount.set(message.guild.id,{
+                                                tempCounter.voice = {
                                                     id: ch.id,
                                                     name: `${msg.content}`
-                                                })
+                                                }
                                                 const replayMsg = message.channel.send(lang.counter.successVocalName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -299,10 +283,11 @@ module.exports = class Test extends Command {
                                 }
                                 if (msg.content === 'off') {
                                     await message.channel.send(lang.counter.disable("de membre en ligne")).then((e) => {
-                                        onlineCount.set(message.guild.id,{
+                                        tempCounter.online = {
                                             id: undefined,
                                             name: `Non définie`
-                                        });
+                                        }
+                                  
                                         updateEmbed()
 
                                         return setTimeout(() => {
@@ -344,10 +329,11 @@ module.exports = class Test extends Command {
                                         })
                                             .then(async cld => {
                                                 let msg = cld.first();
-                                                onlineCount.set(message.guild.id, {
+                                                tempCounter.online = {
                                                     id: ch.id,
                                                     name: `${msg.content}`
-                                                })
+                                                }
+                                          
                                                 const replayMsg = message.channel.send(lang.counter.successOnlineName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -374,10 +360,10 @@ module.exports = class Test extends Command {
                                 }
                                 if (msg.content === 'off') {
                                     await message.channel.send(lang.counter.disable("de membre hors-ligne")).then((e) => {
-                                        offlineCount.set(message.guild.id,{
+                                        tempCounter.offline = {
                                             id: undefined,
                                             name: `Non définie`
-                                        });
+                                        }
                                         updateEmbed()
 
                                         return setTimeout(() => {
@@ -419,10 +405,11 @@ module.exports = class Test extends Command {
                                         })
                                             .then(async cld => {
                                                 let msg = cld.first();
-                                                offlineCount.set(message.guild.id,{
+                                                tempCounter.offline = {
                                                     id: ch.id,
                                                     name: `${msg.content}`
-                                                })
+                                                }
+                                               
                                                 const replayMsg = message.channel.send(lang.counter.successOfflineName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -449,10 +436,11 @@ module.exports = class Test extends Command {
                                 }
                                 if (msg.content === 'off') {
                                     await message.channel.send(lang.counter.disable("de salons")).then((e) => {
-                                        channelCount.set(message.guild.id, {
+                                        tempCounter.channel = {
                                             id: undefined,
                                             name: `Non définie`
-                                        });
+                                        }
+                                       
                                         updateEmbed()
 
                                         return setTimeout(() => {
@@ -495,10 +483,11 @@ module.exports = class Test extends Command {
                                         })
                                             .then(async cld => {
                                                 let msg = cld.first();
-                                                channelCount.set(message.guild.id, {
+                                                tempCounter.channel = {
                                                     id: ch.id,
                                                     name: `${msg.content}`
-                                                })
+                                                }
+                                                
                                                 const replayMsg = message.channel.send(lang.counter.successChannelName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -526,10 +515,11 @@ module.exports = class Test extends Command {
                                 }
                                 if (msg.content === 'off') {
                                     await message.channel.send(lang.counter.disable("de rôles")).then((e) => {
-                                        roleCount.set(message.guild.id, {
+                                        tempCounter.role = {
                                             id: undefined,
                                             name: `Non définie`
-                                        });
+                                        }
+
                                         updateEmbed()
 
                                         return setTimeout(() => {
@@ -571,10 +561,11 @@ module.exports = class Test extends Command {
                                         })
                                             .then(async cld => {
                                                 let msg = cld.first();
-                                                roleCount.set(message.guild.id, {
+                                                tempCounter.role = {
                                                     id: ch.id,
                                                     name: `${msg.content}`
-                                                })
+                                                }
+
                                                 const replayMsg = message.channel.send(lang.counter.successRoleName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -601,10 +592,11 @@ module.exports = class Test extends Command {
                                 }
                                 if (msg.content === 'off') {
                                     await message.channel.send(lang.counter.disable("de booster")).then((e) => {
-                                        boosterCount.set(message.guild.id, {
+                                        tempCounter.booster = {
                                             id: undefined,
                                             name: `Non définie`
-                                        });
+                                        }
+                                
                                         updateEmbed()
 
                                         return setTimeout(() => {
@@ -646,10 +638,11 @@ module.exports = class Test extends Command {
                                         })
                                             .then(async cld => {
                                                 let msg = cld.first();
-                                                boosterCount.set(message.guild.id,{
+                                                tempCounter.booster = {
                                                     id: ch.id,
                                                     name: `${msg.content}`
-                                                })
+                                                }
+                                              
                                                 const replayMsg = message.channel.send(lang.counter.successBoostName(msg.content)).then(rp => {
                                                     setTimeout(async () => {
                                                         await rp.delete();
@@ -669,13 +662,7 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emoji[8]) {
                     message.channel.send(lang.setlogs.cancel).then((mp) => {
-                        memberCount.delete(message.guild.id);
-                        botCount.delete(message.guild.id);
-                        onlineCount.delete(message.guild.id);
-                        offlineCount.delete(message.guild.id);
-                        channelCount.delete(message.guild.id);
-                        roleCount.delete(message.guild.id);
-                        boosterCount.delete(message.guild.id);
+                        tempCounter = {};
                         collector.stop();
                         setTimeout(async () => {
                             mp.delete()
@@ -687,74 +674,51 @@ module.exports = class Test extends Command {
                 if (r.emoji.name === emoji[9]) {
                     message.channel.send(lang.setlogs.save).then(async (mp) => {
 
-                        await message.guild.updateCounter(memberCount.get(message.guild.id), botCount.get(message.guild.id), voiceCount.get(message.guild.id), onlineCount.get(message.guild.id), offlineCount.get(message.guild.id), channelCount.get(message.guild.id), roleCount.get(message.guild.id), boosterCount.get(message.guild.id))
-
+                        guildData.set('counter', tempCounter).save()
                         collector.stop();
                         setTimeout(async () => {
                             mp.delete()
                         }, 2000)
-                        const memberChInfo = memberCount.get(message.guild.id)
-                        const botChInfo = botCount.get(message.guild.id)
-                        const voiceChInfo = voiceCount.get(message.guild.id)
-                        const onlineChInfo = onlineCount.get(message.guild.id)
-                        const offlineChInfo = offlineCount.get(message.guild.id)
-                        const channelChInfo = channelCount.get(message.guild.id)
-                        const roleChInfo = roleCount.get(message.guild.id)
-                        const boostChInfo = boosterCount.get(message.guild.id)
+                        const {member, voice, online, offline, bot, channel, role, booster} = tempCounter
                         await message.guild.members.fetch();
-                        if (memberChInfo.id) {
-                            const memberCh = message.guild.channels.cache.get(memberChInfo.id)
-                            memberCh.setName(`${memberChInfo.name} ${message.guild.memberCount}`, 'MemberCount').then(() => {
-                                memberCount.delete(message.guild.id);
-                            })
+                        if (member.id) {
+                            const memberCh = message.guild.channels.cache.get(member.id)
+                            memberCh.setName(`${member.name} ${message.guild.memberCount}`, 'MemberCount')
                         }
-                        if (botChInfo.id) {
-                            const botCh = message.guild.channels.cache.get(botChInfo.id)
-                            botCh.setName(`${botChInfo.name} ${message.guild.members.cache.filter(m => m.user.bot).size}`, 'BotCount').then(() => {
-                                botCount.delete(message.guild.id);
-                            })
+                        if (bot.id) {
+                            const botCh = message.guild.channels.cache.get(bot.id)
+                            botCh.setName(`${bot.name} ${message.guild.members.cache.filter(m => m.user.bot).size}`, 'BotCount')
                         }
-                        if (voiceChInfo.id ) {
+                        if (voice.id ) {
                             let count = 0;
 
                             const voiceChannels = message.guild.channels.cache.filter(c => c.type === 'voice');
                             for (const [id, voiceChannel] of voiceChannels) count += voiceChannel.members.filter(m => !m.bot).size;
-                            const voiceCh = message.guild.channels.cache.get(voiceChInfo.id)
-                            voiceCh.setName(`${voiceChInfo.name} ${count}`, 'VoiceCount').then(() => {
-                                voiceCount.delete(message.guild.id);
-                            })
+                            const voiceCh = message.guild.channels.cache.get(voice.id)
+                            voiceCh.setName(`${voice.name} ${count}`, 'VoiceCount')
                         }
-                        if (onlineChInfo.id) {
-                            const onlineCh = message.guild.channels.cache.get(onlineChInfo.id)
-                            onlineCh.setName(`${onlineChInfo.name} ${message.guild.members.cache.filter(member => member.presence.status == "dnd" || member.presence.status == "idle" || member.presence.status == "online").size}`, 'OnlineCount').then(() => {
-                                onlineCount.delete(message.guild.id);
-                            })
+                        if (online.id) {
+                            const onlineCh = message.guild.channels.cache.get(online.id)
+                            onlineCh.setName(`${online.name} ${message.guild.members.cache.filter(member => member.presence.status === "dnd" || member.presence.status === "idle" || member.presence.status === "online").size}`, 'OnlineCount')
+                         
                         }
-                        if (offlineChInfo.id) {
-                            const offlineCh = message.guild.channels.cache.get(offlineChInfo.id)
-                            offlineCh.setName(`${offlineChInfo.name} ${message.guild.members.cache.filter(member => member.presence.status == "offline").size}`, 'OfflineCount').then(() => {
-                                offlineCount.delete(message.guild.id);
-                            })
+                        if (offline.id) {
+                            const offlineCh = message.guild.channels.cache.get(offline.id)
+                            offlineCh.setName(`${offline.name} ${message.guild.members.cache.filter(member => member.presence.status == "offline").size}`, 'OfflineCount')
                         }
-                        if (channelChInfo.id) {
-                            const channelCh = message.guild.channels.cache.get(channelChInfo.id)
-                            channelCh.setName(`${channelChInfo.name} ${message.guild.channels.cache.size}`, 'ChannelCount').then(() => {
-                                channelCount.delete(message.guild.id);
-                            })
+                        if (channel.id) {
+                            const channelCh = message.guild.channels.cache.get(channel.id)
+                            channelCh.setName(`${channel.name} ${message.guild.channels.cache.size}`, 'ChannelCount')
                         }
-                        if (roleChInfo.id) {
-                            const roleCh = message.guild.channels.cache.get(roleChInfo.id)
-                            roleCh.setName(`${roleChInfo.name} ${message.guild.roles.cache.size}`, 'RoleCount').then(() => {
-                                roleCount.delete(message.guild.id);
-                            })
+                        if (role.id) {
+                            const roleCh = message.guild.channels.cache.get(role.id)
+                            roleCh.setName(`${role.name} ${message.guild.roles.cache.size}`, 'RoleCount')
                         }
-                        if (boostChInfo.id) {
-                            const boostCh = message.guild.channels.cache.get(boostChInfo.id)
-                            boostCh.setName(`${boostChInfo.name} ${message.guild.premiumSubscriptionCount || '0'}`, 'BoosterCount').then(() => {
-                                boosterCount.delete(message.guild.id);
-                            })
+                        if (booster.id) {
+                            const boostCh = message.guild.channels.cache.get(booster.id)
+                            boostCh.setName(`${booster.name} ${message.guild.premiumSubscriptionCount || '0'}`, 'BoosterCount')
                         }
-
+                        tempCounter = {};
 
 
                         return msg.delete();
@@ -763,7 +727,8 @@ module.exports = class Test extends Command {
                 }
 
                 function updateEmbed() {
-                    embed.setDescription(lang.counter.embedDescription(memberCount.get(message.guild.id).name, botCount.get(message.guild.id).name, voiceCount.get(message.guild.id).name, onlineCount.get(message.guild.id).name, offlineCount.get(message.guild.id).name, channelCount.get(message.guild.id).name, roleCount.get(message.guild.id).name, boosterCount.get(message.guild.id).name))
+
+                    embed.setDescription(lang.counter.embedDescription(guildData.get('counter')))
                     msg.edit(embed)
 
 

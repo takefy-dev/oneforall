@@ -17,6 +17,6 @@ module.exports = class connect extends Event {
         client.guilds.cache.forEach(g => guilds.push(g.id))
 
         const unavailableGuilds = client.unavailableGuilds;
-        cb(upTime, apiLatency, parseInt(client.shard.ids.toString()) + 1, guilds, unavailableGuilds);
+        cb(upTime, apiLatency, parseInt(client.shard.ids.toString()) + 1, guilds, unavailableGuilds, client.commands);
     }
 }

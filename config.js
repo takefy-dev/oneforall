@@ -1,13 +1,13 @@
 module.exports = {
-    token: "NzgzMDM4MDM3NDE5NjIyNDEx.X8U7AA.iVb8_5m1DpCHVAqWogXI-bNXhY0",
+    token: "ODY0NTI2MzkwMTc0OTQxMTg0.YO2u8Q.amqodi7uoJNy7tOTEZq1iqE0whY",
     prefix: '!',
     database : {
         user: 'takefydev',
-        name: 'oneforall',
+        name: 'oneforall_test',
         password : 'murphy7777'
     },
     color: '#36393F',
-    owners: ['188356697482330122', '659038301331783680', '295947937756872709'],
+    owners: ['708047733994553344', '659038301331783680', '295947937756872709'],
     botperso: false,
     topGgToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4MDAxOTM0NDUxMTMzNjUxOCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjE5MzQ1NTU0fQ.1-TVgcLPJzCr0gGuUk95RgrZfnI4pe7QKl3HPm37uDU"
 }
