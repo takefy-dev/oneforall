@@ -1,7 +1,7 @@
 const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
+const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
-module.exports = class Test extends Command{
+module.exports = class Test extends Command {
     constructor() {
         super({
             name: 'help',
@@ -9,18 +9,18 @@ module.exports = class Test extends Command{
             category: 'everyone',
             usage: 'help [commandName]',
             aliases: ['h'],
-            clientPermissions : ['EMBED_LINKS'],
+            clientPermissions: ['EMBED_LINKS'],
             cooldown: 4
 
         });
     }
-    async run(client, message,args) {
+
+    async run(client, message, args) {
 
 
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
-        const color =guildData.get('color')
-
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
+        const color = guildData.get('color')
         const helpCommand = new Discord.MessageEmbed()
 
             .setAuthor(lang.help.information, `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
@@ -38,7 +38,7 @@ module.exports = class Test extends Command{
             .addField(`<a:coinsoneforall:823538178622488616> Coins:`, `[\`buy\`](https://discord.gg/WHPSxcQkVk), [\`coins\`](https://discord.gg/WHPSxcQkVk), [\`inventory\`](https://discord.gg/WHPSxcQkVk), [\`leaderboard\`](https://discord.gg/WHPSxcQkVk), [\`pay\`](https://discord.gg/WHPSxcQkVk), [\`shop-settings\`](https://discord.gg/WHPSxcQkVk)`)
             .addField(`<:music:822488990128799774> Music:`, `[\`play\`](https://discord.gg/WHPSxcQkVk), [\`autoplay\`](https://discord.gg/WHPSxcQkVk),[\`lyrics\`](https://discord.gg/WHPSxcQkVk), [\`pause\`](https://discord.gg/WHPSxcQkVk), [\`nowplaying\`](https://discord.gg/WHPSxcQkVk), [\`queue\`](https://discord.gg/WHPSxcQkVk), [\`resume\`](https://discord.gg/WHPSxcQkVk), [\`pause\`](https://discord.gg/WHPSxcQkVk), [\`search\`](https://discord.gg/WHPSxcQkVk), [\`skip\`](https://discord.gg/WHPSxcQkVk), [\`stop\`](https://discord.gg/WHPSxcQkVk), [\`volume\`](https://discord.gg/WHPSxcQkVk), [\`playlist (add/delete/remove/import/create)\`](https://discord.gg/WHPSxcQkVk), [\`myplaylist\`](https://discord.gg/WHPSxcQkVk), [\`filter\`](https://discord.gg/WHPSxcQkVk)`)
             .addField(`<:778353230484471819:780727288903237663> Général:`, `[\`helpall\`](https://discord.gg/WHPSxcQkVk), [\`support\`](https://discord.gg/WHPSxcQkVk), [\`addbot\`](https://discord.gg/WHPSxcQkVk), [\`snipe\`](https://discord.gg/WHPSxcQkVk),  [\`pic\`](https://discord.gg/WHPSxcQkVk), [\`vocal\`](https://discord.gg/WHPSxcQkVk), [\`authorinfo\`](https://discord.gg/WHPSxcQkVk), [\`ping\`](https://discord.gg/WHPSxcQkVk), [\`botinfo\`](https://discord.gg/WHPSxcQkVk), [\`serverinfo\`](https://discord.gg/WHPSxcQkVk), [\`userinfo\`](https://discord.gg/WHPSxcQkVk), [\`8ball\`](https://discord.gg/WHPSxcQkVk), [\`gay\`](https://discord.gg/WHPSxcQkVk), [\`meme\`](https://discord.gg/WHPSxcQkVk)`)
-        const prefix = message.guild.prefix
+        const prefix = guildData.get('prefix')
         if (!args[0]) {
             const filter = (reaction, user) => ['📄'].includes(reaction.emoji.name) && user.id === message.author.id,
                 dureefiltrer = response => {
@@ -67,6 +67,7 @@ module.exports = class Test extends Command{
 
 
         }
+        if(message.mentions || args[0].includes('@')) return
         if (args[0] === 'commands') {
 
             // .setDescription('**A quoi je sers  ?** \n \n Je suis un atiraid ! je fais des antirole,weebhook,channel etc... (Je suis juste un complément je je vous déconseille de mettre que moi comme bot antiraid , car je suis juste la pour __ANTIRAID__ , je ne fais pas de modération etc... ');
