@@ -7,7 +7,7 @@ module.exports = class Test extends Command {
         super({
             name: 'clear',
             description: 'Delete a number of message | Supprimer un nombre de messages',
-            usage: 'clear <number>',
+            usage: 'clear <number/member>',
             category: 'moderation',
             userPermissions: ['MANAGE_MESSAGES'],
             clientPermissions: ['MANAGE_MESSAGES'],
@@ -21,41 +21,64 @@ module.exports = class Test extends Command {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
         const lang = guildData.lang;
-
-        let deleteAmount;
-
-        if (isNaN(args[0]) || parseInt(args[0]) <= 0) {
-            return message.reply(lang.clear.errorNaN)
-        }
-
-        if (parseInt(args[0]) > 100) {
-            console.log('supp')
-
-            deleteAmount = parseInt(args[0]) - 100
-            while(parseInt(args[0]) - 100  > 100 && deleteAmount > 0){
-
-                await message.channel.bulkDelete(100, true).catch(console.log)
-                deleteAmount -= 100
-
-                await client.functions.sleep(500)
-
-            }
-            await message.channel.bulkDelete(deleteAmount+1, true)
-
-        } else {
-            console.log('supps')
-
-            deleteAmount = parseInt(args[0]);
-            message.delete();
-            let msg;
-            message.channel.bulkDelete(deleteAmount + 1, true).then(async () => {
-                msg = await message.channel.send(lang.clear.success(deleteAmount))
+        const member = message.mentions.members.first();
+        if(member){
+            const channelMessage = await message.channel.messages.fetch();
+            const memberMessage = channelMessage.filter((m) => m.author.id === member.id)
+            await message.channel.bulkDelete(memberMessage).then(async () => {
+                const msg = await message.channel.send(`${member} messages cleared`)
                 setTimeout(() => {
-                    msg.delete();
-                }, 5000)
 
-            });
+                    msg.delete()
+                }, 2000)
+            })
+        }else{
+            let deleteAmount = parseInt(args[0]);
+
+            if (isNaN(args[0]) || parseInt(args[0]) <= 0) {
+                return message.reply(lang.clear.errorNaN)
+            }
+
+            let tbx = [];
+
+            const chunkBy = (n) => number => {
+                tbx = new Array(Math.floor(number / n)).fill(n);
+                let remainder = number % n;
+                if (remainder > 0) {
+                    tbx.push(remainder);
+                }
+                return tbx;
+            };
+
+            const chunkBy100 = chunkBy(100);
+            tbx.push(chunkBy100(deleteAmount));
+            for (let x of tbx) {
+                await clearMoreThan100(message.channel, x)
+                await client.functions.sleep(1000)
+            }
+
+            async function clearMoreThan100(channel, limit) {
+                let collected = await channel.messages.fetch({limit});
+                let deletedMsg = 0;
+                if (collected.size > 0) {
+                    while (deletedMsg < limit) {
+                        let deleted = await channel.bulkDelete(limit, true)
+                        if (deleted.size < collected.size) {
+                            for (let msg of collected.array()) {
+                                await msg.delete();
+                                deletedMsg++;
+                            }
+                        }
+                        deletedMsg += deleted;
+                    }
+                    const msg = await message.channel.send(lang.clear.success(deleteAmount))
+                    setTimeout(() => {
+                        msg.delete();
+                    }, 5000)
+                } else return 0;
+            }
         }
+
 
     }
 }

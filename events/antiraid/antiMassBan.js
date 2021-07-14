@@ -14,7 +14,7 @@ module.exports = class Ready extends Event {
         const color = guildData.get('color');
         const antiraidConfig = guildData.get('antiraid');
         let antiraidLog = guildData.get('logs').antiraid;
-        let {logs} = guildData.logs
+        let {logs} = guildData.get('logs')
         const isOn = antiraidConfig.enable["antiMassBan"];
         if (!isOn) return;
         let action = await guild.fetchAuditLogs({type: "MEMBER_BAN_ADD"}).then(async (audit) => audit.entries.first());
