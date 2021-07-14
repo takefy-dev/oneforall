@@ -25,7 +25,7 @@ module.exports = class Test extends Command {
         const color = guildData.get('color')
         if (args[0] === 'all') {
             const bans = await message.guild.fetchBans();
-            if (bans.size < 1) return message.channel.send(lang.unban.noUnBanAll).then(mp => mp.delete({timeout: 4000}))
+            if (bans.size < 1) return message.channel.send(lang.unban.noUnBanAll)
             bans.forEach(ban => {
                 message.guild.members.unban(ban.user.id, `Unban all par ${message.author.username}`)
             })
@@ -33,14 +33,14 @@ module.exports = class Test extends Command {
 
         } else {
             const user = message.mentions.users.first() || await client.users.fetch(args[0]).catch(async err => {
-                return await message.channel.send(lang.unban.noMember).then(mp => mp.delete({timeout: 4000}));
+                return await message.channel.send(lang.unban.noMember)
             })
             if (user.id === message.author.id) {
-                return await message.channel.send(lang.unban.unbanSelf).then(mp => mp.delete({timeout: 4000}));
+                return await message.channel.send(lang.unban.unbanSelf)
             }
             const banned = await message.guild.fetchBans();
             if (!banned.has(user.id)) {
-                return message.channel.send(lang.unban.notBan(user)).then(mp => mp.delete({timeout: 4000}))
+                return message.channel.send(lang.unban.notBan(user))
             }
 
             let reason = args.slice(1).join(" ");
