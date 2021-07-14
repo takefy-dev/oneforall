@@ -5,9 +5,10 @@ const Discord = require('discord.js')
 module.exports = class Test extends Command {
     constructor() {
         super({
-            name: 'wl',
+            name: 'whistelist',
             description: 'Manage the whitelist | Gérer la whitelist',
-            usage: 'wl <add / remove/ list> < mention / id >',
+            usage: 'whitelist <add / remove/ list> < mention / id >',
+            aliases: ['wl'],
             category: 'owner',
             guildOwnerOnly: true,
             cooldown: 2
@@ -16,11 +17,11 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
 
 
-        let whitelisted = message.guild.whitelisted;
+        let whitelisted = guildData.get('whitelisted');
         while (whitelisted[0] === '') {
             whitelisted.shift()
         }
@@ -37,8 +38,13 @@ module.exports = class Test extends Command {
             if (!member) return message.channel.send(lang.wl.noMember)
             if (whitelisted.includes(member.id)) return message.channel.send(lang.wl.errorAlreadyWl(member.user.tag || member.user.username))
             whitelisted.push(member.id);
-            message.guild.updateWhitelist = whitelisted;
-            await message.channel.send(lang.wl.successWl(member.user.tag || member.user.username));
+            guildData.save().then(async () => {
+                const msg = await message.channel.send(lang.wl.successWl(member.user.tag || member.user.username));
+                setTimeout(() => {
+                    msg.delete()
+                }, 2000)
+
+            })
 
 
         } else if (remove) {
@@ -46,109 +52,90 @@ module.exports = class Test extends Command {
             if (!member) return message.channel.send(lang.owner.noMember)
             if (!whitelisted.includes(member.id)) return message.channel.send(lang.wl.errorNotWl(member.user.tag || member.user.username))
             whitelisted = whitelisted.filter(wl => wl !== member.id)
-            message.guild.updateWhitelist = whitelisted;
-            await message.channel.send(lang.wl.successRmWl(member.user.tag || member.user.username));
+            guildData.save().then(async () => {
+                const msg = await message.channel.send(lang.wl.successRmWl(member.user.tag || member.user.username));
+                setTimeout(() => {
+                    msg.delete()
+                }, 2000)
+            })
 
         } else if (list) {
+            const whitelistedEmbed = {
+                title: `List of whitelisted users (${whitelisted.length})`,
+                timestamp: new Date(),
+                color: '#36393F',
+                footer: {
+                    text: `Page 1/1`,
+                    icon_url: message.author.displayAvatarURL({dynamic: true}) || ''
+                },
 
-            try {
-                let tdata = await message.channel.send(lang.loading)
+            }
+            let maxPerPage = 10
 
-                let p0 = 0;
-                let p1 = 10;
-                let page = 1;
+            if (whitelisted.length > maxPerPage) {
+                let page = 0
+                let slicerIndicatorMin = 0,
+                    slicerIndicatorMax = 10
 
-
-                let embed = new Discord.MessageEmbed()
-
-                embed.setTitle(`<:778353230383546419:781153631881265173> Liste des membres whitelist`)
-                    .setColor(`${color}`)
-                    .setDescription(whitelisted
-                        .filter(x => message.guild.members.cache.get(x))
-                        .map(r => r)
-                        .map((user, i) => `${i + 1} ・ **<@${message.guild.members.cache.get(user).user.id}>**`)
-                        .slice(0, 10)
-                        .join('\n') + `\n\n<:778353230467825704:781155103566331904> Page **${page}** / **${Math.ceil(whitelisted.length / 10)}**`)
-                    .setTimestamp()
-                    .setFooter(`${client.user.username}`);
-
-                let reac1
-                let reac2
-                let reac3
-
-                if (whitelisted.length > 10) {
-                    reac1 = await tdata.react("⬅");
-                    reac2 = await tdata.react("❌");
-                    reac3 = await tdata.react("➡");
+                const emojis = ['◀', '❌', '▶']
+                let totalPage = Math.ceil(whitelisted.length / maxPerPage)
+                const embedPageChanger = (page) => {
+                    whitelistedEmbed.description = whitelisted.map((id, i) => `${i + 1} ・ <@${id}>`).slice(slicerIndicatorMin, slicerIndicatorMax).join('\n')
+                    whitelistedEmbed.footer.text = `Page ${page + 1} / ${totalPage}`
+                    return whitelistedEmbed
                 }
-
-                tdata.edit(" ", embed);
-
-                const data_res = tdata.createReactionCollector((reaction, user) => user.id === message.author.id);
-
-                data_res.on("collect", async (reaction) => {
-
-                    if (reaction.emoji.name === "⬅") {
-
-                        p0 = p0 - 10;
-                        p1 = p1 - 10;
-                        page = page - 1
-
-                        if (p0 < 0) {
-                            return
-                        }
-                        if (p0 === undefined || p1 === undefined) {
-                            return
-                        }
-
-
-                        embed.setDescription(whitelisted
-                            .filter(x => message.guild.members.cache.get(x))
-                            .map(r => r)
-                            .map((user, i) => `${i + 1} ・  **<@${message.guild.members.cache.get(user).user.id}>**`)
-                            .slice(p0, p1)
-                            .join('\n') + `\n\n<:778353230467825704:781155103566331904> Page **${page}** / **${Math.ceil(whitelisted.length / 10)}**`)
-                        tdata.edit(embed);
-
-                    }
-
-                    if (reaction.emoji.name === "➡") {
-
-                        p0 = p0 + 10;
-                        p1 = p1 + 10;
-
-                        page++;
-
-                        if (p1 > whitelisted.length + 10) {
-                            return
-                        }
-                        if (p0 === undefined || p1 === undefined) {
-                            return
-                        }
-
-
-                        embed.setDescription(whitelisted
-                            .filter(x => message.guild.members.cache.get(x))
-                            .map(r => r)
-                            .map((user, i) => `${i + 1} ・ **<@${message.guild.members.cache.get(user).user.id}>**`)
-                            .slice(p0, p1)
-                            .join('\n') + `\n\n<:778353230467825704:781155103566331904> Page **${page}** / **${Math.ceil(whitelisted.length / 10)}**`)
-                        tdata.edit(embed);
-
-                    }
-
-                    if (reaction.emoji.name === "❌") {
-                        data_res.stop()
-                        await tdata.reactions.removeAll()
-                        return tdata.delete();
-                    }
-
-                    await reaction.users.remove(message.author.id);
-
+                const msg = await message.channel.send(lang.loading)
+                for(const em of emojis) await msg.react(em)
+                msg.edit({
+                    content: '',
+                    embed: embedPageChanger(page)
                 })
 
-            } catch (err) {
-                console.log(err)
+                const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id;
+                const collector = msg.createReactionCollector( filter, {time: 900000})
+                collector.on('collect', async r => {
+                    await r.users.remove(message.author);
+                    if(r.emoji.name === emojis[0]){
+                        page = page === 0 ? page = totalPage - 1 : page <= totalPage - 1 ? page-=1 : page+=1
+                        slicerIndicatorMin -= maxPerPage
+                        slicerIndicatorMax -= maxPerPage
+
+
+                    }
+                    if(r.emoji.name === emojis[2]){
+                        page = page !== totalPage - 1 ? page+=1 : page = 0
+                        slicerIndicatorMin += maxPerPage
+                        slicerIndicatorMax += maxPerPage
+
+                    }
+                    if(r.emoji.name === emojis[1]){
+                        collector.stop()
+                    }
+                    if(slicerIndicatorMax < 0 || slicerIndicatorMin < 0) {
+                        slicerIndicatorMin += maxPerPage * totalPage
+                        slicerIndicatorMax += maxPerPage * totalPage
+                    }else if((slicerIndicatorMax >= maxPerPage * totalPage || slicerIndicatorMin >= maxPerPage * totalPage) && page === 0){
+                        slicerIndicatorMin = 0
+                        slicerIndicatorMax = 10
+                    }
+
+                    msg.edit({
+                        embed:
+                            embedPageChanger(page)
+
+                    })
+                })
+                collector.on('end', async() => {
+                    await msg.reactions.removeAll()
+                })
+
+            } else {
+                whitelistedEmbed.description = whitelisted.map((id, i) => `${i + 1} ・ <@${id}>`).join('\n')
+                return message.channel.send({
+                    embed:
+                    whitelistedEmbed
+
+                })
             }
         } else if (clear) {
             const embed = new Discord.MessageEmbed()
@@ -170,8 +157,7 @@ module.exports = class Test extends Command {
 
                 if (r.emoji.name === '✅') {
                     try {
-                        whitelisted = []
-                        message.guild.updateWhitelist = whitelisted;
+                        guildData.set('whitelisted', []).save();
                         msg.delete()
                         return message.channel.send(lang.wl.successClearWl)
 
