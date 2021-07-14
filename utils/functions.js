@@ -13,8 +13,12 @@ module.exports = {
     },
     async loadTable(manager, data = {}) {
         await this.sleep(500);
-        for await (const element of (await manager.OneForAll.database.models[data.model].findAll()))
-            manager[data.add](data.key.map(k => k.startsWith("{") && k.endsWith("}") ? element[k.slice(1, -1)] : k).join(''), element.get());
+        for await (const element of (await manager.OneForAll.database.models[data.model].findAll())){
+            if(manager.OneForAll.guilds.cache.has(element.get('guildId')) && data.model !== 'blacklist'){
+                manager[data.add](data.key.map(k => k.startsWith("{") && k.endsWith("}") ? element[k.slice(1, -1)] : k).join(''), element.get());
+            }else if(data.model === 'blacklist') manager[data.add](data.key.map(k => k.startsWith("{") && k.endsWith("}") ? element[k.slice(1, -1)] : k).join(''), element.get());
+        }
+
         console.log(`Successfully loaded ${manager.size} ${data.model.charAt(0).toUpperCase()}${data.model.slice(1)}`)
 
 

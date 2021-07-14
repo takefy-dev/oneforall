@@ -145,7 +145,10 @@ class OneForAll extends Client {
     initDatabase() {
         this.database.authenticate().then(async () => {
             console.log("login");
-            this.managers = new Managers(this);
+            this.on('ready', () => {
+                this.managers = new Managers(this);
+
+            })
             const modelsFile = fs.readdirSync('./structures/Models');
             for await (const model of modelsFile) {
                 await require(`../Models/${model}`)(Sequelize, this)

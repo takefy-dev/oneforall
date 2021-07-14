@@ -14,10 +14,10 @@ module.exports = class Ready extends Event {
 
     async run(client) {
         client.finishLoad = true
+        await client.functions.sleep(1000)
         if(!client.botperso){
             client.guilds.cache.forEach(guild => {
                 client.managers.blackListManager.getAndCreateIfNotExists(guild.ownerID)
-
             })
         }else{
             client.managers.blackListManager.getAndCreateIfNotExists(client.owners[client.owners.length - 1])
