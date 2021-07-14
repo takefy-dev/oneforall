@@ -1,7 +1,3 @@
-const StateManager = require('../../utils/StateManager');
-const Discord = require('discord.js')
-
-
 const Event = require('../../structures/Handler/Event');
 
 module.exports = class presenceUpdate extends Event {
@@ -12,36 +8,23 @@ module.exports = class presenceUpdate extends Event {
     }
 
     async run(client, oldMember, newMember) {
-        this.connection = StateManager.connection;
         if (!client.botperso) return;
-        client.guilds.cache.forEach(guild => {
-
-            if (!oldMember) return;
-            const msg = guild.config.soutienMsg
-            const roleId = guild.config.soutienId
+        client.guilds.cache.filter(g => client.managers.guildManager.getAndCreateIfNotExists(g.id).get('soutien').enable).forEach(guild => {
+            if (!oldMember && !newMember) return;
+            const {message, roleId} = client.managers.guildManager.getAndCreateIfNotExists(guild.id).get('soutien');
             const role = guild.roles.cache.get(roleId)
-            if (!role) return;
-            const isOn = guild.config.soutienOn;
+            if (!role && role.deleted) return;
             let status = newMember.user.presence.activities.map(a => a.state)
-            if (guild.members.cache.get(newMember.user.id) === undefined) return;
-
-            if (isOn) {
-                return;
-
-            } else if (oldMember === undefined || newMember === undefined) {
-                return;
-            } else if (oldMember.status !== newMember.status || oldMember == undefined || newMember == undefined) {
-                return;
-            } else if (isOn ) {
-                if (status[0] != null && status[0].includes(msg)) {
-                    guild.members.cache.get(newMember.user.id).roles.add(roleId)
-                } else {
-                    if (guild.members.cache.get(newMember.user.id) === undefined) return;
-                    if (guild.members.cache.get(newMember.user.id).roles.cache.some((r) => r.id === roleId)) {
-                        guild.members.cache.get(newMember.user.id).roles.remove(roleId)
-                    }
+            const member = guild.members.resolve(newMember.user.id);
+            if (!member) return;
+            if (status[0] !== null && status[0].includes(message)) {
+                member.roles.add(roleId, 'Soutien')
+            } else {
+                if (member.roles.cache.some((r) => r.id === roleId)) {
+                    member.roles.remove(roleId, 'Soutien')
                 }
             }
+
         });
     }
 }

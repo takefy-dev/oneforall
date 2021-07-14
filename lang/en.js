@@ -247,11 +247,11 @@ module.exports = {
     },
     soutien : {
         title : `<:771462923855069204:784471984087236658> __Support Parameter__`,
-        description :(soutienId,soutienMsg, isOnS, guild) => `
+        description :(soutienId,soutienMsg, isOnS) => `
         1 ・ Configure the role that will be given to the member who has the required personalized status. \n
-            __Current role__ : **<@&${soutienId.get(guild.id)}>** \n
+            __Current role__ : **${soutienId !== 'Non définie' ? `<@&${soutienId}>` : soutienId}** \n
         2 ・ Configure the personalized status message that members should have.\n
-            __Current message__ : **${soutienMsg.get(guild.id)}** \n
+            __Current message__ : **${soutienMsg}** \n
         3 ・ Enable or disable support \n
                 __Active__ : ${isOnS}
         `,

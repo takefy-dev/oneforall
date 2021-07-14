@@ -263,11 +263,11 @@ module.exports = {
     },
     soutien: {
         title: `<:771462923855069204:784471984087236658> __Paramètre du soutien__`,
-        description: (soutienId, soutienMsg, isOnS, guild) => `
+        description: (soutienId, soutienMsg, isOnS) => `
         1 ・ Configurer le rôle qui sera donné au membre qui ont le status personnalisé requis. \n
-            __Rôle actuel__ : **<@&${soutienId.get(guild.id)}>** \n
+            __Rôle actuel__ : **${soutienId !== 'Non définie' ? `<@&${soutienId}>` : soutienId}** \n
         2 ・ Configurer le message du status personnalisé que les membres devront avoir.\n
-            __Message actuel__ : **${soutienMsg.get(guild.id)}** \n
+            __Message actuel__ : **${soutienMsg}** \n
         3 ・ Activer ou désactiver le soutien \n
                 __Actif__ : ${isOnS}
         `,

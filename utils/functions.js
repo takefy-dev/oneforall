@@ -20,7 +20,7 @@ module.exports = {
 
         return manager;
     },
-    async copyObject(object){
+    copyObject(object){
         return JSON.parse(JSON.stringify(object));
     }
 }

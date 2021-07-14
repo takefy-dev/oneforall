@@ -64,7 +64,7 @@ module.exports = class Test extends Command {
             const emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '❌', '✅']
             for (const em of emojis) await msg.react(em)
             const invite = guildData.get('invite');
-            let tempInvite = {...invite};
+            let tempInvite = client.functions.copyObject(invite);
             let enableEmoji = () => {
                 return tempInvite.enable ? '<:778348494712340561:781153837850820619>' : '<:778348495157329930:781189773645578311>'
             }

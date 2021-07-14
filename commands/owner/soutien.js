@@ -22,48 +22,25 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
         if (!client.botperso) return;
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
 
         const color = guildData.get('color')
         const config = args[0] === "config";
         const count = args[0] === "count"
-
-
-        soutienId.set(message.guild.id, message.guild.config.soutienId);
-
-        soutienMsg.set(message.guild.id, message.guild.config.soutienMsg);
-        if (!args[0]) {
-            const embed = new Discord.MessageEmbed()
-                .setAuthor(`Informations Soutien`, `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
-                .setColor(`${color}`)
-                .setTimestamp()
-                .setThumbnail(`https://images-ext-1.discordapp.net/external/io8pRqFGLz1MelORzIv2tAiPB3uulaHCX_QH7XEK0y4/%3Fwidth%3D588%26height%3D588/https/media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg`)
-                .setFooter("Informations Soutien", `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
-                .addField('<:Support:785486768719265813> Soutien:', `[\`soutien config\`](https://discord.gg/WHPSxcQkVk) ・ Configuration du système de soutien\n[\`soutien count\`](https://discord.gg/WHPSxcQkVk) ・ Montrez combien de membres vous soutiennent`)
-            message.channel.send(embed)
-        }
+        const tempConfig = client.functions.copyObject(guildData.get('soutien'))
         if (config) {
             const msg = await message.channel.send(lang.loading)
-
-            await msg.react("1️⃣");
-            await msg.react("2️⃣");
-            await msg.react("3️⃣");
-            await msg.react("❌");
-            await msg.react('✅')
-            const isOn = message.guild.config.soutienOn
-            let isOnS
-            if (!isOn) {
-                isOnS = '<:778348495157329930:781189773645578311>'
-            }
-            if (isOn) {
-                isOnS = '<:778348494712340561:781153837850820619>'
+            const emojis = ["1️⃣","2️⃣","3️⃣","❌", "✅"]
+            for(const em of emojis) await msg.react(em);
+            let enableEmoji = () => {
+                return tempConfig.enable ? '<:778348494712340561:781153837850820619>' : '<:778348495157329930:781189773645578311>'
             }
 
 
             const embed = new Discord.MessageEmbed()
                 .setTitle(lang.soutien.title)
-                .setDescription(lang.soutien.description(soutienId, soutienMsg, isOnS, message.guild))
+                .setDescription(lang.soutien.description(tempConfig.roleId, tempConfig.message, enableEmoji(), message.guild))
                 .setTimestamp()
                 .setColor(`${color}`)
                 .setFooter(client.user.username);
@@ -86,10 +63,10 @@ module.exports = class Test extends Command {
                             return message.channel.send(lang.cancel);
                         }
                         const response = collected.first().mentions.roles.first();
-                        const channelId = response.id;
+                        const roleId = response.id;
 
                         message.channel.send(lang.soutien.success(response))
-                        soutienId.set(message.guild.id, channelId)
+                        tempConfig.roleId = roleId;
                         updateEmbed()
 
 
@@ -114,10 +91,12 @@ module.exports = class Test extends Command {
                         let response = collected.first().content;
 
 
-                        updateEmbed()
                         message.channel.send(lang.soutien.successEditRl);
                         message.channel.send(`${response}`);
-                        soutienMsg.set(message.guild.id, response)
+                        tempConfig.message = response
+                        updateEmbed()
+
+
                         let question = await message.channel.send(lang.soutien.rmAllRlQ)
                         const filter = m => message.author.id === m.author.id;
                         message.channel.awaitMessages(filter, {
@@ -150,63 +129,31 @@ module.exports = class Test extends Command {
                                 return message.channel.send(lang.error.NoYes)
                             }
                             message.channel.send(lang.soutien.removingRl(rlId))
-                        }).catch((error) => {
-                            console.log(error)
-                            message.reply(lang.soutien.errorTimeOut2M)
                         })
-                    }).catch((error) => {
-                        console.log(error)
-                        message.channel.send(lang.soutien.errorChMsg);
-                        return message.channel.send(`${response}`);
                     })
 
                 } else if (reaction.emoji.name === "3️⃣") {
-                    let question = await message.channel.send(lang.soutien.enableQ)
-                    const filter = m => message.author.id === m.author.id;
-                    message.channel.awaitMessages(filter, {
-                        max: 1,
-                        time: 120000,
-                    }).then(async (collected) => {
-                        await collected.first().delete()
-                        question.delete()
-                        if (collected.first().content.toLowerCase() === "cancel") {
-                            return message.channel.send(lang.cancel);
-                        } else if (collected.first().content.toLowerCase() === lang.yes) {
 
+                      tempConfig.enable = !tempConfig.enable;
+                      updateEmbed()
 
-                            message.channel.send(lang.soutien.successEnable);
-                            soutienOn.set(message.guild.id, true)
-                            updateEmbed()
-                        } else if (collected.first().content.toLowerCase() === lang.no) {
-
-
-
-                            message.channel.send(lang.soutien.successDisable);
-                            soutienOn.set(message.guild.id, false)
-
-                        } else if (collected.first().content.toLowerCase() !== lang.no || collected.first().content.toLowerCase() !== lang.yes) {
-                            return message.channel.send(lang.error.NoYes)
-                        }
-                        updateEmbed()
-                    }).catch((error) => {
-                        console.log(error)
-                        message.reply(lang.soutien.errorTimeOut2M)
-                    })
                 } else if (reaction.emoji.name === "❌") {
 
-                    await data_res.stop()
+                    await data_res.stop('cancel')
                     return await msg.delete()
-                }else if(reaction.emoji.name === "✅"){
-                    message.guild.updateSoutien(soutienId.get(message.guild.id), soutienMsg.get(message.guild.id), soutienOn.get(message.guild.id))
+                } else if (reaction.emoji.name === "✅") {
+                    await msg.delete()
+                    guildData.set('soutien', tempConfig).save();
                 }
 
             });
-            data_res.on('end', collected => {
-                message.channel.send(lang.cancel)
+            data_res.on('end', (collected, reason) => {
+                if(reason === 'cancel') message.channel.send(lang.cancel)
+
             });
 
             function updateEmbed() {
-                embed.setDescription(lang.soutien.description(soutienId, soutienMsg, isOnS, message.guild))
+                embed.setDescription(lang.soutien.description(tempConfig.roleId, tempConfig.message, enableEmoji()))
                 msg.edit(embed)
             }
         } else if (count) {
