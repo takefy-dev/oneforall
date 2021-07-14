@@ -19,5 +19,8 @@ module.exports = {
 
 
         return manager;
+    },
+    async copyObject(object){
+        return JSON.parse(JSON.stringify(object));
     }
 }

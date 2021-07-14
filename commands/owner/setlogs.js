@@ -24,8 +24,8 @@ module.exports = class Test extends Command {
         let owner = message.guild.ownerID;
 
 
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
         const color = guildData.get('color')
         const logs = message.guild.logs;
         modLog.set(message.guild.id, logs.modLog)
@@ -241,7 +241,7 @@ module.exports = class Test extends Command {
                         })
                     } else if (r.emoji.name === '✅') {
                         message.channel.send(lang.setlogs.save).then(async (mp) => {
-                            await message.guild.updateLogs(modLog.get(message.guild.id), msgLog.get(message.guild.id), voiceLog.get(message.guild.id),  raidLog.get(message.guild.id)).then(() =>{
+                            await message.guild.updateLogs(modLog.get(message.guild.id), msgLog.get(message.guild.id), voiceLog.get(message.guild.id), raidLog.get(message.guild.id)).then(() => {
                                 collector.stop();
                                 setTimeout(async () => {
                                     mp.delete()

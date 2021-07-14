@@ -1158,6 +1158,20 @@ module.exports = {
 
 
     },
+    enable: {
+        eventNotFound : (event) => `**${event}** n'existe pas essayer un autre event`,
+        success : (event) => `**${event}** est maintenant activé`
+    },
+    disable : {
+        success : (event) => `**${event}** est maintenant désactivé`
+    },
+    sanction : {
+        notCorrectSanction: `Veuillez specifier une sanction correct \`(ban/kick/unrank)\``,
+        success : (event, sanction) => `Vous avez modifier la sanction de l'évènement **${event}** pour **${sanction}**`
+    },
+    bypass : {
+      success : (event, enable) => `Les whitelist${!enable ? ' ne ' : ''}bypass${!enable ? ' pas ': ''}l'évènement **${event}**`
+    },
     perm: {
         noPermEnough: `Vous n'avez pas assez de permissions`,
         permNotFound: `La nom de la perm est invalide (1,2,3,4,everyone)`,

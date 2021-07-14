@@ -27,7 +27,7 @@ module.exports = class Test extends Command {
         for (const em of emoji) {
             await msg.react(em)
         }
-        let tempCounter = {...guildData.get('counter')};
+        let tempCounter = client.functions.copyObject(guildData.get('counter'));
         const filter = (reaction, user) => emoji.includes(reaction.emoji.name) && user.id === message.author.id,
             dureefiltrer = response => {
                 return response.author.id === message.author.id

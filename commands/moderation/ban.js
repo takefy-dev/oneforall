@@ -24,9 +24,8 @@ module.exports = class Test extends Command {
         const lang = guildData.lang;
         const color = guildData.get('color')
 
-        const user = message.mentions.users.first() || await client.users.resolve(args[0]).catch(async err => {
-            return await message.channel.send(lang.ban.noBan).then(mp => mp.delete({timeout: 4000}));
-        })
+        const user = message.mentions.users.first() || await client.users.resolve(args[0])
+        console.log(user)
         if (user.id === message.author.id) {
             return await message.channel.send(lang.ban.errorBanSelf).then(mp => mp.delete({timeout: 4000}));
         }
@@ -64,7 +63,8 @@ module.exports = class Test extends Command {
 
         message.guild.members.ban(user, {reason}).then(async () => {
             message.channel.send(lang.ban.success(user));
-            const {modLog} = guildData.get('logs').logs;
+
+            const modLog = guildData.get('logs').logs;
             const channel = message.guild.channels.cache.get(modLog);
             const guild = message.guild;
 
@@ -74,7 +74,6 @@ module.exports = class Test extends Command {
             if (channel && !channel.deleted) {
                 channel.send(channel.send(logs.targetExecutorLogs("ban", message.member, user, color)))
             }
-            const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
             const antiraidConfig = guildData.get('antiraid');
             let antiraidLog = guildData.get('logs').antiraid;
             const isOn = antiraidConfig.enable["antiMassBan"];
@@ -139,12 +138,6 @@ module.exports = class Test extends Command {
                 userData.save()
             }
         })
-
-            .catch((err) => {
-                console.log('err', err)
-                if (err.toString().includes('Missing Permission')) return message.channel.send(lang.error.MissingPermission)
-                message.channel.send(lang.ban.error(user))
-            })
 
 
     }

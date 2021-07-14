@@ -20,7 +20,7 @@ module.exports = class Test extends Command {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
         const lang = guildData.lang;
-        let member = message.mentions.members.first() || message.guild.members.resolve(args[0]);
+        let member = message.mentions.members.first() || await message.guild.members.resolve(args[0]);
         if (member === message.member) return message.channel.send(lang.kick.errorKickSelf)
         if (!member) return message.channel.send(lang.kick.noKick)
         if (member.roles.highest.comparePositionTo(message.member.roles.highest) >= 0) return message.channel.send(lang.errorRl(member.user.tag))

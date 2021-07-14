@@ -12,36 +12,46 @@ module.exports = class Test extends Command {
             description: "Setup the antiraid | Configurer l'antiraid",
             usage: 'antiraid',
             clientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
-            category: 'owners',
+            category: 'antiraid',
             guildOwnerOnly: true,
-            // onlyTopGg: true
+            onlyTopGg: true
         });
     }
 
     async run(client, message, args) {
-        let lang = client.lang(message.guild.lang);
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
+        let lang = guildData.lang;
 
         const color = guildData.get('color')
+        let antiraidConfig = JSON.parse(JSON.stringify(guildData.get('antiraid')))
         if (args[0] === "on") {
-            const {enable} = message.guild.antiraid;
+            const {enable} = antiraidConfig;
             for (const [name, _] of Object.entries(enable)) {
                 enable[name] = true;
             }
-            await message.guild.updateAntiraid(message.guild.antiraid)
-            await message.channel.send(lang.antiraidConfig.allOn)
+            guildData.set('antiraid', antiraidConfig).save().then(async () => {
+                const msg =await message.channel.send(lang.antiraidConfig.allOn)
+                setTimeout(() => {
+                    msg.delete()
+                }, 2000)
+            })
 
 
         }
         if (args[0] === "off") {
-            const {enable} = message.guild.antiraid;
+            const {enable} = antiraidConfig;
             for (const [name, _] of Object.entries(enable)) {
                 enable[name] = false;
             }
-            await message.guild.updateAntiraid(message.guild.antiraid)
-            await message.channel.send(lang.antiraidConfig.allOff)
+            guildData.set('antiraid', antiraidConfig).save().then(async () => {
+                const msg =await message.channel.send(lang.antiraidConfig.allOn)
+                setTimeout(() => {
+                    msg.delete()
+                }, 2000)
+            })
         }
         if (args[0] === "opti") {
-            const {enable, config, bypass} = message.guild.antiraid
+            const {enable, config, bypass} = antiraidConfig
             for (const [name, _] of Object.entries(enable)) {
                 enable[name] = true;
             }
@@ -104,8 +114,13 @@ module.exports = class Test extends Command {
             config["vanityUpdate"] = "ban"
             bypass["vanityUpdate"] = false
 
-            await message.guild.updateAntiraid(message.guild.antiraid)
-            message.channel.send(lang.antiraidConfig.opti)
+           guildData.set('antiraid', antiraidConfig).save().then(async () => {
+               const msg = await message.channel.send(lang.antiraidConfig.opti)
+               setTimeout(() => {
+                   msg.delete()
+               }, 2000)
+
+           })
         }
         if (args[0] === "config") {
             const msg = await message.channel.send(lang.loading)
@@ -119,8 +134,6 @@ module.exports = class Test extends Command {
 
 
             let fields = []
-
-            let antiraidConfig = {...message.guild.antiraid};
             let {enable, config, bypass} = antiraidConfig;
             let arrayEnable = Object.entries(enable)
             let page = 0
@@ -343,7 +356,7 @@ module.exports = class Test extends Command {
             saveCollector.on('collect', async r => {
                 await r.users.remove(message.author);
                 if (r.emoji.name === '✅') {
-                    await message.guild.updateAntiraid(antiraidConfig)
+                    await guildData.set('antiraid',antiraidConfig).save()
                     const replyMsg = message.channel.send(lang.antiraidConfig.savedmsg);
                     setTimeout(async () => {
                         await saveCollector.stop();
@@ -375,7 +388,6 @@ module.exports = class Test extends Command {
 
                         return msg.edit('', {embed: embed(page)[0]})
                     } else if (r.emoji.name === emojis[emojis.length - 1]) {
-
                         msg.delete()
                         saveCollector.stop()
                         confirMsg.delete()
