@@ -13,8 +13,7 @@ module.exports = class message extends Event {
         let guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const prefix = guildData.get('prefix')
         const botMention = message.mentions.has(client.user)
-
-
+        const lang = guildData.lang
         if (botMention) {
             if (message.content.includes("@here") || message.content.includes("@everyone")) return false;
             if (!prefix) return message.channel.send(`Votre serveurs n'est pas dans ma base de donnée veuillez me kick et m'ajouter !`)
@@ -91,7 +90,7 @@ module.exports = class message extends Event {
             if(cmd.onlyTopGg && !client.botperso){
                 const dbl = new DBL(client.config.topGgToken, client)
                 let hasVoted = await dbl.hasVoted(message.author.id)
-                if(!hasVoted) return message.channel.send(client.lang(message.guild.lang).antiraidConfig.noVote)
+                if(!hasVoted) return message.channel.send(lang(message.guild.lang).antiraidConfig.noVote)
             }
             if (cmd.ownerOnly) {
                 if (client.isOwner(message.author.id)) {
@@ -100,20 +99,21 @@ module.exports = class message extends Event {
                     return cmd.run(client, message, args);
                 } else {
                     Logger.warn(`${message.author.tag} ${Logger.setColor(`white`, `tried the ownerOnly command: ${cmd.name}`)} `, `COMMAND`)
-                    return await message.channel.send(client.lang(message.guild.lang).error.ownerOnly);
+                    return await message.channel.send(lang(message.guild.lang).error.ownerOnly);
                 }
             } else if (cmd.guildOwnerOnly  && !permEnable || !perm.has(cmd.name) && cmd.guildOwnerOnly) {
-                if (message.guild.isGuildOwner(message.author.id)) {
+                if (guildData.isGuildOwner(message.author.id)) {
                     Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white');
                     return cmd.run(client, message, args);
                 } else {
                     Logger.warn(`${message.author.tag} ${Logger.setColor(`white`, `tried the guildOwnerOnly command: ${cmd.name}`)} `, `COMMAND`)
-                    return await message.channel.send(client.lang(message.guild.lang).error.notListOwner)
+                    return await message.channel.send(lang(message.guild.lang).error.notListOwner)
 
                 }
             } else if (cmd.guildCrownOnly) {
-                if(message.guild.ownerID !== message.author.id){
-                    return message.channel.send(client.lang(message.guild.lang).error.notGuildOwner)
+                const owner = client.botperso ? client.owners[client.owners.length - 1] : message.guild.ownerID
+                if(owner !== message.author.id){
+                    return message.channel.send(lang(message.guild.lang).error.notGuildOwner)
                 }else{
                     Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white');
                     return cmd.run(client, message, args);
@@ -122,17 +122,17 @@ module.exports = class message extends Event {
                 if(!permEnable || !perm.has(cmd.name)){
                     for (const commandPermissions of cmd.userPermissions) {
                         if (!message.member.hasPermission(commandPermissions) && message.guild.ownerID !== message.author.id) {
-                            return message.channel.send(client.lang(message.guild.lang).error.userPermissions(commandPermissions))
+                            return message.channel.send(lang(message.guild.lang).error.userPermissions(commandPermissions))
                         }
                     }
                     for (const commandPermissions of cmd.clientPermissions) {
                         if (!message.guild.me.hasPermission(commandPermissions)) {
-                            return message.channel.send(client.lang(message.guild.lang).error.clientPermissions(commandPermissions))
+                            return message.channel.send(lang(message.guild.lang).error.clientPermissions(commandPermissions))
                         }
                     }
                 }
                 cmd.run(client, message, args);
-                Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white');
+                Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name} ${args.join(' ')}`, `COMMAND`, 'white');
 
             }
 

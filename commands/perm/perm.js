@@ -19,38 +19,17 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
         const permToPutCommand = args[0];
         let commandName = args[1];
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;;
-        if (!message.guild.permSetup) return message.channel.send(lang.perm.noSetup(message.guild.prefix))
-        const {perm} = message.guild;
-        const options = {
-            perm1Command: [],
-            perm2Command: [],
-            perm3Command: [],
-            perm4Command: [],
-        }
-        if (perm.size > 0) {
-            for (const [commandName, perms] of perm) {
-                if (perms === "perm1") {
-                    options.perm1Command.push(commandName)
-                } else if (perms === "perm2") {
-                    options.perm2Command.push(commandName)
-
-                } else if (perms === 'perm3') {
-                    options.perm3Command.push(commandName)
-
-                } else if (perms === 'perm4') {
-                    options.perm4Command.push(commandName)
-                }
-            }
-        }
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
+        const guildPerm = guildData.get('perms');
+        const {commands} = guildPerm;
         if (!args[0]) {
             const embed = new Discord.MessageEmbed()
                 .setTitle(`Perms commands`)
-                .addField(`Perm1:`, options.perm1Command.length < 1 ? lang.perm.noCommand : options.perm1Command.map((name, i) => `${i + 1} - ${name}\n`))
-                .addField(`Perm2:`, options.perm2Command.length < 1 ? lang.perm.noCommand : options.perm2Command.map((name, i) => `${i + 1} - ${name}\n`))
-                .addField(`Perm3:`, options.perm3Command.length < 1 ? lang.perm.noCommand : options.perm3Command.map((name, i) => `${i + 1} - ${name}\n`))
-                .addField(`Perm4:`, options.perm4Command.length < 1 ? lang.perm.noCommand : options.perm4Command.map((name, i) => `${i + 1} - ${name}\n`))
+                .addField(`Perm1:`, commands.perm1.length < 1 ? lang.perm.noCommand : commands.perm1.map((name, i) => `${i + 1} - ${name}\n`))
+                .addField(`Perm2:`, commands.perm2.length < 1 ? lang.perm.noCommand : commands.perm2.map((name, i) => `${i + 1} - ${name}\n`))
+                .addField(`Perm3:`, commands.perm3.length < 1 ? lang.perm.noCommand : commands.perm3.map((name, i) => `${i + 1} - ${name}\n`))
+                .addField(`Perm4:`, commands.perm4.length < 1 ? lang.perm.noCommand : commands.perm4.map((name, i) => `${i + 1} - ${name}\n`))
                 .setColor(guildData.get('color'))
                 .setTimestamp()
                 .setFooter(client.user.username, message.author.displayAvatarURL({dynamic: true}))
@@ -61,39 +40,31 @@ module.exports = class Test extends Command {
         if (!client.commands.has(commandName) && !client.aliases.has(commandName)) return message.channel.send(lang.perm.commandNotFound)
         const cmd = await client.commands.get(commandName.toLowerCase().normalize()) || await client.aliases.get(commandName.toLocaleLowerCase().normalize());
         commandName = cmd.name
-        if (permToPutCommand === '1') {
-            options.perm1Command.push(commandName)
-            if (options.perm2Command.includes(commandName)) options.perm2Command = options.perm2Command.filter(x => x !== commandName)
-            if (options.perm3Command.includes(commandName)) options.perm3Command = options.perm3Command.filter(x => x !== commandName)
-            if (options.perm4Command.includes(commandName)) options.perm4Command = options.perm4Command.filter(x => x !== commandName)
 
-        } else if (permToPutCommand === '2') {
-            options.perm2Command.push(commandName)
-            if (options.perm1Command.includes(commandName)) options.perm1Command = options.perm1Command.filter(x => x !== commandName)
-            if (options.perm3Command.includes(commandName)) options.perm3Command = options.perm3Command.filter(x => x !== commandName)
-            if (options.perm4Command.includes(commandName)) options.perm4Command = options.perm4Command.filter(x => x !== commandName)
 
-        } else if (permToPutCommand === '3') {
-            options.perm3Command.push(commandName)
-            if (options.perm1Command.includes(commandName)) options.perm1Command = options.perm1Command.filter(x => x !== commandName)
-            if (options.perm2Command.includes(commandName)) options.perm2Command = options.perm2Command.filter(x => x !== commandName)
-            if (options.perm4Command.includes(commandName)) options.perm4Command = options.perm4Command.filter(x => x !== commandName)
+        if (permToPutCommand === "everyone") {
+            for (let i = 1; i <= 4; i++) {
+                commands[`perm${i}`] = commands[`perm${i}`].filter(x => x !== commandName)
+            }
+        }else{
+            const permCommand = commands[`perm${permToPutCommand}`];
+            if (permCommand && !permCommand.includes(commandName)) {
+                permCommand.push(commandName);
+            }
+            for (let i = 1; i <= 4; i++) {
+                if (i !== parseInt(permToPutCommand)) {
 
-        } else if (permToPutCommand === '4') {
-            options.perm4Command.push(commandName)
-            if (options.perm1Command.includes(commandName)) options.perm1Command = options.perm1Command.filter(x => x !== commandName)
-            if (options.perm2Command.includes(commandName)) options.perm2Command = options.perm2Command.filter(x => x !== commandName)
-            if (options.perm3Command.includes(commandName)) options.perm3Command = options.perm3Command.filter(x => x !== commandName)
-        }else if(permToPutCommand === "everyone"){
-            if (options.perm1Command.includes(commandName)) options.perm1Command = options.perm1Command.filter(x => x !== commandName)
-            if (options.perm2Command.includes(commandName)) options.perm2Command = options.perm2Command.filter(x => x !== commandName)
-            if (options.perm3Command.includes(commandName)) options.perm3Command = options.perm3Command.filter(x => x !== commandName)
-            if (options.perm4Command.includes(commandName)) options.perm4Command = options.perm4Command.filter(x => x !== commandName)
+                    commands[`perm${i}`] = commands[`perm${i}`].filter(x => x !== commandName)
+                }
+            }
+            guildPerm.commands[`perm${permToPutCommand}`] = permCommand
+
 
         }
-        await message.guild.updatePerms(false, options).then(() => {
+        guildData.set('perms', guildPerm).save().then(() => {
             message.channel.send(lang.perm.successCommand(commandName, permToPutCommand))
         })
+
 
 
     }

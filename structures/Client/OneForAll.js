@@ -76,13 +76,13 @@ class OneForAll extends Client {
             logging: false
         })
         logs(this)
-        if(!this.botperso){
+        if(!this.botperso && !this.config.dev){
             setTimeout(() => {
                 this.loadEvents();
                 this.loadCommands();
 
             }, 10000)
-        }else{
+        }else {
             this.loadEvents();
             this.loadCommands();
         }

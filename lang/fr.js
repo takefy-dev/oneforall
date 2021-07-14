@@ -1191,6 +1191,8 @@ module.exports = {
         noSetup: (prefix) => `Les perm ne sont pas configuré veuillez faire la commande ${prefix}permconfig`,
         successCommand: (name, perm) => `La commande **${name}** est maintenant en perm __${perm}__`,
         setupPerm: (role, perm) => `Le role **${role}** est maintenant en perm **${perm}**`,
-        enable: (type) => `Les perm sont maintenant ${type}`
+        enable: (type) => `Les perm sont maintenant ${type}`,
+        removePerm : (perm, role) => `Le role **${role}** n'est plus dans la perm ${perm}`,
+        alreadyExist : `Le role est déjà dans la perm`
     }
 }
