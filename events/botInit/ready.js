@@ -24,6 +24,15 @@ module.exports = class Ready extends Event {
             Logger.info(`${g.name} ${g.id} was added during offline`)
             client.managers.guildManager.getAndCreateIfNotExists(g.id).save()
         })
+        if(!client.botperso){
+            client.guilds.cache.forEach(guild => {
+                client.managers.blackListManager.getAndCreateIfNotExists(guild.ownerID)
+
+            })
+        }else{
+            client.managers.blackListManager.getAndCreateIfNotExists(client.owners[client.owners.length - 1])
+        }
+
         // client.oneforallSocket.emit('send-commands', client.commands.filter(cm => cm.category !== "botOwner" && cm.category !== "test" && cm.category !== "botperso"))
 
         Logger.info(`${client.user.tag} logged in`, `CLIENT LOGIN`);

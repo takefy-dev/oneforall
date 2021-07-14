@@ -24,15 +24,12 @@ module.exports = class Test extends Command {
         const lang = guildData.lang;
         const color = guildData.get('color')
 
-        const user = message.mentions.users.first() || await client.users.resolve(args[0])
+        const user = message.mentions.users.first() || await client.users.fetch(args[0])
         console.log(user)
         if (user.id === message.author.id) {
             return await message.channel.send(lang.ban.errorBanSelf).then(mp => mp.delete({timeout: 4000}));
         }
-        // const banned = await message.guild.fetchBans();
-        // if(banned.some((m) => m.user.id === user.id)){
-        //     return message.channel.send(lang.ban.alreadyBan(user)).then(mp => mp.delete({ timeout: 4000}))
-        // }
+
 
         let reason = args.slice(1).join(" ");
         if (!reason) {

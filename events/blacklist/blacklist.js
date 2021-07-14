@@ -14,17 +14,17 @@ module.exports = class AntiBot extends Event {
     async run(client, member) {
         if(member.user.id === client.user.id) return;
         const guild = member.guild;
-        return
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
+        const owner = client.botperso ? client.owners[client.owners.length - 1] : guild.ownerID
+        const blacklistData =client.managers.blackListManager.getAndCreateIfNotExists(owner);
+        const isOn = blacklistData.get('enable');
+        const blacklist = blacklistData.get('blacklisted');
         const color = guildData.get('color');
         let antiraidLog = guildData.get('logs').antiraid;
         let {logs} = guildData.lang
-        const user = client.users.cache.get(guild.ownerID) || await client.users.fetch(guild.ownerID)
-        if(!user.blacklist) return;
-        const isOn = user.blacklist.enable
         if (!isOn) return;
         let isBotOwner = client.isOwner(member.id);
         if(isBotOwner) return;
-        const blacklist = user.blacklist.blacklisted;
         if(!blacklist) return;
         if(blacklist.includes(member.id)){
             await guild.members.ban(member, {reason:`OneForAll - Type : Blacklist`})

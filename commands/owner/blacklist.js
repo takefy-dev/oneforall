@@ -9,7 +9,7 @@ module.exports = class Test extends Command {
             description: 'Manage the blacklist of the server | Gérer la blacklist du serveur',
             // Optionnals :
             usage: 'blacklist <remove / add /list / on /off>',
-            category: 'owners',
+            category: 'tempdata',
             aliases: ['bl'],
             userPermissions: ['ADMINISTRATOR'],
             clientPermissions: ['BAN_MEMBERS'],
@@ -19,15 +19,13 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-        let owner = message.guild.ownerID;
-
+        let owner = !client.botperso ? message.guild.ownerID : client.owners[client.owners.length - 1];
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const blacklistData = client.managers.blackListManager.getAndCreateIfNotExists(owner);
+        let tempdata = blacklistData.get('blacklisted')
+        let isOn = blacklistData.get('enable')
         const color = guildData.get('color')
         const lang = guildData.lang;
-        let guildOwner = await client.users.cache.get(owner) || await client.users.fetch(owner, true)
-        await guildOwner.fetchBlacklistedUsers()
-        let guildOwnerBlacklisted = guildOwner.blacklist;
-        let tempdata = !guildOwnerBlacklisted ? null : guildOwnerBlacklisted.blacklisted;
 
 
         const clear = args[0] === 'clear';
@@ -39,33 +37,18 @@ module.exports = class Test extends Command {
         if (!add && !remove && !list && !clear && !on && !off) return message.channel.send(lang.blacklist.errorSyntax)
 
         if (on) {
-            if (guildOwnerBlacklisted && guildOwnerBlacklisted.enable) return await message.channel.send(lang.blacklist.errorAlreadyOn)
-
-            if (!guildOwnerBlacklisted) {
-                await guildOwner.initBlacklist(true).then(res => guildOwnerBlacklisted = res)
-            }
-            guildOwnerBlacklisted.enable = true
-            guildOwner.updateBlacklist(guildOwnerBlacklisted)
-            tempdata = guildOwner.blacklist.blacklisted;
+            if (isOn.enable) return await message.channel.send(lang.blacklist.errorAlreadyOn)
+            blacklistData.set('enable', true).save()
             return message.channel.send(lang.blacklist.successEnable)
         }
         if (off) {
-            if (guildOwnerBlacklisted && !guildOwnerBlacklisted.enable) return await message.channel.send(lang.blacklist.errorAlreadyOff)
-
-            if (!guildOwnerBlacklisted) {
-                await guildOwner.initBlacklist(false).then(res => guildOwnerBlacklisted = res)
-            }
-
-
-            guildOwnerBlacklisted.enable = false
-
-            guildOwner.updateBlacklist(guildOwnerBlacklisted)
-            tempdata = guildOwner.blacklist.blacklisted;
+            if (!isOn.enable) return await message.channel.send(lang.blacklist.errorAlreadyOff)
+            blacklistData.set('enable', false).save()
             return message.channel.send(lang.blacklist.successDisable)
 
         }
         if (add) {
-            let memberUser = message.mentions.users.first() || await client.users.fetch(args[1], true)
+            let memberUser = message.mentions.users.first() || await client.users.fetch(args[1])
             if (!memberUser && !client.botperso) {
                 client.shard.broadcastEval(`this.users.cache.get('${args[1]}')`).then((res) => {
                     memberUser = res.filter(user => user !== null);
@@ -83,36 +66,30 @@ module.exports = class Test extends Command {
             if (!memberUser) return message.channel.send(lang.blacklist.errorSyntaxAdd)
             let isTargetOwner = client.isOwner(message.guild.id, memberUser.id)
             if (isTargetOwner && message.author.id !== owner) return message.channel.send(lang.blacklist.errorTryBlOwner(memberUser))
-            if (!tempdata) return message.channel.send(lang.blacklist.errorNotInDb(message.guild.prefix))
+            
             if (tempdata.includes(memberUser.id)) return message.channel.send(lang.blacklist.errorAlreadyBl(memberUser))
             while (tempdata[0] === '') {
-                await tempdata.shift()
+                await tempdata  .shift()
             }
             if (!tempdata.includes(memberUser.id)) {
                 tempdata.push(memberUser.id);
             }
 
-            const visualitor = {
-                enable: guildOwnerBlacklisted.enable,
-                blacklisted: tempdata
-            }
-            guildOwner.updateBlacklist(visualitor).then(() => {
+            blacklistData.save().then(() => {
                 message.channel.send(lang.blacklist.successBl(memberUser)).then(() => {
                     message.guild.members.ban(memberUser.id, {reason: `Blacklist par ${message.author.tag}`,})
                         .then(() => {
                             message.channel.send(lang.blacklist.successBanBl(memberUser)).then(async () => {
                                 try {
                                     if (client.botperso) {
-                                        let guildCount = client.guilds.cache.filter(guild => guild.ownerID === owner && guild.id !== message.guild.id).size;
-                                        await client.guilds.cache.filter(guild => guild.members.cache.has(owner) && guild.id !== message.guild.id).forEach(guild => {
+                                        await client.guilds.cache.filter(g => g.me.hasPermission('BAN_MEMBERS')).forEach(guild => {
                                             guild.members.ban(memberUser.id, {reason: `Blacklist par ${message.author.tag}`,})
 
                                         })
-                                        await message.channel.send(lang.blacklist.successBanGuild(guildCount))
+                                        await message.channel.send(lang.blacklist.successBanGuild(client.guilds.cache.size))
 
                                     } else {
-                                        const guildCount = await client.shard.broadcastEval(`this.guilds.cache.filter(guild => guild.ownerID === '${owner}' && guild.id !== '${message.guild.id}').size`).then(async (res) => res.reduce((acc, guildCount) => acc + guildCount), 0)
-                                        console.log(guildCount);
+                                        const guildCount = await client.shard.broadcastEval(`this.guilds.cache.filter(guild => guild.ownerID === '${owner}' && guild.id !== '${message.guild.id}' && guild.me.hasPermissions('BAN_MEMBERS')).size`).then(async (res) => res.reduce((acc, guildCount) => acc + guildCount), 0)
                                         const reason = `Blacklist par ${message.author.tag}`
                                         await client.shard.broadcastEval(`
                                         (async () => {
@@ -137,7 +114,7 @@ module.exports = class Test extends Command {
 
             })
         } else if (remove) {
-            let memberUser = message.mentions.users.first() || await client.users.fetch(args[1], true)
+            let memberUser = message.mentions.users.first() || await client.users.fetch(args[1])
             if (!memberUser && !client.botperso) {
                 client.shard.broadcastEval(`this.users.cache.get('${args[1]}')`).then((res) => {
                     memberUser = res.filter(user => user !== null);
@@ -154,17 +131,13 @@ module.exports = class Test extends Command {
             if (!memberUser) return message.channel.send(lang.blacklist.errorSyntaxAdd)
             let isTargetOwner = client.isOwner(message.guild.id, memberUser.id)
             if (isTargetOwner && message.author.id !== owner) return message.channel.send(lang.blacklist.errorTryUnBlOwner(memberUser))
-            if (!tempdata) return message.channel.send(lang.blacklist.errorNotInDb(message.guild.prefix))
+            
 
             if (!tempdata.includes(memberUser.id)) return message.channel.send(lang.blacklist.errorNotBl(memberUser))
 
             tempdata = tempdata.filter(x => x !== memberUser.id)
 
-            const visualitor = {
-                enable: guildOwnerBlacklisted.enable,
-                blacklisted: tempdata
-            }
-            guildOwner.updateBlacklist(visualitor).then(() => {
+            blacklistData.set('blacklisted', tempdata).save().then(() => {
 
                 message.channel.send(lang.blacklist.successRmBl(memberUser)).then(() => {
                     message.guild.members.unban(memberUser.id, `UnBlacklist par ${message.author.tag}`)
@@ -172,12 +145,11 @@ module.exports = class Test extends Command {
                             message.channel.send(lang.blacklist.successUnBanBl(memberUser)).then(async () => {
                                 try {
                                     if (client.botperso) {
-                                        let guildCount = client.guilds.cache.filter(guild => guild.ownerID === owner && guild.id !== message.guild.id).size;
-                                        await client.guilds.cache.filter(guild => guild.members.cache.has(owner) && guild.id !== message.guild.id).forEach(guild => {
+                                        await client.guilds.cache.forEach(guild => {
                                             guild.members.unban(memberUser.id, {reason: `UnBlacklist par ${message.author.tag}`,})
 
                                         })
-                                        await message.channel.send(lang.blacklist.successUnBanGuild(guildCount))
+                                        await message.channel.send(lang.blacklist.successUnBanGuild(client.guilds.cache.size))
 
 
                                     } else {
@@ -207,128 +179,87 @@ module.exports = class Test extends Command {
 
             })
         } else if (list) {
-            if (!tempdata) return message.channel.send(lang.blacklist.errorNotInDb(message.guild.prefix))
-            try {
-                let tdata = await message.channel.send(lang.loading)
+            const tempdataEmbed = {
+                title: `List of blacklisted users (${tempdata.length})`,
+                timestamp: new Date(),
+                color: '#36393F',
+                footer: {
+                    text: `Page 1/1`,
+                    icon_url: message.author.displayAvatarURL({dynamic: true}) || ''
+                },
 
-                let p0 = 0;
-                let p1 = 10;
-                let page = 1;
-                const tempMember = []
-                for (let ids of tempdata) {
-                    let user;
-                    if (client.botperso) {
-                        if (!client.users.cache.has(ids)) {
-                            user = await client.users.fetch(ids)
+            }
+            let maxPerPage = 10
 
-                        } else {
-                            user = client.users.cache.get(ids)
-                        }
-                    } else {
-                        user = client.users.cache.get(ids) || await client.users.fetch(ids, true).catch(err => {
-                            if (err.httpStatus === 404) {
-                                tempdata = tempdata.filter(x => x !== ids);
-                                guildOwner.blacklist.blacklisted = tempdata;
-                                guildOwner.updateBlacklist(guildOwner.blacklist)
-                            }
-                        });
-                        if (!user) {
-                            client.shard.broadcastEval(`this.users.cache.get('${ids}')`).then((res) => {
-                                user = res.find(user => user !== null);
-                            })
-                        }
+            if (tempdata.length > maxPerPage) {
+                let page = 0
+                let slicerIndicatorMin = 0,
+                    slicerIndicatorMax = 10
 
-                    }
-                    if (user) {
-                        tempMember.push(user)
-
-                    }
-
-
+                const emojis = ['◀', '❌', '▶']
+                let totalPage = Math.ceil(tempdata.length / maxPerPage)
+                const embedPageChanger = (page) => {
+                    tempdataEmbed.description = tempdata.map((id, i) => `${i + 1} ・ **${client.users.resolve(id).tag || client.users.resolve(id).username}**`).slice(slicerIndicatorMin, slicerIndicatorMax).join('\n')
+                    tempdataEmbed.footer.text = `Page ${page + 1} / ${totalPage}`
+                    return tempdataEmbed
                 }
-                let embed = new Discord.MessageEmbed()
-                embed.setTitle(lang.blacklist.titleList)
-                    .setColor(`${color}`)
-                embed.setDescription(tempMember
-                    .map((user, i) => `${i + 1} ・ **${user.tag}** \`${user.id}\``)
-                    .slice(0, 10)
-                    .join('\n') + `\n\n<:778353230467825704:781155103566331904> Page **${page}** / **${Math.ceil(tempdata.length / 10)}**`)
-                    .setTimestamp()
-                    .setFooter(`${client.user.username}`);
-
-                let reac1
-                let reac2
-                let reac3
-
-                if (tempdata.length > 10) {
-                    reac1 = await tdata.react("⬅");
-                    reac2 = await tdata.react("❌");
-                    reac3 = await tdata.react("➡");
-                }
-
-                tdata.edit(" ", embed);
-
-                const data_res = tdata.createReactionCollector((reaction, user) => user.id === message.author.id);
-
-                data_res.on("collect", async (reaction) => {
-
-                    if (reaction.emoji.name === "⬅") {
-
-                        p0 = p0 - 10;
-                        p1 = p1 - 10;
-                        page = page - 1
-
-                        if (p0 < 0) {
-                            return
-                        }
-                        if (p0 === undefined || p1 === undefined) {
-                            return
-                        }
-
-
-                        embed.setDescription(tempMember
-                            .map((user, i) => `${i + 1} ・ **${user.tag}** \`${user.id}\``)
-                            .slice(p0, p1)
-                            .join('\n') + `\n\n<:778353230467825704:781155103566331904> Page **${page}** / **${Math.ceil(tempdata.length / 10)}**`)
-                        tdata.edit(embed);
-
-                    }
-
-                    if (reaction.emoji.name === "➡") {
-
-                        p0 = p0 + 10;
-                        p1 = p1 + 10;
-
-                        page++;
-
-                        if (p1 > tempdata.length + 10) {
-                            return
-                        }
-                        if (p0 === undefined || p1 === undefined) {
-                            return
-                        }
-
-
-                        embed.setDescription(tempMember
-                            .map((user, i) => `${i + 1} ・ **${user.tag}** \`${user.id}\``)
-                            .slice(p0, p1)
-                            .join('\n') + `\n\n<:778353230467825704:781155103566331904> Page **${page}** / **${Math.ceil(tempdata.length / 10)}**`)
-                        tdata.edit(embed);
-
-                    }
-
-                    if (reaction.emoji.name === "❌") {
-                        data_res.stop()
-                        await tdata.reactions.removeAll()
-                        return tdata.delete();
-                    }
-
-                    await reaction.users.remove(message.author.id);
-
+                const msg = await message.channel.send(lang.loading)
+                for(const em of emojis) await msg.react(em)
+                msg.edit({
+                    content: '',
+                    embed: embedPageChanger(page)
                 })
 
-            } catch (err) {
-                console.log(err)
+                const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id;
+                const collector = msg.createReactionCollector( filter, {time: 900000})
+                collector.on('collect', async r => {
+                    await r.users.remove(message.author);
+                    if(r.emoji.name === emojis[0]){
+                        page = page === 0 ? page = totalPage - 1 : page <= totalPage - 1 ? page-=1 : page+=1
+                        slicerIndicatorMin -= maxPerPage
+                        slicerIndicatorMax -= maxPerPage
+
+
+                    }
+                    if(r.emoji.name === emojis[2]){
+                        page = page !== totalPage - 1 ? page+=1 : page = 0
+                        slicerIndicatorMin += maxPerPage
+                        slicerIndicatorMax += maxPerPage
+
+                    }
+                    if(r.emoji.name === emojis[1]){
+                        collector.stop()
+                    }
+                    if(slicerIndicatorMax < 0 || slicerIndicatorMin < 0) {
+                        slicerIndicatorMin += maxPerPage * totalPage
+                        slicerIndicatorMax += maxPerPage * totalPage
+                    }else if((slicerIndicatorMax >= maxPerPage * totalPage || slicerIndicatorMin >= maxPerPage * totalPage) && page === 0){
+                        slicerIndicatorMin = 0
+                        slicerIndicatorMax = 10
+                    }
+
+                    msg.edit({
+                        embed:
+                            embedPageChanger(page)
+
+                    })
+                })
+                collector.on('end', async() => {
+                    await msg.reactions.removeAll()
+                })
+
+            } else {
+
+                tempdataEmbed.description = tempdata.map(async (id, i) => {
+                    const user = Promise.all(client.users.fetch(id))
+                    return `${i + 1} ・ **${user.tag}**`
+                }).join('\n')
+
+                return message.channel.send({
+                    embed:
+                    tempdataEmbed
+
+                })
             }
         } else if (clear) {
             const embed = new Discord.MessageEmbed()
@@ -350,16 +281,13 @@ module.exports = class Test extends Command {
 
                 if (r.emoji.name === '✅') {
                     try {
-                        tempdata = []
-
-                        guildOwner.blacklist.blacklisted = tempdata;
-                        guildOwner.updateBlacklist(guildOwner.blacklist)
+                        blacklistData.set('blacklisted', []).save()
                         msg.delete()
                         return message.channel.send(lang.blacklist.successClearBl)
 
                     } catch (err) {
                         console.error(err)
-                        return message.channel.send(lang.blacklist.errror)
+                        return message.channel.send(lang.blacklist.error)
                     }
                 } else if (r.emoji.name === '❌') {
                     return message.channel.send(lang.blacklist.cancel)

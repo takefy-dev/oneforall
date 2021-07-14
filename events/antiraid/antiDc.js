@@ -21,7 +21,7 @@ module.exports = class AntiDc extends Event {
         const isOn = antiraidConfig.enable["antiDc"];
         if (!isOn) return;
         const limit = ms(antiraidConfig.config["antiDcLimit"]);
-        const user = client.users.resolve(member.user.id)
+        const user = client.users.fetch(member.user.id)
         const time = Date.now() - user.createdAt;
         if (time < limit){
             const logsChannel = guild.channels.cache.get(antiraidLog)
