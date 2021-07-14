@@ -284,18 +284,18 @@ module.exports = {
     },
     setlogs : {
         embedTitle : `Logs parameter`,
-        embedDescription : (raid, mod, voc, msg, react) => `
+        embedDescription : (raid, mod, voc, msg) => `
         \n
            To disable a log just put off as a channel
             
             1 ・ Raid Logs
-            ***${raid}***\n
+            ***${raid === 'Non définie' ? raid : `<#${raid}>`}***\n
             2 ・ Moderation logs
-            ***${mod}***\n
+            ***${mod === 'Non définie' ? mod : `<#${mod}>`}***\n
             3 ・ voice chat Logs 
-            ***${voc}***\n
+            ***${voc === 'Non définie' ? voc : `<#${voc}>`}***\n
             4 ・ Message Logs 
-            ***${msg}***\n
+            ***${msg === 'Non définie' ? msg : `<#${msg}>`}***\n
             ❌ ・ Close the panel\n
             ✅ ・ Save the logs
         `,

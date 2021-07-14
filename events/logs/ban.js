@@ -19,7 +19,7 @@ module.exports = class Ready extends Event{
         if(action.executor.id === client.user.id) return;
         const channel = guild.channels.cache.get(modLog);
         if(channel){
-            const color = guild.get('color')
+            const color = guildData.get('color')
             const executor = await guild.members.resolve(action.executor.id);
             channel.send(logs.targetExecutorLogs('ban',executor, action.target, color))
         }

@@ -17,21 +17,13 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-        let modLog = new Map();
-        let msgLog = new Map();
-        let raidLog = new Map();
-        let voiceLog = new Map();
-        let owner = message.guild.ownerID;
-
-
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const tempLogs = client.functions.copyObject(guildData.get('logs'))
+
         const lang = guildData.lang;
         const color = guildData.get('color')
         const logs = message.guild.logs;
-        modLog.set(message.guild.id, logs.modLog)
-        msgLog.set(message.guild.id, logs.msgLog)
-        voiceLog.set(message.guild.id, logs.voiceLog)
-        raidLog.set(message.guild.id, logs.antiraidLog)
+
 
         const filter = (reaction, user) => ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '❌', '✅'].includes(reaction.emoji.name) && user.id === message.author.id,
             dureefiltrer = response => {
@@ -39,12 +31,12 @@ module.exports = class Test extends Command {
             };
         const setlogsMsg = await message.channel.send(lang.loading)
         const reaction = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '❌', '✅']
-        for (let reac of reaction) {
+        for (let reac of reaction)
             await setlogsMsg.react(reac)
-        }
+
         const logsEmbed = new Discord.MessageEmbed()
             .setTitle(lang.setlogs.embedTitle)
-            .setDescription(lang.setlogs.embedDescription(raidLog.get(message.guild.id), modLog.get(message.guild.id), voiceLog.get(message.guild.id), msgLog.get(message.guild.id)))
+            .setDescription(lang.setlogs.embedDescription(tempLogs.antiraid, tempLogs.mod, tempLogs.voice, tempLogs.message))
             .setTimestamp()
             .setColor(`${color}`)
             .setFooter(client.user.username)
@@ -63,7 +55,7 @@ module.exports = class Test extends Command {
                                     }
                                     if (msg.content === 'off') {
                                         await message.channel.send(lang.setlogs.disable("raid")).then((e) => {
-                                            raidLog.set(message.guild.id, 'Non définie');
+                                            tempLogs.antiraid = 'Non définie'
                                             updateEmbed()
 
                                             return setTimeout(() => {
@@ -90,7 +82,7 @@ module.exports = class Test extends Command {
                                             }, 2000)
 
                                         })
-                                        raidLog.set(message.guild.id, ch.id)
+                                        tempLogs.antiraid = ch.id
 
                                     }
 
@@ -106,7 +98,7 @@ module.exports = class Test extends Command {
                                     }
                                     if (msg.content === 'off') {
                                         await message.channel.send(lang.setlogs.disable("modération")).then((e) => {
-                                            modLog.set(message.guild.id, 'Non définie');
+                                            tempLogs.mod = 'Non définie'
                                             updateEmbed()
 
                                             return setTimeout(() => {
@@ -133,11 +125,10 @@ module.exports = class Test extends Command {
                                             }, 2000)
 
                                         })
-                                        modLog.set(message.guild.id, ch.id)
+                                        tempLogs.mod = ch.id;
 
                                     }
 
-                                    console.log(modLog)
                                 });
                         })
                     } else if (r.emoji.name === '3️⃣') {
@@ -150,7 +141,7 @@ module.exports = class Test extends Command {
                                     }
                                     if (msg.content === 'off') {
                                         await message.channel.send(lang.setlogs.disable("vocal")).then((e) => {
-                                            voiceLog.set(message.guild.id, 'Non définie');
+                                            tempLogs.voice = 'Non définie'
                                             updateEmbed()
 
                                             return setTimeout(() => {
@@ -176,7 +167,7 @@ module.exports = class Test extends Command {
                                             }, 2000)
 
                                         })
-                                        voiceLog.set(message.guild.id, ch.id)
+                                        tempLogs.voice = ch.id
                                     }
 
 
@@ -192,7 +183,7 @@ module.exports = class Test extends Command {
                                     }
                                     if (msg.content === 'off') {
                                         await message.channel.send(lang.setlogs.disable("messages")).then((e) => {
-                                            msgLog.set(message.guild.id, 'Non définie');
+                                            tempLogs.message = 'Non définie'
                                             updateEmbed()
 
                                             return setTimeout(() => {
@@ -219,7 +210,7 @@ module.exports = class Test extends Command {
                                             }, 2000)
 
                                         })
-                                        msgLog.set(message.guild.id, ch.id)
+                                        tempLogs.message = ch.id;
 
                                     }
 
@@ -228,10 +219,6 @@ module.exports = class Test extends Command {
 
                     } else if (r.emoji.name === '❌') {
                         message.channel.send(lang.setlogs.cancel).then((mp) => {
-                            voiceLog.delete(message.guild.id);
-                            msgLog.delete(message.guild.id);
-                            raidLog.delete(message.guild.id);
-                            modLog.delete(message.guild.id);
                             collector.stop();
                             setTimeout(async () => {
                                 mp.delete()
@@ -241,15 +228,11 @@ module.exports = class Test extends Command {
                         })
                     } else if (r.emoji.name === '✅') {
                         message.channel.send(lang.setlogs.save).then(async (mp) => {
-                            await message.guild.updateLogs(modLog.get(message.guild.id), msgLog.get(message.guild.id), voiceLog.get(message.guild.id), raidLog.get(message.guild.id)).then(() => {
+                            guildData.set('logs', tempLogs).save().then(async () => {
                                 collector.stop();
                                 setTimeout(async () => {
                                     mp.delete()
                                 }, 2000)
-                                voiceLog.delete(message.guild.id);
-                                msgLog.delete(message.guild.id);
-                                raidLog.delete(message.guild.id);
-                                modLog.delete(message.guild.id);
                                 return setlogsMsg.delete();
                             })
 
@@ -259,7 +242,7 @@ module.exports = class Test extends Command {
                 })
 
                 function updateEmbed() {
-                    logsEmbed.setDescription(lang.setlogs.embedDescription(raidLog.get(message.guild.id), modLog.get(message.guild.id), voiceLog.get(message.guild.id), msgLog.get(message.guild.id)))
+                    logsEmbed.setDescription(lang.setlogs.embedDescription(tempLogs.antiraid, tempLogs.mod, tempLogs.voice, tempLogs.message))
                     setlogsMsg.edit(logsEmbed)
 
 

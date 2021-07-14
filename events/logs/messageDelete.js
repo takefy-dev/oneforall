@@ -13,9 +13,9 @@ module.exports = class messageDelete extends Event {
         if (!message.author) return;
         if (message.author.bot) return;
         if (!message.guild) return;
-        if (!message.guild.config) return;
         if (message.partial) await message.fetch();
-        const { snipes } = message.guild;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
+        const snipes  = guildData.snipes
 
         snipes.set(message.channel.id, {
             content: message.content,
@@ -23,7 +23,6 @@ module.exports = class messageDelete extends Event {
             image: message.attachments.first() ? message.attachments.first().proxyURL : null,
             date: new Date().toLocaleString('fr-FR', {dataStyle: 'full', timeStyle: 'short'})
         })
-        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const color = guildData.get('color')
         let msgLog = guildData.get('logs').message;
         if(msgLog === "Non définie") return msgLog = null

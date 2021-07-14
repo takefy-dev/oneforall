@@ -182,7 +182,7 @@ class GuildManager {
             ]
         }
         this.cachedInv = new Collection()
-
+        this.snipes = new Collection()
 
     }
 

@@ -13,17 +13,15 @@ module.exports = class guildCreate extends Event {
     async run(client, guild) {
 
 
-        client.managers.guildManager.getAndCreateIfNotExists(guild.id, {
-            owners : client.botperso ? [] : [guild.ownerID]
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id, {
+            owners: client.botperso ? [] : [guild.ownerID]
         }).save()
 
         const newInv = await guild.fetchInvites()
         for (const [code, invite] of newInv) {
-            guild.cachedInv.set(code, invite)
+            guildData.cachedInv.set(code, invite)
         }
-        const { owners } = guild;
-        owners.push(guild.ownerID);
-        guild.updateOwner = owners
+
         const hook = new Discord.WebhookClient('803543245287456789', 'tLiyC7T52buVE2o84kXuk5fDNZTPmVY4xBNkicSmUglGfntnR654ab0CgEuCBokUbY8p');
         const embed = new Discord.MessageEmbed()
             .setTitle(`J'ai été ajouté a un nouveau serveur`)

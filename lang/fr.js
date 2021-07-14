@@ -301,18 +301,19 @@ module.exports = {
     },
     setlogs: {
         embedTitle: `Configuration des logs`,
+
         embedDescription: (raid, mod, voc, msg, react) => `
         \n
             Pour désactiver une log il suffit de mettre off comme channel !
             
             1 ・ Raid Logs
-            ***${raid}***\n
+            ***${raid === 'Non définie' ? raid : `<#${raid}>`}***\n
             2 ・ Logs modération
-            ***${mod}***\n
+            ***${mod === 'Non définie' ? mod : `<#${mod}>`}***\n
             3 ・ Logs Vocal
-            ***${voc}***\n
+            ***${voc === 'Non définie' ? voc : `<#${voc}>`}***\n
             4 ・ Logs Message
-            ***${msg}***\n
+            ***${msg === 'Non définie' ? msg : `<#${msg}>`}***\n
             ❌ ・ Fermer le menu\n
             ✅ ・ Sauvegarder les logs
         `,

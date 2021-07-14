@@ -17,9 +17,7 @@ module.exports = class Ready extends Event {
         const {id, message, enable} = guildData.get('invite');
 
         if (!id || !message || !enable) return;
-        setInterval(() => {
-            console.log(guildData.get('invite'))
-        }, 6000)
+
         const channel = guild.channels.cache.get(id);
         const lang = guildData.lang;
         const {cachedInv} = guildData;
@@ -64,7 +62,7 @@ module.exports = class Ready extends Event {
 
             }
         }
-        if (channel && !channel.deleted) channel.send(finalMsg).catch(console.log);
+        if (channel && !channel.deleted) channel.send(finalMsg)
 
 
     }
