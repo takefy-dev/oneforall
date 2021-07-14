@@ -12,8 +12,8 @@ module.exports = class roleDelete extends Event {
         if (role.managed) return;
         let guild = role.guild;
         if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
-        const color = guildData.get('color')
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
+        const color = guildData.get('color')
         const modLog = guildData.get('logs').mod
         let {logs} = guildData.lang
 
