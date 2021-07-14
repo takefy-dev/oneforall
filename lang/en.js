@@ -605,7 +605,6 @@ module.exports = {
         noChannel: `You have not defined a channel so I could not retrieve the message`,
         invalid : `The channel or the message id is invalid`,
         roleQ : `💠 What is the role to add for the reaction role ? (\`mention/id\`) (cancel to cancel)`,
-        noRole : `Please define a role`,
         managedRole : `This role cannot be added because it is a role **managed by an application**`,
         emojiQ : `💠 What is the emoji for this role ? (\`send emoji\`)`,
         emojiDoesNotExist :`The desired emoji does not exist I am ready to add an emoji to the server what name should it have? (cancel to cancel)`,
@@ -623,6 +622,8 @@ module.exports = {
         noEmoji : `You haven't set an emoji and role.`,
         alreadyReact : `A reaction role already exists with this message`,
         success : `The reaction role has been perfectly saved and created !`,
+        tryToPermsRole : `You can't add a role with sensible permissions`
+
     },
     antiraidConfig :{
         noVote : `<a:image0:789413382591348738> To unlock this feature you must vote on our page **top.gg**! (https://top.gg/bot/780019344511336518/vote)`,
@@ -832,6 +833,13 @@ module.exports = {
     },
 
     logs: {
+        reactRolePerm: (executor, color, message, link) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} try to create a reactrole with sensible permissions \n**[Go to the message](${link})**`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nMessage = ${message}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
         targetExecutorLogs: (type, executor, target, color, sanction) => new Discord.MessageEmbed()
 
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')

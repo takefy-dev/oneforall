@@ -200,6 +200,7 @@ module.exports =  (database, DataTypes, modelName, config) => {
                 allowNull: true,
                 defaultValue: [
                     {
+                        channel: null,
                         message: null,
                         emojiRole: []
                     }

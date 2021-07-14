@@ -14,7 +14,6 @@ const timestamp = new Map();
 let hexColorRegex = require('hex-color-regex');
 const base = require('aybabtu');
 const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
 module.exports = class Test extends Command {
@@ -40,7 +39,7 @@ module.exports = class Test extends Command {
         const color = guildData.get('color')
         const lang = guildData.lang;
         const embed = new Discord.MessageEmbed()
-            .setDescription()
+            .setDescription('')
         const editEmbed = await message.channel.send(embed)
         const msg = await message.channel.send(lang.embedBuilder.loading)
         await msg.react('✏')
@@ -80,8 +79,8 @@ module.exports = class Test extends Command {
         msg.edit("", embedBuilder).then(async m => {
             const collector = m.createReactionCollector(filter, {time: 900000});
             collector.on('collect', async r => {
-                r.users.remove(message.author);
-                if (r.emoji.name == '✏') {
+                await r.users.remove(message.author);
+                if (r.emoji.name === '✏') {
                     await message.channel.send(lang.embedBuilder.titleMsg).then(mp => {
                         mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
                             .then(async cld => {
@@ -89,12 +88,12 @@ module.exports = class Test extends Command {
                                 await title.set(message.guild.id, msg.content)
                                 mp.delete()
                                 updateEmbed()
-                                msg.delete()
+                                await msg.delete()
 
 
                             });
                     })
-                } else if (r.emoji.name == '📝') {
+                } else if (r.emoji.name === '📝') {
                     await message.channel.send(lang.embedBuilder.descriptionMsg).then(mp => {
                         mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
                             .then(async cld => {
@@ -106,7 +105,7 @@ module.exports = class Test extends Command {
 
                             });
                     })
-                } else if (r.emoji.name == '🗣') {
+                } else if (r.emoji.name === '🗣') {
                     await message.channel.send(lang.embedBuilder.authorMsg).then(mp => {
                         mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
                             .then(async cld => {
@@ -114,11 +113,11 @@ module.exports = class Test extends Command {
                                 await author.set(message.guild.id, msg.content)
                                 mp.delete()
                                 updateEmbed()
-                                msg.delete()
+                                await msg.delete()
 
                             });
                     })
-                } else if (r.emoji.name == '🖍') {
+                } else if (r.emoji.name === '🖍') {
                     await message.channel.send(lang.embedBuilder.footerMsg).then(mp => {
                         mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
                             .then(async cld => {
@@ -126,11 +125,11 @@ module.exports = class Test extends Command {
                                 await footer.set(message.guild.id, msg.content)
                                 mp.delete()
                                 updateEmbed()
-                                msg.delete()
+                                await msg.delete()
 
                             });
                     })
-                } else if (r.emoji.name == '💶') {
+                } else if (r.emoji.name === '💶') {
                     await message.channel.send(lang.embedBuilder.thumbnailMsg).then(mp => {
                         mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
                             .then(async cld => {
@@ -192,11 +191,11 @@ module.exports = class Test extends Command {
 
                                 }
                                 mp.delete()
-                                msg.delete()
+                                await msg.delete()
 
                             });
                     })
-                } else if (r.emoji.name == '🖼') {
+                } else if (r.emoji.name === '🖼') {
                     await message.channel.send(lang.embedBuilder.imageMsg).then(mp => {
                         mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
                             .then(async cld => {
@@ -254,17 +253,17 @@ module.exports = class Test extends Command {
 
 
                                     } else {
-                                        sleep(1000)
+                                        await sleep(1000)
                                         image.set(message.guild.id, msg.content)
                                         updateEmbed()
                                     }
                                     mp.delete()
 
-                                    msg.delete()
+                                    await msg.delete()
                                 }
                             });
                     })
-                } else if (r.emoji.name == '🌐') {
+                } else if (r.emoji.name === '🌐') {
                     await message.channel.send(lang.embedBuilder.urlMsg).then(mp => {
                         mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
                             .then(async cld => {
@@ -273,11 +272,11 @@ module.exports = class Test extends Command {
                                 await url.set(message.guild.id, msg.content)
                                 mp.delete()
                                 updateEmbed()
-                                msg.delete()
+                                await msg.delete()
 
                             });
                     })
-                } else if (r.emoji.name == '🎨') {
+                } else if (r.emoji.name === '🎨') {
                     await message.channel.send(lang.embedBuilder.colorMsg).then(mp => {
                         mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
                             .then(async cld => {
@@ -292,58 +291,58 @@ module.exports = class Test extends Command {
                                 const bleu = '#0017FC'
                                 const orange = '#FC9500'
                                 const invisible = '#36393F'
-                                if (msg.content == 'rouge') {
+                                if (msg.content === 'rouge') {
                                     await embedColor.set(message.guild.id, rouge)
                                     mp.delete()
                                     updateEmbed()
                                     msg.delete()
-                                } else if (msg.content == 'vert') {
+                                } else if (msg.content === 'vert') {
                                     await embedColor.set(message.guild.id, vert)
                                     mp.delete()
                                     updateEmbed()
                                     msg.delete()
-                                } else if (msg.content == 'jaune') {
+                                } else if (msg.content === 'jaune') {
                                     await embedColor.set(message.guild.id, jaune)
                                     mp.delete()
                                     updateEmbed()
                                     msg.delete()
-                                } else if (msg.content == 'violet') {
+                                } else if (msg.content === 'violet') {
                                     await embedColor.set(message.guild.id, violet)
                                     mp.delete()
                                     updateEmbed()
                                     msg.delete()
-                                } else if (msg.content == 'rose') {
+                                } else if (msg.content === 'rose') {
                                     await embedColor.set(message.guild.id, rose)
                                     mp.delete()
                                     updateEmbed()
                                     msg.delete()
-                                } else if (msg.content == 'noir') {
+                                } else if (msg.content === 'noir') {
                                     await embedColor.set(message.guild.id, noir)
                                     mp.delete()
                                     updateEmbed()
                                     msg.delete()
-                                } else if (msg.content == 'blanc') {
+                                } else if (msg.content === 'blanc') {
                                     await embedColor.set(message.guild.id, blanc)
                                     mp.delete()
                                     updateEmbed()
                                     msg.delete()
-                                } else if (msg.content == 'bleu') {
+                                } else if (msg.content === 'bleu') {
                                     await embedColor.set(message.guild.id, bleu)
                                     mp.delete()
                                     updateEmbed()
                                     msg.delete()
-                                } else if (msg.content == 'orange') {
+                                } else if (msg.content === 'orange') {
                                     await embedColor.set(message.guild.id, orange)
                                     mp.delete()
                                     updateEmbed()
                                     msg.delete()
-                                } else if (msg.content == 'invisible') {
+                                } else if (msg.content === 'invisible') {
                                     await embedColor.set(message.guild.id, invisible)
                                     mp.delete()
                                     updateEmbed()
                                     msg.delete()
 
-                                } else if (hexColorCheck(msg.content) == true) {
+                                } else if (hexColorCheck(msg.content)) {
                                     await embedColor.set(message.guild.id, msg.content)
                                     mp.delete()
                                     updateEmbed()
@@ -357,22 +356,22 @@ module.exports = class Test extends Command {
 
                             });
                     })
-                } else if (r.emoji.name == '⏲') {
+                } else if (r.emoji.name === '⏲') {
                     await message.channel.send(lang.embedBuilder.timestampMsg).then(mp => {
                         mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
-                                if (msg.content.toLowerCase() == 'oui') {
+                                if (msg.content.toLowerCase() === 'oui') {
                                     await timestamp.set(message.guild.id, true)
                                     mp.delete()
                                     updateEmbed()
                                     msg.delete()
-                                } else if (msg.content.toLowerCase() == 'non') {
+                                } else if (msg.content.toLowerCase() === 'non') {
                                     await timestamp.set(message.guild.id, false)
                                     mp.delete()
                                     updateEmbed()
                                     msg.delete()
-                                } else if (msg.content.toLowerCase() != 'non' || msg.content.toLowerCase() != 'oui') {
+                                } else if (msg.content.toLowerCase() !== 'non' || msg.content.toLowerCase() !=='oui') {
                                     msg.delete()
                                     mp.delete()
                                     message.channel.send(lang.error.YesNo)
@@ -381,7 +380,7 @@ module.exports = class Test extends Command {
 
                             });
                     })
-                } else if (r.emoji.name == '©') {
+                } else if (r.emoji.name === '©') {
                     let ch;
                     let embedMsg;
                     await message.channel.send(lang.embedBuilder.copyMsg).then(mp => {
@@ -419,12 +418,12 @@ module.exports = class Test extends Command {
                                                 if (embedMsg.embeds[0].title != null) title.set(message.guild.id, embedMsg.embeds[0].title)
                                                 if (embedMsg.embeds[0].description != null) description.set(message.guild.id, embedMsg.embeds[0].description)
                                                 if (embedMsg.embeds[0].url != null) url.set(message.guild.id, embedMsg.embeds[0].url)
-                                                if (embedMsg.embeds[0].footer != null && embedMsg.embeds[0].footer.text != undefined) footer.set(message.guild.id, embedMsg.embeds[0].footer.text)
+                                                if (embedMsg.embeds[0].footer != null && embedMsg.embeds[0].footer.text !== undefined) footer.set(message.guild.id, embedMsg.embeds[0].footer.text)
                                                 if (embedMsg.embeds[0].color != null) embedColor.set(message.guild.id, `#${base.dec2hex(embedMsg.embeds[0].color)}`)
                                                 if (embedMsg.embeds[0].timestamp != null) timestamp.set(message.guild.id, true)
-                                                if (embedMsg.embeds[0].thumbnail != null && embedMsg.embeds[0].thumbnail.url != undefined) thumbnail.set(message.guild.id, embedMsg.embeds[0].thumbnail.url)
-                                                if (embedMsg.embeds[0].image != null && embedMsg.embeds[0].image.url != undefined) image.set(message.guild.id, embedMsg.embeds[0].image.url)
-                                                if (embedMsg.embeds[0].author != null && embedMsg.embeds[0].author.name != undefined) author.set(message.guild.id, embedMsg.embeds[0].author.name)
+                                                if (embedMsg.embeds[0].thumbnail != null && embedMsg.embeds[0].thumbnail.url !== undefined) thumbnail.set(message.guild.id, embedMsg.embeds[0].thumbnail.url)
+                                                if (embedMsg.embeds[0].image != null && embedMsg.embeds[0].image.url !== undefined) image.set(message.guild.id, embedMsg.embeds[0].image.url)
+                                                if (embedMsg.embeds[0].author != null && embedMsg.embeds[0].author.name !== undefined) author.set(message.guild.id, embedMsg.embeds[0].author.name)
                                                 updateEmbed()
 
                                             } catch (err) {
@@ -440,12 +439,12 @@ module.exports = class Test extends Command {
 
                     })
 
-                } else if (r.emoji.name == '❌') {
+                } else if (r.emoji.name === '❌') {
                     await message.channel.send(lang.embedBuilder.cancelMsg).then(mp => {
                         mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
                             .then(async cld => {
                                 let msG = cld.first();
-                                if (msG.content.toLowerCase() == lang.yes) {
+                                if (msG.content.toLowerCase() === lang.yes) {
                                     await timestamp.set(message.guild.id, true)
                                     await mp.delete()
                                     await editEmbed.delete()
@@ -461,11 +460,11 @@ module.exports = class Test extends Command {
                                     url.delete(message.guild.id);
                                     embedColor.delete(message.guild.id);
                                     timestamp.delete(message.guild.id);
-                                } else if (msg.content.toLowerCase() == lang.no) {
+                                } else if (msg.content.toLowerCase() === lang.no) {
                                     mp.delete()
                                     msG.delete()
                                     return
-                                } else if (msg.content.toLowerCase() != 'non' || msg.content.toLowerCase() != 'oui') {
+                                } else if (msg.content.toLowerCase() !== 'non' || msg.content.toLowerCase() !== 'oui') {
                                     msG.delete()
                                     mp.delete()
                                     message.channel.send(lang.error.YesNo)
@@ -474,14 +473,14 @@ module.exports = class Test extends Command {
 
                             });
                     })
-                } else if (r.emoji.name == '✅') {
+                } else if (r.emoji.name === '✅') {
                     await message.channel.send(lang.embedBuilder.sendMsg).then(mp => {
                         mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
                             .then(async cld => {
                                 let msgs = cld.first();
                                 const channel = msgs.mentions.channels.first() || msgs.guild.channels.cache.get(msgs.content);
                                 if (!client.botperso) {
-                                    if (thumbnail.get(message.guild.id) != undefined) {
+                                    if (thumbnail.get(message.guild.id) !== undefined) {
                                         client.shard.broadcastEval(`
                                     (async () => {
                                         let channel = this.channels.cache.get('803206140858990632');
@@ -496,7 +495,7 @@ module.exports = class Test extends Command {
 
 
                                     }
-                                    if (image.get(message.guild.id) != undefined) {
+                                    if (image.get(message.guild.id) !== undefined) {
                                         client.shard.broadcastEval(`
                                     (async () => {
                                         let channel = this.channels.cache.get('803206140858990632');
@@ -531,7 +530,7 @@ module.exports = class Test extends Command {
                 }
             })
             collector.on('end', async (collected, reason) => {
-                if (reason == 'time') {
+                if (reason === 'time') {
                     message.channel.send(lang.error.timeout)
                 }
                 title.delete(message.guild.id);
@@ -547,15 +546,15 @@ module.exports = class Test extends Command {
         })
 
         function updateEmbed() {
-            if (title.get(message.guild.id) != undefined) embed.setTitle(title.get(message.guild.id))
-            if (description.get(message.guild.id) != undefined) embed.setDescription(description.get(message.guild.id))
-            if (author.get(message.guild.id) != undefined) embed.setAuthor(author.get(message.guild.id))
-            if (thumbnail.get(message.guild.id) != undefined) embed.setThumbnail(thumbnail.get(message.guild.id))
-            if (footer.get(message.guild.id) != undefined) embed.setFooter(footer.get(message.guild.id))
-            if (image.get(message.guild.id) != undefined) embed.setImage(image.get(message.guild.id))
-            if (url.get(message.guild.id) != undefined) embed.setURL(url.get(message.guild.id))
-            if (embedColor.get(message.guild.id) != undefined) embed.setColor(embedColor.get(message.guild.id))
-            if (timestamp.get(message.guild.id) == true) {
+            if (title.get(message.guild.id) !== undefined) embed.setTitle(title.get(message.guild.id))
+            if (description.get(message.guild.id) !== undefined) embed.setDescription(description.get(message.guild.id))
+            if (author.get(message.guild.id) !== undefined) embed.setAuthor(author.get(message.guild.id))
+            if (thumbnail.get(message.guild.id) !== undefined) embed.setThumbnail(thumbnail.get(message.guild.id))
+            if (footer.get(message.guild.id) !== undefined) embed.setFooter(footer.get(message.guild.id))
+            if (image.get(message.guild.id) !== undefined) embed.setImage(image.get(message.guild.id))
+            if (url.get(message.guild.id) !== undefined) embed.setURL(url.get(message.guild.id))
+            if (embedColor.get(message.guild.id) !== undefined) embed.setColor(embedColor.get(message.guild.id))
+            if (timestamp.get(message.guild.id) === true) {
                 embed.setTimestamp()
             }
             editEmbed.edit(embed)
@@ -563,15 +562,15 @@ module.exports = class Test extends Command {
 
         function finishEmbed(channel) {
             const finishEmbeds = new Discord.MessageEmbed()
-            if (title.get(message.guild.id) != undefined) finishEmbeds.setTitle(title.get(message.guild.id))
-            if (description.get(message.guild.id) != undefined) finishEmbeds.setDescription(description.get(message.guild.id))
-            if (author.get(message.guild.id) != undefined) finishEmbeds.setAuthor(author.get(message.guild.id))
-            if (thumbnail.get(message.guild.id) != undefined) finishEmbeds.setThumbnail(thumbnail.get(message.guild.id))
+            if (title.get(message.guild.id) !== undefined) finishEmbeds.setTitle(title.get(message.guild.id))
+            if (description.get(message.guild.id) !== undefined) finishEmbeds.setDescription(description.get(message.guild.id))
+            if (author.get(message.guild.id) !== undefined) finishEmbeds.setAuthor(author.get(message.guild.id))
+            if (thumbnail.get(message.guild.id) !== undefined) finishEmbeds.setThumbnail(thumbnail.get(message.guild.id))
             if (footer.get(message.guild.id) !== undefined) finishEmbeds.setFooter(footer.get(message.guild.id))
             if (image.get(message.guild.id) !== undefined) finishEmbeds.setImage(image.get(message.guild.id))
-            if (url.get(message.guild.id) != undefined) finishEmbeds.setURL(url.get(message.guild.id))
-            if (embedColor.get(message.guild.id) != undefined) finishEmbeds.setColor(embedColor.get(message.guild.id))
-            if (timestamp.get(message.guild.id) == true) {
+            if (url.get(message.guild.id) !==undefined) finishEmbeds.setURL(url.get(message.guild.id))
+            if (embedColor.get(message.guild.id) !== undefined) finishEmbeds.setColor(embedColor.get(message.guild.id))
+            if (timestamp.get(message.guild.id) === true) {
                 finishEmbeds.setTimestamp()
             }
             channel.send(finishEmbeds).then(() => {

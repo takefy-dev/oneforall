@@ -22,5 +22,24 @@ module.exports = {
     },
     copyObject(object){
         return JSON.parse(JSON.stringify(object));
+    },
+    roleHasSensiblePermissions(permissions){
+        return permissions.has(268566590, true);
+    },
+
+    checkDeletedGuildsDuringOffline(manager){
+        manager.guildManager.filter(g => !manager.OneForAll.guilds.cache.has(g.where.guildId)).forEach(g => {
+            g.deleteGuild()
+            manager.OneForAll.Logger.info(`${g.where.guildId} was leave during offline`)
+
+        });
+    },
+    checkCreatedGuildDuringOffline(manager){
+        manager.OneForAll.guilds.cache.filter(guild => !manager.has(guild.id)).forEach(g => {
+            manager.OneForAll.Logger.info(`${g.name} ${g.id} was added during offline`)
+            manager.getAndCreateIfNotExists(g.id).save()
+        })
+
     }
+
 }

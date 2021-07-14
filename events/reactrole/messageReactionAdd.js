@@ -1,6 +1,3 @@
-const StateManager = require('../../utils/StateManager');
-
-// let all = new Map();
 const Event = require('../../structures/Handler/Event');
 module.exports = class messageReactionAdd extends Event {
     constructor() {
@@ -10,30 +7,26 @@ module.exports = class messageReactionAdd extends Event {
     }
 
     async run(client, reaction, user) {
-        return;
-        const emojiRoleMapping = reaction.message.guild.reactRoles
         if (user.bot) return;
-        if (emojiRoleMapping.size < 1) return
-
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(reaction.message.guild.id);
+        const reactRoles =  guildData.get('reactroles');
+        if (reactRoles.length < 1) return
         if (reaction.message.partial) await reaction.message.fetch();
         if (reaction.partial) await reaction.fetch();
-        // const guild = client.guilds.cache.get(reaction.message.guild.id)
-        if (emojiRoleMapping.has(reaction.message.id)) {
-            const emojiRoleArray = emojiRoleMapping.get(reaction.message.id);
+        const reactRole = reactRoles.find(reactRole => reactRole.message === reaction.message.id);
+        if (reactRole) {
+            const {emojiRoleMapping} = reactRole;
             let role;
-            if (reaction.emoji.id == null && emojiRoleArray.hasOwnProperty(reaction.emoji.name)) {
-                role = reaction.message.guild.roles.cache.get(emojiRoleArray[reaction.emoji.name])
-                // console.log(role.name)
-            } else if (reaction.emoji.id != null && emojiRoleArray.hasOwnProperty(reaction.emoji.id)) {
-                role = reaction.message.guild.roles.cache.get(emojiRoleArray[reaction.emoji.id])
-                // console.log(role.name)
+            if (reaction.emoji.id && emojiRoleMapping.hasOwnProperty(reaction.emoji.name)) {
+                role = reaction.message.guild.roles.cache.get(emojiRoleMapping[reaction.emoji.name])
+            } else if (reaction.emoji.id && emojiRoleMapping.hasOwnProperty(reaction.emoji.id)) {
+                role = reaction.message.guild.roles.cache.get(emojiRoleMapping[reaction.emoji.id])
             } else {
                 return
             }
             let member = reaction.message.guild.members.cache.get(user.id);
             if (role && member) {
                 await member.roles.add(role, 'Reaction role add')
-                // console.log("dd")
 
             }
 

@@ -12,24 +12,22 @@ module.exports = class messageReactionRemove extends Event {
     }
 
     async run(client, reaction, user) {
-        const emojiRoleMapping = reaction.message.guild.reactRoles
-        return
         if (user.bot) return;
-        if(emojiRoleMapping.size < 1) return
-
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(reaction.message.guild.id);
+        const reactRoles =  guildData.get('reactroles');
+        if (reactRoles.length < 1) return
         if (reaction.message.partial) await reaction.message.fetch();
         if (reaction.partial) await reaction.fetch();
-        // const guild = client.guilds.cache.get(reaction.message.guild.id)
-
-        if (emojiRoleMapping.has(reaction.message.id)) {
-            const emojiRoleArray = emojiRoleMapping.get(reaction.message.id);
+        const reactRole = reactRoles.find(reactRole => reactRole.message === reaction.message.id);
+        if (reactRole) {
+            const {emojiRoleMapping} = reactRole;
             let role;
-            if (reaction.emoji.id == null && emojiRoleArray.hasOwnProperty(reaction.emoji.name)) {
-                role = reaction.message.guild.roles.cache.get(emojiRoleArray[reaction.emoji.name])
-            } else if (reaction.emoji.id != null && emojiRoleArray.hasOwnProperty(reaction.emoji.id)) {
-                role = reaction.message.guild.roles.cache.get(emojiRoleArray[reaction.emoji.id])
+            if (reaction.emoji.id && emojiRoleMapping.hasOwnProperty(reaction.emoji.name)) {
+                role = reaction.message.guild.roles.cache.get(emojiRoleMapping[reaction.emoji.name])
+            } else if (reaction.emoji.id && emojiRoleMapping.hasOwnProperty(reaction.emoji.id)) {
+                role = reaction.message.guild.roles.cache.get(emojiRoleMapping[reaction.emoji.id])
             } else {
-                return;
+                return
             }
             let member = reaction.message.guild.members.cache.get(user.id);
             if (role && member) {
@@ -38,6 +36,7 @@ module.exports = class messageReactionRemove extends Event {
             }
 
         }
+
 
 
         // }

@@ -581,7 +581,6 @@ module.exports = {
         noChannel: `Vous n'avez pas défini de channel je n'ai donc pas pu récuperer le message`,
         invalid: `Le salon ou l'id du message est invalide`,
         roleQ: `💠 Quel est le rôle à ajouter pour le reaction rôle ? (\`mention/id\`) (cancel pour annuler)`,
-        noRole: `Veuillez définir un rôle`,
         managedRole: `Ce rôle ne peut pas être ajouté car c'est un rôle **géré par une application**`,
         emojiQ: `💠 Quel est l'emoji pour ce rôle ? (\`envoyer l'emojis\`)`,
         emojiDoesNotExist: `L'emoji souhaité n'existe pas je suis a prêt à ajouter un emoji au serveur quel nom doit-il avoir(cancel pour annuler)`,
@@ -599,6 +598,7 @@ module.exports = {
         noEmoji: `Vous n'avez pas définie d'emoji et de rôle.`,
         alreadyReact: `Un reaction rôle existe déjà avec ce message`,
         success: `Le reaction rôle a été parfaitement sauvagardé et crée !`,
+        tryToPermsRole : `Vous ne pouvez pas ajouter un role ayant des permissions sensible`
     },
     tempvoc: {
         embedTitle: `Menu de création d'un vocal temporaire`,
@@ -909,6 +909,14 @@ module.exports = {
     },
 
     logs: {
+
+        reactRolePerm: (executor, color, message, link) => new Discord.MessageEmbed()
+            .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${executor || executor.user.tag || executor.user.username} essaye de créer un reactrole avec des permissions sensible\n**[Se rendre sur le message](${link})**`)
+            .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nMessage = ${message}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
         targetExecutorLogs: (type, executor, target, color, sanction) => new Discord.MessageEmbed()
 
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')

@@ -14,16 +14,6 @@ module.exports = class Ready extends Event {
 
     async run(client) {
         client.finishLoad = true
-        client.managers.guildManager.filter(g => !client.guilds.cache.has(g.where.guildId)).forEach(g => {
-
-            g.deleteGuild()
-            Logger.info(`${g.where.guildId} was leave during offline`)
-
-        });
-        client.guilds.cache.filter(guild => !client.managers.guildManager.has(guild.id)).forEach(g => {
-            Logger.info(`${g.name} ${g.id} was added during offline`)
-            client.managers.guildManager.getAndCreateIfNotExists(g.id).save()
-        })
         if(!client.botperso){
             client.guilds.cache.forEach(guild => {
                 client.managers.blackListManager.getAndCreateIfNotExists(guild.ownerID)

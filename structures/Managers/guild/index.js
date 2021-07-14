@@ -174,12 +174,7 @@ class GuildManager {
                 },
                 enable: false
             },
-            reactroles: values.reactroles ? values.reactroles : [
-                {
-                    message: null,
-                    emojiRole: []
-                }
-            ]
+            reactroles: values.reactroles ? values.reactroles : []
         }
         this.cachedInv = new Collection()
         this.snipes = new Collection()

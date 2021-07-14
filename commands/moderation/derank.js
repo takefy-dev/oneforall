@@ -26,8 +26,6 @@ module.exports = class Test extends Command {
         let member = await message.mentions.members.first() || await message.guild.members.resolve(args[0])
         if (!member) return message.channel.send(lang.derank.errorNoMember)
         if (member.user.id === client.user.id) return message.channel.send(lang.derank.errorUnrankMe)
-        // console.log(message.member.roles.highest)
-        // const role = message.guild.roles.cache.get(message.member.roles.highest.id)
         if (member.roles.highest.comparePositionTo(message.member.roles.highest) >= 0 && message.guild.ownerID !== message.author.id) return message.channel.send(lang.derank.errorRl(member))
         if (member.user.id === message.author.id) return message.channel.send(lang.derank.errorUnrankSelf);
         let roles = []
