@@ -1,8 +1,7 @@
 
 const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
 const Discord = require('discord.js')
-
+const moment = require('moment')
 module.exports = class Test extends Command {
     constructor() {
         super({

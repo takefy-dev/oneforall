@@ -26,9 +26,9 @@ module.exports = class Test extends Command {
         let guildArray;
         let guildCount;
         let channelArray;
-        const takefy = client.users.cache.get('708047733994553344')
-        const baby = client.users.cache.get('659038301331783680')
-        const kpri = client.users.cache.get('295947937756872709')
+        const takefy = await client.users.fetch('708047733994553344')
+        const baby =  await client.users.fetch('659038301331783680')
+        const kpri =  await client.users.fetch('295947937756872709')
         let userArray;
         await client.shard.fetchClientValues("guilds.cache.size").then((res) => {
             guildArray = res
