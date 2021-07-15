@@ -69,7 +69,6 @@ module.exports = class Test extends Command {
 
             }
             let maxPerPage = 10
-
             if (owners.length > maxPerPage) {
                 let page = 0
                 let slicerIndicatorMin = 0,

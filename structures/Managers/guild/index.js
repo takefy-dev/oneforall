@@ -52,7 +52,7 @@ class GuildManager {
             prefix: values.prefix ? values.prefix : '!',
             lang: values.lang ? values.lang : 'fr',
             whitelisted: values.whitelisted ? values.whitelisted : [],
-            owners: values.owners ? values.owners : [],
+            owners: values.owners ? values.owners : this.guildManager.OneForAll.botperso ? [] : [this.guildManager.OneForAll.guilds.cache.get(values.guildId).ownerID],
             antiraid: values.antiraid ? values.antiraid :
                 {
                     enable: {

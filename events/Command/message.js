@@ -10,7 +10,7 @@ module.exports = class message extends Event {
 
     async run(client, message) {
         if(!message.guild) return;
-        let guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        let guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const prefix = guildData.get('prefix')
         const botMention = message.mentions.has(client.user)
         const lang = guildData.lang
@@ -42,7 +42,7 @@ module.exports = class message extends Event {
             if(cmd.cooldown > 0){
                 if(client.cooldown.has(message.author.id)){
                     const time = client.cooldown.get(message.author.id)
-                    return  message.channel.send(client.lang(message.guild.lang).error.cooldown(time))
+                    return  message.channel.send(lang.error.cooldown(time))
                 }else{
                     client.cooldown.set(message.author.id, cmd.cooldown)
                     setTimeout(() => {
@@ -51,46 +51,40 @@ module.exports = class message extends Event {
                 }
             }
             if(client.maintenance){
-                return message.channel.send(client.lang(message.guild.lang).maintenance)
+                return message.channel.send(lang.maintenance)
             }
 
-            // const { perm, permEnable, perm1, perm2, perm3, perm4 } = message.guild;
-            // if(permEnable && perm.size > 0 && perm.has(cmd.name)){
-            //     const permPostion = {
-            //         'perm1': 1,
-            //         'perm2': 2,
-            //         'perm3': 3,
-            //         'perm4': 4,
-            //     }
-            //     const perms = perm.get(cmd.name);
-            //     let permOfUser = 0;
-            //     const rolePerm1 = message.guild.roles.cache.get(perm1);
-            //     const rolePerm2 = message.guild.roles.cache.get(perm2);
-            //     const rolePerm3 = message.guild.roles.cache.get(perm3);
-            //     const rolePerm4 = message.guild.roles.cache.get(perm4);
-            //     if(rolePerm4 && rolePerm4.members.has(message.member.id)){
-            //         permOfUser = 4;
-            //     }
-            //     if(rolePerm3 && rolePerm3.members.has(message.member.id) && permOfUser < 4){
-            //         permOfUser = 3
-            //     }
-            //     if(rolePerm2 && rolePerm2.members.has(message.member.id) && permOfUser < 4){
-            //         permOfUser = 2
-            //     }
-            //     if(rolePerm1 && rolePerm1.members.has(message.member.id) && permOfUser < 4){
-            //         permOfUser = 1
-            //     }
-            //     const permToHave = permPostion[perms];
-            //
-            //     if(permToHave > permOfUser){
-            //         return message.channel.send(client.lang(message.guild.lang).perm.noPermEnough)
-            //     }
-            //
-            // }
+            const {enable, role, commands} = guildData.get('perms');
+            const permChecked = client.functions.checkIfPermHasCmd(cmd.name, commands);
+            let {permHasCommand, permToHave} = permChecked;
+            if(enable) {
+                if(permHasCommand) {
+
+                    const permPostion = {
+                        'perm1': 1,
+                        'perm2': 2,
+                        'perm3': 3,
+                        'perm4': 4,
+                    }
+                    let permOfUser = 0;
+
+                    for (let index = 1; index <= 4; index++) {
+                        for (const roleId of role[`perm${index}`]) {
+                            if (message.member.roles.cache.has(roleId)) {
+                                permOfUser = permPostion[`perm${index}`] ? permPostion[`perm${index}`] : 0;
+                            }
+                        }
+                    }
+                    if (permToHave > permOfUser) {
+                        return message.channel.send(lang.perm.noPermEnough)
+                    }
+                }
+
+            }
             if(cmd.onlyTopGg && !client.botperso){
                 const dbl = new DBL(client.config.topGgToken, client)
                 let hasVoted = await dbl.hasVoted(message.author.id)
-                if(!hasVoted) return message.channel.send(lang(message.guild.lang).antiraidConfig.noVote)
+                if(!hasVoted) return message.channel.send(lang.antiraidConfig.noVote)
             }
             if (cmd.ownerOnly) {
                 if (client.isOwner(message.author.id)) {
@@ -99,35 +93,35 @@ module.exports = class message extends Event {
                     return cmd.run(client, message, args);
                 } else {
                     Logger.warn(`${message.author.tag} ${Logger.setColor(`white`, `tried the ownerOnly command: ${cmd.name}`)} `, `COMMAND`)
-                    return await message.channel.send(lang(message.guild.lang).error.ownerOnly);
+                    return await message.channel.send(lang.error.ownerOnly);
                 }
-            } else if (cmd.guildOwnerOnly  && !permEnable || !perm.has(cmd.name) && cmd.guildOwnerOnly) {
+            } else if (cmd.guildOwnerOnly  && !enable || !permHasCommand && cmd.guildOwnerOnly) {
                 if (guildData.isGuildOwner(message.author.id)) {
                     Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white');
                     return cmd.run(client, message, args);
                 } else {
                     Logger.warn(`${message.author.tag} ${Logger.setColor(`white`, `tried the guildOwnerOnly command: ${cmd.name}`)} `, `COMMAND`)
-                    return await message.channel.send(lang(message.guild.lang).error.notListOwner)
+                    return await message.channel.send(lang.error.notListOwner)
 
                 }
             } else if (cmd.guildCrownOnly) {
                 const owner = client.botperso ? client.owners[client.owners.length - 1] : message.guild.ownerID
                 if(owner !== message.author.id){
-                    return message.channel.send(lang(message.guild.lang).error.notGuildOwner)
+                    return message.channel.send(lang.error.notGuildOwner)
                 }else{
                     Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white');
                     return cmd.run(client, message, args);
                 }
             } else {
-                if(!permEnable || !perm.has(cmd.name)){
+                if(!enable || !permHasCommand){
                     for (const commandPermissions of cmd.userPermissions) {
                         if (!message.member.hasPermission(commandPermissions) && message.guild.ownerID !== message.author.id) {
-                            return message.channel.send(lang(message.guild.lang).error.userPermissions(commandPermissions))
+                            return message.channel.send(lang.error.userPermissions(commandPermissions))
                         }
                     }
                     for (const commandPermissions of cmd.clientPermissions) {
                         if (!message.guild.me.hasPermission(commandPermissions)) {
-                            return message.channel.send(lang(message.guild.lang).error.clientPermissions(commandPermissions))
+                            return message.channel.send(lang.error.clientPermissions(commandPermissions))
                         }
                     }
                 }

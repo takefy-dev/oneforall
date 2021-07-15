@@ -18,6 +18,19 @@ module.exports = {
         console.log(`Successfully loaded ${manager.size} ${data.model.charAt(0).toUpperCase()}${data.model.slice(1)}`)
         return manager;
     },
+    checkIfPermHasCmd(commandName, permsCommand) {
+        const result = {permToHave: 0, permHasCommand: false}
+        for (let i = 1; i <= 4; i++) {
+            for (const commands of permsCommand[`perm${i}`]) {
+                if (commands.includes(commandName)) {
+                    result.permToHave = i
+                    result.permHasCommand = true
+                }
+            }
+        }
+
+        return result;
+    },
     // if problem with shards
     // async loadTable(manager, data = {}) {
     //     await this.sleep(500);
@@ -32,21 +45,21 @@ module.exports = {
     //
     //     return manager;
     // },
-    copyObject(object){
+    copyObject(object) {
         return JSON.parse(JSON.stringify(object));
     },
-    roleHasSensiblePermissions(permissions){
+    roleHasSensiblePermissions(permissions) {
         return permissions.has(268566590, true);
     },
 
-    checkDeletedGuildsDuringOffline(manager){
+    checkDeletedGuildsDuringOffline(manager) {
         manager.guildManager.filter(g => !manager.OneForAll.guilds.cache.has(g.where.guildId)).forEach(g => {
             g.deleteGuild()
             manager.OneForAll.Logger.info(`${g.where.guildId} was leave during offline`)
 
         });
     },
-    checkCreatedGuildDuringOffline(manager){
+    checkCreatedGuildDuringOffline(manager) {
         manager.OneForAll.guilds.cache.filter(guild => !manager.has(guild.id)).forEach(g => {
             manager.OneForAll.Logger.info(`${g.name} ${g.id} was added during offline`)
             manager.getAndCreateIfNotExists(g.id).save()
