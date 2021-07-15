@@ -26,10 +26,10 @@ module.exports = class Test extends Command {
         if (!args[0]) {
             const embed = new Discord.MessageEmbed()
                 .setTitle(`Perms commands`)
-                .addField(`Perm1:`, commands.perm1.length < 1 ? lang.perm.noCommand : commands.perm1.map((name, i) => `${i + 1} - ${name}\n`))
-                .addField(`Perm2:`, commands.perm2.length < 1 ? lang.perm.noCommand : commands.perm2.map((name, i) => `${i + 1} - ${name}\n`))
-                .addField(`Perm3:`, commands.perm3.length < 1 ? lang.perm.noCommand : commands.perm3.map((name, i) => `${i + 1} - ${name}\n`))
-                .addField(`Perm4:`, commands.perm4.length < 1 ? lang.perm.noCommand : commands.perm4.map((name, i) => `${i + 1} - ${name}\n`))
+                .addField(`Perm1:`, commands.perm1.length < 1 ? lang.perm.noCommand : commands.perm1.map((name, i) => `${i + 1} - ${name}`).join(', '))
+                .addField(`Perm2:`, commands.perm2.length < 1 ? lang.perm.noCommand : commands.perm2.map((name, i) => `${i + 1} - ${name}`).join(', '))
+                .addField(`Perm3:`, commands.perm3.length < 1 ? lang.perm.noCommand : commands.perm3.map((name, i) => `${i + 1} - ${name}`).join(', '))
+                .addField(`Perm4:`, commands.perm4.length < 1 ? lang.perm.noCommand : commands.perm4.map((name, i) => `${i + 1} - ${name}`).join(', '))
                 .setColor(guildData.get('color'))
                 .setTimestamp()
                 .setFooter(client.user.username, message.author.displayAvatarURL({dynamic: true}))
@@ -46,7 +46,7 @@ module.exports = class Test extends Command {
             for (let i = 1; i <= 4; i++) {
                 commands[`perm${i}`] = commands[`perm${i}`].filter(x => x !== commandName)
             }
-        }else{
+        } else {
             const permCommand = commands[`perm${permToPutCommand}`];
             if (permCommand && !permCommand.includes(commandName)) {
                 permCommand.push(commandName);
@@ -64,7 +64,6 @@ module.exports = class Test extends Command {
         guildData.set('perms', guildPerm).save().then(() => {
             message.channel.send(lang.perm.successCommand(commandName, permToPutCommand))
         })
-
 
 
     }

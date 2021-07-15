@@ -8,7 +8,7 @@ module.exports = class Test extends Command{
             description: "Enable a event of the antiraid | Active un evenemenent de l'antiraid",
             category: 'antiraid',
             usage: 'enable <antiraidEvent> (webhookUpdate ect)',
-            aliases: ['on'],
+            aliases: ['on', "active"],
             clientPermissions : ['SEND_MESSAGES'],
             userPermissions: ['ADMINISTRATOR'],
             guildOwnerOnly : true,

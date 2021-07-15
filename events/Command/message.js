@@ -40,13 +40,13 @@ module.exports = class message extends Event {
 
 
             if(cmd.cooldown > 0){
-                if(client.cooldown.has(message.author.id)){
-                    const time = client.cooldown.get(message.author.id)
-                    return  message.channel.send(lang.error.cooldown(time))
+                if(client.cooldown.has(`${cmd.name}-${message.author.id}`)){
+                    const time = client.cooldown.get(`${cmd.name}-${message.author.id}`)
+                    return message.channel.send(lang.error.cooldown(time))
                 }else{
-                    client.cooldown.set(message.author.id, cmd.cooldown)
+                    client.cooldown.set(`${cmd.name}-${message.author.id}`, cmd.cooldown)
                     setTimeout(() => {
-                        client.cooldown.delete(message.author.id)
+                        client.cooldown.delete(`${cmd.name}-${message.author.id}`)
                     }, cmd.cooldown * 1000)
                 }
             }
