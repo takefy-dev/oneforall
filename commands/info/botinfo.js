@@ -26,6 +26,9 @@ module.exports = class Test extends Command {
         let guildArray;
         let guildCount;
         let channelArray;
+        const takefy = client.users.cache.get('708047733994553344')
+        const baby = client.users.cache.get('659038301331783680')
+        const kpri = client.users.cache.get('295947937756872709')
         let userArray;
         await client.shard.fetchClientValues("guilds.cache.size").then((res) => {
             guildArray = res
@@ -45,7 +48,7 @@ module.exports = class Test extends Command {
             .setColor(color)
             .addField('<a:fleche:786340501531262977> **INFORMATIONS:**', [
                 `Date de création: **${utc(client.user.createdTimestamp).format('Do MMMM YYYY HH:mm:ss')}**`,
-                `Developers: **TAKEFY#9831, baby#1337, qzzzz#0101**`,
+                `Developers: **${takefy.username}#${takefy.discriminator}, ${baby.username}#${baby.discriminator}, ${kpri.username}#${kpri.discriminator}**`,
                 `Node.js: **${process.version}**`,
                 `Version: **v${version}**`,
                 `Discord.js: **v${djsversion}**`,
