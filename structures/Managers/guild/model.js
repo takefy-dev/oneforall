@@ -205,13 +205,20 @@ module.exports =  (database, DataTypes, modelName, config) => {
                         emojiRole: []
                     }
                 ]
+            },
+            piconly : {
+                type: DataTypes.JSON,
+                allowNull: false,
+                defaultValue: '[]'
             }
-
 
         }, {
             tableName: modelName,
             charset: 'utf8mb4',
             collate: 'utf8mb4_general_ci'
+        })
+        database.models[modelName].sync({
+            alter: true
         })
         return database.models[modelName]
     } catch (e) {

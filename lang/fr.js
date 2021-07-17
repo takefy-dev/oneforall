@@ -1348,5 +1348,12 @@ module.exports = {
                 pluralS: false
             }
         }
+    },
+    piconly: {
+        success: (channel) => `Uniquement les images seront autorisées dans le channel ${channel} `,
+        wrongType : `Le piconly ne peut être activé dans un salon autre que texte`,
+        disable : (channel) => `Piconly est désactivé pour le channel ${channel}`
     }
+
+
 }

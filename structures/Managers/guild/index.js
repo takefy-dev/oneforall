@@ -174,7 +174,8 @@ class GuildManager {
                 },
                 enable: false
             },
-            reactroles: values.reactroles ? values.reactroles : []
+            reactroles: values.reactroles ? values.reactroles : [],
+            piconly : values.piconly ? values.piconly : []
         }
         this.cachedInv = new Collection()
         this.snipes = new Collection()
