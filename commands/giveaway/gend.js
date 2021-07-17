@@ -5,11 +5,11 @@ const Discord = require('discord.js')
 module.exports = class Test extends Command {
     constructor() {
         super({
-            name: 'greroll',
-            description: 'Reroll giveaways',
-            usage: 'greroll',
+            name: 'gend',
+            description: 'End giveaways',
+            usage: 'gend',
             category: 'giveaway',
-            aliases: ['grl', 'gredo'],
+            aliases: ['gstop'],
             userPermissions: ['MANAGE_GUILD'],
             clientPermissions: ['ADMINISTRATOR'],
             cooldown: 5
@@ -32,17 +32,13 @@ module.exports = class Test extends Command {
 
         if (!giveaway) return message.channel.send("Je ne trouve pas de giveaway avec cette ID/nom");
 
-        client.giveawaysManager.reroll(giveaway.messageID)
+        client.giveawaysManager.end(giveaway.messageID)
             .then(() => {
-                message.channel.send('Le giveaway a été **__reroll__**')
+                message.channel.send('Le giveaway a été **__terminé__**')
             })
             .catch((e) => {
-                if (e.startsWith(`Giveaway avec l'ID ${giveaway.messageID} n'est pas terminé `)) {
-                    message.channel.send("Ce giveaway n'est pas encore terminé")
-                } else {
-                    console.error(e);
-                    message.channel.send('Oupsi, une erreur est survenue')
-                }
+                    message.channel.send("Ce giveaway est terminé")
+
             })
 
     }

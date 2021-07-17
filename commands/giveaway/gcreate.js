@@ -11,7 +11,7 @@ module.exports = class Test extends Command {
             usage: 'gcreate <time> [winners] [prize]',
             category: 'giveaway',
             aliases: ['gstart'],
-            userPermissions: ['ADMINISTRATOR'],
+            userPermissions: ['MANAGE_GUILD'],
             clientPermissions: ['SEND_MESSAGES'],
             cooldown: 5
 

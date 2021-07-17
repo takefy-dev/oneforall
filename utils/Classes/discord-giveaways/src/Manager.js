@@ -17,6 +17,7 @@ const {
     GiveawayStartOptions
 } = require('./Constants.js');
 const Giveaway = require('./Giveaway.js');
+const {Collection} = require("discord.js");
 
 /**
  * Giveaways Manager
@@ -43,7 +44,7 @@ class GiveawaysManager extends EventEmitter {
          * The giveaways managed by this manager
          * @type {Giveaway[]}
          */
-        this.giveaways = [];
+        this.giveaways = new Collection();
         /**
          * The manager options
          * @type {GiveawaysManagerOptions}
@@ -224,7 +225,7 @@ class GiveawaysManager extends EventEmitter {
             const message = await channel.send(giveaway.messages.giveaway, {embed});
             await message.react(giveaway.reaction);
             giveaway.messageID = message.id;
-            this.giveaways.push(giveaway);
+            this.giveaways.set(giveaway.messageID, giveaway);
             await this.saveGiveaway(giveaway.messageID, giveaway.data);
             resolve(giveaway);
         });
@@ -299,7 +300,7 @@ class GiveawaysManager extends EventEmitter {
                 });
                 if (giveaway.message) giveaway.message.delete();
             }
-            this.giveaways = this.giveaways.filter((g) => g.messageID !== messageID);
+            this.giveaways = this.giveaways.delete(messageID)
             await this.deleteGiveaway(messageID);
             this.emit('giveawayDeleted', giveaway);
             resolve();
@@ -317,7 +318,7 @@ class GiveawaysManager extends EventEmitter {
             JSON.stringify(this.giveaways.map((giveaway) => giveaway.data)),
             'utf-8'
         );
-        this.refreshStorage();
+        await this.refreshStorage();
         return;
     }
 
@@ -475,7 +476,7 @@ class GiveawaysManager extends EventEmitter {
     async _init() {
         const rawGiveaways = await this.getAllGiveaways();
         rawGiveaways.forEach((giveaway) => {
-            this.giveaways.push(new Giveaway(this, giveaway));
+            this.giveaways.set(giveaway.messageID, new Giveaway(this, giveaway));
         });
         setInterval(() => {
             if (this.client.readyAt) this._checkGiveaway.call(this);

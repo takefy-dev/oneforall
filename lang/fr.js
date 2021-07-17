@@ -1275,6 +1275,9 @@ module.exports = {
         maxRoleReach: `Vous avez atteind le maximum de roles pour ce role embed`
     },
     giveaway: {
+        reroll : {
+            noMsgId: `<:720681441670725645:780539422479351809> \`ERREUR\` Veuillez spécifiez l'id du message de giveaway !`
+        },
         create: {
             incorrectTime: `La durée n'est pas valide\nExemple usage: \`!gcreate 10m 1w Nitro(9.99$)\``,
             inccorectWinner: `La nombre de gagnants n'est pas valide\nExemple usage: \`!gcreate 10m 1w Nitro(9.99$)\``,
@@ -1328,7 +1331,7 @@ module.exports = {
         messages: {
             giveaway: ' ',
             giveawayEnded: '',
-            timeRemaining: "\nFini : \n**{duration}**",
+            timeRemaining: "\nFini: **{duration}**",
             inviteToParticipate: "Réagis avec {reaction} pour participer au giveaway     ",
             winMessage: "{winners}, remporte(nt) **{prize}**",
             embedFooter: "Fini à",
