@@ -1358,6 +1358,11 @@ module.exports = {
         noMember : `Veuillez spécifier un membre à exclure voicalement`,
         notInVoice : `Le membre n'est pas en vocal`,
         success :  (member) => `${member} a été exclu vocalement`
+    },
+    cleanUp : {
+        wrongType : `Le cleanup ne peut être effectué dans un salon autre que vocal`,
+        success: (channel) =>  `Le salon ${channel} **a été cleanup**`
+
     }
 
 
