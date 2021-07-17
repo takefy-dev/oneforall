@@ -17,7 +17,7 @@ module.exports = class messageReactionAdd extends Event {
         if (reactRole) {
             const {emojiRoleMapping} = reactRole;
             let role;
-            if (reaction.emoji.id && emojiRoleMapping.hasOwnProperty(reaction.emoji.name)) {
+            if (reaction.emoji.name && emojiRoleMapping.hasOwnProperty(reaction.emoji.name)) {
                 role = reaction.message.guild.roles.cache.get(emojiRoleMapping[reaction.emoji.name])
             } else if (reaction.emoji.id && emojiRoleMapping.hasOwnProperty(reaction.emoji.id)) {
                 role = reaction.message.guild.roles.cache.get(emojiRoleMapping[reaction.emoji.id])

@@ -21,12 +21,13 @@ module.exports = {
         NoYes: "Vous devez répondre uniquement avec oui ou non !",
         ownerOnly: `Seulement le propriétaire du bot peut faire cette commande`,
         notListOwner: `Vous n'êtes pas dans la liste des owners`,
-        notGuildOwner: `Seulement le propiétaire du serveur peut executer cette action`,
+        notGuildOwner: `Seulement le propiétaire du serveur ou l'acheteur du bot peut executer cette action`,
         voiceChat: `Vous devez être dans un salon vocal pour executer cette commande`,
         MissingPermission: `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
         includesEveryoneMention: `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`,
-         userPermissions : (perm) => `Vous n'avez pas la permission requise \`${perm}\``,
-        clientPermissions : (perm) => `Je n'ai pas la permission requise \`${perm}\``
+        userPermissions: (perm) => `Vous n'avez pas la permission requise \`${perm}\``,
+        clientPermissions: (perm) => `Je n'ai pas la permission requise \`${perm}\``,
+        managed: `Vous ne pouvez pas choisir de role gérer par une extension`
     },
     ping: {
         pinging: "Pinging...",
@@ -598,7 +599,7 @@ module.exports = {
         noEmoji: `Vous n'avez pas définie d'emoji et de rôle.`,
         alreadyReact: `Un reaction rôle existe déjà avec ce message`,
         success: `Le reaction rôle a été parfaitement sauvagardé et crée !`,
-        tryToPermsRole : `Vous ne pouvez pas ajouter un role ayant des permissions sensible`
+        tryToPermsRole: `Vous ne pouvez pas ajouter un role ayant des permissions sensible`
     },
     tempvoc: {
         embedTitle: `Menu de création d'un vocal temporaire`,
@@ -1168,18 +1169,18 @@ module.exports = {
 
     },
     enable: {
-        eventNotFound : (event) => `**${event}** n'existe pas essayer un autre event`,
-        success : (event) => `**${event}** est maintenant activé`
+        eventNotFound: (event) => `**${event}** n'existe pas essayer un autre event`,
+        success: (event) => `**${event}** est maintenant activé`
     },
-    disable : {
-        success : (event) => `**${event}** est maintenant désactivé`
+    disable: {
+        success: (event) => `**${event}** est maintenant désactivé`
     },
-    sanction : {
+    sanction: {
         notCorrectSanction: `Veuillez specifier une sanction correct \`(ban/kick/unrank)\``,
-        success : (event, sanction) => `Vous avez modifier la sanction de l'évènement **${event}** pour **${sanction}**`
+        success: (event, sanction) => `Vous avez modifier la sanction de l'évènement **${event}** pour **${sanction}**`
     },
-    bypass : {
-      success : (event, enable) => `Les whitelist${!enable ? ' ne ' : ''}bypass${!enable ? ' pas ': ''}l'évènement **${event}**`
+    bypass: {
+        success: (event, enable) => `Les whitelist${!enable ? ' ne ' : ''}bypass${!enable ? ' pas ' : ''}l'évènement **${event}**`
     },
     perm: {
         noPermEnough: `Vous n'avez pas assez de permissions`,
@@ -1192,7 +1193,157 @@ module.exports = {
         successCommand: (name, perm) => `La commande **${name}** est maintenant en perm __${perm}__`,
         setupPerm: (role, perm) => `Le role **${role}** est maintenant en perm **${perm}**`,
         enable: (type) => `Les perm sont maintenant ${type}`,
-        removePerm : (perm, role) => `Le role **${role}** n'est plus dans la perm ${perm}`,
-        alreadyExist : `Le role est déjà dans la perm`
+        removePerm: (perm, role) => `Le role **${role}** n'est plus dans la perm ${perm}`,
+        alreadyExist: `Le role est déjà dans la perm`
+    },
+    roleEmbed: {
+        typeError: (type, types) => `Le role embed ${type ? `**${type}**` : ''} n'existe pas parmis **${types}**`,
+        toSearch: {
+            sexe: ['homme', 'femme'],
+            situation: ['en couple', 'célibataire', 'compliqué'],
+            age: ['majeur', 'mineur'],
+            color: ['vert', 'jaune', 'rouge', 'orange', 'blanc', 'noir', 'violet', 'bleu']
+        },
+        embeds: {
+            sexe: (male, female, color) => {
+                return {
+                    embed:
+                        {
+                            title: "Rôle Sexe :fish_cake:",
+                            description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${male && female ? `<@&${male}>\n<@&${female}>` : '{roles}'}`,
+                            color: color
+                        }
+
+                }
+            },
+            situation: (couple, difficult, single, color) => {
+                return {
+
+                    embed:
+                        {
+                            title: "Rôle Situation :fish_cake:",
+                            description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${couple && difficult && single ? `<@&${couple}>\n<@&${difficult}>\n<@&${single}>` : '{roles}'}\n\n`,
+                            color: color
+                        }
+
+
+                }
+            },
+            age: (major, minor, color) => {
+                return {
+                    embed:
+                        {
+                            title: "Rôle Âge :fish_cake:",
+                            description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${minor && major ? `<@&${major}>\n<@&${minor}>` : '{roles}'}\n\n`,
+                            color: color
+                        }
+
+                }
+            },
+            color: (red, green, yellow, blue, white, orange, black, purple, color) => {
+                return {
+                    embed:
+                        {
+                            title: "Rôle Couleurs :art:",
+                            description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${red && green && yellow && blue && white && orange && black && purple ? `<@&${red}>\n<@&${green}>\n<@&${yellow}>\n<@&${blue}>\n<@&${white}>\n<@&${orange}>\n<@&${black}>\n<@&${purple}>` : '{roles}'}\n\n`,
+                            color: color
+                        }
+
+                }
+            }
+
+
+        },
+        potentialRoles: (roles = [], type = '', avatar = '', color = '') => new Discord.MessageEmbed()
+            .setTitle(`Role potentiel`)
+            .setDescription(`*Potentiel role pour le type ${type}.\nRéagir sur les reactions pour selectionner pour modifier les roles.\nAdapter vos rôles avec l'embed au dessus*\n➕ ・ Ajouter un role\n➖ ・ Supprimer un role\n✅ ・ Sauvegarder\n❌ ・ Fermer \n\n${roles.length < 1 ? 'Aucun roles trouvés' : roles.map((role, i) => `${i + 1} ・ <@&${role}>`).join('\n')}`)
+            .setTimestamp()
+            .setColor(color)
+            .setFooter('OneForall', avatar),
+        changeRoleQ: `Quel doit être le nouveau role ?`,
+        addRoleQ: `Quel est le role à ajouter ?`,
+        removeRoleQ: `Quel est le role à supprimer ?`,
+        sendEmbedQ: `Dans quel salon sera envoyé l'embed ?`,
+        emojiNotFoundOnrole: (role) => `Je n'ai pas pu déterminer un emoji associé au rôle. Quel est l'emoji qui correspond au rôle **${role}** ?`,
+        colorEmbedQ: `Quel doit être la couleur de l'embed (HEX ou rouge / vert / jaune / violet / rose / noir / blanc / bleu / orange / invisible)?`,
+        errorNoRole: `Veuillez spécifier un role correct`,
+        errorNoChannel: `Veuillez spécifier un channel correct`,
+        successChangeRole: (newRole) => `Le role est maintenant changer pour **${newRole}**`,
+        successAddRole: (role) => `Le role **${role}** a été ajouté`,
+        successRemoveRole: (role) => `Le role **${role}** a été supprimé`,
+        successChannel: (channel) => `L'embed sera envoyé dans **${channel}**`,
+        maxRoleReach: `Vous avez atteind le maximum de roles pour ce role embed`
+    },
+    giveaway: {
+        create: {
+            incorrectTime: `La durée n'est pas valide\nExemple usage: \`!gcreate 10m 1w Nitro(9.99$)\``,
+            inccorectWinner: `La nombre de gagnants n'est pas valide\nExemple usage: \`!gcreate 10m 1w Nitro(9.99$)\``,
+            winnerMustRange: `Le nombre de gagnants doit être supérieur à 0\nExemple usage: \`!gcreate 10m 1w Nitro(9.99$)\``,
+            noPrize: `Le gain est invalide\nExemple usage: \`!gcreate 10m 1w Nitro(9.99$)\``,
+            embed: (time = 'Non définie', channel = 'Non définie', winners = 0, voice = false, boost = false, reaction = '🎉', prize = 'Non définie', color) => new Discord.MessageEmbed()
+                .setDescription(`
+                <a:image2:789413408676118538> **INFORMATIONS:**\n\n 
+                Cliquer 🕙 pour modifier la durée
+                Cliquer 🏷️ pour modifier le salon 
+                Cliquer 🕵️ pour modifier le nombre de gagnants
+                Cliquer 🎁 pour modifier le gain
+                Cliquer 🔊 pour modifier la présence vocal
+                Cliquer 🔮 pour modifier l'obligation d'avoir booster le serveur
+                Cliquer 💫 pour  modifier la reaction du giveaway
+                Cliquer ✅ pour lancer le giveaway
+                
+                
+                <a:give:789822270641274890> **SETUP:**
+                
+                🕙  Durée **-** ${time !== 'Non définie' ? prettyMilliseconds(time) : time}
+                🏷️ Salon **-** ${channel}
+                🕵️ Nombre de gagnant **-** ${winners}
+                🔊 Présence vocal obligatoire **-** ${!voice ? 'Non' : voice}
+                🔮 Boost serveur obligatoire **-** ${!boost ? 'Non' : boost}
+                💫 Reaction **-** ${reaction}
+                🎁 Gain **-** ${prize}`)
+                .setColor(color),
+            question: {
+                time: `Quel est la durée du giveaway ?`,
+                channel: `Dans quel channel le giveaway doit être lancé ?`,
+                winnerCount : `Combien doit-il y avoir de gagnants ?`,
+                reaction : `Quel est la reaction pour le giveaway ?`,
+                prize : `Que voulez-vous faire gagner ?`,
+
+            },
+            inccorectResponse: {
+                time: `La durée n'est pas valide\nExemple : \`30m\``,
+                channel : `Le channel est incorrect`,
+
+            },
+            successMessage: {
+                time: (time) => `Le temps du giveaway est donc prévue pour **${time}**`,
+                channel : (channel) => `Le giveaway sera lancé de le salon ${channel}`,
+                winnerCount : (winner) => `Le nombre de gagnant est maintenant définie pour **${winner}**`,
+                prize : (prize) => `Vous voulez faire gagner **${prize}**`,
+                reaction : (emoji) => `La reaction pour le giveaway est maintenant ${emoji}`,
+            }
+
+        },
+        messages: {
+            giveaway: ' ',
+            giveawayEnded: '',
+            timeRemaining: "\nFini : \n**{duration}**",
+            inviteToParticipate: "Réagis avec {reaction} pour participer au giveaway     ",
+            winMessage: "{winners}, remporte(nt) **{prize}**",
+            embedFooter: "Fini à",
+            noWinner: "Désole je n'ai pas pu déterminer de gagnant(s)",
+            hostedBy: "Lancé par {user}",
+            winners: "gagnant(s)",
+            endedAt: "Fini à",
+            units: {
+
+                seconds: "seconde(s)",
+                minutes: "minute(s)",
+                hours: "heure(s)",
+                days: "jour(s)",
+                pluralS: false
+            }
+        }
     }
 }

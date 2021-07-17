@@ -20,9 +20,9 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
 
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const lang = guildData.lang;
         const moderatorAuthorisation = {
             '659038301331783680': {
                 name: 'baby',

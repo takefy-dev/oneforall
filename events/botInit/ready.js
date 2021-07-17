@@ -2,7 +2,6 @@
 const Event = require('../../structures/Handler/Event');
 const Discord = require('discord.js')
 const {Logger} = require("advanced-command-handler");
-const {GiveawaysManager} = require('discord-giveaways')
 const cron = require('node-cron')
 const Coins = require('../../utils/StartCoins')
 module.exports = class Ready extends Event {

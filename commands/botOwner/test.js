@@ -18,6 +18,11 @@ module.exports = class Test extends Command {
     }
 
     async run(client, message, args) {
-        console.log(client.oneforallSocket)
+
+        const t = client.functions.dateToEpoch(new Date())
+
+        const msg = await message.channel.send(`<t:${t}:R>`)
+        console.log(msg)
+
     }
 }

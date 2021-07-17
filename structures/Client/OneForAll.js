@@ -92,6 +92,8 @@ class OneForAll extends Client {
         this.maintenance = false;
         this.music = new Distube(this, {searchSongs: false, leaveOnEmpty: true});
 
+
+
     }
 
     lang(translate) {
@@ -156,7 +158,6 @@ class OneForAll extends Client {
             console.log("login");
             this.on('ready', () => {
                 this.managers = new Managers(this);
-
             })
             const modelsFile = fs.readdirSync('./structures/Models');
             for await (const model of modelsFile) {
@@ -166,6 +167,24 @@ class OneForAll extends Client {
             await this.database.sync({
                 alter: true,
                 force: false
+            })
+            this.GiveawayManagerWithOwnDatabase = require('../../utils/Classes/GiveawayWithDb')(this);
+            this.giveawaysManager = new this.GiveawayManagerWithOwnDatabase(this, {
+                updateCountdownEvery: 5000,
+                hasGuildMembersIntent: true,
+                default : {
+                    botsCanWin: false,
+                    // exemptPermissions: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
+                    embedColor: this.config.color,
+                    embedColorEnd: this.config.color,
+                    reaction: '🎉',
+                    lastChance: {
+                        enabled: true,
+                        content: ' **LAST CHANCE TO ENTER !**️',
+                        threshold: 5000,
+                        embedColor: '#FF0000'
+                    }
+                }
             })
             // setTimeout(async () => {
             //     await this.database.models.maintenance.findOrCreate({where: {client: this.user.id}}).then(res => {

@@ -13,14 +13,8 @@ module.exports = (Sequelize, oneforall) => {
                 
             },
             data: {
-                type: Sequelize.TEXT("long"),
+                type: Sequelize.JSON(),
                 allowNull: false,
-                get: function () {
-                    return JSON.parse(this.getDataValue('data'));
-                },
-                set: function (value) {
-                    return this.setDataValue('data', JSON.stringify(value));
-                },
             }
         })
         return oneforall.database.models
