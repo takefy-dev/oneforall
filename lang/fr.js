@@ -1353,6 +1353,11 @@ module.exports = {
         success: (channel) => `Uniquement les images seront autorisées dans le channel ${channel} `,
         wrongType : `Le piconly ne peut être activé dans un salon autre que texte`,
         disable : (channel) => `Piconly est désactivé pour le channel ${channel}`
+    },
+    voicekick: {
+        noMember : `Veuillez spécifier un membre à exclure voicalement`,
+        notInVoice : `Le membre n'est pas en vocal`,
+        success :  (member) => `${member} a été exclu vocalement`
     }
 
 
