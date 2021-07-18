@@ -1,9 +1,4 @@
-const userCoins = new Map();
-const coinSettings = new Map();
-const guildShop = new Map();
-const guildInventory = new Map();
 const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
 module.exports = class Test extends Command {
@@ -17,18 +12,18 @@ module.exports = class Test extends Command {
             tags: ['guildOnly'],
             aliases: ['acheter'],
             clientPermissions: ['EMBED_LINKS'],
+            coinsonly: true,
             cooldown: 4
         });
     }
 
     async run(client, message, args) {
-        if (!message.guild.config.coinsOn) return;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
-
+        const lang = guildData.lang;
         const idToBuy = args[0];
-        if (!message.guild.config.coinsOn) return message.channel.send(lang.buy.shoDisable).then(mp => mp.delete({timeout: 4000}))
+        const shop = guildData.get('coinsShop');
+        const userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${message.author.id}`)
         if (!args[0]) {
             const showShop = (shop) => {
                 const embed = new Discord.MessageEmbed()
@@ -42,17 +37,16 @@ module.exports = class Test extends Command {
 
                 return message.channel.send(embed)
             }
-            return showShop(message.guild.shop)
+            return showShop(shop)
         }
         if (!idToBuy) return message.channel.send(lang.buy.syntaxError).then(mp => mp.delete({timeout: 4000}))
-        const shop = message.guild.shop;
-        let coins = message.member.coins
+        let coins = userData.get('coins')
         if (!coins) return message.channel.send(lang.buy.noCoins).then(mp => mp.delete({timeout: 4000}));
         if (coins < 1 || !coins) return message.channel.send(lang.buy.noCoins).then(mp => mp.delete({timeout: 4000}));
         if (shop.find(shop => shop.id === 0)) return message.channel.send(lang.buy.nothingInShop).then(mp => mp.delete({timeout: 4000}));
         if (shop.length < parseInt(idToBuy) || parseInt(idToBuy) < 1) return message.channel.send(lang.buy.itemNotInShop).then(mp => mp.delete({timeout: 4000}));
 
-        const {price, role, item} = shop.filter(shop => shop.id === parseInt(idToBuy))[0]
+        const {price, role, item} = shop.find(shop => shop.id === parseInt(idToBuy))
         if (price > coins) return message.channel.send(lang.buy.notEnoughCoins).then(mp => mp.delete({timeout: 4000}));
         let roleCol;
         coins -= price
@@ -70,31 +64,30 @@ module.exports = class Test extends Command {
         } else {
 
             message.channel.send(lang.buy.success(item, price)).then(() => {
-                let memberInvetory = message.member.inventory
-                const itemBuyed = shop.filter(shop => shop.id === parseInt(idToBuy))[0]
+                let memberInvetory = userData.get('inventory')
+                const itemBuyed = shop.find(shop => shop.id === parseInt(idToBuy))
 
-                let messageMemberInvetory = message.member.inventory
-                if (messageMemberInvetory) { // if already member has a inv
+                if (memberInvetory) { // if already member has a inv
                     // [{}, {}, {}, {}, {}, {}, {}, {}, {}]
-                    console.log(messageMemberInvetory)
+                    console.log(memberInvetory)
 
-                    let itemOccurence = messageMemberInvetory.filter(inv => inv.id === itemBuyed.id);
+                    let itemOccurence = memberInvetory.find(inv => inv.id === itemBuyed.id);
 
 
-                    if (itemOccurence[0] && itemOccurence[0].amount >= 1) {
-                        const itemOccurenceCount = itemOccurence[0].amount;
+                    if (itemOccurence && itemOccurence.amount >= 1) {
+                        const itemOccurenceCount = itemOccurence.amount;
 
-                        itemOccurence[0].amount = itemOccurenceCount + 1;
+                        itemOccurence.amount = itemOccurenceCount + 1;
 
                     } else {
-                        messageMemberInvetory.push(itemBuyed);
+                        memberInvetory.push(itemBuyed);
                     }
 
 
-                    message.member.updateInventory = messageMemberInvetory
+                    userData.set('inventory', memberInvetory).save()
                 } else {
                     console.log('created')
-                    message.member.createInventory([itemBuyed])
+                    userData.set('inventory',[itemBuyed]).save()
                 }
 
 
@@ -102,7 +95,7 @@ module.exports = class Test extends Command {
         }
         message.member.updateCoins = coins;
 
-        const logsChannel = message.guild.channels.cache.get(message.guild.config.coinsLogs);
+        const logsChannel = message.guild.channels.cache.get(guildData.get('coinsSettings').logs);
         if (logsChannel && logsChannel.manageable && !logsChannel.deleted) {
             const embed = new Discord.MessageEmbed()
                 .setDescription(lang.buy.buyLog(message.member, !roleCol ? item : roleCol.name, price))

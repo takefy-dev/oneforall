@@ -174,7 +174,14 @@ class GuildManager {
                 enable: false
             },
             reactroles: values.reactroles ? values.reactroles : [],
-            piconly : values.piconly ? values.piconly : []
+            piconly : values.piconly ? values.piconly : [],
+            coinsSettings : values.coinsSettings ? values.coinsSettings :  {
+                enable: false,
+                streamBoost: 1.5,
+                muteDiviseur: 0.5,
+                logs: 'Non définie'
+            },
+            coinsShop : values.coinsShop ? values.coinsShop : [{id: 0, item: this.lang.addShop.nothingInShop, price: undefined, role: undefined}]
         }
         this.cachedInv = new Collection()
         this.snipes = new Collection()
@@ -191,7 +198,7 @@ class GuildManager {
     }
 
     get lang() {
-        return require(`../../../lang/${this.values.lang}`)
+        return require(`../../../lang/${this.values ? this.values.lang : 'fr'}`)
     }
 
     deleteGuild() {

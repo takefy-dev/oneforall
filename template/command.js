@@ -12,6 +12,7 @@ module.exports = class Test extends Command{
             clientPermissions : [''],
             userPermissions: ['ADMINISTRATOR'],
             ownerOnly: true,
+            coinsOnly : false,
             guildOwnerOnly : true,
             guildCrownOnly : true,
             cooldown: 10

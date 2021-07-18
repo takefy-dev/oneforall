@@ -34,7 +34,6 @@ module.exports = class message extends Event {
             
             if (client.isOwner(message.author.id)) {
                 Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white')
-
                 return cmd.run(client, message, args)
             }
 
@@ -85,6 +84,10 @@ module.exports = class message extends Event {
                 const dbl = new DBL(client.config.topGgToken, client)
                 let hasVoted = await dbl.hasVoted(message.author.id)
                 if(!hasVoted) return message.channel.send(lang.antiraidConfig.noVote)
+            }
+            if(cmd.coinsOnly){
+                const { enable } = guildData.get('coinsSettings');
+                if(!enable) return;
             }
             if (cmd.ownerOnly) {
                 if (client.isOwner(message.author.id)) {

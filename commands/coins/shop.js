@@ -1,4 +1,3 @@
-
 const Command = require('../../structures/Handler/Command');
 const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
@@ -14,49 +13,23 @@ module.exports = class Test extends Command {
             aliases: ['store', 'magasin'],
             clientPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
             cooldown: 2,
+            coinsOnly: true,
             guildOwnerOnly: true
         });
     }
 
     async run(client, message, args) {
-
-        let owner = message.guild.ownerID;
-
-        if (client.botperso) {
-            const fs = require('fs');
-            const path = './config.json';
-            if (fs.existsSync(path)) {
-                owner = require('../../config.json').owner;
-            } else {
-                owner = process.env.OWNER
-            }
-        }
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;;
-        let shop;
-        if(message.guild.shop)  shop = [...message.guild.shop ]
-        if (args[0] === "create") {
-            if (shop) return message.channel.send(lang.addShop.alreadyShop)
-
-            await message.guild.createShop().then(() => {
-                shop = [{id: 0, item: lang.addShop.nothingInShop, price: undefined, role: undefined}]
-            })
-
-
-            return message.channel.send(lang.addShop.create).then(mp => mp.delete({timeout: 5000}))
-        } else if (args[0] === "delete") {
-            if(!message.guild.shop) return message.channel.send(lang.addShop.noShop)
-
-
-
-            
-            return await message.guild.deleteShop().then(() => {
+        const lang = guildData.lang;
+        let shop = guildData.get('coinsShop');
+        const defaultshop = [{id: 0, item: lang.addShop.nothingInShop, price: undefined, role: undefined}]
+        if (args[0] === "delete") {
+            return guildData.set('coinsShop', defaultshop).save().then(() => {
                 message.channel.send(lang.addShop.delete).then(mp => mp.delete({timeout: 5000}))
             })
 
         }
-        if(!message.guild.shop) return message.channel.send(lang.addShop.noShop)
         const actualShop = shop.filter(shop => shop.price !== undefined)
         if (args[0] === 'add') {
             /**
@@ -98,8 +71,7 @@ module.exports = class Test extends Command {
             }
 
             shop = actualShop
-
-            await message.guild.updateShop(actualShop)
+            guildData.set('coinsShop', shop).save()
             return message.channel.send(lang.addShop.successAdd(itemName, price)).then(mp => {
                 showShop(actualShop)
                 mp.delete({timeout: 5000})
@@ -115,16 +87,15 @@ module.exports = class Test extends Command {
             console.log(newShop)
             if (newShop.length === 0) {
                 newShop = [{id: 0, item: lang.addShop.nothingInShop, prix: undefined, role: undefined}]
-                
+
                 showShop(newShop)
-                return await message.guild.deleteShop()
+                return guildData.set('coinsShop', defaultshop).save()
             } else {
                 newShop = ajustShopId(newShop)
             }
 
-            await message.guild.updateShop(newShop)
-
             shop = newShop
+            await guildData.set('coinsShop', shop).save()
 
 
 
@@ -137,7 +108,6 @@ module.exports = class Test extends Command {
         } else if (!args[0]) {
             showShop(shop)
         } else if (args[0] === 'edit') {
-            if (!client.isGuildOwner(message.guild.owners, message.author.id) && owner !== message.author.id && !client.isOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
             if (!args[1]) return message.channel.send(lang.addShop.syntaxEdit).then(mp => mp.delete({timeout: 4000}))
             if (isNaN(args[1])) return message.channel.send(lang.addShop.onlyNumber).then(mp => mp.delete({timeout: 4000}))
             if (!actualShop.find(shop => shop.id === parseInt(args[1]))) return message.channel.send(lang.addShop.notFoundItem).then(mp => mp.delete({timeout: 4000}))
@@ -231,9 +201,8 @@ module.exports = class Test extends Command {
                         if (actualShop.filter(shop => shop.id === parseInt(args[1])) === itemToEdit) return message.channel.send(lang.addShop.noModification);
                         actualShop[itemToEdit[0].id - 1] = itemToEdit[0];
 
-                        message.guild.updateShop(actualShop).then(() => {
+                        guildData.set('coinsShop', actualShop).save().then(() => {
                             message.channel.send(lang.addShop.successEdit).then(() => {
-                                shop.get(message.guild.id, actualShop);
                                 ajustShopId(actualShop);
                                 showShop(actualShop);
                             })

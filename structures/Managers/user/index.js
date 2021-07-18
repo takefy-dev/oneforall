@@ -50,7 +50,9 @@ class UserManager {
             invite : values.invite ? values.invite : {join:0, leave:0, fake:0, bonus:0, invitedBy: null},
             antiraidLimit: values.antiraidLimit ? values.antiraidLimit : {ban:0, kick:0, deco:0},
             mute: values.mute ? values.mute : {muted: false, createdAt: null, expireAt: null},
-            warns : values.warns ? values.warns : []
+            warns : values.warns ? values.warns : [],
+            coins: values.coins ? values.coins : 0,
+            inventory : values.inventory ? values.inventory : null
         }
 
     }
@@ -61,6 +63,15 @@ class UserManager {
 
     set(key, value) {
         this.values[key] = value;
+        return this
+    }
+
+    addCoins(earnedCoins) {
+        this.values.coins += earnedCoins;
+        return this
+    }
+    removeCoins(earnedCoins) {
+        this.values.coins -= earnedCoins;
         return this
     }
 

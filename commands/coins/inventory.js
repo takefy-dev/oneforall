@@ -16,19 +16,20 @@ module.exports = class Test extends Command {
             category: 'coins',
             aliases: ['inv', 'bag'],
             clientPermissions: ['EMBED_LINKS'],
-            cooldown: 4
+            cooldown: 4,
+            coinsOnly: true,
         });
     }
 
     async run(client, message, args) {
-        if (!message.guild.config.coinsOn) return;
 
+
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
-
-        const memberInvetory = message.member.inventory
-        const formatedInventory = !memberInvetory? `Inventaire vide` : memberInvetory.map((inv) => `**${inv.item}**  •  x\`${inv.amount}\``); // inv.item == itemName and inv.amount = number of 1 item
+        const lang = guildData.lang;
+        const userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${message.author.id}`)
+        const memberInvetory = userData.get('inventory')
+        const formatedInventory = !memberInvetory ? `Inventaire vide` : memberInvetory.map((inv) => `**${inv.item}**  •  x\`${inv.amount}\``); // inv.item == itemName and inv.amount = number of 1 item
         const embed = new Discord.MessageEmbed()
             .setAuthor(`Inventory of ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
             .setDescription(formatedInventory)

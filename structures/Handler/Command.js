@@ -9,6 +9,7 @@ module.exports = class Command {
         this.guildOwnerOnly = options.guildOwnerOnly || false;
         this.guildCrownOnly = options.guildCrownOnly || false;
         this.onlyTopGg = options.onlyTopGg || false;
+        this.coinsOnly = options.coinsOnly || false;
         this.userPermissions = options.userPermissions || ['SEND_MESSAGES'];
         this.clientPermissions = options.clientPermissions || ['SEND_MESSAGES'];
         this.cooldown = options.cooldown || 0

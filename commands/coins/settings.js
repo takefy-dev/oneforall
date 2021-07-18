@@ -1,6 +1,5 @@
 const coinSettings = new Map();
 const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
 module.exports = class Test extends Command {
@@ -22,8 +21,8 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
 
 
         const color = guildData.get('color')
@@ -36,12 +35,7 @@ module.exports = class Test extends Command {
             dureefiltrer = response => {
                 return response.author.id === message.author.id
             };
-        const config = {
-            enable: message.guild.config.coinsOn,
-            streamBoost: message.guild.config.streamBoost,
-            muteDiviseur: message.guild.config.muteDiviseur,
-            logs: message.guild.config.coinsLogs
-        }
+        const config = client.functions.copyObject(guildData.get('coinsSettings'))
         const embed = new Discord.MessageEmbed()
             .setTitle(lang.coinSettings.title)
             .setDescription(lang.coinSettings.description(config.streamBoost, config.muteDiviseur, config.logs, config.enable === false ? 'Désactiver' : 'Activer'))
@@ -59,7 +53,7 @@ module.exports = class Test extends Command {
                                 let msg = cld.first();
                                 if (msg.content === "cancel") return message.channel.send(lang.cancel).then(mps => mps.delete({timeout: 4000}))
                                 if (isNaN(msg.content)) return message.channel.send(lang.coinSettings.onlyNumber).then(mp => mp.delete({timeout: 4000}))
-                                config.streamBoost = msg.content
+                                config.streamBoost = parseFloat(msg.content)
                                 await msg.delete()
                                 mp.delete()
                                 updateEmbed()
@@ -72,7 +66,7 @@ module.exports = class Test extends Command {
                                 let msg = cld.first();
                                 if (msg.content === "cancel") return message.channel.send(lang.cancel).then(mp => mp.delete({timeout: 4000}))
                                 if (isNaN(msg.content)) return message.channel.send(lang.coinSettings.onlyNumber).then(mp => mp.delete({timeout: 4000}))
-                                config.muteDiviseur = msg.content
+                                config.muteDiviseur = parseFloat(msg.content)
                                 await msg.delete()
                                 mp.delete()
                                 updateEmbed()
@@ -127,9 +121,14 @@ module.exports = class Test extends Command {
                     updateEmbed()
 
                 } else if (r.emoji.name === emoji[5]) {
+                    message.guild.channels.cache.filter(channel => channel.type === "voice" && channel.members.size > 0).map(channel => channel.members).forEach(members => members.forEach(member => {
+                        if(config.enable)
+                            client.managers.voiceManager.addVoice(`${message.guild.id}-${member.id}`, member);
+                        else
+                            client.managers.voiceManager.delete(`${message.guild.id}-${member.id}`  );
 
-                    message.guild.updateShopSettings(config.streamBoost, config.muteDiviseur, config.logs, config.enable === true).then(() => {
-                        coinSettings.set(message.guild.id, config)
+                    }))
+                    guildData.set('coinsSettings', config).save().then(() => {
                         message.channel.send(lang.coinSettings.save).then(mp => {
                             setTimeout(() => {
                                 mp.delete()

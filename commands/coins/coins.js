@@ -16,22 +16,24 @@ module.exports = class Test extends Command {
             tags: ['guildOnly'],
             aliases: ['balance', 'argent', 'money'],
             clientPermissions: ['EMBED_LINKS'],
+            coinsOnly : true,
             cooldown: 4
         });
     }
 
     async run(client, message, args) {
-        if(!message.guild.config.coinsOn) return;
-
         let member = message.mentions.members.first()  || await message.guild.members.fetch(args[0])
         if(!args[0]) member = message.member;
-        let coins = !member.coins ? 'Aucun' : member.coins;
+        const userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${member.id}`)
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
+        const lang = guildData.lang
+        let coins = !userData.get('coins')? 'Aucun' : userData.get('coins');
         const embed = new Discord.MessageEmbed()
             .setAuthor(member.user.tag, member.user.displayAvatarURL({dynamic: true}))
             .setColor(guildData.get('color'))
             .setFooter(client.user.username)
             .setTimestamp()
-            .setDescription(client.lang(message.guild.lang).coins.description(coins));
+            .setDescription(lang.coins.description(coins));
 
         await message.channel.send(embed)
 

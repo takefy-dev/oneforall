@@ -208,7 +208,21 @@ module.exports =  (database, DataTypes, modelName, config) => {
                 type: DataTypes.JSON,
                 allowNull: false,
                 defaultValue: '[]'
+            },
+            coinsSettings : {
+                type: DataTypes.JSON,
+                defaultValue: {
+                    enable: false,
+                    streamBoost: 1.5,
+                    muteDiviseur: 0.5,
+                    logs: 'Non définie'
+                }
+            },
+            coinsShop : {
+                type: DataTypes.JSON,
+                allowNull: true,
             }
+
 
         }, {
             tableName: modelName,

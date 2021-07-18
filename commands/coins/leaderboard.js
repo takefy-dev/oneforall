@@ -13,19 +13,22 @@ module.exports = class Test extends Command {
             category: 'coins',
             aliases: ['lb', 'classement'],
             clientPermissions: ['EMBED_LINKS'],
+            coinsonly: true,
             cooldown: 4
         });
     }
 
     async run(client, message, args) {
-        if (!message.guild.config.coinsOn) return;
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
-        const lb = await message.guild.getLeaderBoard()
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
+        const allUsers = client.managers.userManager.filter(user => user.get('guildId') === message.guild.id);
+        const tempData = [];
+        allUsers.forEach(user => tempData.push({userId: user.get('userId'), coins: user.get('coins')}))
+        const lb = tempData.sort((a, b) => b.coins - a.coins).slice(0 ,10);
         const color = guildData.get('color');
         const embed = new Discord.MessageEmbed()
             .setTitle(lang.lb.title)
-            .setDescription(lb.map((user, i) => `${i + 1} . <@${user[1].userId}> : ${user[1].coins} coins`))
+            .setDescription(lb.map((user, i) => `${i + 1} . <@${user.userId}> : ${user.coins.toFixed(2)} coins <a:coinsoneforall:823538178622488616>`))
             .setFooter(`OneForAll coins`)
             .setColor(color)
         message.channel.send(embed)

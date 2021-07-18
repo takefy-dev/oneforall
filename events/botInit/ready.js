@@ -14,6 +14,7 @@ module.exports = class Ready extends Event {
     async run(client) {
         client.finishLoad = true
         await client.functions.sleep(1000)
+        await client.managers.voiceManager.load();
         if(!client.botperso){
             client.guilds.cache.forEach(guild => {
                 client.managers.blackListManager.getAndCreateIfNotExists(guild.ownerID)
@@ -21,7 +22,6 @@ module.exports = class Ready extends Event {
         }else{
             client.managers.blackListManager.getAndCreateIfNotExists(client.owners[client.owners.length - 1])
         }
-
         // client.oneforallSocket.emit('send-commands', client.commands.filter(cm => cm.category !== "botOwner" && cm.category !== "test" && cm.category !== "botperso"))
 
         Logger.info(`${client.user.tag} logged in`, `CLIENT LOGIN`);

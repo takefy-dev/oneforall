@@ -30,6 +30,14 @@ module.exports =  (database, DataTypes, modelName, config) => {
                 type: DataTypes.JSON,
                 allowNull: false,
                 defaultValue: '[]'
+            },
+            coins: {
+                type: DataTypes.FLOAT,
+                allowNull: false
+            },
+            inventory :{
+                type: DataTypes.JSON,
+                allowNull: true,
             }
 
 

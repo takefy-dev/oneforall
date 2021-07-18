@@ -779,7 +779,7 @@ module.exports = {
 
     },
     coins: {
-        description: (coins) => `<a:coinsoneforall:823538178622488616> __${coins}__ coins`,
+        description: (coins) => `<a:coinsoneforall:823538178622488616> __${coins.toFixed(2)}__ coins`,
     },
     pay: {
         noMember: `Veuillez spécifier un membre à payer`,
@@ -787,12 +787,12 @@ module.exports = {
         coinsInf0: `Veuillez spécifier un nombre de coins à payer supérieur a 0`,
         coinsDec2: `Le nombre de coins à trop de décimal 2 maximum`,
         noGoinsToGive: `Vous n'avez pas de coins`,
-        notEnoughtCoins: (coins) => `Vous n'avez pas assé de coins pour donné ${coins}`,
-        giveCoins: (coins, member) => `Vous avez payé \`${coins}\` coins à ${member}`,
+        notEnoughtCoins: (coins) => `Vous n'avez pas assé de coins pour donné ${coins.toFixed(2)}`,
+        giveCoins: (coins, member) => `Vous avez payé \`${coins.toFixed(2)}\` coins à ${member}`,
         logs: (coins, giver, receiver) => `${giver} a donné \`${coins}\` coins à ${receiver}`
     },
     lb: {
-        title: `Top des 10 membres ayant le plus de coins`,
+        title: `Top des 10 membres ayant le plus de coins <a:coinsoneforall:823538178622488616>`,
         noCoins: `Personne a de coins sur le serveur.`
 
     },
