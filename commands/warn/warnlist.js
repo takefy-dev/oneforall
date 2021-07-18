@@ -1,5 +1,4 @@
 const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
 module.exports = class Test extends Command {
@@ -17,108 +16,108 @@ module.exports = class Test extends Command {
     }
 
     async run(client, message, args) {
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
-        const warnedMember = await message.mentions.members.first() || await message.guild.members.cache.get(args[0]);
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        let warnedMember
+        if (args[0]) {
+            warnedMember = await message.mentions.members.first() || await message.guild.members.fetch(args[0]).catch(() => {
+            });
+
+        }
+
+        const lang = guildData.lang;
         if (warnedMember) {
-            const warnsMember = warnedMember.warns;
+            const userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${warnedMember.id}`)
+            const warnsMember = userData.get('warns');
             const embed = new Discord.MessageEmbed()
-                .setTitle(`Warns de ${warnedMember.user.username}`)
-                .setDescription(warnsMember.map((warn, i) => `${i + 1} - Raison : ${warn}\n`))
+                .setTitle(`Warns de ${warnedMember.user.username} (${warnsMember.length})`)
+                .setDescription(warnsMember.map((warn, i) => `${i + 1} - Raison : ${warn}`).join('\n'))
                 .setTimestamp()
                 .setColor(color)
                 .setFooter(client.user.username, !warnsMember.user ? client.user.displayAvatarURL({dynamic: true}) : warnedMember.user.displayAvatarURL({dynamic: true}))
-            if(warnsMember.length < 1) embed.setDescription(lang.warn.noWarn)
+            if (warnsMember.length < 1) embed.setDescription(lang.warn.noWarn)
             await message.channel.send(embed)
         } else {
-            const allWarns = await message.guild.allWarns()
+            const allUsers = client.managers.userManager.filter(user => user.get('guildId') === message.guild.id && user.get('warns').length > 0);
+            const allWarns = [];
+            allUsers.forEach(user => allWarns.push({userId: user.get('userId'), reason: user.get('warns')}));
             if (!allWarns) return message.channel.send(lang.warn.noGuildWarn)
-            let tdata = await message.channel.send(lang.loading)
+            const warnsEmbed = {
+                title: `List of warns (${allWarns.length})`,
+                timestamp: new Date(),
+                color: '#36393F',
+                footer: {
+                    text: `Page 1/1`,
+                    icon_url: message.author.displayAvatarURL({dynamic: true}) || ''
+                },
 
-            let p0 = 0;
-            let p1 = 10;
-            let page = 1;
-
-
-            let embed = new Discord.MessageEmbed()
-
-            embed.setTitle(`${message.guild.name} warns`)
-                .setColor(color)
-                .setDescription(allWarns
-                    .map((info, i) => `${i + 1} ・ <@${info.userId}> : ${info.warn.slice(0, 8)}`)
-                    .slice(0, 10)
-                    .join('\n') + `\n\n<:778353230467825704:781155103566331904> Page **${page}** / **${Math.ceil(allWarns.length / 10)}**`)
-                .setTimestamp()
-                .setFooter(`${client.user.username}`);
-
-
-            if (allWarns.length > 10) {
-                await tdata.react("⬅");
-                await tdata.react("❌");
-                await tdata.react("➡");
             }
+            let maxPerPage = 10
+            if (allWarns.length > maxPerPage) {
+                let page = 0
+                let slicerIndicatorMin = 0,
+                    slicerIndicatorMax = 10
 
-            tdata.edit(" ", embed);
-
-            const data_res = tdata.createReactionCollector((reaction, user) => user.id === message.author.id);
-
-            data_res.on("collect", async (reaction) => {
-
-                if (reaction.emoji.name === "⬅") {
-
-                    p0 = p0 - 10;
-                    p1 = p1 - 10;
-                    page = page - 1
-
-                    if (p0 < 0) {
-                        return
-                    }
-                    if (p0 === undefined || p1 === undefined) {
-                        return
-                    }
-
-
-                    embed.setDescription(allWarns
-                        .map((info, i) => `${i + 1} ・ <@${info.userId}> : ${info.warn.slice(0, 8)}`)
-                        .slice(p0, p1)
-                        .join('\n') + `\n\n<:778353230467825704:781155103566331904> Page **${page}** / **${Math.ceil(whitelisted.length / 10)}**`)
-                    tdata.edit(embed);
-
+                const emojis = ['◀', '❌', '▶']
+                let totalPage = Math.ceil(allWarns.length / maxPerPage)
+                const embedPageChanger = (page) => {
+                    warnsEmbed.description = allWarns.map((warn, i) => `${i + 1} ・ <@${warn.userId}> - Raison : ${warn.reason.join(', ')}`).slice(slicerIndicatorMin, slicerIndicatorMax).join('\n')
+                    warnsEmbed.footer.text = `Page ${page + 1} / ${totalPage}`
+                    return warnsEmbed
                 }
+                const msg = await message.channel.send(lang.loading)
+                for (const em of emojis) await msg.react(em)
+                msg.edit({
+                    content: '',
+                    embed: embedPageChanger(page)
+                })
 
-                if (reaction.emoji.name === "➡") {
+                const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id;
+                const collector = msg.createReactionCollector(filter, {time: 900000})
+                collector.on('collect', async r => {
+                    await r.users.remove(message.author);
+                    if (r.emoji.name === emojis[0]) {
+                        page = page === 0 ? page = totalPage - 1 : page <= totalPage - 1 ? page -= 1 : page += 1
+                        slicerIndicatorMin -= maxPerPage
+                        slicerIndicatorMax -= maxPerPage
 
-                    p0 = p0 + 10;
-                    p1 = p1 + 10;
 
-                    page++;
-
-                    if (p1 > allWarns.length + 10) {
-                        return
                     }
-                    if (p0 === undefined || p1 === undefined) {
-                        return
+                    if (r.emoji.name === emojis[2]) {
+                        page = page !== totalPage - 1 ? page += 1 : page = 0
+                        slicerIndicatorMin += maxPerPage
+                        slicerIndicatorMax += maxPerPage
+
+                    }
+                    if (r.emoji.name === emojis[1]) {
+                        collector.stop()
+                    }
+                    if (slicerIndicatorMax < 0 || slicerIndicatorMin < 0) {
+                        slicerIndicatorMin += maxPerPage * totalPage
+                        slicerIndicatorMax += maxPerPage * totalPage
+                    } else if ((slicerIndicatorMax >= maxPerPage * totalPage || slicerIndicatorMin >= maxPerPage * totalPage) && page === 0) {
+                        slicerIndicatorMin = 0
+                        slicerIndicatorMax = 10
                     }
 
+                    msg.edit({
+                        embed:
+                            embedPageChanger(page)
 
-                    embed.setDescription(allWarns
-                        .map((info, i) => `${i + 1} ・ <@${info.userId}> : ${info.warn.slice(0, 8)}`)
-                        .slice(p0, p1)
-                        .join('\n') + `\n\n<:778353230467825704:781155103566331904> Page **${page}** / **${Math.ceil(allWarns.length / 10)}**`)
-                    tdata.edit(embed);
+                    })
+                })
+                collector.on('end', async () => {
+                    await msg.reactions.removeAll()
+                })
 
-                }
+            } else {
+                warnsEmbed.description = allWarns.map((warn, i) => `${i + 1} ・ <@${warn.userId}> - Raison : ${warn.reason.join(', ')}`).join('\n')
+                return message.channel.send({
+                    embed:
+                    warnsEmbed
 
-                if (reaction.emoji.name === "❌") {
-                    data_res.stop()
-                    await tdata.reactions.removeAll()
-                    return tdata.delete();
-                }
-
-                await reaction.users.remove(message.author.id);
-
-            })
+                })
+            }
 
 
         }

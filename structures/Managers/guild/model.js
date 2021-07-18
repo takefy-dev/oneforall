@@ -167,8 +167,6 @@ module.exports =  (database, DataTypes, modelName, config) => {
                         kick: 3,
                         mute : 2,
                     },
-                    data : []
-
                 }
             },
             tempvoc : {

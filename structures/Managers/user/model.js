@@ -25,6 +25,11 @@ module.exports =  (database, DataTypes, modelName, config) => {
                 type: DataTypes.JSON,
                 allowNull: true,
                 defaultValue: {muted: false, createdAt: new Date(), expireAt: null}
+            },
+            warns : {
+                type: DataTypes.JSON,
+                allowNull: false,
+                defaultValue: '[]'
             }
 
 
@@ -32,6 +37,9 @@ module.exports =  (database, DataTypes, modelName, config) => {
             tableName: modelName,
             charset: 'utf8mb4',
             collate: 'utf8mb4_general_ci'
+        })
+        database.models[modelName].sync({
+            alter: true
         })
         return database.models[modelName]
     } catch (e) {

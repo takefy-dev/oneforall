@@ -1,7 +1,5 @@
-const warnSanction = new Map();
-const tempWarn = new Map();
+
 const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
 module.exports = class Test extends Command {
@@ -21,18 +19,15 @@ module.exports = class Test extends Command {
     }
 
     async run(client, message, args) {
-        warnSanction.set(message.guild.id, {
-            ban : message.guild.config.warnBan,
-            kick : message.guild.config.warnKick,
-            mute : message.guild.config.warnMute
-        })
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
+        const warn = guildData.get('warns')
+
         const color = guildData.get('color')
-        const warnBan = warnSanction.get(message.guild.id).ban
-        const warnKick = warnSanction.get(message.guild.id).kick
-        const warnMute = warnSanction.get(message.guild.id).mute
-        tempWarn.set(message.guild.id, warnSanction.get(message.guild.id))
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const warnBan= warn.settings.ban
+        const warnKick = warn.settings.kick
+        const warnMute = warn.settings.mute
+        const tempWarn = client.functions.copyObject(warn);
 
 
         const principalMsg = await message.channel.send(lang.loading)
@@ -74,7 +69,7 @@ module.exports = class Test extends Command {
                                     }, 4000)
                                 })
 
-                                tempWarn.get(message.guild.id).ban = parseInt(msg.content);
+                                tempWarn.settings.ban = parseInt(msg.content);
                                 updateEmbed()
                                 setTimeout(() => {
                                     mp.delete()
@@ -104,7 +99,7 @@ module.exports = class Test extends Command {
                                     }, 4000)
                                 })
 
-                                tempWarn.get(message.guild.id).kick = parseInt(msg.content);
+                                tempWarn.settings.kick = parseInt(msg.content);
                                 updateEmbed()
                                 setTimeout(() => {
                                     mp.delete()
@@ -134,7 +129,7 @@ module.exports = class Test extends Command {
                                     }, 4000)
                                 })
 
-                                tempWarn.get(message.guild.id).mute = parseInt(msg.content);
+                                tempWarn.settings.mute = parseInt(msg.content);
                                 updateEmbed()
                                 setTimeout(() => {
                                     mp.delete()
@@ -146,7 +141,6 @@ module.exports = class Test extends Command {
                     })
                 } else if (r.emoji.name === emoji[3]) {
                     message.channel.send(lang.warn.cancel).then((mp) => {
-                        tempWarn.delete(message.guild.id);
                         collector.stop();
                         setTimeout(async () => {
                             mp.delete()
@@ -155,7 +149,7 @@ module.exports = class Test extends Command {
 
                     })
                 } else if (r.emoji.name === emoji[4]) {
-                    await message.guild.updateWarn(tempWarn.get(message.guild.id).ban, tempWarn.get(message.guild.id).kick, tempWarn.get(message.guild.id).mute).then((res) => {
+                    guildData.set('warns', tempWarn).save().then((res) => {
                         message.channel.send(lang.warn.save).then(async (mp) => {
                             collector.stop();
                             principalMsg.delete()
@@ -166,14 +160,12 @@ module.exports = class Test extends Command {
                     if (reason === 'time') {
                         message.channel.send(lang.error.timeout)
                     }
-                    tempWarn.delete(message.guild.id)
                 });
 
             })
 
             function updateEmbed() {
-                const tempWarns = tempWarn.get(message.guild.id)
-                embed.setDescription(lang.warn.description(tempWarns.ban, tempWarns.kick, tempWarns.mute))
+                embed.setDescription(lang.warn.description(tempWarn.settings.ban, tempWarn.settings.kick, tempWarn.settings.mute))
                 principalMsg.edit(embed)
 
             }

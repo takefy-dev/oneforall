@@ -152,7 +152,6 @@ class GuildManager {
                     kick: 3,
                     mute: 2,
                 },
-                data: []
             },
             tempvoc: values.tempvoc ? values.tempvoc : [{
                 category: 'Non définie',
