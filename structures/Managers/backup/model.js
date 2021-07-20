@@ -10,7 +10,7 @@ module.exports =  (database, DataTypes, modelName, config) => {
                 type : DataTypes.JSON,
                 allowNull: false,
             },
-            embedBackup: {
+            backupEmbed: {
                 type : DataTypes.JSON,
                 allowNull: false,
                 defaultValue: '[]'
@@ -20,6 +20,9 @@ module.exports =  (database, DataTypes, modelName, config) => {
             charset: 'utf8mb4',
             collate: 'utf8mb4_general_ci'
         })
+       database.models[modelName].sync({
+           alter: true
+       })
         return database.models[modelName]
     } catch (e) {
         console.log(e)

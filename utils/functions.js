@@ -1,3 +1,4 @@
+const {Collection} = require("discord.js");
 module.exports = {
     sleep: ms => new Promise(resolve => setTimeout(resolve, ms)),
 
@@ -32,7 +33,7 @@ module.exports = {
 
         return result;
     },
-    dateToEpoch (date) {
+    dateToEpoch(date) {
         return parseInt(date.getTime() / 1000);
     },
     numberToEmoji(number) {
@@ -58,7 +59,7 @@ module.exports = {
             .replace(/8/g, '8️⃣')
             .replace(/9/g, '9️⃣');
     },
-    emojiToNumber(emoji){
+    emojiToNumber(emoji) {
         if (!emoji) return emoji
 
         if (typeof emoji !== 'string') {
@@ -120,6 +121,51 @@ module.exports = {
             manager.getAndCreateIfNotExists(g.id).save()
         })
 
+    },
+    async createBackupEmbed(guild) {
+        const channels = guild.channels.cache.filter(channel => channel.type === 'text');
+        const embeds = [] // {channelId: 'id', embeds: ['']}
+        for (const [id, channel] of channels) {
+            const messages = await channel.messages.fetch({limit: 5});
+            const embedMessages = messages.filter(msg => msg.embeds.length > 0)
+            let tempEmbed = [];
+            if (embedMessages.size > 0) {
+                embedMessages.forEach(msg => {
+                    tempEmbed.push(msg.embeds)
+                })
+                embeds.push({channelName: channel.name, channelId: channel.id, embeds: tempEmbed})
+
+            }
+        }
+        return embeds
+    },
+    async loadBackupEmbed(guild, {backupData}) {
+        for await(const channelBackup of backupData) {
+            const channel = guild.channels.cache.get(channelBackup.channelId) || guild.channels.cache.find(channel => channel.name === channelBackup.channelName);
+            if (!channel) break;
+            for (const embed of channelBackup.embeds[0]) {
+                channel.send({
+                    embed
+                });
+            }
+        }
+    },
+
+    async createBackupRole(guild, memberRole) {
+        const fetchedMember = await guild.fetchAllMembers();
+        const membersWithMoreThanMemberRole = fetchedMember.filter(member => member.roles.cache.size > 1 && member.roles.cache.has(memberRole))
+        const members = [] // {channelId: 'id', embeds: ['']}
+        for (const [id, member] of membersWithMoreThanMemberRole) {
+            const tempRoles = [];
+            for(const [id, role] of member.roles.cache){
+                tempRoles.push({name: role.name, id: role.id})
+            }
+
+            members.push({tag: member.user.tag, roles: tempRoles})
+            console.log(members)
+
+        }
+        return members
     }
 
 }

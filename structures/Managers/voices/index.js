@@ -44,7 +44,7 @@ class Voice extends Collection {
             }))
         })
         console.log(`Successfully loaded ${this.size} Voice.`)
-        this.autoReloadVoice(2500);
+        this.autoReloadVoice(1000*60);
     }
 
     getVoice(key) {
