@@ -142,30 +142,58 @@ module.exports = {
     async loadBackupEmbed(guild, {backupData}) {
         for await(const channelBackup of backupData) {
             const channel = guild.channels.cache.get(channelBackup.channelId) || guild.channels.cache.find(channel => channel.name === channelBackup.channelName);
-            if (!channel) break;
-            for (const embed of channelBackup.embeds[0]) {
-                channel.send({
-                    embed
-                });
+            if (channel) {
+                for (const embed of channelBackup.embeds[0]) {
+                    channel.send({
+                        embed
+                    });
+                }
             }
         }
     },
 
     async createBackupRole(guild, memberRole) {
-        const fetchedMember = await guild.fetchAllMembers();
-        const membersWithMoreThanMemberRole = fetchedMember.filter(member => member.roles.cache.size > 1 && member.roles.cache.has(memberRole))
+        const fetchedMember = await guild.members.fetch();
+        const membersWithMoreThanMemberRole = fetchedMember.filter(member => member.roles.cache.size > 1 && member.roles.cache.has(memberRole) && member.roles.highest.comparePositionTo(guild.me.roles.highest) <= 0)
         const members = [] // {channelId: 'id', embeds: ['']}
         for (const [id, member] of membersWithMoreThanMemberRole) {
             const tempRoles = [];
-            for(const [id, role] of member.roles.cache){
-                tempRoles.push({name: role.name, id: role.id})
+            if(!member.user.bot){
+                for (const [id, role] of member.roles.cache) {
+                    if (!role.managed && role.id !== guild.roles.everyone.id && role.id !== memberRole && !role.permissions.has('ADMINISTRATOR')) {
+                        tempRoles.push({name: role.name, id: role.id})
+                    }
+                }
+                if (tempRoles.length > 0) {
+                    members.push({tag: member.user.tag, id: member.id, roles: tempRoles})
+                }
             }
-
-            members.push({tag: member.user.tag, roles: tempRoles})
-            console.log(members)
-
         }
         return members
-    }
+    },
+    async loadBackupRole(guild, {backupData}) {
+        for (const memberBackup of backupData) {
+            const member = await guild.members.fetch(memberBackup.id);
+
+            if (member) {
+
+                let count = 0;
+                while (count < memberBackup.roles.length) {
+                    const roleBackup = memberBackup.roles[count];
+                    const role = guild.roles.cache.get(roleBackup.id) || guild.roles.cache.find(role => role.name === roleBackup.name);
+                    if (!member.roles.cache.has(role.id)) {
+                        await member.roles.add(role, `Backup roles load`).catch(() => {
+                        });
+                    }
+                    count++
+                    await this.sleep(memberBackup.roles.length * 1200)
+
+                }
+
+            }
+
+        }
+        return true
+    },
 
 }

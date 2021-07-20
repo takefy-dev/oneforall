@@ -45,7 +45,8 @@ class BackupManager {
         this.values = {
             ...this.where,
             backup : values.backup ? values.backup : [],
-            backupEmbed : values.backupEmbed ? values.backupEmbed : []
+            backupEmbed : values.backupEmbed ? values.backupEmbed : [],
+            backupRoles : values.backupRoles ? values.backupRoles : []
         }
 
     }

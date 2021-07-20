@@ -14,6 +14,11 @@ module.exports =  (database, DataTypes, modelName, config) => {
                 type : DataTypes.JSON,
                 allowNull: false,
                 defaultValue: '[]'
+            },
+            backupRoles: {
+                type : DataTypes.JSON,
+                allowNull: false,
+                defaultValue: '[]'
             }
         }, {
             tableName: modelName,
