@@ -2,7 +2,6 @@ const Event = require('../../structures/Handler/Event');
 const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 const moment = require('moment')
-// TODO vanity custom
 
 module.exports = class Ready extends Event {
     constructor() {
@@ -54,7 +53,7 @@ module.exports = class Ready extends Event {
                 let join = `${count.join}`;
                 let memberTotal = `${guild.memberCount}`
 
-                finalMsg = message.replace(/{invitedMention}/g, member).replace(/{inviterTag}/g, inviter.user.tag || inviter.user.username).replace(/{count}/g, join).replace(/{memberTotal}/g, memberTotal).replace(/{invitedTag}/g, member.user.tag || member.user.username).replace(/{inviterMention}/g, inviter).replace("${fake}", count.fake).replace(/{leave}/g, count.leave).replace(/{creation}/g, moment(member.user.createdAt).format("DD/MM/YYYY"));
+                finalMsg = message.replace(/{invitedMention}/g, member).replace(/{inviterTag}/g, inviter.user.tag || inviter.user.username).replace(/{count}/g, join).replace(/{memberTotal}/g, memberTotal).replace(/{invitedTag}/g, member.user.tag || member.user.username).replace(/{inviterMention}/g, inviter).replace(/{fake}/g, count.fake).replace(/{leave}/g, count.leave).replace(/{creation}/g, moment(member.user.createdAt).format("DD/MM/YYYY"));
                 while (finalMsg.includes("{space}")) {
                     finalMsg.replace(/{space}/g, space)
                 }

@@ -1,7 +1,6 @@
 const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms')
 const Discord = require('discord.js')
-let embed = new Discord.MessageEmbed()
 
 module.exports = {
     maintenance: `Le bot est en maintenance pendant quelques minutes`,
@@ -1362,7 +1361,12 @@ module.exports = {
     cleanUp : {
         wrongType : `Le cleanup ne peut être effectué dans un salon autre que vocal`,
         success: (channel) =>  `Le salon ${channel} **a été cleanup**`
-
+    },
+    reactionsToMessages: {
+        nochannel : `Vous devez spécifier un channel`,
+        noEmoji : `Vous devez spécifier au maximum 3 reactions`,
+        success : (channel, reactions) => `**Tous les messages envoyés** dans ${channel} auront ${reactions.length > 1 ? `des reactions (${reactions.join(', ')})`: `une reaction (${reactions.join(', ')})`}`,
+        successDelete : (channel) => `Les messages dans ${channel} ne recevront plus de reactions`
     }
 
 

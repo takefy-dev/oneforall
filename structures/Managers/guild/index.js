@@ -181,7 +181,8 @@ class GuildManager {
                 muteDiviseur: 0.5,
                 logs: 'Non définie'
             },
-            coinsShop : values.coinsShop ? values.coinsShop : [{id: 0, item: this.lang.addShop.nothingInShop, price: undefined, role: undefined}]
+            coinsShop : values.coinsShop ? values.coinsShop : [{id: 0, item: this.lang.addShop.nothingInShop, price: undefined, role: undefined}],
+            reactionsToMessages : values.reactionsToMessages ? values.reactionsToMessages : [],
         }
         this.cachedInv = new Collection()
         this.snipes = new Collection()

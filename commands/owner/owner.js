@@ -113,7 +113,7 @@ module.exports = class Test extends Command {
                         slicerIndicatorMax += maxPerPage * totalPage
                     }else if((slicerIndicatorMax >= maxPerPage * totalPage || slicerIndicatorMin >= maxPerPage * totalPage) && page === 0){
                         slicerIndicatorMin = 0
-                        slicerIndicatorMax = 10
+                        slicerIndicatorMax = maxPerPage
                     }
 
                     msg.edit({

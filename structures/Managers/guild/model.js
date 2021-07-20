@@ -221,6 +221,10 @@ module.exports =  (database, DataTypes, modelName, config) => {
             coinsShop : {
                 type: DataTypes.JSON,
                 allowNull: true,
+            },
+            reactionsToMessages : {
+                type: DataTypes.JSON,
+                allowNull: true
             }
 
 

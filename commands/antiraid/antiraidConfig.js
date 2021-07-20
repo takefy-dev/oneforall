@@ -30,7 +30,7 @@ module.exports = class Test extends Command {
                 enable[name] = true;
             }
             guildData.set('antiraid', antiraidConfig).save().then(async () => {
-                const msg =await message.channel.send(lang.antiraidConfig.allOn)
+                const msg = await message.channel.send(lang.antiraidConfig.allOn)
                 setTimeout(() => {
                     msg.delete()
                 }, 2000)
@@ -44,7 +44,7 @@ module.exports = class Test extends Command {
                 enable[name] = false;
             }
             guildData.set('antiraid', antiraidConfig).save().then(async () => {
-                const msg =await message.channel.send(lang.antiraidConfig.allOn)
+                const msg = await message.channel.send(lang.antiraidConfig.allOn)
                 setTimeout(() => {
                     msg.delete()
                 }, 2000)
@@ -114,13 +114,13 @@ module.exports = class Test extends Command {
             config["vanityUpdate"] = "ban"
             bypass["vanityUpdate"] = false
 
-           guildData.set('antiraid', antiraidConfig).save().then(async () => {
-               const msg = await message.channel.send(lang.antiraidConfig.opti)
-               setTimeout(() => {
-                   msg.delete()
-               }, 2000)
+            guildData.set('antiraid', antiraidConfig).save().then(async () => {
+                const msg = await message.channel.send(lang.antiraidConfig.opti)
+                setTimeout(() => {
+                    msg.delete()
+                }, 2000)
 
-           })
+            })
         }
         if (args[0] === "config") {
             const msg = await message.channel.send(lang.loading)
@@ -136,13 +136,16 @@ module.exports = class Test extends Command {
             let fields = []
             let {enable, config, bypass} = antiraidConfig;
             let arrayEnable = Object.entries(enable)
-            let page = 0
+            let page = 0;
+            let slicerIndicatorMin = 0,
+                slicerIndicatorMax = 9,
+                maxPerPage = 9
             const initFields = (renew) => {
                 if (renew) fields = [];
                 let i = 0;
                 for (const [name, isEnable] of Object.entries(enable)) {
                     i++
-                    if (i > 9) i = 1
+                    if (i > maxPerPage) i = 1
                     fields.push({
                         name: `${i} ・ ${name}`,
                         value: `Actif: ${emojiEnable[isEnable]}`
@@ -178,16 +181,24 @@ module.exports = class Test extends Command {
                     }
                 }
             }
+            let totalPage = Math.ceil(arrayEnable.length / maxPerPage)
             let embed = (page) => {
                 initFields(true)
+                if(slicerIndicatorMax < 0 || slicerIndicatorMin < 0) {
+                    slicerIndicatorMin += maxPerPage * totalPage
+                    slicerIndicatorMax += maxPerPage * totalPage
+                }else if((slicerIndicatorMax >= maxPerPage * totalPage || slicerIndicatorMin >= maxPerPage * totalPage) && page === 0){
+                    slicerIndicatorMin = 0
+                    slicerIndicatorMax = maxPerPage
+                }
                 return [{
 
-                    fields: fields.slice(page === 0 ? 0 : 9, page === 0 ? 9 : fields.length),
+                    fields: fields.slice(slicerIndicatorMin, slicerIndicatorMax),
 
                     color,
                     timestamp: new Date(),
                     footer: {
-                        text: `Antiraid Config  ${page < 1 ? 1 : 2}/${parseInt(arrayEnable.length / 9)}`,
+                        text: `Antiraid Config  ${page + 1}/${totalPage}`,
                         icon_url: message.author.displayAvatarURL({dynamic: true}) || ''
                     },
                 },
@@ -197,7 +208,7 @@ module.exports = class Test extends Command {
             let editMenu = async (index, subMenu) => {
 
                 await subMenu.reactions.removeAll()
-                let pageSection = fields.slice(page === 0 ? 0 : 9, page === 0 ? 9 : fields.length)
+                let pageSection = fields.slice(slicerIndicatorMin, slicerIndicatorMax)
                 const name = pageSection[index].name.split('・')[1]
                 let splitedValue = pageSection[index].value.split('\n').filter(x => x !== "")
                 const eventName = name.split(' ')[1]
@@ -307,7 +318,7 @@ module.exports = class Test extends Command {
                                     mp.delete()
                                     msg.delete()
                                     initFields(true)
-                                    pageSection = fields.slice(page === 0 ? 0 : 9, page === 0 ? 9 : fields.length)
+                                    pageSection = fields.slice(slicerIndicatorMin, slicerIndicatorMax)
                                     putEmoji()
                                     return subMenu.edit('', {
                                         embed: {
@@ -327,7 +338,7 @@ module.exports = class Test extends Command {
 
                     }
                     initFields(true)
-                    pageSection = fields.slice(page === 0 ? 0 : 9, page === 0 ? 9 : fields.length)
+                    pageSection = fields.slice(slicerIndicatorMin, slicerIndicatorMax)
                     putEmoji()
 
                     return await subMenu.edit('', {
@@ -356,7 +367,7 @@ module.exports = class Test extends Command {
             saveCollector.on('collect', async r => {
                 await r.users.remove(message.author);
                 if (r.emoji.name === '✅') {
-                    await guildData.set('antiraid',antiraidConfig).save()
+                    await guildData.set('antiraid', antiraidConfig).save()
                     const replyMsg = message.channel.send(lang.antiraidConfig.savedmsg);
                     setTimeout(async () => {
                         await saveCollector.stop();
@@ -369,21 +380,16 @@ module.exports = class Test extends Command {
                 const collector = m.createReactionCollector(filter, {time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
+
                     if (r.emoji.name === emojis[0]) {
-                        if (page < 1) {
-                            page = 1
-                        } else {
-                            page--
-                        }
-
-
+                        page = page === 0 ? page = totalPage - 1 : page <= totalPage - 1 ? page -= 1 : page += 1
+                        slicerIndicatorMin -= maxPerPage
+                        slicerIndicatorMax -= maxPerPage
                         return msg.edit('', {embed: embed(page)[0]})
                     } else if (r.emoji.name === emojis[emojis.length - 2]) {
-                        if (page >= arrayEnable.length / 9) {
-                            page = 0
-                        } else {
-                            page++
-                        }
+                        page = page !== totalPage - 1 ? page += 1 : page = 0
+                        slicerIndicatorMin += maxPerPage
+                        slicerIndicatorMax += maxPerPage
 
 
                         return msg.edit('', {embed: embed(page)[0]})
