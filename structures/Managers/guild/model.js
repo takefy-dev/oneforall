@@ -34,6 +34,7 @@ module.exports =  (database, DataTypes, modelName, config) => {
                         regionUpdate: false,
                         nameUpdate: false,
                         vanityUpdate: false,
+                        antiToken : false,
                     },
                     config: {
                         webhookUpdate: 'unrank',
@@ -53,11 +54,13 @@ module.exports =  (database, DataTypes, modelName, config) => {
                         antiDecoLimit: 5,
                         antiKick: 'unrank',
                         antiKickLimit: 5,
-                        antiDc: 'unrank',
+                        antiDc: 'kick',
                         antiDcLimit: '1d',
                         regionUpdate: 'unrank',
                         nameUpdate: 'unrank',
                         vanityUpdate: 'unrank',
+                        antiToken : 'kick',
+                        antiTokenLimit: '10/10s',
                     },
                     bypass: {
                         webhookUpdate: false,
@@ -78,6 +81,7 @@ module.exports =  (database, DataTypes, modelName, config) => {
                         regionUpdate: false,
                         nameUpdate: false,
                         vanityUpdate: false,
+                        antiToken: false,
                     }
                 }
             },

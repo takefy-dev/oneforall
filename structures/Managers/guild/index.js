@@ -74,6 +74,7 @@ class GuildManager {
                         regionUpdate: false,
                         nameUpdate: false,
                         vanityUpdate: false,
+                        antiToken : false,
                     },
                     config: {
                         webhookUpdate: 'unrank',
@@ -93,11 +94,13 @@ class GuildManager {
                         antiDecoLimit: 5,
                         antiKick: 'unrank',
                         antiKickLimit: 5,
-                        antiDc: 'unrank',
+                        antiDc: 'kick',
                         antiDcLimit: '1d',
                         regionUpdate: 'unrank',
                         nameUpdate: 'unrank',
                         vanityUpdate: 'unrank',
+                        antiToken : 'kick',
+                        antiTokenLimit: '10/10s',
                     },
                     bypass: {
                         webhookUpdate: false,
@@ -118,6 +121,7 @@ class GuildManager {
                         regionUpdate: false,
                         nameUpdate: false,
                         vanityUpdate: false,
+                        antiToken: false,
                     }
                 },
             color: values.color ? values.color : "#36393F",

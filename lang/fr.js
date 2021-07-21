@@ -799,6 +799,7 @@ module.exports = {
         limitQ: `Quelle est la limite pour cet évènement ?`,
         sanctionQ: `Quelle est la sanction pour cet événement ? (ban/unrank/kick)`,
         antiDcError: `Vous devez entrer uniquement un temps valide (1d, 1w)`,
+        antiTokenError: `Vous devez entrer uniquement des chiffres par un temps \`Exemple: 10/10m\``,
         limitError: `Vous devez entrer une limite valide`,
         antiDcUnrank: `Vous ne pouvez pas mettre cette sanction`,
         noVote: `<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,
@@ -1133,6 +1134,14 @@ module.exports = {
             .setDescription(`${executor || executor.user.tag || executor.user.username} a été mute pour spam :\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
             .addField('CHANNEL', `<#${channel}>`)
             .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nChannel = ${channel}\`\`\``)
+            .setTimestamp()
+            .setFooter("🕙")
+            .setColor(color),
+
+        antiToken: (member, color, sanction) => new Discord.MessageEmbed()
+            .setAuthor(member.user.tag || member.user.username, member.user.tag ? member.user.displayAvatarURL({dynamic: true}) : '')
+            .setDescription(`${member || member.user.tag || member.user.username} a été kick car trop de personne on rejoins en peu de temps :\n${!sanction ? '' : `**SANCTION:** ${sanction}`}`)
+            .addField(`ID:`, `\`\`\`js\nMember = ${member.id}\`\`\``)
             .setTimestamp()
             .setFooter("🕙")
             .setColor(color),

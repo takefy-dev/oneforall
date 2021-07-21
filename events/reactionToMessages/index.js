@@ -11,6 +11,7 @@ module.exports = class Ready extends Event {
     }
 
     async run(client, message) {
+        if(!message.guild) return
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const reactionToMessages = guildData.get('reactionsToMessages');
         if (!reactionToMessages.length || message.author.bot) return;

@@ -300,6 +300,20 @@ module.exports = class Test extends Command {
                                             if (isNaN(msg.content.split('')[0]) || !msg.content.endsWith('s') || !msg.content.endsWith('m') || !msg.content.endsWith('h') || !msg.content.endsWith('d') || !msg.content.endsWith('w') || !msg.content.endsWith('y')) {
                                                 return message.channel.send(lang.antiraidConfig.antiDcError)
                                             }
+                                        }else if(eventName === 'antiToken') {
+                                            if (!msg.content.endsWith('s') && !msg.content.endsWith('m') && !msg.content.endsWith('h') && !msg.content.endsWith('d') && !msg.content.endsWith('w') && !msg.content.endsWith('y')) {
+                                                console.log('heys')
+
+                                                return message.channel.send(lang.antiraidConfig.antiTokenError)
+                                            }
+                                            const args = msg.content.split('/')
+                                            const limit = args[0];
+                                            const time = args[1];
+                                            if(!limit && !time && isNaN(limit)){
+                                                console.log('hey')
+                                                return message.channel.send(lang.antiraidConfig.antiTokenError)
+                                            }
+
                                         } else {
                                             if (isNaN(!msg.content)) {
                                                 return message.channel.send(lang.antiraidConfig.limitError)
