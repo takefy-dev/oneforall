@@ -6,7 +6,7 @@ module.exports = class Test extends Command {
             name: 'reaction',
             description: 'Add reactions to messages sent in a channel | Ajoute des reactions aux messages envoyé dans un salon',
             category: 'misc',
-            usage: 'reaction add <channel/id> <reactions up to 3>',
+            usage: 'reaction <add / remove> <channel/id> <reactions up to 3>',
             clientPermissions: [''],
             userPermissions: ['MANAGE_MESSAGES'],
             cooldown: 2

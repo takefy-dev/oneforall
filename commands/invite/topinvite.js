@@ -9,7 +9,7 @@ module.exports = class Test extends Command {
             description: 'Display the 10 member invites || Affiche le top 10 des invits',
             category: 'invite',
             usage: 'topinvite',
-            aliases: ['invlb', 'topinv'],
+            aliases: ['invlb', 'topinv', 'topinvites'],
             clientPermissions: ['EMBED_LINKS'],
             cooldown: 3
         });

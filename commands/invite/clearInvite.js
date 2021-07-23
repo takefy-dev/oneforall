@@ -9,7 +9,7 @@ module.exports = class Test extends Command{
             description: "Clear all invite server or a member  | Supprimé toutes les invites du server ou d'un membre",
             category: 'invite',
             usage: 'clearinvite [mention/id]',
-            aliases: ['clearinv', 'resetinv'],
+            aliases: ['clearinv', 'resetinv', 'clearinvites'],
             userPermissions: ['ADMINISTRATOR'],
             guildOwnerOnly : true,
             cooldown: 7

@@ -8,7 +8,7 @@ module.exports = class Test extends Command{
             name: 'addinvite',
             description: 'Add some invites to a member | Ajouter des invites a un membre',
             category: 'invite',
-            aliases: ['addinv'],
+            aliases: ['addinv', 'addinvites'],
             usage: 'addinvite <mention/ping> <amount>',
             userPermissions: ['ADMINISTRATOR'],
             cooldown: 3
