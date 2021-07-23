@@ -8,8 +8,8 @@ module.exports = class Test extends Command{
             name: 'rminvite',
             description: 'Add some invites to a member | Ajouter des invites a un membre',
             category: 'invite',
-            aliases: ['removeinvite', 'removeinv',  'rminv'],
-            usage: 'addinvite <mention/ping> <amount>',
+            aliases: ['removeinvite', 'removeinv',  'rminv', 'removeinvites'],
+            usage: 'removeinvite <mention/ping> <amount>',
             userPermissions: ['ADMINISTRATOR'],
             cooldown: 3
         });
