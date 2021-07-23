@@ -172,8 +172,8 @@ class GuildManager {
                 commands: {
                     perm1: ['clear', 'warn', 'unwarn', 'warnlist', 'warnsettings', 'mute', 'mutelist', 'tempmute', 'unmute', 'addemoji', 'rmemoji'],
                     perm2: ['ban', 'kick', 'lockchannel', 'unban', 'clear', 'alladmin', 'allbot', 'banlist'],
-                    perm3: ['derank', 'nuke', 'say', 'soutien', 'gcreate', 'greroll'],
-                    perm4: ['addinvite', 'clearinvite', 'removeinvite', 'compteur', 'embedBuilder', 'massiverole', 'reactionRoleMenu', 'role', 'tempvoc', 'setcolor', 'webhook']
+                    perm3: ['derank', 'nuke', 'say', 'soutien', 'gcreate', 'greroll', 'voicekick', 'glist', 'gend'],
+                    perm4: ['cleanup', 'piconly', 'addinvite', 'clearinvite', 'removeinvite', 'compteur', 'embedBuilder', 'massiverole', 'reactionRoleMenu', 'role', 'tempvoc', 'setcolor', 'webhook']
                 },
                 enable: false
             },
