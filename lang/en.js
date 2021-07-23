@@ -750,88 +750,6 @@ module.exports = {
         noCoins : `Nobody has coins on the server.`
     },
 
-    music:{
-        filter: {
-            noArgs: `<a:music:822494244434214982> \`ERREUR\` You must choose an effect option \`3d, bassboost, echo, karaoke, nightcore, vaporwave, flanger, gate,haas, reverse, surround, mcompand, phaser, tremolo, earwax\``,
-            success: (addedFilter, filter) => `<a:music:822494244434214982> Success the filter ${addedFilter} has been added to the filter list (${filter || "Off"}) `,
-            successOff: `<a:music:822494244434214982> The filter is deactivated`,
-
-        },
-        requestedBy : `Asked by:`,
-        playing : `<a:music:822494244434214982> Playing`,
-        nothingInQueue : `<a:music:822494244434214982> There is nothing in the queue at the moment `,
-        play:{
-            noMusic: `<a:music:822494244434214982> \`ERROR\` You must enter a url or a music to search  !`
-        },
-        pause:{
-            unPause : `<a:music:822494244434214982> Music is no longer paused`,
-            pause : `<a:music:822494244434214982> Music is now paused `,
-        },
-        queue : `<a:music:822494244434214982> **Server Queue**`,
-        skip : `<a:music:822494244434214982> Skipped! I play now:`,
-        repeatMode : (mode) => `<a:music:822494244434214982> Loop mode is now set to \`${mode}\``,
-        stop : `<a:music:822494244434214982> The music is now stopped `,
-        volume :{
-            notNumber : `<a:music:822494244434214982> \`ERROR\` Please enter a valid number `,
-            changed : (volume) => `<a:music:822494244434214982> The volume is now set for \`${volume}%\``
-        },
-        noAvgRate :`Aucune information disponible`,
-        lyrics :{
-            notFound : `<a:music:822494244434214982> \`ERROR\` No lyrics found for: `
-        },
-        currentPlaying: {
-            timeLeft : `Temps restant:`,
-        },
-        autoplay: {
-            missingArgs : `<a:music:822494244434214982> \`ERROR\` Please enter \`on\` or \`off\`.`,
-            on : `<a:music:822494244434214982> Autoplay is now activated`,
-            off : `<a:music:822494244434214982> Autoplay is now disabled `,
-            alreadyOn : `<a:music:822494244434214982> \`ERROR\` Autoplay is already activated `,
-            alreadyOff : `<a:music:822494244434214982> \`ERROR\` Autoplay is already disabled `,
-        },
-        events :{
-            addToQueue : {
-                add: (songName, time, url) => `<a:music:822494244434214982> I added [${songName} - \`${time}\`](${url}) in the queue`
-            },
-            empty : `No one is in the channel. I leave him`,
-
-
-        },
-        importPlaylist:{
-            description : `Do you want to import this playlist into your personal playlist ?`,
-            nameQ : `What should be the name of this playlist ?`,
-            success : `The playlist has been saved`,
-            toManySongs : `Your playlist has too much music, please take another one with less music (35 max)`
-        },
-        search : {
-            searching : `<a:music:822494244434214982> Browsing the web ...`,
-            title : `List of music found:`,
-            noArgs: `<a:music:822494244434214982> \`ERREUR\` Please enter something to look for it`,
-            nothingFound: `<a:music:822494244434214982> \`ERREUR\` Nothing was found`,
-            end: `<a:music:822494244434214982> The search is finished`
-        },
-        playlist:{
-            noPlaylist: `<a:music:822494244434214982> \`ERREUR\` You do not have a saved playlist to save it, do \`!play <playlistUrl>\``,
-            noPlaylistName : `<a:music:822494244434214982> \`ERREUR\` You must enter the name of one of your playlists.`,
-            notFound : `<a:music:822494244434214982> \`ERREUR\` This playlist is not part of your playlist .`,
-            urlQ : (name) => `<a:music:822494244434214982> What is the url of the music to add to the playlist  ${name} ?`,
-            urlPlaylistQ: `<a:music:822494244434214982> What is the url of the playlist to import?`,
-            provideOnlyValidUrl: `<a:music:822494244434214982> \`ERREUR\` Please enter only valid urls \`(youtube)\``,
-            successAdd : (name) => `The music has been added to the playlist ${name}`,
-            successImport: (name) => `<a:music:822494244434214982> La playlist a bien été importé avec le nom ${name}`,
-            successDelete: (name) => `<a:music:822494244434214982> La playlist ${name} a bien été supprimé`,
-            successRemove: (name) => `<a:music:822494244434214982> J'ai enlevé la music souhaité de ${name}`,
-            successCreate: (name) => `<a:music:822494244434214982> J'ai créé la playlist ${name}`,
-            playlistToLong: `<a:music:822494244434214982> La playlist comporte plus de 50 musics, je prend les 50 premières musics`,
-            removeQ: `<a:music:822494244434214982> Quel est l'url de la music à enlever (cancel pour annuler)`,
-            songNotFound: `<a:music:822494244434214982> La music à supprimer n'est pas dans cette playlist`,
-            toManyPlaylist: `<a:music:822494244434214982> \`ERREUR\` Vous ne pouvez pas avoir plus de 10 playlist`,
-            alreadyName: `<a:music:822494244434214982> \`ERREUR\` Une playlist comportant déjà ce nom existe veuillez choisir un autre nom de playlist`,
-            createQ: `<a:music:822494244434214982> Quel est la première music à ajouter dans votre playlist ?`
-        },
-        shuffle: `<a:music:822494244434214982> The musics will be played randomly `
-    },
-
     logs: {
         reactRolePerm: (executor, color, message, link) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
@@ -1091,15 +1009,15 @@ module.exports = {
 
     },
     perm: {
-        noPermEnough : `Vous n'avez pas assez de permissions`,
-        permNotFound : `La nom de la perm est invalide (1,2,3,4,everyone)`,
-        commandNotFound: `La nom de la commande est introuvable`,
-        noRoleConfig : `Aucun role n'est spécifié pour cette perm`,
-        noRole: `Aucun rôle`,
-        noCommand : `Aucune commandes`,
-        noSetup : (prefix) => `Les perm ne sont pas configuré veuillez faire la commande ${prefix}permconfig`,
-        successCommand : (name, perm) =>  `La commande **${name}** est maintenant en perm __${perm}__`,
-        setupPerm: (role, perm) => `Le role **${role}** est maintenant en perm **${perm}**`,
-        enable: (type) => `Les perm sont maintenant ${type}`
+        noPermEnough : `You don't have enough permissions`,
+        permNotFound : `Perm name is invalid (1,2,3,4,everyone)`,
+        commandNotFound: `The command name could not be found`,
+        noRoleConfig : `No role is specified for this perm `,
+        noRole: `No role`,
+        noCommand : `No commands`,
+        noSetup : (prefix) => `Perms are not configured please use ${prefix}permconfig`,
+        successCommand : (name, perm) =>  `The command **${name}** is now in perm __${perm}__`,
+        setupPerm: (role, perm) => `The role **${role}** is now in perm **${perm}**`,
+        enable: (type) => `Perms are now  ${type}`
     }
 }
