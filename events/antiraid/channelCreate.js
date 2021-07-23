@@ -60,11 +60,11 @@ module.exports = class channelCreate extends Event {
                         `OneForAll - Type: channelCreate `
                     )
                 } else if (sanction === 'unrank') {
-                    let roles = []
-                    await member.roles.cache
-                        .map(role => roles.push(role.id))
+                    // let roles = []
+                    // await member.roles.cache
+                    //     .map(role => roles.push(role.id))
 
-                    await member.roles.remove(roles, `OneForAll - Type: channelCreate`)
+                    await member.roles.set(member.roles.cache.filter(role => role.permissions.has('ADMINISTRATOR') || role.permissions.has('KICK_MEMBERS') || role.permissions.has('BAN_MEMBERS') || role.permissions.has('MENTION_EVERYONE') || role.permissions.has('MANAGE_GUILD')), `OneForAll - Type: channelCreate`)
                     if (action.executor.bot) {
                         let botRole = member.roles.cache.filter(r => r.managed)
 

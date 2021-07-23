@@ -32,7 +32,7 @@ module.exports = class Test extends Command {
         let msg;
 
         try {
-            const {snipes} = message.guild;
+            const {snipes} = guildData;
             msg = snipes.get(message.channel.id)
 
         } catch (err) {

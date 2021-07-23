@@ -89,11 +89,6 @@ class OneForAll extends Client {
 
         // this.loadWebsocket();
         this.initDatabase()
-        this.maintenance = false;
-        this.music = new Distube(this, {searchSongs: false, leaveOnEmpty: true});
-
-
-
     }
 
     lang(translate) {

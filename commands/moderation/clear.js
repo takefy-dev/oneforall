@@ -57,7 +57,9 @@ module.exports = class Test extends Command {
                 await client.functions.sleep(1000)
             }
             const msg = await message.channel.send(lang.clear.success(deleteAmount))
-
+            setTimeout(() => {
+                msg.delete();
+            }, 5000)
             async function clearMoreThan100(channel, limit) {
                 let collected = await channel.messages.fetch({limit});
                 let deletedMsg = 0;
@@ -72,9 +74,7 @@ module.exports = class Test extends Command {
                         }
                         deletedMsg += deleted;
                     }
-                    setTimeout(() => {
-                        msg.delete();
-                    }, 5000)
+
                 } else return 0;
             }
         }

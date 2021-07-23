@@ -26,7 +26,7 @@ module.exports = class Test extends Command {
         let success;
 
 
-        if (args[0].toLowerCase() !== 'off') {
+        if (args[0] && args[0].toLowerCase() !== 'off') {
             const channels = message.guild.channels.cache
             channels.forEach(channel => {
                 channel.edit({
@@ -41,7 +41,7 @@ module.exports = class Test extends Command {
             setTimeout(() => {
                 success.delete();
             }, 5000)
-        } else if (args[0].toLowerCase() === "off") {
+        } else if (args[0] && args[0].toLowerCase() === "off") {
             const channels = message.guild.channels.cache
             channels.forEach(channel => {
                 channel.edit({

@@ -85,6 +85,13 @@ module.exports =  (database, DataTypes, modelName, config) => {
                     }
                 }
             },
+            antiraidLimits : {
+              type: DataTypes.JSON,
+              allowNull: true,
+              defaultValue: {
+                  antiToken : {recentJoined: [], counter:0}
+              }
+            },
             muteRoleId: {
                 type: DataTypes.STRING(25),
                 allowNull: true,

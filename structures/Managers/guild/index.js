@@ -74,7 +74,7 @@ class GuildManager {
                         regionUpdate: false,
                         nameUpdate: false,
                         vanityUpdate: false,
-                        antiToken : false,
+                        antiToken: false,
                     },
                     config: {
                         webhookUpdate: 'unrank',
@@ -99,7 +99,7 @@ class GuildManager {
                         regionUpdate: 'unrank',
                         nameUpdate: 'unrank',
                         vanityUpdate: 'unrank',
-                        antiToken : 'kick',
+                        antiToken: 'kick',
                         antiTokenLimit: '10/10s',
                     },
                     bypass: {
@@ -124,6 +124,9 @@ class GuildManager {
                         antiToken: false,
                     }
                 },
+            antiraidLimits: values.antiraidLimits ? values.antiraidLimits : {
+                antiToken: {recentJoined : [], counter: 0}
+            },
             color: values.color ? values.color : "#36393F",
             setup: values.setup ? values.setup : false,
             muteRoleId: values.muteRoleId ? values.muteRoleId : null,
@@ -178,15 +181,20 @@ class GuildManager {
                 enable: false
             },
             reactroles: values.reactroles ? values.reactroles : [],
-            piconly : values.piconly ? values.piconly : [],
-            coinsSettings : values.coinsSettings ? values.coinsSettings :  {
+            piconly: values.piconly ? values.piconly : [],
+            coinsSettings: values.coinsSettings ? values.coinsSettings : {
                 enable: false,
                 streamBoost: 1.5,
                 muteDiviseur: 0.5,
                 logs: 'Non définie'
             },
-            coinsShop : values.coinsShop ? values.coinsShop : [{id: 0, item: this.lang.addShop.nothingInShop, price: undefined, role: undefined}],
-            reactionsToMessages : values.reactionsToMessages ? values.reactionsToMessages : [],
+            coinsShop: values.coinsShop ? values.coinsShop : [{
+                id: 0,
+                item: this.lang.addShop.nothingInShop,
+                price: undefined,
+                role: undefined
+            }],
+            reactionsToMessages: values.reactionsToMessages ? values.reactionsToMessages : [],
         }
         this.cachedInv = new Collection()
         this.snipes = new Collection()
