@@ -469,44 +469,44 @@ module.exports = {
         title : (bots) => `Number of bots : ${bots}`,
     },
     warn: {
-        warnDm: (tag, reason, amount) => `Vous avez été warn par **${tag}** pour ${reason}, vous avez au total : \`${amount}\` warn(s)`,
-        warnSuccess: (tag, reason, amount) => `J'ai warn **${tag}** pour ${reason}, **${tag}** est actuellement à ${amount} warn(s)`,
-        banDm: (amount, serverName) => `Vous avez été banni de **${serverName}** car vous avez atteind la limite de warn avec \`(${amount})\` warn(s)  `,
-        kickDm: (amount, serverName) => `Vous avez été kick de **${serverName}** car vous avez atteind la limite de warn avec \`(${amount})\` warn(s)  `,
-        muteDm: (amount, serverName) => `Vous avez été mute de **${serverName}** car vous avez atteind la limite de warn avec \`(${amount})\` warn(s)  `,
+        warnDm: (tag, reason, amount) => `You have been warn by **${tag}** for ${reason}, you have in total: \`$ {amount}\` warn(s)`,
+        warnSuccess: (tag, reason, amount) => `I have warn **${tag}** for ${reason}, **${tag}** is currently at ${amount} warn(s)` ,
+        banDm: (amount, serverName) => `You were banned from ** $ {serverName} ** because you reached the warn limit with \` ($ {amount}) \` warn (s)`,
+        kickDm: (amount, serverName) => `You were kicked by **${serverName}** because you reached the warn limit with \`(${amount})\` warn(s)`,
+        muteDm: (amount, serverName) => `You have been muted from **${serverName}** because you have reached the warn limit with \`(${amount})\` warn (s)`, 
 
-        settingsTitle: `Configuration des warns`,
+        settingsTitle: `Warns configuration`,
         description: (ban, kick, mute) => ` \n
-        Cliquez sur les reactions pour pouvoir configurer les warns !
-        Pour mettre aucune sanction il suffit de mettre __0__
+        Click on the reactions to be able to configure the warns!
+        To put no sanction, just put __0__ 
 
-        \`💥\` ・ Modifier le nombre de warn avant de ban
+        \`💥\` ・ Modify the number of warn before ban
         ***${ban}***\n
-        \`💢\` ・ Modifier le nombre de warn avant de kick
+        \`💢\` ・ Modify the number of warn before kick 
         ***${kick}***\n
-        \`😶\` ・ Modifié le  nombre de warn avant de mute
+        \`😶\` ・ Modify the number of warn before mute 
         **${mute}**\n
         
-        \`❌\` ・ Fermer le menu\n
-        \`✅\` ・ Sauvegarder la configuration
+        \`❌\` ・ Close menu\n
+        \`✅\` ・ Save configuration
         `,
-        banQ: `Quel doit être le nouveau nombre de warn avant de ban ? **Cancel pour annuler**`,
-        onlyNumber: `Vous devez entrer uniquement des nombres`,
-        kickQ: `Quel doit être le nouveau nombre de warn avant de kick ? **Cancel pour annuler**`,
-        muteQ: `Quel doit être le nouveau nombre de warn avant de mute ? **Cancel pour annuler**`,
-        cancel: `La configuration du nombre de warn a été annulé`,
-        save: `La configuration a été sauvegardé`,
-        error: `J'ai rencontré une erreur lors de la mis à jour`,
-        listTitle: (tag) => `Liste des warns de ${tag}`,
-        reason: `Raison`,
-        noWarn: `Aucun warn enregistré`,
-        nothingToClear: `Il n'y a aucun warn a clear sur ce membre`,
-        successClear: (tag) => `J'ai clear tout les warns de ${tag}`,
-        amountHigherThanWarnTotal: `Le nombre de warn à supprimer est supérieur au nombre total de warn que ce membre possède`,
-        successClearAmount: (tag, amount) => `J'ai clear __${amount}__ warn(s) de **${tag}**`,
-        warnNotFound: `Le warn n'existe pas`,
-        successDelete: (tag, amount) => `J'ai enlevé le warn numéro ${amount} a **${tag}**`,
-        noReason: "Aucune raison spécifique",
+        banQ: `What should the new warn count be before ban? **cancel to cancel**`,
+        onlyNumber: `You must enter only numbers`,
+        kickQ: `What must be the new number of warns before kick? **cancel to cancel ** `,
+        muteQ: `What should the new warn count be before mute? **cancel to cancel ** `,
+        cancel: `The configuration of the number of warns has been canceled`,
+        save: `The configuration has been saved`,
+        error: `I encountered an error while updating`,
+        listTitle: (tag) => `List of warns of ${tag}`,
+        reason: `Reason`,
+        noWarn: `No warn saved`,
+        nothingToClear: `There is no warn a clear on this member`,
+        successClear: (tag) => `I have cleared all the warns of $ {tag}`,
+        amountHigherThanWarnTotal: `The number of warns to remove is greater than the total number of warns this member has`,
+        successClearAmount: (tag, amount) => `I have clear __ $ {amount} __ warn (s) of ** $ {tag} **`,
+        warnNotFound: `The warn does not exist`,
+        successDelete: (tag, amount) => `I removed the warn number $ {amount} a ** $ {tag} **`,
+        noReason: "No specific reason", 
         notNumber: `You must enter the warn number to delete`,
         noMember: "<:720681441670725645:780539422479351809> `ERROR` You must specify a member (`\mention / id`\)",
         noGuildWarn: `No warn on this server `
@@ -1019,5 +1019,205 @@ module.exports = {
         successCommand : (name, perm) =>  `The command **${name}** is now in perm __${perm}__`,
         setupPerm: (role, perm) => `The role **${role}** is now in perm **${perm}**`,
         enable: (type) => `Perms are now  ${type}`
-    }
+    },
+    enable: {
+        eventNotFound: (event) => `**${event}** n'existe pas essayer un autre event`,
+        success: (event) => `**${event}** est maintenant activé`
+    },
+    disable: {
+        success: (event) => `**${event}** est maintenant désactivé`
+    },
+    sanction: {
+        notCorrectSanction: `Veuillez specifier une sanction correct \`(ban/kick/unrank)\``,
+        success: (event, sanction) => `Vous avez modifier la sanction de l'évènement **${event}** pour **${sanction}**`
+    },
+    bypass: {
+        success: (event, enable) => `Les whitelist${!enable ? ' ne ' : ''}bypass${!enable ? ' pas ' : ''}l'évènement **${event}**`
+    },
+    perm: {
+        noPermEnough: `Vous n'avez pas assez de permissions`,
+        permNotFound: `La nom de la perm est invalide (1,2,3,4,everyone)`,
+        commandNotFound: `La nom de la commande est introuvable`,
+        noRoleConfig: `Aucun role n'est spécifié pour cette perm`,
+        noRole: `Aucun rôle`,
+        noCommand: `Aucune commandes`,
+        noSetup: (prefix) => `Les perm ne sont pas configuré veuillez faire la commande ${prefix}permconfig`,
+        successCommand: (name, perm) => `La commande **${name}** est maintenant en perm __${perm}__`,
+        setupPerm: (role, perm) => `Le role **${role}** est maintenant en perm **${perm}**`,
+        enable: (type) => `Les perm sont maintenant ${type}`,
+        removePerm: (perm, role) => `Le role **${role}** n'est plus dans la perm ${perm}`,
+        alreadyExist: `Le role est déjà dans la perm`
+    },
+    roleEmbed: {
+        typeError: (type, types) => `The embed role ${type ? `**${type}**` : ''} there is no such thing as **${types}**`,
+        toSearch: {
+            sexe: ['boy', 'girl'],
+            situation: ['in couple', 'single', 'complicated'],
+            age: ['major', 'minor'],
+            color: ['green', 'yellow', 'red', 'orange', 'white', 'black', 'purple', 'blue']
+        },
+        embeds: {
+            sexe: (male, female, color) => {
+                return {
+                    embed:
+                        {
+                            title: "Role Gender :fish_cake:",
+                            description: `**Click on the reaction below that suits you**\n\n${male && female ? `<@&${male}>\n<@&${female}>` : '{roles}'}`,
+                            color: color
+                        }
+
+                }
+            },
+            situation: (couple, difficult, single, color) => {
+                return {
+
+                    embed:
+                        {
+                            title: "Role Situation :fish_cake:",
+                            description: `**Click on the reaction below that suits you **\n\n${couple && difficult && single ? `<@&${couple}>\n<@&${difficult}>\n<@&${single}>` : '{roles}'}\n\n`,
+                            color: color
+                        }
+
+
+                }
+            },
+            age: (major, minor, color) => {
+                return {
+                    embed:
+                        {
+                            title: "Role Age :fish_cake:",
+                            description: `**Click on the reaction below that suits you **\n\n${minor && major ? `<@&${major}>\n<@&${minor}>` : '{roles}'}\n\n`,
+                            color: color
+                        }
+
+                }
+            },
+            color: (red, green, yellow, blue, white, orange, black, purple, color) => {
+                return {
+                    embed:
+                        {
+                            title: "Role Colors :art:",
+                            description: `**Click on the reaction below that suits you **\n\n${red && green && yellow && blue && white && orange && black && purple ? `<@&${red}>\n<@&${green}>\n<@&${yellow}>\n<@&${blue}>\n<@&${white}>\n<@&${orange}>\n<@&${black}>\n<@&${purple}>` : '{roles}'}\n\n`,
+                            color: color
+                        }
+
+                }
+            }
+
+
+        },
+        potentialRoles: (roles = [], type = '', avatar = '', color = '') => new Discord.MessageEmbed()
+            .setTitle(`Role potentiel`)
+            .setDescription(`*Potential role for the type ${type}.\nReact on the reactions to select to modify the roles.\nAdapt your roles with the embed above *\n➕ ・ Add a role\n➖ ・ Remove a role\n✅ ・ Save\n❌ ・ Close \n\n${roles.length < 1 ? 'Aucun roles trouvés' : roles.map((role, i) => `${i + 1} ・ <@&${role}>`).join('\n')}`)
+            .setTimestamp()
+            .setColor(color)
+            .setFooter('OneForall', avatar),
+        addRoleQ: `What is the role to add ?`,
+        removeRoleQ: `What is the role to delete ?`,
+        sendEmbedQ: `In which room will the embed be sent?`,
+        emojiNotFoundOnrole: (role) => `I could not determine an emoji associated with the role. What emoji corresponds to the role **${role}**? `,
+        colorEmbedQ: `What should be the color of the embed (HEX or red / green / yellow / purple / pink / black / white / blue / orange / invisible)?`,
+        errorNoRole: `Please specify a correct role`,
+        errorNoChannel: `Please specify a correct channel`,
+        successChangeRole: (newRole) => `The role is now changed to **${newRole}**`,
+        successAddRole: (role) => `The role **${role}** has been added`,
+        successRemoveRole: (role) => `The role **${role}  has been deleted`,
+        successChannel: (channel) => `The embed will be sent to **${channel}**`,
+        maxRoleReach: `You have reached the maximum number of roles for this role embed`,
+    },
+    giveaway: {
+        reroll : {
+            noMsgId: `<:720681441670725645:780539422479351809> \`ERREUR\` Please specify giveaway message id !`
+        },
+        create: {
+            incorrectTime: `The duration is not valid \nExample usage: \`!gcreate 10m 1w Nitro ($ 9.99) \``,
+             inccorectWinner: `The number of winners is not valid \nExample usage: \`!gcreate 10m 1w Nitro ($ 9.99)\``,
+             winnerMustRange: `The number of winners must be greater than 0 \nExample usage: \`!gcreate 10m 1w Nitro ($9.99)\``,
+             noPrize: `The gain is invalid \nExample usage: \`!gcreate 10m 1w Nitro ($ 9.99)\``, 
+            embed: (time = 'Not defined', channel = 'Not defined', winners = 0, voice = false, boost = false, reaction = '🎉', prize = 'Not defined', color) => new Discord.MessageEmbed()
+                .setDescription(`
+                <a:image2:789413408676118538> **INFORMATIONS:**\n\n 
+                 Click 🕙 to modify the duration
+                 Click 🏷️ to modify the living room
+                 Click 🕵️ to modify the number of winners
+                 Click 🎁 to modify the gain
+                 Click 🔊 to modify the voice presence
+                 Click 🔮 to modify the obligation to have the server boosted
+                 Click 💫 to modify the reaction of the giveaway
+                 Click ✅ to launch the giveaway 
+                
+                
+                <a:give:789822270641274890> **SETUP:**
+                
+                🕙  Time **-** ${time !== 'Non définie' ? prettyMilliseconds(time) : time}
+                🏷️ Channel **-** ${channel}
+                🕵️ Winners **-** ${winners}
+                🔊 Obligatory in voice **-** ${!voice ? 'Non' : voice}
+                🔮 Boost server obligatory **-** ${!boost ? 'Non' : boost}
+                💫 Reaction **-** ${reaction}
+                🎁 Prize **-** ${prize}`)
+                .setColor(color),
+            question: {
+                time: `How long is the giveaway?`,
+                channel: `In which channel should the giveaway be launched?`,
+                winnerCount: `How many winners must there be?`,
+                reaction: `What is the reaction for the giveaway?`,
+                prize: `What do you want to win?`, 
+
+            },
+            inccorectResponse: {
+                 time: `The duration is not valid \nExample: \`30m \``,
+                 channel: `The channel is incorrect`, 
+
+            },
+            successMessage: {
+                time: (time) => `The giveaway time is therefore scheduled for **${time}**`,
+                channel: (channel) => `The giveaway will be launched from the lounge ${channel}`,
+                winnerCount: (winner) => `The number of winner is now set to **${winner}**`,
+                prize: (prize) => `You want to win **${prize}**`,
+                reaction: (emoji) => `The reaction for the giveaway is now ${emoji}`, 
+            }
+
+        },
+        messages: {
+            giveaway: ' ',
+            giveawayEnded: '',
+            timeRemaining: "\Time Remaining: **{duration}**",
+            inviteToParticipate: "React with {reaction} to participate in the giveaway     ",
+            winMessage: "{winners}, win **{prize}**",
+            embedFooter: "Finish at",
+            noWinner: "Sorry I couldn't determine a winner(s)",
+            hostedBy: "Launch by {user}",
+            winners: "winner(s)",
+            endedAt: "Finish at",
+            units: {
+
+                seconds: "seconde(s)",
+                minutes: "minute(s)",
+                hours: "hors(s)",
+                days: "days(s)",
+                pluralS: false
+            }
+        }
+    },
+piconly: {
+        success: (channel) => `Only images will be allowed in the channel ${channel}`,
+        wrongType: `The piconly cannot be activated in a channel other than voice`,
+        disable: (channel) => `Piconly is disabled for channel ${channel}`
+    },
+    voicekick: {
+        noMember: `Please specify a member to be kicked from voice`,
+        notInVoice: `The member is not in voice`,
+        success: (member) => `$ {member} was kicked from voice`
+    },
+    cleanUp: {
+        wrongType: `The cleanup cannot be performed in a channel other than vocal`,
+        success: (channel) => `The channel ${channel} **has been cleanup**`
+    },
+    reactionsToMessages: {
+        nochannel: `You must specify a channel`,
+        noEmoji: `You must specify a maximum of 3 reactions`,
+        success: (channel, reactions) => `**All messages sent** in ${channel} will have ${reactions.length> 1? `reactions ($ {reactions.join (',')})`: `a reaction ($ {reactions.join (',')})`} `,
+        successDelete: (channel) => `Messages in ${channel} will no longer receive reactions`
+    } 
 }
