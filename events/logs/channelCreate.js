@@ -23,7 +23,7 @@ module.exports = class channelCreate extends Event {
 
         if (action.executor.id === client.user.id) return
 
-        const member = await guild.members.resolve(action.executor.id)
+        const member = await guild.members.fetch(action.executor.id)
         const logsChannel = guild.channels.cache.get(modLog)
 
 

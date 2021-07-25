@@ -38,7 +38,7 @@ module.exports = class channelUpdate extends Event {
         if (diff <= 1000) {
 
             if (isWlBypass && !isWl || !isWlBypass) {
-                const member = await guild.members.resolve(action.executor.id)
+                const member = await guild.members.fetch(action.executor.id)
                 const channel = guild.channels.cache.get(antiraidLog)
                 try {
                     oldChannel.edit({

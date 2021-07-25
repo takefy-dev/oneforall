@@ -36,7 +36,7 @@ module.exports = class AntiBot extends Event {
 
 
         if (isWlBypass && !isWl || !isWlBypass) {
-            const executor = await guild.members.resolve(action.executor.id)
+            const executor = await guild.members.fetch(action.executor.id)
             const channel = guild.channels.cache.get(antiraidLog)
             if(!guild.me.hasPermission("KICK_MEMBERS")){
                 if (channel && !channel.deleted) {

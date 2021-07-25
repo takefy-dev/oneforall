@@ -38,7 +38,7 @@ module.exports = class Ready extends Event {
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `${this.name}`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
-            const executor = await guild.members.resolve(action.executor.id)
+            const executor = await guild.members.fetch(action.executor.id)
             const channel = guild.channels.cache.get(antiraidLog)
             try {
                 await member.roles.remove(role, `OneForAll - Type : Role Add`)

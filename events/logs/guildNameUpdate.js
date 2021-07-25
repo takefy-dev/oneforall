@@ -21,7 +21,7 @@ module.exports = class Ready extends Event{
         const channel = oldGuild.channels.cache.get(modLog);
         if(channel){
             const color = oldGuild.color
-            const executor = oldGuild.members.resolve(action.executor.id);
+            const executor = await oldGuild.members.fetch(action.executor.id);
             channel.send(logs.guildNameUpdate(executor, oldGuild.name, newGuild.name, oldGuild.id, color))
         }
     }

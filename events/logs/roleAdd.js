@@ -28,7 +28,7 @@ module.exports = class Ready extends Event {
         if (diff > 600 || action.changes[0].key !== "$add") return;
         if (action.executor.id === client.user.id) return
 
-        const executor = await guild.members.resolve(action.executor.id)
+        const executor = await guild.members.fetch(action.executor.id)
         const channel = guild.channels.cache.get(modLog)
 
 

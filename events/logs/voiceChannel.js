@@ -43,7 +43,7 @@ module.exports = class Ready extends Event {
                 return channel.send(logs.voiceChange(oldState.member, oldState.member.user, oldState.channelID, newState.channelID, color))
 
             }
-            const member = await guild.members.resolve(action.executor.id)
+            const member = await guild.members.fetch(action.executor.id)
 
             if (action.extra.channel.id !== oldState.id && action.executor.id !== oldState.id) {
                 const user = client.users.cache.get(oldState.id)

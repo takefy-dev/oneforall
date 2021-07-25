@@ -36,7 +36,7 @@ module.exports = class Ready extends Event{
 
         if (isWlBypass && !isWl || !isWlBypass) {
             const kickLimit = antiraidConfig.config["antiKickLimit"]
-            const member = await guild.members.resolve(action.executor.id)
+            const member = await guild.members.fetch(action.executor.id)
             const logsChannel = guild.channels.cache.get(antiraidLog)
             const userData = client.managers.userManager.getAndCreateIfNotExists(`${guild.id}-${member.id}`)
             const antiraidLimit = userData.get('antiraidLimit')

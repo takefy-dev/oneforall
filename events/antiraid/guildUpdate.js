@@ -31,7 +31,7 @@ module.exports = class guildUpdate extends Event {
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `oldGuild owner list or bot owner`}`, `CHANNEL DELETE`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
-            const member = oldGuild.members.resolve(action.executor.id)
+            const member = await oldGuild.members.fetch(action.executor.id)
             const channel = oldGuild.channels.cache.get(antiraidLog)
             const oldName = action.changes[0].old;
             const newName = action.changes[0].new

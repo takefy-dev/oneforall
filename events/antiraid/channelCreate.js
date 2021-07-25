@@ -36,7 +36,7 @@ module.exports = class channelCreate extends Event {
 
 
         if (isWlBypass && !isWl || !isWlBypass) {
-            const member = await guild.members.resolve(action.executor.id)
+            const member = await guild.members.fetch(action.executor.id)
             const logsChannel = guild.channels.cache.get(antiraidLog)
 
             try {

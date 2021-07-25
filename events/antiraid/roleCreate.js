@@ -33,7 +33,7 @@ module.exports = class roleCreate extends Event {
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `ROLE_CREATEE`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
-            const member = await guild.members.resolve(action.executor.id)
+            const member = await guild.members.fetch(action.executor.id)
             const channel = guild.channels.cache.get(antiraidLog)
             try {
                 role.delete(`OneForall - Type : roleCreate`);

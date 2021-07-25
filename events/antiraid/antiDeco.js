@@ -40,7 +40,7 @@ module.exports = class Ready extends Event {
 
         if (isWlBypass && !isWl || !isWlBypass) {
             const decoLimit = antiraidConfig.config["antiDecoLimit"]
-            const executor = await guild.members.resolve(action.executor.id)
+            const executor = await guild.members.fetch(action.executor.id)
             const logsChannel = guild.channels.cache.get(antiraidLog)
             const executorData = client.managers.userManager.getAndCreateIfNotExists(`${guild.id}-${executor.id}`)
             const antiraidLimit = executorData.get('antiraidLimit');
