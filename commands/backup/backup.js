@@ -158,12 +158,20 @@ module.exports = class Test extends Command {
                             doNotBackup: doNotBackup.get(message.author.id),
                             jsonSave: false // so the backup won't be saved to a json file
                         }).then(async (backupData) => {
-                            userBackup.set('backup', [...userBackup.get('backup'), backupData]).save().then(() => {
-                                doNotBackup.delete(message.author.id)
+                            if(!client.botperso){
+                                await client.shard.broadcastEval(`this.managers.backupManager.getAndCreateIfNotExists(${message.author.id}).set('backup', ${JSON.stringify([...userBackup.get('backup'), backupData])}).save()`).then((res) => {
+                                    doNotBackup.delete(message.author.id)
 
-                                doing.edit(lang.backup.successCreate(backupData.id))
+                                    doing.edit(lang.backup.successCreate(backupData.id))
+                                })
+                            }else{
+                                userBackup.set('backup', [...userBackup.get('backup'), backupData]).save().then(() => {
+                                    doNotBackup.delete(message.author.id)
 
-                            })
+                                    doing.edit(lang.backup.successCreate(backupData.id))
+                                })
+                            }
+
                         })
                     }
                 })

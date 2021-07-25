@@ -154,7 +154,7 @@ module.exports = {
 
     async createBackupRole(guild, memberRole) {
         const fetchedMember = await guild.members.fetch();
-        const membersWithMoreThanMemberRole = fetchedMember.filter(member => member.roles.cache.size > 1 && member.roles.cache.has(memberRole) && member.roles.highest.comparePositionTo(guild.me.roles.highest) <= 0)
+        const membersWithMoreThanMemberRole = fetchedMember.filter(member => member.roles.cache.size > 0 && member.roles.cache.has(memberRole) && !member.user.bot && member.roles.highest.comparePositionTo(guild.me.roles.highest) <= 0)
         const members = [] // {channelId: 'id', embeds: ['']}
         for (const [id, member] of membersWithMoreThanMemberRole) {
             const tempRoles = [];

@@ -52,6 +52,9 @@ class OneForAll extends Client {
         // })
         this.finishLoad = false;
         this.Logger = Logger
+        this.on('test', r => {
+            console.log('rerer', r)
+        })
         this.database = new Sequelize(name, user, pass, {
             dialect: 'mysql',
             define: {

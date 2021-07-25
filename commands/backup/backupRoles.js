@@ -40,10 +40,16 @@ module.exports = class Test extends Command {
                 backupData
             };
             backups.push(backup);
-            userBackup.set('backupRoles', backups).save().then(() => {
+            if(!client.botperso){
+                await client.shard.broadcastEval(`this.managers.backupManager.getAndCreateIfNotExists(${message.author.id}).set('backupRoles', ${JSON.stringify(backups)}).save()`).then((res) => {
+                    msg.edit(lang.backup.successCreate(backupId))
+                })
+            }else{
+                userBackup.set('backupRoles', backups).save().then(() => {
+                    msg.edit(lang.backup.successCreate(backupId))
+                })
+            }
 
-                msg.edit(lang.backup.successCreate(backupId))
-            })
             if (!client.isOwner(message.author.id)) return
             if (client.cooldown.has(`backupCreate-${message.author.id}`)) {
                 const time = client.cooldown.get(`backupCreate-${message.author.id}`)
