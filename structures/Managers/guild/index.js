@@ -160,11 +160,13 @@ class GuildManager {
                     mute: 2,
                 },
             },
-            tempvoc: values.tempvoc ? values.tempvoc : [{
-                category: 'Non définie',
-                channel: 'Non définie',
-                name: 'Non définie'
-            }],
+            tempvoc: values.tempvoc ? values.tempvoc : {
+                categoryId: 'Non définie',
+                channelId: 'Non définie',
+                channelName: 'Non définie',
+                name: 'Non définie',
+                enable: false,
+            },
             perms: values.perms ? values.perms : {
                 role: {
                     perm1: [],

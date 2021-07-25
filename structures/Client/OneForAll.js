@@ -5,7 +5,6 @@ const config = require('../../config')
 const logs = require('discord-logs')
 const fs = require('fs')
 const {Logger} = require('advanced-command-handler')
-const Distube = require('distube');
 let user = config.database.user;
 let name = config.database.name;
 let pass = config.database.password;
@@ -112,7 +111,7 @@ class OneForAll extends Client {
                 for (const alias of Command.aliases) {
                     this.aliases.set(alias, Command)
                 }
-
+                delete require.cache[require.resolve(`../../commands/${category}/${file}`)]
                 Logger.comment(`${Logger.setColor('green', `Loaded: ${Command.name}`)}`, `Loading commands`)
             }
         }
@@ -127,6 +126,8 @@ class OneForAll extends Client {
 
             for (const event of eventsFile) {
                 const EventFile = require(`../../events/${category}/${event}`);
+                delete require.cache[require.resolve(`../../events/${category}/${event}`)]
+
                 const Event = new EventFile(this);
                 this.on(Event.name, (...args) => Event.run(this, ...args))
                 this.events.set(Event.name, Event);
@@ -151,9 +152,8 @@ class OneForAll extends Client {
     initDatabase() {
         this.database.authenticate().then(async () => {
             console.log("login");
-            this.on('ready', () => {
-                this.managers = new Managers(this);
-            })
+            this.managers = new Managers(this);
+
             const modelsFile = fs.readdirSync('./structures/Models');
             for await (const model of modelsFile) {
                 await require(`../Models/${model}`)(Sequelize, this)

@@ -67,7 +67,7 @@ module.exports = class Test extends Command {
 
 
         }
-        if(message.mentions || args[0].includes('@')) return
+        if(args[0].includes('@')) return
         if (args[0] === 'commands') {
 
             // .setDescription('**A quoi je sers  ?** \n \n Je suis un atiraid ! je fais des antirole,weebhook,channel etc... (Je suis juste un complément je je vous déconseille de mettre que moi comme bot antiraid , car je suis juste la pour __ANTIRAID__ , je ne fais pas de modération etc... ');

@@ -22,18 +22,17 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-        this.connection = StateManager.connection;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
 
         // if(!message.member.hasPermission('MANAGE_CHANNELS')) return message.channel.send("<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas la permission requise \`MANAGE_CHANNELS\`")
-        let isSetup = message.guild.setup
+        let isSetup =guildData.get('setup')
         if (!isSetup) return message.channel.send(lang.error.noSetup)
         const on = args[0] === 'on';
         const off = args[0] === 'off';
         const color = guildData.get('color')
         const ch = message.channel
-        const memberRole = message.guild.roles.cache.get(message.guild.config.memberRole);
+        const memberRole = message.guild.roles.cache.get(guildData.get('memberRole'));
          if (on) {
             ch.updateOverwrite(memberRole, {
                 SEND_MESSAGES: false

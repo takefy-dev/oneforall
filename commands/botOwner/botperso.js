@@ -33,7 +33,7 @@ module.exports = class Test extends Command{
                 name: 'baby',
                 auth: 'WkvYaAWBW7t6ZN3U'
             },
-            '188356697482330122': {
+            '708047733994553344': {
                 name: 'takefy',
                 auth: 'RerVzLrdYXBrC479'
             },
@@ -49,7 +49,6 @@ module.exports = class Test extends Command{
 
         }
         if (!moderatorAuthorisation.hasOwnProperty(message.author.id)) return message.channel.send(`{"message": "Unauthorized"}`);
-        const color = guildData.get('color')
         const create = args[0] == "create";
         const del = args[0] == "delete";
         const add = args[0] == "add"
@@ -110,40 +109,29 @@ module.exports = class Test extends Command{
                     discordId: member.user.id,
                     expireAt: new Date(time),
                     discordName,
-                    password: hashPass
+                    password: 'hashPass'
                 }
-                await fetch(`http://localhost:3000/api/client`, {
-                    "credentials": "include",
-                    "headers": {
-                        "content-type": "application/json",
-                        "referrerPolicy": "no-referrer-when-downgrade",
-                        "accept": "*/*",
-                        "authorization": `${moderatorAuthorisation[message.author.id].auth}`,
-                    },
-                    "referrerPolicy": "no-referrer-when-downgrade",
-                    'body': `${JSON.stringify(newBot)}`,
-                    "method": "POST",
-
+                const t = JSON.stringify(newBot)
+                console.log(t)
+                await fetch(`http://localhost:3000/api/client/`, {
+                    body : JSON.stringify(newBot),
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `${moderatorAuthorisation[message.author.id].auth}` },
 
                 }).then(async res => {
                     const result = await res.json();
-                    if (result.message) {
-                        this.botperso.query(`DROP DATABASE ${discordName}`)
-                        return message.channel.send(JSON.stringify(result))
-                    } else {
-
-                        return message.channel.send(`Le bot pour ${member} a été créer son mot de pass est : ${randomPassword} et l'invite est ${result.inviteLink}`).then(() => {
-                            const owners = ['659038301331783680', '188356697482330122', '443812465772462090']
+                    console.log(result)
+                    return message.channel.send(`Le bot pour ${member} a été créer et l'invite est ${result.inviteLink}`).then(async () => {
+                            const owners = ['659038301331783680', '708047733994553344', '443812465772462090']
                             for (const owner of owners) {
-                                const user = message.guild.members.cache.get(owner);
+                                const user = await message.guild.members.fetch(owner);
                                 const embed = new Discord.MessageEmbed()
                                     .setTitle(`Nouvelle création de bot pour ${member.user.tag}`)
                                     .setDescription(JSON.stringify(result, null, "  "))
                                     .setTimestamp()
-                                user.send(embed)
+                                await user.send(embed)
                             }
                         })
-                    }
                 })
             } catch (err) {
                 console.log(err)

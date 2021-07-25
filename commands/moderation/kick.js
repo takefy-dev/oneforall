@@ -52,7 +52,7 @@ module.exports = class Test extends Command {
             let isBotOwner = client.isOwner(message.author.id);
 
 
-            let isWlBypass = antiraidConfig.bypass[this.name];
+            let isWlBypass = antiraidConfig.bypass['antiMassKick'];
             if (isWlBypass) var isWl = guildData.isGuildWl(message.author.id);
             if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `KICK`, 'pink');
 
@@ -68,7 +68,7 @@ module.exports = class Test extends Command {
                 if (antiraidLimit.kick < kickLimit) {
                     antiraidLimit.kick += 1
                     if (logsChannel && !logsChannel.deleted) {
-                        logsChannel.send(logs.targetExecutorLogs("kick", message.member, member, color, `${antiraidLimit.kick + 1 === kickLimit ? `Aucun ban restant` : `${antiraidLimit.kick + 1}/${kickLimit}`} before sanction`))
+                        logsChannel.send(logs.targetExecutorLogs("kick", message.member, member, color, `${antiraidLimit.kick + 1 === kickLimit ? `Aucun kick restant` : `${antiraidLimit.kick + 1}/${kickLimit}`} before sanction`))
                     }
                 } else {
                     let sanction = antiraidConfig.config["antiMassKick"];
@@ -104,8 +104,6 @@ module.exports = class Test extends Command {
                     userData.save()
                 }
             }
-        }).catch(() => {
-            message.channel.send(lang.kick.error(member));
         })
 
     }

@@ -21,11 +21,11 @@ module.exports = class Test extends Command {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
-        const position = message.channel.rawPosition;
+        const position = message.channel.position;
         const rateLimitPerUser = message.channel.rateLimitPerUser;
         let newChannel = await message.channel.clone()
-        message.channel.delete();
-        newChannel.setPosition(position);
+        await message.channel.delete();
+        await newChannel.setPosition(position);
         await newChannel.setRateLimitPerUser(rateLimitPerUser)
         newChannel.send(lang.nuke.success(message.member))
 

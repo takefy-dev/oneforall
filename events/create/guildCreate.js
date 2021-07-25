@@ -13,7 +13,7 @@ module.exports = class guildCreate extends Event {
     async run(client, guild) {
 
 
-        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id, {
+        const guildData = await client.managers.guildManager.getAndCreateIfNotExists(guild.id, {
             owners: client.botperso ? [] : [guild.ownerID]
         }).save()
 

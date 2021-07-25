@@ -1,27 +1,27 @@
 const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
+const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command{
+module.exports = class Test extends Command {
     constructor() {
         super({
             name: 'serverlist',
             description: 'Show all the server of the bot | Affiche tout les serveurs du bot',
             category: 'botOwner',
             usage: 'serverlist [guildId]',
-            clientPermissions : ['EMBED_LINKS'],
+            clientPermissions: ['EMBED_LINKS'],
             ownerOnly: true,
             cooldown: 5
 
         });
     }
-    async run(client, message,args) {
+
+    async run(client, message, args) {
 
 
         let tempName = [];
-        const color = guildData.get('color')
-          const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-  const lang = guildData.lang;
+        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const lang = guildData.lang;
         let count = 0
 
         client.guilds.cache.forEach(guild => {

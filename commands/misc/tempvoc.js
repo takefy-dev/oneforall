@@ -30,10 +30,11 @@ module.exports = class Test extends Command {
         for (const emoji of emojis) {
             await msg.react(emoji)
         }
-        const {tempVoc} = message.guild;
-        categoryNameMapping.set(message.guild.id, message.guild.tempVoc)
-        enable.set(message.guild.id, !tempVoc.isOn ? 'Désactivé' : 'Activé')
+        const tempVoc = client.functions.copyObject(guildData.get('tempvoc'));
 
+        let enableEmoji = () => {
+            return tempVoc.enable ? '<:778348494712340561:781153837850820619>' : '<:778348495157329930:781189773645578311>'
+        }
 
         const embed = new Discord.MessageEmbed()
             .setTitle(lang.tempvoc.embedTitle)
