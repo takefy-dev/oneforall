@@ -29,12 +29,9 @@ module.exports = class Test extends Command {
         const dateFormat = new DateFormat('DD-MM-YYYY');
         if (args[0] === "create") {
             const msg = await message.channel.send(lang.loading);
-            console.time('backup')
+
             const backupData = await client.functions.createBackupRole(message.guild, memberRole);
             if(backupData.length < 1) return msg.edit(`No roles members to save`)
-
-            console.log(backupData)
-            console.timeEnd('backup')
             const backupId = SnowflakeUtil.generate(new Date());
             const backup = {
                 createdTimestamp: Date.now(),
@@ -43,7 +40,7 @@ module.exports = class Test extends Command {
                 backupData
             };
             backups.push(backup);
-            userBackup.save().then(() => {
+            userBackup.set('backupRoles', backups).save().then(() => {
 
                 msg.edit(lang.backup.successCreate(backupId))
             })

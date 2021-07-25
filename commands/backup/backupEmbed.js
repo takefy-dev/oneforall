@@ -37,7 +37,7 @@ module.exports = class Test extends Command {
                 backupData
             };
             backups.push(backup);
-            userBackup.save().then(() => {
+            userBackup.set('backupEmbed', backups).save().then(() => {
 
                 msg.edit(lang.backup.successCreate(backupId))
             })

@@ -48,13 +48,9 @@ module.exports = class Test extends Command {
 
         }
         if (add) {
+
+            if (!args[1]) return message.channel.send(lang.blacklist.errorCantFindMember)
             let memberUser = message.mentions.users.first() || await client.users.fetch(args[1])
-            if (!memberUser && !client.botperso) {
-                client.shard.broadcastEval(`this.users.cache.get('${args[1]}')`).then((res) => {
-                    memberUser = res.filter(user => user !== null);
-                })
-            }
-            if (!memberUser) return message.channel.send(lang.blacklist.errorCantFindMember)
             if (!args[1] && !message.mentions.members.first()) {
                 return message.channel.send(lang.blacklist.errorSyntaxAdd)
             }
@@ -75,7 +71,7 @@ module.exports = class Test extends Command {
                 tempdata.push(memberUser.id);
             }
 
-            blacklistData.save().then(() => {
+            blacklistData.set('blacklisted', tempdata).save().then(() => {
                 message.channel.send(lang.blacklist.successBl(memberUser)).then(() => {
                     message.guild.members.ban(memberUser.id, {reason: `Blacklist par ${message.author.tag}`,})
                         .then(() => {
@@ -114,13 +110,9 @@ module.exports = class Test extends Command {
 
             })
         } else if (remove) {
+            if (!args[1]) return message.channel.send(lang.blacklist.errorCantFindMember)
             let memberUser = message.mentions.users.first() || await client.users.fetch(args[1])
-            if (!memberUser && !client.botperso) {
-                client.shard.broadcastEval(`this.users.cache.get('${args[1]}')`).then((res) => {
-                    memberUser = res.filter(user => user !== null);
-                })
-            }
-            if (!memberUser) return message.channel.send(lang.blacklist.errorCantFindMember)
+
             if (!args[1] && !message.mentions.members.first()) {
                 return message.channel.send(lang.blacklist.errorSyntaxAdd)
             }
@@ -179,6 +171,11 @@ module.exports = class Test extends Command {
 
             })
         } else if (list) {
+            const usersTag = []
+            for(const id of tempdata){
+                const user = await client.users.fetch(id).catch(() => {})
+                usersTag.push(user.tag)
+            }
             const tempdataEmbed = {
                 title: `List of blacklisted users (${tempdata.length})`,
                 timestamp: new Date(),
@@ -199,7 +196,8 @@ module.exports = class Test extends Command {
                 const emojis = ['◀', '❌', '▶']
                 let totalPage = Math.ceil(tempdata.length / maxPerPage)
                 const embedPageChanger = (page) => {
-                    tempdataEmbed.description = tempdata.map((id, i) => `${i + 1} ・ **${client.users.resolve(id).tag || client.users.resolve(id).username}**`).slice(slicerIndicatorMin, slicerIndicatorMax).join('\n')
+
+                    tempdataEmbed.description = usersTag.map((id, i) => `${i + 1} ・ **${id}**`).slice(slicerIndicatorMin, slicerIndicatorMax).join('\n')
                     tempdataEmbed.footer.text = `Page ${page + 1} / ${totalPage}`
                     return tempdataEmbed
                 }
@@ -249,11 +247,7 @@ module.exports = class Test extends Command {
                 })
 
             } else {
-
-                tempdataEmbed.description = tempdata.map(async (id, i) => {
-                    const user = Promise.all(client.users.fetch(id))
-                    return `${i + 1} ・ **${user.tag}**`
-                }).join('\n')
+                tempdataEmbed.description = usersTag.map((id, i) => `${i + 1} ・ **${id}**`).join('\n')
 
                 return message.channel.send({
                     embed:

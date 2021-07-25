@@ -46,7 +46,7 @@ module.exports = class Test extends Command {
             },
 
         }
-        await fetch(`http://46.4.251.37:3000/api/client/${message.author.id}`, {
+        await fetch(`http://localhost:3000/api/client/${message.author.id}`, {
             "credentials": "include",
             "headers": {
                 "content-type": "application/json",

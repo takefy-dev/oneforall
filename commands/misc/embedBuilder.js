@@ -39,7 +39,7 @@ module.exports = class Test extends Command {
         const color = guildData.get('color')
         const lang = guildData.lang;
         const embed = new Discord.MessageEmbed()
-            .setDescription('')
+            .setDescription('d')
         const editEmbed = await message.channel.send(embed)
         const msg = await message.channel.send(lang.embedBuilder.loading)
         await msg.react('✏')

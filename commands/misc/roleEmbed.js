@@ -749,7 +749,6 @@ module.exports = class Test extends Command {
                                 }
                                 reactRole.emojiRoleMapping = Object.fromEntries(reactRole.emojiRoleMapping);
                                 guildData.set('reactroles', [...guildData.get('reactroles'), reactRole]).save()
-                                console.log(guildData.get('reactroles'))
                             } else {
                                 emojiCollector.on('end', async (collected, reason) => {
                                     if (collected.size < 1) return;
