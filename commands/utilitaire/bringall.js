@@ -7,6 +7,7 @@ module.exports = class Test extends Command {
             description: "Bring all members from a voicechannel | Apporter tout les gens en vocal",
             category: 'utils',
             usage: 'bringall <channel>',
+            aliases: ['voicemove'],
             userPermissions: ['MOVE_MEMBERS'],
             cooldown: 10
         });

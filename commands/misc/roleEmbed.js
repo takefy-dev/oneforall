@@ -431,6 +431,7 @@ module.exports = class Test extends Command {
             }
         }
         updateEmbedBuilder()
+
         function updateEmbedBuilder() {
 
             if (finalEmbed.embed.description && roles.length > 0)
@@ -553,8 +554,106 @@ module.exports = class Test extends Command {
                                     await reply.delete()
                                 }, 2000)
                             })
+                            let normalEmoji = extractEmoji(role.name)[0];
+                            let emoji;
+                            if (normalEmoji && isEmoji(normalEmoji) && !reactRole.emojiRoleMapping.has(normalEmoji)) reactRole.emojiRoleMapping.set(normalEmoji, role.id)
+                            else {
+                                const questionEmoji = await message.channel.send(lang.roleEmbed.emojiNotFoundOnrole(role.name))
+                                const emojiCollector = questionEmoji.channel.createMessageCollector(dureefiltrer, {
+                                    time: 1000 * 15,
+                                    max: 1
+                                })
+                                emojiCollector.on('collect', async (msg) => {
+                                    let parsedEmoji = Util.parseEmoji(msg.content);
+                                    if (!parsedEmoji.id) {
+                                        if (reactRole.emojiRoleMapping.has(parsedEmoji.name)) {
+                                            const replyMsg = await message.channel.send(lang.reactionRole.emojiAlready);
+                                            emojiCollector.stop()
+                                            return setTimeout(async () => {
+                                                await replyMsg.delete();
+                                                await msg.delete()
+                                                return await questionEmoji.delete()
+                                            }, 2000)
+                                        }
+                                        emoji = parsedEmoji.name
+                                        reactRole.emojiRoleMapping.set(parsedEmoji.name, role.id)
+
+
+                                        setTimeout(async () => {
+                                            await msg.delete()
+                                            questionEmoji.delete()
+                                            questionEmoji.delete()
+                                        }, 2000)
+
+                                    } else {
+                                        if (client.botperso) {
+                                            emoji = client.emojis.cache.get(parsedEmoji.id)
+
+
+                                        } else {
+                                            await client.shard.broadcastEval(`this.emojis.cache.get('${emoji.id}')`).then((result) => {
+                                                emoji = result.filter(em => em !== null)[0]
+                                            })
+                                        }
+                                        if (!emoji) {
+                                            await message.channel.send(lang.reactionRole.emojiDoesNotExist).then(async mp => {
+                                                mp.channel.awaitMessages(dureefiltrer, {
+                                                    max: 1,
+                                                    time: 50000,
+                                                    errors: ['time']
+                                                })
+                                                    .then(async cld => {
+                                                        const name = cld.first().content;
+                                                        let link = `https://cdn.discordapp.com/emojis/${parsedEmoji.id}.${parsedEmoji.animated ? "gif" : "png"}`
+                                                        message.guild.emojis.create(link, name, {reason: `emoji add par ${message.author.username}`}).then(async (em) => {
+                                                            message.channel.send(lang.addemoji.success(name))
+                                                            emoji = em
+                                                            if (reactRole.emojiRoleMapping.has(em.id)) {
+                                                                const replyMsg = await message.channel.send(lang.reactionRole.emojiAlready);
+                                                                return setTimeout(async () => {
+                                                                    await replyMsg.delete();
+                                                                    await msg.delete()
+                                                                    return await mp.delete()
+                                                                }, 2000)
+                                                            }
+                                                            reactRole.emojiRoleMapping.set(em.id, role.id)
+                                                            setTimeout(async () => {
+                                                                await msg.delete()
+                                                                mp.delete()
+                                                                questionEmoji.delete()
+                                                            }, 2000)
+                                                        })
+
+                                                    })
+                                            })
+                                        } else {
+                                            if (reactRole.emojiRoleMapping.has(emoji.id)) {
+                                                const replyMsg = await message.channel.send(lang.reactionRole.emojiAlready);
+                                                emojiCollector.stop()
+                                                return setTimeout(async () => {
+                                                    await replyMsg.delete();
+                                                    await msg.delete()
+                                                    return await questionEmoji.delete()
+                                                }, 2000)
+                                            }
+
+                                            reactRole.emojiRoleMapping.set(emoji.id, role.id)
+                                            setTimeout(async () => {
+                                                await msg.delete()
+                                                questionEmoji.delete()
+                                                questionEmoji.delete()
+                                            }, 2000)
+                                        }
+
+                                    }
+
+                                })
+
+
+                            }
                             updateEmbed()
                         })
+
                 }
                 if (r.emoji.name === roleChooserEmojis[1]) {
                     const question = await message.channel.send(lang.roleEmbed.removeRoleQ)
@@ -602,7 +701,7 @@ module.exports = class Test extends Command {
                     collector.stop('react')
                 }
                 if (r.emoji.name === roleChooserEmojis[3]) {
-                    if(roles.length < 1 || roles.length < toSearch.length) return message.channel.send(`No roles are selected or not enought roles`)
+                    if (roles.length < 1 || roles.length < toSearch.length) return message.channel.send(`No roles are selected or not enought roles`)
                     const question = await message.channel.send(lang.roleEmbed.sendEmbedQ)
                     question.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
                         .then(async cld => {
@@ -622,6 +721,8 @@ module.exports = class Test extends Command {
                                     await reply.delete()
                                 }, 2000);
                             })
+                            let doing = false;
+
                             reactRole.channel = channel.id
                             message.channel.send(lang.roleEmbed.successChannel(channel)).then((reply) => {
                                 setTimeout(async () => {
@@ -631,111 +732,6 @@ module.exports = class Test extends Command {
                                 }, 2000)
                             })
 
-                            let emojiCollector;
-                            let emoji
-                            for (let i = 0; i < roles.length; i++) {
-                                const roleID = roles[i]
-                                const role = message.guild.roles.cache.get(roleID)
-                                let normalEmoji = extractEmoji(role.name)[0];
-                                if (normalEmoji && isEmoji(normalEmoji) && !reactRole.emojiRoleMapping.has(normalEmoji)) reactRole.emojiRoleMapping.set(normalEmoji, role.id)
-                                else {
-                                    const questionEmoji = await message.channel.send(lang.roleEmbed.emojiNotFoundOnrole(role.name))
-                                    emojiCollector = questionEmoji.channel.createMessageCollector(dureefiltrer, {
-                                        time: 1000 * 15,
-                                        max: 1
-                                    })
-                                    emojiCollector.on('collect', async (msg) => {
-                                        let parsedEmoji = Util.parseEmoji(msg.content);
-                                        if (!parsedEmoji.id) {
-                                            if (reactRole.emojiRoleMapping.has(parsedEmoji.name)) {
-                                                const replyMsg = await message.channel.send(lang.reactionRole.emojiAlready);
-                                                emojiCollector.stop()
-                                                return setTimeout(async () => {
-                                                    await replyMsg.delete();
-                                                    await msg.delete()
-                                                    return await questionEmoji.delete()
-                                                }, 2000)
-                                            }
-                                            emoji = parsedEmoji.name
-                                            reactRole.emojiRoleMapping.set(parsedEmoji.name, role.id)
-
-                                            emojiCollector.stop(`finish-${i}-${role.id}`)
-
-                                            setTimeout(async () => {
-                                                await msg.delete()
-                                                questionEmoji.delete()
-                                                questionEmoji.delete()
-                                            }, 2000)
-
-                                        } else {
-                                            if (client.botperso) {
-                                                emoji = client.emojis.cache.get(parsedEmoji.id)
-
-
-                                            } else {
-                                                await client.shard.broadcastEval(`this.emojis.cache.get('${emoji.id}')`).then((result) => {
-                                                    emoji = result.filter(em => em !== null)[0]
-                                                })
-                                            }
-                                            if (!emoji) {
-                                                await message.channel.send(lang.reactionRole.emojiDoesNotExist).then(async mp => {
-                                                    mp.channel.awaitMessages(dureefiltrer, {
-                                                        max: 1,
-                                                        time: 50000,
-                                                        errors: ['time']
-                                                    })
-                                                        .then(async cld => {
-                                                            const name = cld.first().content;
-                                                            let link = `https://cdn.discordapp.com/emojis/${parsedEmoji.id}.${parsedEmoji.animated ? "gif" : "png"}`
-                                                            message.guild.emojis.create(link, name, {reason: `emoji add par ${message.author.username}`}).then(async (em) => {
-                                                                message.channel.send(lang.addemoji.success(name))
-                                                                emoji = em
-                                                                if (reactRole.emojiRoleMapping.has(em.id)) {
-                                                                    const replyMsg = await message.channel.send(lang.reactionRole.emojiAlready);
-                                                                    return setTimeout(async () => {
-                                                                        await replyMsg.delete();
-                                                                        await msg.delete()
-                                                                        return await mp.delete()
-                                                                    }, 2000)
-                                                                }
-                                                                reactRole.emojiRoleMapping.set(em.id, role.id)
-                                                                setTimeout(async () => {
-                                                                    await msg.delete()
-                                                                    mp.delete()
-                                                                    questionEmoji.delete()
-                                                                }, 2000)
-                                                            })
-
-                                                        })
-                                                })
-                                                emojiCollector.stop(`finish-${i}-${role.id}`)
-                                            } else {
-                                                if (reactRole.emojiRoleMapping.has(emoji.id)) {
-                                                    const replyMsg = await message.channel.send(lang.reactionRole.emojiAlready);
-                                                    emojiCollector.stop()
-                                                    return setTimeout(async () => {
-                                                        await replyMsg.delete();
-                                                        await msg.delete()
-                                                        return await questionEmoji.delete()
-                                                    }, 2000)
-                                                }
-
-                                                emojiCollector.stop(`finish-${i}-${role.id}`)
-                                                reactRole.emojiRoleMapping.set(emoji.id, role.id)
-                                                setTimeout(async () => {
-                                                    await msg.delete()
-                                                    questionEmoji.delete()
-                                                    questionEmoji.delete()
-                                                }, 2000)
-                                            }
-
-                                        }
-                                    })
-
-
-                                }
-                            }
-
                             const template = lang.roleEmbed.embeds[type](...roles, color)
                             finalEmbed = finalEmbed === template ? template : finalEmbed
                             updateEmbedBuilder()
@@ -743,42 +739,15 @@ module.exports = class Test extends Command {
                             await msg.delete()
                             embedBuilderMsg.delete()
                             reactRole.message = reactRoleMessage.id;
-                            if (!emojiCollector) {
-                                for (const [key, value] of reactRole.emojiRoleMapping) {
-                                    await reactRoleMessage.react(`${key}`)
-                                }
-                                reactRole.emojiRoleMapping = Object.fromEntries(reactRole.emojiRoleMapping);
-                                guildData.set('reactroles', [...guildData.get('reactroles'), reactRole]).save()
-                            } else {
-                                emojiCollector.on('end', async (collected, reason) => {
-                                    if (collected.size < 1) return;
-                                    if (reason.includes('finish')) {
-                                        let indexOfOriginalPosition = parseInt(reason.split('-')[1]);
-                                        let roleId = reason.split('-')[2];
-                                        let i = 0;
-                                        let tempMap = new Collection()
-                                        for (const [key, value] of reactRole.emojiRoleMapping) {
-                                            if (i !== indexOfOriginalPosition) {
-
-                                                tempMap.set(key, value);
-                                            } else {
-                                                tempMap.set(emoji.id ? emoji.id : emoji, roleId)
-                                                tempMap.set(key, value)
-                                            }
-                                            i++
-                                        }
-                                        for (const [key, value] of tempMap) {
-                                            await reactRoleMessage.react(key)
-                                        }
-                                        reactRole.emojiRoleMapping = Object.fromEntries(tempMap);
-                                        guildData.set('reactroles', [...guildData.get('reactroles'), reactRole]).save()
-
-                                    }
-                                })
+                            for (const [key, value] of reactRole.emojiRoleMapping) {
+                                await reactRoleMessage.react(`${key}`)
                             }
+                            reactRole.emojiRoleMapping = Object.fromEntries(reactRole.emojiRoleMapping);
+                            guildData.set('reactroles', [...guildData.get('reactroles'), reactRole]).save()
+
                             await msg.delete()
                             await reactRoleMessage.delete()
-                            return message.channel.send(lang.reactionRole.success)
+                            message.channel.send(lang.reactionRole.success)
 
                         })
 
