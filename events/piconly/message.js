@@ -7,7 +7,7 @@ module.exports = class message extends Event {
     }
 
     async run(client, message) {
-        if(!message.guild || message.member.permissions.has(8)) return;
+        if(!message.guild || message.member && message.member.permissions.has(8)) return;
         let guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const piconly = guildData.get('piconly');
         if(piconly.includes(message.channel.id) && message.attachments.size <= 0){
