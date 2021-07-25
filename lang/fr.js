@@ -1218,7 +1218,7 @@ module.exports = {
                     embed:
                         {
                             title: "Rôle Sexe :fish_cake:",
-                            description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${male && female ? `<@&${male}>\n<@&${female}>` : '{roles}'}`,
+                            description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${male && female ? `<@&${male}>\n<@&${female}>` : '{roles}'}\n\nUn seul rôle disponible, décochez la réaction que vous avez choisis pour sélectionner un autre rôle`,
                             color: color
                         }
 
@@ -1230,7 +1230,7 @@ module.exports = {
                     embed:
                         {
                             title: "Rôle Situation :fish_cake:",
-                            description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${couple && difficult && single ? `<@&${couple}>\n<@&${difficult}>\n<@&${single}>` : '{roles}'}\n\n`,
+                            description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${couple && difficult && single ? `<@&${couple}>\n<@&${difficult}>\n<@&${single}>` : '{roles}'}\n\nUn seul rôle disponible, décochez la réaction que vous avez choisis pour sélectionner un autre rôle`,
                             color: color
                         }
 
@@ -1242,7 +1242,7 @@ module.exports = {
                     embed:
                         {
                             title: "Rôle Âge :fish_cake:",
-                            description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${minor && major ? `<@&${major}>\n<@&${minor}>` : '{roles}'}\n\n`,
+                            description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${minor && major ? `<@&${major}>\n<@&${minor}>` : '{roles}'}\n\nUn seul rôle disponible, décochez la réaction que vous avez choisis pour sélectionner un autre rôle`,
                             color: color
                         }
 
@@ -1253,7 +1253,7 @@ module.exports = {
                     embed:
                         {
                             title: "Rôle Couleurs :art:",
-                            description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${red && green && yellow && blue && white && orange && black && purple ? `<@&${red}>\n<@&${green}>\n<@&${yellow}>\n<@&${blue}>\n<@&${white}>\n<@&${orange}>\n<@&${black}>\n<@&${purple}>` : '{roles}'}\n\n`,
+                            description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${red && green && yellow && blue && white && orange && black && purple ? `<@&${red}>\n<@&${green}>\n<@&${yellow}>\n<@&${blue}>\n<@&${white}>\n<@&${orange}>\n<@&${black}>\n<@&${purple}>` : '{roles}'}\n\nUn seul rôle disponible, décochez la réaction que vous avez choisis pour sélectionner un autre rôle`,
                             color: color
                         }
 

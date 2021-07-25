@@ -65,20 +65,6 @@ module.exports = class Test extends Command {
                         SEND_MESSAGES: false,
                         ADD_REACTIONS: false
                     }, `Setup par ${message.author.tag}`)
-                    channel.updateOverwrite(message.guild.roles.everyone, {
-                        SEND_MESSAGES: null,
-                        ADD_REACTIONS: null
-                    })
-                    channel.updateOverwrite(memberRole, {
-                        SEND_MESSAGES: null,
-                        ADD_REACTIONS: null
-                    })
-                    memberRole.edit({
-                        permissions: 'SEND_MESSAGES'
-                    },`Setup par ${message.author.tag}`)
-                    message.guild.roles.everyone.edit({
-                        permissions: 'SEND_MESSAGES'
-                    },`Setup par ${message.author.tag}`)
                 }
                 if (channel.type === 'voice') {
                     channel.updateOverwrite(muteRole, {
@@ -87,7 +73,6 @@ module.exports = class Test extends Command {
                 }
             })
         } catch (err) {
-            console.error(err)
             message.channel.send(lang.setup.error(muteRoleId, memberRole))
         }
     }
