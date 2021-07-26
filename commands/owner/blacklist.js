@@ -19,7 +19,7 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-        let owner = !client.botperso ? message.guild.ownerID : client.owners[client.owners.length - 1];
+        let owner = !client.botperso ? message.guild.ownerID : client.buyer;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const blacklistData = client.managers.blackListManager.getAndCreateIfNotExists(owner);
         let tempdata = blacklistData.get('blacklisted')
@@ -85,9 +85,9 @@ module.exports = class Test extends Command {
                                         await message.channel.send(lang.blacklist.successBanGuild(client.guilds.cache.size))
 
                                     } else {
-                                        const guildCount = await client.shard.broadcastEval(`this.guilds.cache.filter(guild => guild.ownerID === '${owner}' && guild.id !== '${message.guild.id}' && guild.me.hasPermissions('BAN_MEMBERS')).size`).then(async (res) => res.reduce((acc, guildCount) => acc + guildCount), 0)
+                                        const guildCount = await client.cluster.broadcastEval(`this.guilds.cache.filter(guild => guild.ownerID === '${owner}' && guild.id !== '${message.guild.id}' && guild.me.hasPermissions('BAN_MEMBERS')).size`).then(async (res) => res.reduce((acc, guildCount) => acc + guildCount), 0)
                                         const reason = `Blacklist par ${message.author.tag}`
-                                        await client.shard.broadcastEval(`
+                                        await client.cluster.broadcastEval(`
                                         (async () => {
                                             let guilds = this.guilds.cache.filter(guild => guild.ownerID === '${owner}' && guild.id !== '${message.guild.id}');
                                             guilds.forEach(guild => {
@@ -145,10 +145,10 @@ module.exports = class Test extends Command {
 
 
                                     } else {
-                                        const guildCount = await client.shard.broadcastEval(`this.guilds.cache.filter(guild => guild.ownerID === '${owner}' && guild.id !== '${message.guild.id}').size`).then(async (res) => res.reduce((acc, guildCount) => acc + guildCount), 0)
+                                        const guildCount = await client.cluster.broadcastEval(`this.guilds.cache.filter(guild => guild.ownerID === '${owner}' && guild.id !== '${message.guild.id}').size`).then(async (res) => res.reduce((acc, guildCount) => acc + guildCount), 0)
                                         console.log(guildCount);
                                         const reason = `Blacklist par ${message.author.tag}`
-                                        await client.shard.broadcastEval(`
+                                        await client.cluster.broadcastEval(`
                                         (async () => {
                                             let guilds = this.guilds.cache.filter(guild => guild.ownerID === '${owner}' && guild.id !== '${message.guild.id}');
                                             guilds.forEach(guild => {

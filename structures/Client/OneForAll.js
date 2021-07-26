@@ -10,6 +10,7 @@ let name = config.database.name;
 let pass = config.database.password;
 let token = config.token;
 const io = require('socket.io-client')
+const Cluster = require("discord-hybrid-sharding");
 
 let owner = [...config.owners];
 if (config.botperso) {
@@ -33,6 +34,10 @@ if (config.botperso) {
 class OneForAll extends Client {
     constructor(options) {
         super(options);
+        if (!config.botperso) {
+
+            this.cluster = new Cluster.Client(this)
+        }
         this.login(token);
 
         this.commands = new Collection();
@@ -52,9 +57,7 @@ class OneForAll extends Client {
         // })
         this.finishLoad = false;
         this.Logger = Logger
-        this.on('test', r => {
-            console.log('rerer', r)
-        })
+
         this.database = new Sequelize(name, user, pass, {
             dialect: 'mysql',
             define: {
@@ -78,13 +81,13 @@ class OneForAll extends Client {
             logging: false
         })
         logs(this)
-        if(!this.botperso && !this.config.dev){
+        if (!this.botperso && !this.config.dev) {
             setTimeout(() => {
                 this.loadEvents();
                 this.loadCommands();
 
             }, 10000)
-        }else {
+        } else {
             this.loadEvents();
             this.loadCommands();
         }
@@ -170,7 +173,7 @@ class OneForAll extends Client {
             this.giveawaysManager = new this.GiveawayManagerWithOwnDatabase(this, {
                 updateCountdownEvery: 5000,
                 hasGuildMembersIntent: true,
-                default : {
+                default: {
                     botsCanWin: false,
                     // exemptPermissions: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
                     embedColor: this.config.color,

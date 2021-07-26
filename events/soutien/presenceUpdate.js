@@ -17,7 +17,7 @@ module.exports = class presenceUpdate extends Event {
             let status = newMember.user.presence.activities.map(a => a.state)
             const member = guild.members.resolve(newMember.user.id);
             if (!member) return;
-            if (status[0] !== null && status[0].includes(message)) {
+            if (status[0] && status[0].includes(message)) {
                 member.roles.add(roleId, 'Soutien')
             } else {
                 if (member.roles.cache.some((r) => r.id === roleId)) {

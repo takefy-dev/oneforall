@@ -41,7 +41,7 @@ module.exports = class Test extends Command {
             };
             backups.push(backup);
             if(!client.botperso){
-                await client.shard.broadcastEval(`this.managers.backupManager.getAndCreateIfNotExists(${message.author.id}).set('backupRoles', ${JSON.stringify(backups)}).save()`).then((res) => {
+                await client.cluster.broadcastEval(`this.managers.backupManager.getAndCreateIfNotExists('${message.author.id}').set('backupRoles', ${JSON.stringify(backups)}).save()`).then((res) => {
                     msg.edit(lang.backup.successCreate(backupId))
                 })
             }else{

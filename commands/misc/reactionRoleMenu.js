@@ -219,7 +219,7 @@ module.exports = class Test extends Command {
                                                         emojis = client.emojis.cache.get(emoji.id)
 
                                                     } else {
-                                                        await client.shard.broadcastEval(`this.emojis.cache.get('${emoji.id}')`).then((result) => {
+                                                        await client.cluster.broadcastEval(`this.emojis.cache.get('${emoji.id}')`).then((result) => {
                                                             emojis = result.filter(em => em !== null)[0]
                                                         })
                                                     }

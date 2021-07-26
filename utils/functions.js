@@ -20,6 +20,7 @@ module.exports = {
         console.log(`Successfully loaded ${manager.size} ${data.model.charAt(0).toUpperCase()}${data.model.slice(1)}`)
         return manager;
     },
+
     checkIfPermHasCmd(commandName, permsCommand) {
         const result = {permToHave: 0, permHasCommand: false}
         for (let i = 1; i <= 4; i++) {

@@ -22,8 +22,10 @@ module.exports = class Test extends Command {
         let configEmbed;
         let msg;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
+        const userBackup = client.managers.backupManager.getAndCreateIfNotExists(message.author.id)
         const color = guildData.get('color')
         const lang = guildData.lang;
+        const backups = userBackup.get('backup');
         const create = args[0] === "create";
         const list = args[0] === 'list';
         const load = args[0] === 'load';
@@ -39,7 +41,6 @@ module.exports = class Test extends Command {
                 .addField('<:server:783422366230380565> Backup:', `[\`backup create\`](https://discord.gg/WHPSxcQkVk) ・ Permet de créer une backup du serveur actuel\n[\`backup delete\`](https://discord.gg/WHPSxcQkVk) ・ Permet de supprimer une backup\n[\`backup info\`](https://discord.gg/WHPSxcQkVk) ・ Permet d'afficher des informations sur la backup\n[\`backup list\`](https://discord.gg/WHPSxcQkVk) ・ Permet d'afficher la liste des toutes les backup`)
             message.channel.send(helpEmbed)
         }
-        const userBackup = client.managers.backupManager.getAndCreateIfNotExists(message.author.id)
         if (create) {
             const filter = (reaction, user) => ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '❌', '✅'].includes(reaction.emoji.name) && user.id === message.author.id,
                 dureefiltrer = response => {
@@ -158,14 +159,15 @@ module.exports = class Test extends Command {
                             doNotBackup: doNotBackup.get(message.author.id),
                             jsonSave: false // so the backup won't be saved to a json file
                         }).then(async (backupData) => {
+                            backups.push(backupData)
                             if(!client.botperso){
-                                await client.shard.broadcastEval(`this.managers.backupManager.getAndCreateIfNotExists(${message.author.id}).set('backup', ${JSON.stringify([...userBackup.get('backup'), backupData])}).save()`).then((res) => {
+                                await client.cluster.broadcastEval(`this.managers.backupManager.getAndCreateIfNotExists('${message.author.id}').set('backup', ${JSON.stringify(backups)}).save()`).then((res) => {
                                     doNotBackup.delete(message.author.id)
 
                                     doing.edit(lang.backup.successCreate(backupData.id))
                                 })
                             }else{
-                                userBackup.set('backup', [...userBackup.get('backup'), backupData]).save().then(() => {
+                                userBackup.set('backup', backups).save().then(() => {
                                     doNotBackup.delete(message.author.id)
 
                                     doing.edit(lang.backup.successCreate(backupData.id))
@@ -180,14 +182,13 @@ module.exports = class Test extends Command {
 
         }
         if (list) {
-            const backups = userBackup.get('backup')
             const backupsName = [];
             const backupsId = [];
             for (const backup of backups) {
                 backupsName.push(backup.name + '  **:**');
                 backupsId.push(backup.id);
             }
-            if (backupsName.length === 0 && backupsId.length === 0) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` **${message.author.tag || message.author.username}**, vous ne posséder pas de backup`)
+            if (backups.length === 0) return message.channel.send(`<:720681441670725645:780539422479351809> \`ERREUR\` **${message.author.tag || message.author.username}**, vous ne posséder pas de backup`)
             const embed = new Discord.MessageEmbed()
                 .setTitle(`Liste des backup de __${message.author.username}__:`)
                 .addField(`<:title:783422216095793172> Serveur Name`, `${backupsName.join('\n')}`, true)

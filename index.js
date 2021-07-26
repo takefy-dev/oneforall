@@ -8,7 +8,9 @@ const {OneForAll} = require('./structures/Client/OneForAll')
 // require('./structures/Managers/User');
 // require('./structures/Managers/Guild');
 // require('./structures/Managers/Member');
-new OneForAll({partials:  ['MESSAGE', 'CHANNEL', 'REACTION'],  restTimeOffset: 0,})
+const Cluster = require("discord-hybrid-sharding");
+
+new OneForAll({partials:  ['MESSAGE', 'CHANNEL', 'REACTION'],  restTimeOffset: 0, shards: Cluster.data.SHARD_LIST, shardCount:  Cluster.data.TOTAL_SHARDS})
 
 
 require('events').EventEmitter.defaultMaxListeners = 0;
