@@ -30,13 +30,13 @@ module.exports = class Test extends Command {
         const baby =  await client.users.fetch('659038301331783680')
         const kpri =  await client.users.fetch('295947937756872709')
         let userArray;
-        await client.shard.fetchClientValues("guilds.cache.size").then((res) => {
+        await client.cluster.fetchClientValues("guilds.cache.size").then((res) => {
             guildArray = res
         });
-        await client.shard.fetchClientValues("channels.cache.size").then((res) => {
+        await client.cluster.fetchClientValues("channels.cache.size").then((res) => {
             channelArray = res
         });
-        await client.shard.broadcastEval('this.guilds.cache.filter(g => g.available).reduce((acc, guild) => acc + guild.memberCount, 0)')
+        await client.cluster.broadcastEval('this.guilds.cache.filter(g => g.available).reduce((acc, guild) => acc + guild.memberCount, 0)')
             .then(results => {
                 userArray = results.reduce((acc, memberCount) => acc + memberCount, 0)
             })

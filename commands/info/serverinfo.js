@@ -39,7 +39,7 @@ module.exports = class Test extends Command {
             'us-south': 'US South :flag_us:'
         };
         const rolesGuild = message.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
-        const membersGuild = message.guild.members.cache;
+        const membersGuild = await message.guild.members.fetch();
         const channelsGuild = message.guild.channels.cache;
         const emojisGuild = message.guild.emojis.cache;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
@@ -54,14 +54,14 @@ module.exports = class Test extends Command {
         if (!rolemap) rolemap = "No roles";
 
         let online = message.guild.members.cache.filter(member => member.presence.status !== "online").size;
-        let offline = message.guild.members.cache.filter(member => member.presence.status == "offline").size;
-        let idle = message.guild.members.cache.filter(member => member.presence.status == "idle").size;
-        let dnd = message.guild.members.cache.filter(member => member.presence.status == "dnd").size;
+        let offline = message.guild.members.cache.filter(member => member.presence.status === "offline").size;
+        let idle = message.guild.members.cache.filter(member => member.presence.status === "idle").size;
+        let dnd = message.guild.members.cache.filter(member => member.presence.status === "dnd").size;
         const embed = new Discord.MessageEmbed()
             .setTitle(`${message.guild.name}`)
             .setDescription(`ID: ${message.guild.id}`)
             .setColor(color)
-            .addField(`**OWNERSHIP**:`, `<:771637500967124994:781883946614784011> ${message.guild.owner.user.tag}\n<@${message.guild.ownerID}>`, true)
+            .addField(`**OWNERSHIP**:`, `<:771637500967124994:781883946614784011> ${message.guild.owner.user.tag || message.guild.owner.username}\n<@${message.guild.ownerID}>`, true)
             .addField(`**CHANNELS**:`, `<:channel:817722375562985472> Text: ${channelsGuild.filter(channel => channel.type === 'text').size}\n<:voc:801123036576612353> Voice: ${channelsGuild.filter(channel => channel.type === 'voice').size}`, true)
             .addField(`**REGION:**`, `${regions[message.guild.region]}`, true)
             .addField(`**VERIFICATION LEVE:**`, `${verificationLevels[message.guild.verificationLevel]}`, true)
