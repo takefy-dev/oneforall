@@ -49,7 +49,7 @@ module.exports = class Test extends Command {
             if (!member) return message.channel.send(lang.owner.noMember)
             if (!owners.includes(member.id)) return message.channel.send(lang.owner.errorNotOwner(member.user.tag || member.user.username))
             owners = owners.filter(ow => ow !== member.id)
-            guildData.save().then(async () => {
+            guildData.set('owners', owners).save().then(async () => {
                 const msg = await message.channel.send(lang.owner.successRmOwner(member.user.tag || member.user.username));
                 setTimeout(() => {
                     msg.delete()

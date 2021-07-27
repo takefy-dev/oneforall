@@ -67,7 +67,7 @@ module.exports = class roleDelete extends Event {
 				if (sanction === 'ban') {
 					await guild.members.ban(action.executor.id, {reason: "OneForAll - Type : roleDelete"})
 				} else if (sanction === 'kick') {
-					member.kick(
+					await member.kick(
 						`OneForAll - Type: roleDelete `
 					)
 				} else if (sanction === 'unrank') {

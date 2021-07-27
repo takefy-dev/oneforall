@@ -14,76 +14,7 @@ module.exports =  (database, DataTypes, modelName, config) => {
             antiraid : {
                 type: DataTypes.JSON,
                 allowNull: false,
-                defaultValue: {
-                    enable: {
-                        webhookUpdate: false,
-                        roleCreate: false,
-                        roleUpdate: false,
-                        roleDelete: false,
-                        channelCreate: false,
-                        channelUpdate: false,
-                        channelDelete: false,
-                        antiSpam: false,
-                        antiMassBan: false,
-                        antiBot: false,
-                        roleAdd: false,
-                        antiLink: false,
-                        antiDeco: false,
-                        antiKick: false,
-                        antiDc: false,
-                        regionUpdate: false,
-                        nameUpdate: false,
-                        vanityUpdate: false,
-                        antiToken : false,
-                    },
-                    config: {
-                        webhookUpdate: 'unrank',
-                        roleCreate: 'unrank',
-                        roleUpdate: 'unrank',
-                        roleDelete: 'unrank',
-                        channelCreate: 'unrank',
-                        channelUpdate: 'unrank',
-                        channelDelete: 'unrank',
-                        antiSpam: 'unrank',
-                        antiMassBan: 'unrank',
-                        antiMassBanLimit: 3,
-                        antiBot: 'unrank',
-                        roleAdd: 'unrank',
-                        antiLink: 'unrank',
-                        antiDeco: 'unrank',
-                        antiDecoLimit: 5,
-                        antiKick: 'unrank',
-                        antiKickLimit: 5,
-                        antiDc: 'kick',
-                        antiDcLimit: '1d',
-                        regionUpdate: 'unrank',
-                        nameUpdate: 'unrank',
-                        vanityUpdate: 'unrank',
-                        antiToken : 'kick',
-                        antiTokenLimit: '10/10s',
-                    },
-                    bypass: {
-                        webhookUpdate: false,
-                        roleCreate: false,
-                        roleUpdate: false,
-                        roleDelete: false,
-                        channelCreate: false,
-                        channelUpdate: false,
-                        channelDelete: false,
-                        antiSpam: false,
-                        antiMassBan: false,
-                        antiBot: false,
-                        roleAdd: false,
-                        antiLink: false,
-                        antiDeco: false,
-                        antiKick: false,
-                        antiDc: false,
-                        regionUpdate: false,
-                        nameUpdate: false,
-                        vanityUpdate: false,
-                        antiToken: false,
-                    }
-                }
+                defaultValue: config.defaultAntiraidConfig
             },
             antiraidLimits : {
               type: DataTypes.JSON,
@@ -188,21 +119,7 @@ module.exports =  (database, DataTypes, modelName, config) => {
             perms : {
                 type : DataTypes.JSON,
                 allowNull: true,
-                defaultValue: {
-                    role: {
-                        perm1 : [],
-                        perm2 : [],
-                        perm3: [],
-                        perm4: []
-                    },
-                    commands : {
-                        perm1: ['clear', 'warn', 'unwarn', 'warnlist', 'warnsettings', 'mute', 'mutelist', 'tempmute', 'unmute', 'addemoji', 'rmemoji'],
-                        perm2: ['ban', 'kick', 'lockchannel', 'unban', 'clear', 'alladmin', 'allbot', 'banlist'],
-                        perm3: ['derank', 'nuke', 'say', 'soutien', 'gcreate', 'greroll', 'voicekick', 'glist', 'gend'],
-                        perm4: ['cleanup', 'piconly', 'reaction', 'addinvite', 'clearinvite', 'removeinvite', 'compteur', 'embedBuilder', 'massiverole', 'reactionRoleMenu', 'role', 'tempvoc', 'setcolor', 'webhook',"bringall"]
-                    },
-                    enable: false
-                }
+                defaultValue: config.defaultPermSetup
             },
             reactroles : {
                 type : DataTypes.JSON,

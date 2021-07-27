@@ -24,7 +24,7 @@ module.exports = class messageReactionAdd extends Event {
             } else {
                 return
             }
-            let member = reaction.message.guild.members.cache.get(user.id);
+            let member = await reaction.message.guild.members.fetch(user.id);
             if (role && member) {
                 await member.roles.add(role, 'Reaction role add')
 

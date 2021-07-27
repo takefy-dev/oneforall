@@ -22,6 +22,7 @@ module.exports = class Test extends Command {
 
 
         let whitelisted = guildData.get('whitelisted');
+        console.log(whitelisted)
         while (whitelisted[0] === '') {
             whitelisted.shift()
         }
@@ -48,11 +49,11 @@ module.exports = class Test extends Command {
 
 
         } else if (remove) {
+            if (!args[1]) return message.channel.send(lang.owner.noMember)
             const member = message.mentions.members.first() || await message.guild.members.fetch(args[1]);
-            if (!member) return message.channel.send(lang.owner.noMember)
             if (!whitelisted.includes(member.id)) return message.channel.send(lang.wl.errorNotWl(member.user.tag || member.user.username))
-            whitelisted = whitelisted.filter(wl => wl !== member.id)
-            guildData.save().then(async () => {
+            whitelisted = whitelisted.filter(wl => wl !== member.user.id)
+            guildData.set('whitelisted', whitelisted).save().then(async () => {
                 const msg = await message.channel.send(lang.wl.successRmWl(member.user.tag || member.user.username));
                 setTimeout(() => {
                     msg.delete()

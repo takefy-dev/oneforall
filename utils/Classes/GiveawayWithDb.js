@@ -2,11 +2,7 @@ const {GiveawaysManager} = require("./discord-giveaways");
 
 const GiveawayManagerWithOwnDatabase = (client) => class extends GiveawaysManager {
     // This function is called when the manager needs to get all giveaways which are stored in the database.
-    async refreshStorage() {
-        // This should make all shard refreshing their cache with the updated database
-        if(this.client.botperso) return
-        return client.shard.broadcastEval(() => this.giveawaysManager.getAllGiveaways());
-    }
+
 
     // This function is called when the manager needs to get all the giveaway stored in the database.
     async getAllGiveaways() {

@@ -55,7 +55,7 @@ module.exports = class AntiBot extends Event {
             if (sanction === 'ban') {
                 await guild.members.ban(action.executor.id, {reason:`OneForAll - Type : BotAdd`})
             } else if (sanction === 'kick') {
-                executor.kick(
+                await executor.kick(
                     `OneForAll - Type: BotAdd `
                 )
             } else if (sanction === 'unrank') {

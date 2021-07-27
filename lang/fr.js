@@ -358,7 +358,7 @@ module.exports = {
         1 ・Configurer le channel où les messages seront envoyés\n
             __Channel actuel__ : **<#${inviteChannel}>**\n
         2 ・ Configurer le message de bienvenue\n
-            __Message Actuel__ : **${inviteMsg}** \n
+            __Message Actuel__ : ${inviteMsg} \n
         3 ・ Aide sur le message de bienvenue  \n
 
         4 ・ Activer ou désactiver le message de bienvenue \n

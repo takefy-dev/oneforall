@@ -67,15 +67,18 @@ module.exports = class Ready extends Event {
             } guilds, it sees ${client.users.cache.size + Logger.setColor('#c0433f')
             } users.`)
         );
-        // setInterval(async () => {
-        //     let guildArray;
-        //
-        //     await client.shard.fetchClientValues("guilds.cache.size").then((res) => {
-        //         guildArray = res
-        //     });
-        //
-        //     client.user.setActivity(`${guildArray.reduce((prev, guildCount) => prev + guildCount, 0)} Servers | !help`, {type: 'WATCHING'})
-        // }, 60000); // Runs this every 60 seconds.
+        if(!client.botperso){
+            setInterval(async () => {
+                let guildArray;
+
+                await client.cluster.fetchClientValues("guilds.cache.size").then((res) => {
+                    guildArray = res
+                });
+
+                client.user.setActivity(`${guildArray.reduce((prev, guildCount) => prev + guildCount, 0)} Servers | !help`, {type: 'WATCHING'})
+            }, 60000); // Runs this every 60 seconds.
+        }
+
         if (client.botperso) {
             const fs = require('fs');
             const path = './config.json';

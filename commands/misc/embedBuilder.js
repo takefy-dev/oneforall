@@ -496,7 +496,7 @@ module.exports = class Test extends Command {
 
                                     }
                                     if (image.get(message.guild.id) !== undefined) {
-                                        client.shard.broadcastEval(`
+                                        client.cluster.broadcastEval(`
                                     (async () => {
                                         let channel = this.channels.cache.get('803206140858990632');
                                         let msg;

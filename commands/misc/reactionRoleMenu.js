@@ -485,7 +485,7 @@ module.exports = class Test extends Command {
                                             }
 
                                         } else {
-                                            await client.shard.broadcastEval(`this.emojis.cache.get('${key}')`).then((result) => {
+                                            await client.cluster.broadcastEval(`this.emojis.cache.get('${key}')`).then((result) => {
                                                 const ee  = result.filter(em => em !== null)[0]
                                                 if (ee.animated) {
                                                     emojis = `<a:${ee.name}:${ee.id}>・<@&${value}>\n`

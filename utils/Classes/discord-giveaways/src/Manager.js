@@ -327,7 +327,8 @@ class GiveawaysManager extends EventEmitter {
      * @ignore
      */
     async refreshStorage() {
-        return true;
+        if(!this.client.botperso) return true
+        return this.client.cluster.broadcastEval(() => this.giveawaysManager.getAllGiveaways());
     }
 
     /**

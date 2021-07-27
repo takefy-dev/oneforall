@@ -348,10 +348,11 @@ module.exports = {
         titleConfig : `<:771462923855069204:784471984087236658> __Invitations settings__`,
         descConfig : (inviteChannel, guild, isOnS, inviteMsg) => `
         1 ・Configure the channel where messages will be sent\n
-            __Current channel__ : **<#${inviteChannel.get(guild.id)}>**\n
+            __Current channel__ : **<#${inviteChannel}>**\n
         2 ・ Configure the welcome message\n
-            __Current message__ : **${inviteMsg.get(guild.id)}** \n
+            __Current message__ : ${inviteMsg} \n
         3 ・ Help for the welcome message  \n
+        
         4 ・ Activate or deactivate the welcome message \n
         __Active__ : ${isOnS}`,
         chQ : `<a:2366_Loading_Pixels:784472554328555571> Mention the channel where the welcome messages will be sent (cancel to cancel)`,

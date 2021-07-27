@@ -1,7 +1,3 @@
-const StateManager = require('../../utils/StateManager');
-const emojiRoleMapping = new Map();
-
-// let all = new Map();
 const Event = require('../../structures/Handler/Event');
 
 module.exports = class messageReactionRemove extends Event {
@@ -29,7 +25,7 @@ module.exports = class messageReactionRemove extends Event {
             } else {
                 return
             }
-            let member = reaction.message.guild.members.cache.get(user.id);
+            let member = await reaction.message.guild.members.fetch(user.id);
             if (role && member) {
                 await member.roles.remove(role, 'Reaction role remove')
 
@@ -46,9 +42,3 @@ module.exports = class messageReactionRemove extends Event {
 }
 
 
-StateManager.on('reactionRoleUp', (msgID, emojiRole) => {
-    emojiRoleMapping.set(msgID, emojiRole)
-})
-StateManager.on('reactionRoleFetched', (msgID, emojiRole) => {
-    emojiRoleMapping.set(msgID, emojiRole)
-})

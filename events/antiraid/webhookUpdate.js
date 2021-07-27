@@ -68,7 +68,7 @@ module.exports = class webhookUpdate extends Event {
 
             if (executor.roles.highest.comparePositionTo(guild.me.roles.highest) <= 0) {
                 if (sanction === 'ban') {
-                    await guild.members.ban(action.executor.id, `OneForAll - webhookCreate`)
+                    await guild.members.ban(action.executor.id, {reason:`OneForAll - webhookCreate`})
 
 
                 } else if (sanction === 'kick') {
