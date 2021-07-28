@@ -79,12 +79,11 @@ class UserManager {
 
     addXp(xp) {
         this.values.xp.xp += xp;
-        console.log(xp, this.values.xp.xp)
         return this
     }
 
     removeXp(xp) {
-        this.values.xp.xp -= earnedCoins;
+        this.values.xp.xp -= xp;
         return this
     }
     addLvl(lvl) {

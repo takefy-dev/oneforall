@@ -1283,7 +1283,7 @@ module.exports = {
         maxRoleReach: `Vous avez atteind le maximum de roles pour ce role embed`
     },
     giveaway: {
-        reroll : {
+        reroll: {
             noMsgId: `<:720681441670725645:780539422479351809> \`ERREUR\` Veuillez spécifiez l'id du message de giveaway !`
         },
         create: {
@@ -1317,22 +1317,22 @@ module.exports = {
             question: {
                 time: `Quel est la durée du giveaway ?`,
                 channel: `Dans quel channel le giveaway doit être lancé ?`,
-                winnerCount : `Combien doit-il y avoir de gagnants ?`,
-                reaction : `Quel est la reaction pour le giveaway ?`,
-                prize : `Que voulez-vous faire gagner ?`,
+                winnerCount: `Combien doit-il y avoir de gagnants ?`,
+                reaction: `Quel est la reaction pour le giveaway ?`,
+                prize: `Que voulez-vous faire gagner ?`,
 
             },
             inccorectResponse: {
                 time: `La durée n'est pas valide\nExemple : \`30m\``,
-                channel : `Le channel est incorrect`,
+                channel: `Le channel est incorrect`,
 
             },
             successMessage: {
                 time: (time) => `Le temps du giveaway est donc prévue pour **${time}**`,
-                channel : (channel) => `Le giveaway sera lancé de le salon ${channel}`,
-                winnerCount : (winner) => `Le nombre de gagnant est maintenant définie pour **${winner}**`,
-                prize : (prize) => `Vous voulez faire gagner **${prize}**`,
-                reaction : (emoji) => `La reaction pour le giveaway est maintenant ${emoji}`,
+                channel: (channel) => `Le giveaway sera lancé de le salon ${channel}`,
+                winnerCount: (winner) => `Le nombre de gagnant est maintenant définie pour **${winner}**`,
+                prize: (prize) => `Vous voulez faire gagner **${prize}**`,
+                reaction: (emoji) => `La reaction pour le giveaway est maintenant ${emoji}`,
             }
 
         },
@@ -1359,23 +1359,66 @@ module.exports = {
     },
     piconly: {
         success: (channel) => `Uniquement les images seront autorisées dans le channel ${channel} `,
-        wrongType : `Le piconly ne peut être activé dans un salon autre que texte`,
-        disable : (channel) => `Piconly est désactivé pour le channel ${channel}`
+        wrongType: `Le piconly ne peut être activé dans un salon autre que texte`,
+        disable: (channel) => `Piconly est désactivé pour le channel ${channel}`
     },
     voicekick: {
-        noMember : `Veuillez spécifier un membre à exclure voicalement`,
-        notInVoice : `Le membre n'est pas en vocal`,
-        success :  (member) => `${member} a été exclu vocalement`
+        noMember: `Veuillez spécifier un membre à exclure voicalement`,
+        notInVoice: `Le membre n'est pas en vocal`,
+        success: (member) => `${member} a été exclu vocalement`
     },
-    cleanUp : {
-        wrongType : `Le cleanup ne peut être effectué dans un salon autre que vocal`,
-        success: (channel) =>  `Le salon ${channel} **a été cleanup**`
+    cleanUp: {
+        wrongType: `Le cleanup ne peut être effectué dans un salon autre que vocal`,
+        success: (channel) => `Le salon ${channel} **a été cleanup**`
     },
     reactionsToMessages: {
-        nochannel : `Vous devez spécifier un channel`,
-        noEmoji : `Vous devez spécifier au maximum 3 reactions`,
-        success : (channel, reactions) => `**Tous les messages envoyés** dans ${channel} auront ${reactions.length > 1 ? `des reactions (${reactions.join(', ')})`: `une reaction (${reactions.join(', ')})`}`,
-        successDelete : (channel) => `Les messages dans ${channel} ne recevront plus de reactions`
+        nochannel: `Vous devez spécifier un channel`,
+        noEmoji: `Vous devez spécifier au maximum 3 reactions`,
+        success: (channel, reactions) => `**Tous les messages envoyés** dans ${channel} auront ${reactions.length > 1 ? `des reactions (${reactions.join(', ')})` : `une reaction (${reactions.join(', ')})`}`,
+        successDelete: (channel) => `Les messages dans ${channel} ne recevront plus de reactions`
+    },
+    xpSettings: {
+        embed: (config, enable) => new Discord.MessageEmbed()
+            .setDescription(`
+        \n
+            Cliquez sur les reactions pour pouvoir configurer l'xp !
+            Pour le gain d'xp de options un nombre fixe exemple : **1**
+            ou un nombre aléatoire entre un minimum et maximum : **1-20**
+            
+            \`💦\` ・ Modifier le gain d'xp par message reçu
+            **${config.xpPerMsg}**\n
+            \`💮\` ・ Modifier le gain d'xp par seconde de présence vocal
+            **${config.xpPerSVoc}**\n
+            \`🉐\` ・ Channels où le gain d'xp est autorisé (all pour tous)
+            **${!config.allowChannels.length ? 'Aucun' : config.allowChannels.map(ch => `<#${ch}>`).join(', ')}\n**
+            \`💤\` ・ Channels où le gain d'xp est désactivé (all pour tous)
+            **${!config.forbidChannels.length ? 'Aucun' :config.forbidChannels.map(ch => `<#${ch}>`).join(', ')}\n**
+            \`💹\` ・ Channels où le gain d'xp est multiplé (all pour tous)
+            **${config.multiplerChannels.length > 0 ? config.multiplerChannels.map(multi => `<#${multi.channel}> - ${multi.boost}`).join(', '): 'Aucun'}**\n
+            \`💨\` ・ Activé / désactiver le gain d'xp\n
+            **${enable}**
+            
+            \`❌\` ・ Fermer le menu\n
+            \`✅\` ・ Sauvegarder les paramètre
+        `)
+            .setFooter(`OneForAll - Xp`)
+            .setTimestamp()
+            .setTitle(`Configuration xp`),
+        question: {
+            xpPerMsg : `Combien voulez-vous faire gagner d'xp par message ? (cancel pour annuler)`,
+            xpPerVoc : `Combien voulez-vous faire gagner d'xp par seconde de voc ? (cancel pour annuler)`,
+            allowChannel :`Quel est le channel à autorisé le gain d'xp ? (all pour tous)(cancel pour annuler)`,
+            forbidChannel : `Quel est le channel à désactivé le gain d'xp ?(all pour tous)(cancel pour annuler)`,
+            multiplierChannel : `Quel est le channel qui recevra un gain d'xp ?(cancel pour annuler)`,
+            multiplier : `Quel est le multiplicateur pour ce channel ?(cancel pour annuler) `
+        },
+        error : {
+            wrongRange : `La plage de nombre doît être écrit comme ceci \`min-max\`\nExemple: \`1-20\``,
+            notNumber : `Vous devez spécifier un gain correct`,
+            notChannel : `Vous debez spécifier un channel ou all`
+        },
+        save : `Configuration save`
+
     }
 
 

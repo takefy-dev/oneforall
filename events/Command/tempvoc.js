@@ -12,8 +12,9 @@ module.exports = class voiceStateUpdate extends Event {
 
     async run(client, oldState, newState) {
         //#region tempvoc
+        return
         const { tempVoc } = oldState.guild;
-        
+
         if (tempVoc.catId !== "Non définie") {
 
             if (tempVoc.isOn) {

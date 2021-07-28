@@ -20,8 +20,11 @@ class Voice extends Collection {
                 const voiceState = value.values.voice;
                 const {
                     streamBoost,
-                    muteDiviseur
+                    muteDiviseur,
+                    enable
                 } = this.OneForAll.managers.guildManager.getAndCreateIfNotExists(key.split('-')[0]).get('coinsSettings')
+                if(!enable) break
+
                 earnCoins = Math.random() * (0.45 - 0.65) + 0.65;
 
                 earnCoins += voiceState.selfMute || voiceState.selfDeaf ? muteDiviseur : (voiceState.streaming || voiceState.selfVideo ? streamBoost : 0.0);
@@ -42,14 +45,15 @@ class Voice extends Collection {
             for await (const [key, value] of this) {
                 if (!value.values.guild || !value.values.guild.available) break;
                 let {
-                    xpPerSVoc
+                    xpPerSVoc,
+                    enable
                 } = this.OneForAll.managers.guildManager.getAndCreateIfNotExists(key.split('-')[0]).get('xp')
+                if(!enable) break
                 if(typeof xpPerSVoc === 'string') xpPerSVoc = this.OneForAll.functions.getRandomInt(parseInt(xpPerSVoc.split('-')[0]), parseInt(xpPerSVoc.split('-')[1]))
 
                 await this.OneForAll.levels.appendXp(value.values.user.id, value.values.guild.id, xpPerSVoc)
 
             }
-            console.log(`Successfully add xp to ${this.size} Members.`);
         }, ms)
     }
 

@@ -200,6 +200,9 @@ module.exports = {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min +1)) + min;
+    },
+    enableEmoji (enable)  {
+        return enable ? '<:778348494712340561:781153837850820619>' : '<:778348495157329930:781189773645578311>'
     }
 
 }

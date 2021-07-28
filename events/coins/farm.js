@@ -20,5 +20,6 @@ module.exports = class Ready extends Event {
             client.managers.voiceManager.addVoice(keyMember, newState.member);
         else if (!newState.channel && client.managers.voiceManager.has(keyMember))
             client.managers.voiceManager.delete(keyMember);
+
     }
 }
