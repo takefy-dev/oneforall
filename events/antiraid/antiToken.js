@@ -40,7 +40,7 @@ module.exports = class antiToken extends Event {
 
                     console.log(antiToken, 'after1')
                 }
-                if (counter > limit && diff >= 1000 * 10) {
+                if (diff >= time) {
                     delete antiToken.date;
                     antiToken.counter = 0;
                     antiToken.recentJoined = [];

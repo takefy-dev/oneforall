@@ -18,15 +18,13 @@ module.exports = class Test extends Command {
     }
 
     async run(client, message, args) {
-
-
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
         const lang = guildData.lang;
         let success;
 
 
-        if (args[0] && args[0].toLowerCase() !== 'off') {
+        if (!args[0]) {
             const channels = message.guild.channels.cache
             channels.forEach(channel => {
                 channel.edit({

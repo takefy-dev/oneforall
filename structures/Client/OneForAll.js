@@ -34,7 +34,7 @@ if (config.botperso) {
 class OneForAll extends Client {
     constructor(options) {
         super(options);
-        if (!config.botperso) {
+        if (!config.botperso && !config.dev) {
 
             this.cluster = new Cluster.Client(this)
         }

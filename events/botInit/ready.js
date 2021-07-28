@@ -67,7 +67,7 @@ module.exports = class Ready extends Event {
             } guilds, it sees ${client.users.cache.size + Logger.setColor('#c0433f')
             } users.`)
         );
-        if(!client.botperso){
+        if(!client.botperso && !client.config.dev){
             setInterval(async () => {
                 let guildArray;
 
@@ -79,15 +79,7 @@ module.exports = class Ready extends Event {
             }, 60000); // Runs this every 60 seconds.
         }
 
-        if (client.botperso) {
-            const fs = require('fs');
-            const path = './config.json';
-            if (fs.existsSync(path)) {
-                await client.users.fetch(require('../../config.json').owner, true);
-            } else {
-                await client.users.fetch(process.env.OWNER, true)
-            }
-        }
+
 
         client.guilds.cache.forEach(guild => {
             if (guild.deleted) return guild.leave();
