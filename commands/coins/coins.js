@@ -24,6 +24,7 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
         let member = message.mentions.members.first()  || await message.guild.members.fetch(args[0])
         if(!args[0]) member = message.member;
+
         const userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${member.id}`)
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const lang = guildData.lang

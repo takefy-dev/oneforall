@@ -11,7 +11,7 @@ let pass = config.database.password;
 let token = config.token;
 const io = require('socket.io-client')
 const Cluster = require("discord-hybrid-sharding");
-
+const {XpSystem} = require('../../utils/Classes/discord-xp')
 let owner = [...config.owners];
 if (config.botperso) {
     const path = './config.json';
@@ -57,7 +57,6 @@ class OneForAll extends Client {
         // })
         this.finishLoad = false;
         this.Logger = Logger
-
         this.database = new Sequelize(name, user, pass, {
             dialect: 'mysql',
             define: {
@@ -93,6 +92,8 @@ class OneForAll extends Client {
         }
 
         // this.loadWebsocket();
+        this.managers = new Managers(this);
+        this.levels = new XpSystem(this)
         this.initDatabase()
     }
 
@@ -158,7 +159,7 @@ class OneForAll extends Client {
     initDatabase() {
         this.database.authenticate().then(async () => {
             console.log("login");
-            this.managers = new Managers(this);
+
 
             const modelsFile = fs.readdirSync('./structures/Models');
             for await (const model of modelsFile) {

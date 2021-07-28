@@ -52,7 +52,8 @@ class UserManager {
             mute: values.mute ? values.mute : {muted: false, createdAt: null, expireAt: null},
             warns : values.warns ? values.warns : [],
             coins: values.coins ? values.coins : 0,
-            inventory : values.inventory ? values.inventory : null
+            inventory : values.inventory ? values.inventory : null,
+            xp : values.xp ? values.xp : {xp: 0, level : 0, lastUpdated: new Date()}
         }
 
     }
@@ -70,8 +71,29 @@ class UserManager {
         this.values.coins += earnedCoins;
         return this
     }
+
     removeCoins(earnedCoins) {
         this.values.coins -= earnedCoins;
+        return this
+    }
+
+    addXp(xp) {
+        this.values.xp.xp += xp;
+        console.log(xp, this.values.xp.xp)
+        return this
+    }
+
+    removeXp(xp) {
+        this.values.xp.xp -= earnedCoins;
+        return this
+    }
+    addLvl(lvl) {
+        this.values.xp.level += lvl;
+        return this
+    }
+
+    removeLvl(lvl) {
+        this.values.xp.level -= lvl;
         return this
     }
 

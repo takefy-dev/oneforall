@@ -113,6 +113,7 @@ class GuildManager {
                 role: undefined
             }],
             reactionsToMessages: values.reactionsToMessages ? values.reactionsToMessages : [],
+            xp : values.xp ? values.xp : {xpPerMsg:'1-2', xpPerSVoc: 2, enable: true}
         }
         this.cachedInv = new Collection()
         this.snipes = new Collection()

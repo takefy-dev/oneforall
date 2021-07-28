@@ -38,6 +38,10 @@ module.exports =  (database, DataTypes, modelName, config) => {
             inventory :{
                 type: DataTypes.JSON,
                 allowNull: true,
+            },
+            xp :{
+                type: DataTypes.JSON,
+                allowNull: true
             }
 
 
@@ -46,9 +50,7 @@ module.exports =  (database, DataTypes, modelName, config) => {
             charset: 'utf8mb4',
             collate: 'utf8mb4_general_ci'
         })
-        database.models[modelName].sync({
-            alter: true
-        })
+        database.models[modelName].sync()
         return database.models[modelName]
     } catch (e) {
         console.log(e)
