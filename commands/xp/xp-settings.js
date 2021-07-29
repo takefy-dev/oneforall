@@ -20,7 +20,7 @@ module.exports = class Test extends Command {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const lang = guildData.lang;
         const color = guildData.get('color');
-        const tempConfig = client.functions.copyObject(guildData.get('xp'))
+        let tempConfig = client.functions.copyObject(guildData.get('xp'))
         const fistMsg = await message.channel.send(lang.loading)
         const emojis = ['💦', '💮', '🉐', '💤', '💹', '💨', '❌', '✅']
         const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id,
@@ -258,7 +258,13 @@ module.exports = class Test extends Command {
                                                 msg.delete()
 
                                             }, 3000)
-                                            tempConfig.multiplerChannels.push(temp)
+
+                                            tempConfig.multiplerChannels = tempConfig.multiplerChannels.filter(boost => boost.channel !== temp.channel)
+
+                                            if(temp.boost !== 0){
+                                                tempConfig.multiplerChannels.push(temp)
+
+                                            }
                                             updateEmbed()
                                         })
 

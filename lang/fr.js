@@ -1385,7 +1385,7 @@ module.exports = {
             Pour le gain d'xp de options un nombre fixe exemple : **1**
             ou un nombre aléatoire entre un minimum et maximum : **1-20**
             
-            \`💦\` ・ Modifier le gain d'xp par message reçu
+            \`💦\` ・ Modifier le gain d'xp par message
             **${config.xpPerMsg}**\n
             \`💮\` ・ Modifier le gain d'xp par seconde de présence vocal
             **${config.xpPerSVoc}**\n
@@ -1393,7 +1393,7 @@ module.exports = {
             **${!config.allowChannels.length ? 'Aucun' : config.allowChannels.map(ch => `<#${ch}>`).join(', ')}\n**
             \`💤\` ・ Channels où le gain d'xp est désactivé (all pour tous)
             **${!config.forbidChannels.length ? 'Aucun' :config.forbidChannels.map(ch => `<#${ch}>`).join(', ')}\n**
-            \`💹\` ・ Channels où le gain d'xp est multiplé (all pour tous)
+            \`💹\` ・ Channels où le gain d'xp est multiplé (all pour tous, 0 pour enelvé le channel)
             **${config.multiplerChannels.length > 0 ? config.multiplerChannels.map(multi => `<#${multi.channel}> - ${multi.boost}`).join(', '): 'Aucun'}**\n
             \`💨\` ・ Activé / désactiver le gain d'xp\n
             **${enable}**
