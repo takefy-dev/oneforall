@@ -157,8 +157,11 @@ module.exports =  (database, DataTypes, modelName, config) => {
             xp: {
                 type: DataTypes.JSON,
                 allowNull: true
+            },
+            level : {
+                type: DataTypes.JSON,
+                allowNull: true
             }
-
 
         }, {
             tableName: modelName,

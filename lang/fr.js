@@ -1418,7 +1418,43 @@ module.exports = {
             notChannel : `Vous debez spécifier un channel ou all`
         },
         save : `Configuration save`
+    },
+    levelSettings: {
+        embed : (config, enable) => new Discord.MessageEmbed()
+            .setDescription(`
+        \n
+            Cliquez sur les reactions pour pouvoir configurer les niveaux !
+                        
+            \`💌\` ・ Modifier le salon et le message qui sera envoyé quand un membre augmente de niveau (off to disable) 
+            **${config.lvlMessage.channel === "Non définie" ? `Non définie` : `<#${config.lvlMessage.channel}>`} - **${config.lvlMessage.message}\n
+            \`➕\` ・ Ajouter un role qui sera ajouté quand un certain niveau sera atteind
+            **${!config.roleLevel.length ? `Aucun` : config.roleLevel.map(roleLevel => `<@&${roleLevel.role}> - ${roleLevel.level}`).join(', ')}**\n
+            \`➖\` ・ Enlever un role qui sera ajouté quand un certain niveau sera atteind
+           
+            \`💝\` ・ Activé / désactiver le fait de cumuluer les roles obtenu grace au niveau ou uniquement garder le plus haut\n
+            **${enable}**
+            
+            \`❌\` ・ Fermer le menu\n
+            \`✅\` ・ Sauvegarder les paramètre
+        `)
+            .setFooter(`OneForAll - Xp`)
+            .setTimestamp()
+            .setTitle(`Configuration xp`),
+        question : {
+            channelQuestion : `Quel est le channel ou sera envoyé les augmentations de niveau ? (cancel pour annuler)`,
+            messageQuestion : `Quel est le message à envoyer ? (help pour de l'aide)`,
+            roleQuestion : `Quel est le role à ajouter ? (cancel pour annuler)`,
+            roleQuestionRm : `Quel est le role à enelver ? (cancel pour annuler)`,
+            levelQuestion : (role) =>  `Quel est le niveau à ajouter le role **${role}**`
+        },
+        error: {
+            noRole : `Vous devez entrer un role valide`,
+            notNumber : `Vous devez spécifier un niveau correct`,
+            roleAlready : (role) => `Le role **${role}** est déjà dans les levelrole`,
+            roleNot : (role) => `Le role **${role}** est n'est pas dans les levelrole`
 
+
+        }
     }
 
 

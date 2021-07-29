@@ -29,7 +29,8 @@ class XpSystem {
         userXp.level = Math.floor(0.1 * Math.sqrt(userXp.xp));
         userXp.lastUpdated = new Date();
         user.set('xp', userXp).save().catch(e => console.log(`Failed to append xp: ${e}`));
-        return user.get('xp')
+        let tempXp = userXp.xp
+        return (Math.floor(0.1 * Math.sqrt(tempXp -= xp)) < userXp.level);
     }
 
     /**

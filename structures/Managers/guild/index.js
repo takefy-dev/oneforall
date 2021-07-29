@@ -113,7 +113,8 @@ class GuildManager {
                 role: undefined
             }],
             reactionsToMessages: values.reactionsToMessages ? values.reactionsToMessages : [],
-            xp : values.xp ? values.xp : {xpPerMsg:'1-30', xpPerSVoc: "1-20", enable: false, allowChannels: ['all'], forbidChannels: [], multiplerChannels: []}
+            level : values.level ? {...values.level, maxRoleLvl: values.level.roleLevel.sort((a, b) => b.level - a.level)[0]} : { roleLevel: [], lvlMessage: {message : 'Non définie', channel: 'Non définie'}, cumulRoles: false, maxRoleLvl: undefined},
+            xp : values.xp ? values.xp : {xpPerMsg:'1-30', xpPerSVoc: "1-20", enable: false, allowChannels: ['all'], forbidChannels: [], multiplerChannels: []},
         }
         this.cachedInv = new Collection()
         this.snipes = new Collection()

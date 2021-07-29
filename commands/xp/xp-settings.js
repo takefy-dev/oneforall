@@ -40,7 +40,7 @@ module.exports = class Test extends Command {
                                 if (msg.content === 'cancel') {
                                     msg.delete()
                                     mp.delete()
-                                    return collector.stop('cancel')
+                                    return message.channel.send(lang.cancel)
                                 }
                                 if (msg.content.length > 7) return
 
@@ -53,7 +53,6 @@ module.exports = class Test extends Command {
                                             mp.delete()
                                             rp.delete()
                                             msg.delete()
-                                            fistMsg.delete()
                                         }, 3000)
                                     })
                                     tempConfig.xpPerMsg = msg.content
@@ -63,7 +62,6 @@ module.exports = class Test extends Command {
                                             mp.delete()
                                             rp.delete()
                                             msg.delete()
-                                            fistMsg.delete()
                                         }, 3000)
 
                                     })
@@ -89,7 +87,7 @@ module.exports = class Test extends Command {
                                 if (msg.content === 'cancel') {
                                     msg.delete()
                                     mp.delete()
-                                    return collector.stop('cancel')
+                                    return message.channel.send(lang.cancel)
                                 }
                                 if (msg.content.length > 7) return
                                 if (msg.content.includes('-')) {
@@ -101,7 +99,6 @@ module.exports = class Test extends Command {
                                             mp.delete()
                                             rp.delete()
                                             msg.delete()
-                                            fistMsg.delete()
                                         }, 3000)
                                     })
                                     tempConfig.xpPerSVoc = msg.content
@@ -111,7 +108,6 @@ module.exports = class Test extends Command {
                                             mp.delete()
                                             rp.delete()
                                             msg.delete()
-                                            fistMsg.delete()
                                         }, 3000)
 
                                     })
@@ -135,7 +131,7 @@ module.exports = class Test extends Command {
                                 if (msg.content === 'cancel') {
                                     msg.delete()
                                     mp.delete()
-                                    return collector.stop('cancel')
+                                    return message.channel.send(lang.cancel)
                                 }
                                 const channel = msg.mentions.channels.first() || message.guild.channels.cache.get(msg.content)
                                 if (!channel && msg.content !== "all") return message.channel.send(lang.xpSettings.error.notChannel).then((rp) => {
@@ -143,7 +139,6 @@ module.exports = class Test extends Command {
                                         mp.delete()
                                         rp.delete()
                                         msg.delete()
-                                        fistMsg.delete()
                                     }, 3000)
                                 })
                                 if (channel && !tempConfig.allowChannels.includes(channel.id)) {
@@ -168,7 +163,7 @@ module.exports = class Test extends Command {
                                 if (msg.content === 'cancel') {
                                     msg.delete()
                                     mp.delete()
-                                    return collector.stop('cancel')
+                                    return message.channel.send(lang.cancel)
                                 }
                                 const channel = msg.mentions.channels.first() || message.guild.channels.cache.get(msg.content)
                                 if (!channel && msg.content !== "all") return message.channel.send(lang.xpSettings.error.notChannel).then((rp) => {
@@ -176,7 +171,7 @@ module.exports = class Test extends Command {
                                         mp.delete()
                                         rp.delete()
                                         msg.delete()
-                                        fistMsg.delete()
+
                                     }, 3000)
                                 })
                                 if (channel && !tempConfig.forbidChannels.includes(channel.id)) {
@@ -203,7 +198,7 @@ module.exports = class Test extends Command {
                                 if (msg.content === 'cancel') {
                                     msg.delete()
                                     mp.delete()
-                                    return collector.stop('cancel')
+                                    return message.channel.send(lang.cancel)
                                 }
 
                                 const channel = msg.mentions.channels.first() || message.guild.channels.cache.get(msg.content)
@@ -212,7 +207,6 @@ module.exports = class Test extends Command {
                                         mp.delete()
                                         rp.delete()
                                         msg.delete()
-                                        fistMsg.delete()
                                     }, 3000)
                                 })
                                 temp.channel = channel.id
@@ -223,7 +217,7 @@ module.exports = class Test extends Command {
                                             if (msg.content === 'cancel') {
                                                 msg.delete()
                                                 mp.delete()
-                                                return collector.stop('cancel')
+                                                return message.channel.send(lang.cancel)
                                             }
                                             if (msg.content.length > 7) return
                                             if (msg.content.includes('-')) {
@@ -235,7 +229,6 @@ module.exports = class Test extends Command {
                                                         mp.delete()
                                                         rp.delete()
                                                         msg.delete()
-                                                        fistMsg.delete()
                                                     }, 3000)
                                                 })
                                                 temp.boost = msg.content
@@ -245,7 +238,6 @@ module.exports = class Test extends Command {
                                                         mp.delete()
                                                         rp.delete()
                                                         msg.delete()
-                                                        fistMsg.delete()
                                                     }, 3000)
 
                                                 })
@@ -278,6 +270,14 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emojis[5]) {
                     tempConfig.enable = !tempConfig.enable
+                    message.guild.channels.cache.filter(channel => channel.type === "voice" && channel.members.size > 0).map(channel => channel.members).forEach(members => members.forEach(member => {
+                        if(tempConfig.enable)
+                            client.managers.voiceManager.addVoice(`${message.guild.id}-${member.id}`, member);
+                        else
+                            client.managers.voiceManager.delete(`${message.guild.id}-${member.id}`  );
+
+                    }))
+
                     updateEmbed()
                 }
                 if(r.emoji.name === emojis[6]){

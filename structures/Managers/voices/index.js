@@ -44,21 +44,40 @@ class Voice extends Collection {
         setInterval(async () => {
             for await (const [key, value] of this) {
                 if (!value.values.guild || !value.values.guild.available) break;
+                const guildData = this.OneForAll.managers.guildManager.getAndCreateIfNotExists(key.split('-')[0])
                 let {
                     xpPerSVoc,
                     enable,
                     allowChannels, forbidChannels, multiplerChannels
-                } = this.OneForAll.managers.guildManager.getAndCreateIfNotExists(key.split('-')[0]).get('xp')
+                } = guildData.get('xp')
                 if (!enable) break
-                const boost = multiplerChannels.find(boost => boost.channel === value.values.voice.channelID)
+                const boost = multiplerChannels ? multiplerChannels.find(boost => boost.channel === value.values.voice.channelID) : undefined
                 if(!allowChannels.includes('all') && !allowChannels.includes( value.values.voice.channelID) || forbidChannels.includes( value.values.voice.channelID)) break
 
                 if (typeof xpPerSVoc === 'string') xpPerSVoc = this.OneForAll.functions.getRandomInt(parseInt(xpPerSVoc.split('-')[0]), parseInt(xpPerSVoc.split('-')[1]))
                 let xpGain = xpPerSVoc
                 if(boost)
                     xpGain += boost.boost
-                await this.OneForAll.levels.appendXp(value.values.user.id, value.values.guild.id, xpGain)
-
+                const hasLeveledUp = await this.OneForAll.levels.appendXp(value.values.user.id, value.values.guild.id, xpGain)
+                if(!hasLeveledUp) break
+                const { roleLevel, lvlMessage, cumulRoles, maxRoleLvl } = guildData.get('level')
+                const channel = value.values.guild.channels.cache.get(lvlMessage.channel);
+                if(!channel && channel.deleted) return
+                const userLevel = await this.OneForAll.levels.fetch(value.values.user.id, value.values.guild.id, true);
+                const finalMessage = lvlMessage.message.replace(/{memberMention}/g, value.values.toString()).replace(/{memberLevel}/g, userLevel.level).replace(/{memberXp}/g, userLevel.xp).replace(/{memberLbPosition}/g, userLevel.position).replace(/{memberTag}/g, value.values.user.tag || value.values.user.username)
+                channel.send(finalMessage)
+                if(!roleLevel.length) break
+                const roleToAdd = []
+                roleLevel.filter(roleLvl => roleLvl.level <= userLevel.level).forEach(role => roleToAdd.push(role.role))
+                if(!roleToAdd.length) break
+                await value.values.roles.add(roleToAdd, `Lvl up ${userLevel.level}`)
+                if(!cumulRoles){
+                    const toRemove = []
+                    roleLevel.filter(roleLvl => roleLvl.role !== maxRoleLvl.role).forEach(role => {
+                        toRemove.push(role.role)
+                    })
+                    await value.values.roles.remove(toRemove, `Cumul roles off`)
+                }
             }
         }, ms)
     }
