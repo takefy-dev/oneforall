@@ -50,6 +50,17 @@ class Config extends BaseCommand {
     ]
   }
 
+  /* istanbul ignore next - see test/lib/load-all-commands.js */
+  static get params () {
+    return [
+      'json',
+      'global',
+      'editor',
+      'location',
+      'long',
+    ]
+  }
+
   async completion (opts) {
     const argv = opts.conf.argv.remain
     if (argv[1] !== 'config')
@@ -127,7 +138,7 @@ class Config extends BaseCommand {
     if (!args.length)
       throw this.usageError()
 
-    const where = this.npm.config.get('global') ? 'global' : 'user'
+    const where = this.npm.config.get('location')
     for (const [key, val] of Object.entries(keyValues(args))) {
       this.npm.log.info('config', 'set %j %j', key, val)
       this.npm.config.set(key, val || '', where)
@@ -157,16 +168,15 @@ class Config extends BaseCommand {
     if (!keys.length)
       throw this.usageError()
 
-    const where = this.npm.config.get('global') ? 'global' : 'user'
+    const where = this.npm.config.get('location')
     for (const key of keys)
       this.npm.config.delete(key, where)
     await this.npm.config.save(where)
   }
 
   async edit () {
-    const global = this.npm.config.get('global')
     const e = this.npm.config.get('editor')
-    const where = global ? 'global' : 'user'
+    const where = this.npm.config.get('location')
     const file = this.npm.config.data.get(where).source
 
     // save first, just to make sure it's synced up
@@ -199,7 +209,7 @@ class Config extends BaseCommand {
 ; Configs like \`//<hostname>/:_authToken\` are auth that is restricted
 ; to the registry host specified.
 
-${data.split('\n').sort((a, b) => a.localeCompare(b)).join('\n').trim()}
+${data.split('\n').sort((a, b) => a.localeCompare(b, 'en')).join('\n').trim()}
 
 ;;;;
 ; all available options shown below with default values
@@ -227,7 +237,7 @@ ${defData}
       if (where === 'default' && !long)
         continue
 
-      const keys = Object.keys(data).sort((a, b) => a.localeCompare(b))
+      const keys = Object.keys(data).sort((a, b) => a.localeCompare(b, 'en'))
       if (!keys.length)
         continue
 

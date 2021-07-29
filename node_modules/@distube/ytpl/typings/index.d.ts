@@ -1,4 +1,4 @@
-declare module 'ytpl' {
+declare module '@distube/ytpl' {
   namespace ytpl {
     interface options {
       /** Limits the pulled items. */

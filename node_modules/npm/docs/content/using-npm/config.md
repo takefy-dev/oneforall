@@ -67,6 +67,7 @@ The following shorthands are parsed on the command-line:
 * `--desc`: `--description`
 * `-f`: `--force`
 * `-g`: `--global`
+* `-L`: `--location`
 * `-d`: `--loglevel info`
 * `-s`: `--loglevel silent`
 * `--silent`: `--loglevel silent`
@@ -165,22 +166,15 @@ upon by the current project.
 Prevents throwing an error when `npm version` is used to set the new version
 to the same value as the current version.
 
-#### `always-auth`
-
-* Default: false
-* Type: Boolean
-
-Force npm to always require authentication when accessing the registry, even
-for `GET` requests.
-
 #### `audit`
 
 * Default: true
 * Type: Boolean
 
-When "true" submit audit reports alongside `npm install` runs to the default
-registry and all registries configured for scopes. See the documentation for
-[`npm audit`](/commands/npm-audit) for details on what is submitted.
+When "true" submit audit reports alongside the current npm command to the
+default registry and all registries configured for scopes. See the
+documentation for [`npm audit`](/commands/npm-audit) for details on what is
+submitted.
 
 #### `audit-level`
 
@@ -502,6 +496,8 @@ mistakes, unnecessary performance degradation, and malicious input.
   range (including SemVer-major changes).
 * Allow unpublishing all versions of a published package.
 * Allow conflicting peerDependencies to be installed in the root project.
+* Implicitly set `--yes` during `npm init`.
+* Allow clobbering existing values in `npm pkg`
 
 If you don't have a clear idea of what you want to do, it is strongly
 recommended that you do not use this option!
@@ -620,6 +616,11 @@ CI setup.
 
 If true, npm does not run scripts specified in package.json files.
 
+Note that commands explicitly intended to run a particular script, such as
+`npm start`, `npm stop`, `npm restart`, `npm test`, and `npm run-script`
+will still run their intended script if `ignore-scripts` is set, but they
+will *not* run any pre- or post-scripts.
+
 #### `include`
 
 * Default:
@@ -696,10 +697,10 @@ number, if not already set in package.json.
 
 Whether or not to output JSON data, rather than the normal output.
 
-This feature is currently experimental, and the output data structures for
-many commands is either not implemented in JSON yet, or subject to change.
-Only the output from `npm ls --json` and `npm search --json` are currently
-valid.
+* In `npm pkg set` it enables parsing set values with JSON.parse() before
+  saving them to your `package.json`.
+
+Not supported by all npm commands.
 
 #### `key`
 
@@ -748,16 +749,7 @@ Use of `legacy-peer-deps` is not recommended, as it will not enforce the
 * Default: false
 * Type: Boolean
 
-If true, then local installs will link if there is a suitable globally
-installed package.
-
-Note that this means that local installs can cause things to be installed
-into the global space at the same time. The link is only done if one of the
-two conditions are met:
-
-* The package is not already installed globally, or
-* the globally installed version is identical to the version that is being
-  installed locally.
+Used with `npm ls`, limiting output to only those packages that are linked.
 
 #### `local-address`
 
@@ -766,6 +758,14 @@ two conditions are met:
 
 The IP address of the local interface to use when making connections to the
 npm registry. Must be IPv4 in versions of Node prior to 0.12.
+
+#### `location`
+
+* Default: "user" unless `--global` is passed, which will also set this value
+  to "global"
+* Type: "global", "user", or "project"
+
+When passed to `npm config` this refers to which config file to use.
 
 #### `loglevel`
 
@@ -779,6 +779,8 @@ What level of logs to report. On failure, *all* logs are written to
 Any logs of a higher level than the setting are shown. The default is
 "notice".
 
+See also the `foreground-scripts` config.
+
 #### `logs-max`
 
 * Default: 10
@@ -791,7 +793,7 @@ The maximum number of log files to store.
 * Default: false
 * Type: Boolean
 
-Show extended information in `npm ls` and `npm search`.
+Show extended information in `ls`, `search`, and `help-search`.
 
 #### `maxsockets`
 
@@ -852,8 +854,8 @@ allow the CLI to fill in missing cache data, see `--prefer-offline`.
 
 #### `omit`
 
-* Default: 'dev' if the NODE_ENV environment variable is set to 'production',
-  otherwise empty.
+* Default: 'dev' if the `NODE_ENV` environment variable is set to
+  'production', otherwise empty.
 * Type: "dev", "optional", or "peer" (can be set multiple times)
 
 Dependency types to omit from the installation tree on disk.
@@ -879,6 +881,13 @@ when publishing or changing package permissions with `npm access`.
 If not set, and a registry response fails with a challenge for a one-time
 password, npm will prompt on the command line for one.
 
+#### `pack-destination`
+
+* Default: "."
+* Type: String
+
+Directory in which `npm pack` will save tarballs.
+
 #### `package`
 
 * Default:
@@ -903,8 +912,14 @@ package-locks disabled use `npm prune`.
 * Default: false
 * Type: Boolean
 
-If set to true, it will update only the `package-lock.json`, instead of
-checking `node_modules` and downloading dependencies.
+If set to true, the current operation will only use the `package-lock.json`,
+ignoring `node_modules`.
+
+For `update` this means only the `package-lock.json` will be updated,
+instead of checking `node_modules` and downloading dependencies.
+
+For `list` this means the output will be based on the tree described by the
+`package-lock.json`, rather than the contents of `node_modules`.
 
 #### `parseable`
 
@@ -1072,22 +1087,36 @@ or `--save-optional` are true.
 
 Associate an operation with a scope for a scoped registry.
 
-Useful when logging in to a private registry for the first time:
+Useful when logging in to or out of a private registry:
 
-```bash
+```
+# log in, linking the scope to the custom registry
 npm login --scope=@mycorp --registry=https://registry.mycorp.com
+
+# log out, removing the link and the auth token
+npm logout --scope=@mycorp
 ```
 
 This will cause `@mycorp` to be mapped to the registry for future
 installation of packages specified according to the pattern
 `@mycorp/package`.
 
+This will also cause `npm init` to create a scoped package.
+
+```
+# accept all defaults, and create a package named "@foo/whatever",
+# instead of just named "whatever"
+npm init --scope=@foo --yes
+```
+
+
 #### `script-shell`
 
 * Default: '/bin/sh' on POSIX systems, 'cmd.exe' on Windows
 * Type: null or String
 
-The shell to use for scripts run with the `npm run` command.
+The shell to use for scripts run with the `npm exec`, `npm run` and `npm
+init <pkg>` commands.
 
 #### `searchexclude`
 
@@ -1189,6 +1218,9 @@ then it will install the specified tag.
 Also the tag that is added to the package@version specified by the `npm tag`
 command, if no explicit tag is given.
 
+When used by the `npm diff` command, this is the tag used to fetch the
+tarball that will be compared with the local files by default.
+
 #### `tag-version-prefix`
 
 * Default: "v"
@@ -1237,7 +1269,7 @@ other files are created with a mode of 0o644.
 #### `unicode`
 
 * Default: false on windows, true on mac/unix systems with a unicode locale,
-  as defined by the LC_ALL, LC_CTYPE, or LANG environment variables.
+  as defined by the `LC_ALL`, `LC_CTYPE`, or `LANG` environment variables.
 * Type: Boolean
 
 When set to true, npm uses unicode characters in the tree output. When
@@ -1260,7 +1292,8 @@ Show short usage output about the command specified.
 
 #### `user-agent`
 
-* Default: "npm/{npm-version} node/{node-version} {platform} {arch} {ci}"
+* Default: "npm/{npm-version} node/{node-version} {platform} {arch}
+  workspaces/{workspaces} {ci}"
 * Type: String
 
 Sets the User-Agent request header. The following fields are replaced with
@@ -1270,6 +1303,8 @@ their actual counterparts:
 * `{node-version}` - The Node.js version in use
 * `{platform}` - The value of `process.platform`
 * `{arch}` - The value of `process.arch`
+* `{workspaces}` - Set to `true` if the `workspaces` or `workspace` options
+  are set.
 * `{ci}` - The value of the `ci-name` config, if set, prefixed with `ci/`, or
   an empty string if `ci-name` is empty.
 
@@ -1329,9 +1364,16 @@ Enable running a command in the context of the configured workspaces of the
 current project while filtering by running only the workspaces defined by
 this configuration option.
 
-Valid values for the `workspace` config are either: - Workspace names - Path
-to a workspace directory - Path to a parent workspace directory (will result
-to selecting all of the nested workspaces)
+Valid values for the `workspace` config are either:
+
+* Workspace names
+* Path to a workspace directory
+* Path to a parent workspace directory (will result to selecting all of the
+  nested workspaces)
+
+When set for the `npm init` command, this may be set to the folder of a
+workspace which does not yet exist, to create the folder and set it up as a
+brand new workspace within the project.
 
 This value is not exported to the environment for child processes.
 

@@ -193,7 +193,7 @@ class XpSystem {
 
         if (fetchUsers) {
             for (const key of leaderboard) {
-                const user = await this.users.fetch(key.userId) || {username: "Unknown", discriminator: "0000"};
+                const user = await this.client.users.fetch(key.userId) || {username: "Unknown", discriminator: "0000"};
                 computedArray.push({
                     guildID: key.guildId,
                     userId: key.userId,
@@ -211,8 +211,8 @@ class XpSystem {
                 xp: key.xp,
                 level: key.level,
                 position: (leaderboard.findIndex(i => i.guildId === key.guildId && i.userId === key.userId) + 1),
-                username: this.users.cache.get(key.userId) ? this.users.cache.get(key.userId).username : "Unknown",
-                discriminator: this.users.cache.get(key.userId) ? this.users.cache.get(key.userId).discriminator : "0000"
+                username: this.client.users.cache.get(key.userId) ? this.client.users.cache.get(key.userId).username : "Unknown",
+                discriminator: this.client.users.cache.get(key.userId) ? this.client.users.cache.get(key.userId).discriminator : "0000"
             }));
         }
 
