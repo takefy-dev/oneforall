@@ -1452,9 +1452,12 @@ module.exports = {
             notNumber : `Vous devez spécifier un niveau correct`,
             roleAlready : (role) => `Le role **${role}** est déjà dans les levelrole`,
             roleNot : (role) => `Le role **${role}** est n'est pas dans les levelrole`
-
-
         }
+    },
+    xpReset : {
+        successAll: (total) => `L'xp de ${total} membres a été reset`,
+        success : (member) => `L'xp de ${member} a été reset`,
+        errorNothingToReset : `Il n'y a personne a reset`
     }
 
 
