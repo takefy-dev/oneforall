@@ -1030,7 +1030,7 @@ module.exports = {
 
         messageDelete: (executor, target, channel, color, content) => new Discord.MessageEmbed()
             .setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({dynamic: true}) : '')
-            .setDescription(`${executor || executor.user.tag || executor.user.username} ${executor.id === target.id ? 'a son supprimé son message' : `a supprimé le message de **${target.tag || target.username}**`}:`)
+            .setDescription(`${executor || executor.user.tag || executor.user.username} ${executor.id === target.id ? 'a supprimé son message' : `a supprimé le message de **${target.tag || target.username}**`}:`)
             .addField('CHANNEL:', `<#${channel}>`)
             .addField('CONTENT:', content)
             .addField(`ID:`, `\`\`\`js\nExecutor = ${executor.id}\nTarget = ${target.id}\nChannel = ${channel}\`\`\``)
