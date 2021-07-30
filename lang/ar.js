@@ -63,7 +63,7 @@ module.exports = {
         > <:mutecasque:801123005287628890> Mute casque : **${ muteHeadSetCount }**
         > <:mutemic:801122908445212723> Mute micro : **${ muteCount }**\n\n<:sageata:788796887121657877> Total de personnes en vocal : **${ count }**`
     },
-    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[rh#0002](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
+    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     alladmins: {
         error: `Aucun admin sur ce serveur.`,
         list: `Liste des admins`
@@ -374,7 +374,7 @@ module.exports = {
         newPasswordQ: `Quel doit être le nouveau mot de pass ? (timeout 30 secondes)`,
         successChange: `Vous avez bien modifié votre mot de pass !`
     },
-    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[rh#0002](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
+    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     setlang: {
         title: `Changer la langue`,
         description: lang => `Langue actuelle : **${ lang }**    \n\n 🇫🇷 ・ Français \n\n 🇬🇧 ・ Anglais`,
@@ -683,14 +683,14 @@ module.exports = {
     addShop: {
         noItem: `Veuillez entrer un item en pour le shop`,
         noPrice: `Veuillez entrer un prix correct pour ajouter l'item au shop`,
-        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${ item }** au prix de ${ price }`,
+        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** au prix de ${ price }`,
         priceInf0: `Vous devez entrer un prix suppérieur à 0`,
         noShop: `<:720681441670725645:780539422479351809> \`ERREUR\` Votre magasin n'est pas dans notre base de donné (shop create pour créer le shop)`,
         alreadyShop: `<:720681441670725645:780539422479351809> \`ERREUR\` Votre serveurs possède déjà un magasin pour le supprimé (shop delete)`,
         create: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été créé`,
         delete: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été supprimé`,
         successRemove: item => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez enlevé l'item **${ item }** du magasin`,
-        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${ item }** au prix de ${ price }`,
+        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** au prix de ${ price }`,
         shopShowTitle: guildName => `Magasin sur le serveur ${ guildName }`,
         nothingInShop: `Rien dans la magasin`,
         notFoundItem: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas l'item associé avec cet id essayé un autre id`,
@@ -870,7 +870,7 @@ module.exports = {
         notCorrectSanction: `Veuillez specifier une sanction correct \`(ban/kick/unrank)\``,
         success: (event, sanction) => `Vous avez modifier la sanction de l'évènement **${ event }** pour **${ sanction }**`
     },
-    bypass: { success: (event, enable) => `Les whitelist${ !enable ? ' pas ' : '' }bypass${ !enable ? ' pas ' : '' }l'évènement **${ event }**` },
+    bypass: { success: (event, enable) => `Les whitelist${ !enable ? ' ne ' : '' }bypass${ !enable ? ' ne ' : '' }l'évènement **${ event }**` },
     perm: {
         noPermEnough: `Vous n'avez pas assez de permissions`,
         permNotFound: `La nom de la perm est invalide (1,2,3,4,everyone)`,
