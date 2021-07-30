@@ -8,7 +8,7 @@ module.exports = {
     no: 'no',
     cancel: 'Operation canceled',
     loading: `Loading... <a:2366_Loading_Pixels:784472554328555571>`,
-    descriptionTimeLeft: timeLeft => `🕙 __Temps restant__ : **${ prettyMilliseconds(timeLeft) }**`,
+    descriptionTimeLeft: timeLeft => `🕙 __Remaining time__ : **${ prettyMilliseconds(timeLeft) }**`,
     error: {
         YesNo: `Please answer with \`yes or no\` only !`,
         timeout: `Time elapsed !`,
@@ -27,7 +27,7 @@ module.exports = {
     },
     ping: {
         pinging: 'Pinging...',
-        success: (ping, client) => `Bot latency: \`${ ping }\` ms, API latency: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
+        success: (ping, client) => `Bot latency: \`${ ping }\` ms, API latency: \`${ Math.round(parseInt(client.ws.ping)) }\`ms`
     },
     help: {
         information2: prefix => `<:778353230484471819:780727288903237663> The prefix for this server is \`${ prefix }\`.\n<:desc2:783422775821729792> To get more information about a command, just type \`${ prefix }help\` \`command\`.\n<:folder:783422648196923452> You can also type \`${ prefix }help commands\` or press on 📄 to get all my commands.`,
@@ -63,7 +63,7 @@ module.exports = {
         > <:mutecasque:801123005287628890> Headphone mute : **${ muteHeadSetCount }**
         > <:mutemic:801122908445212723> Mute microphone : **${ muteCount }**\n\n<:sageata:788796887121657877> Total of members in voice channel : **${ count }**`
     },
-    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll is a bot owned by* \`TAKEFY#9831\`\n\n**Developer :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[rh#0002](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
+    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     alladmins: {
         error: `There is 0 admins on server.`,
         list: `List of admins`
@@ -374,7 +374,7 @@ module.exports = {
         newPasswordQ: `What is the new password ? (timeout 30 seconds)`,
         successChange: `You've correctly change your password !`
     },
-    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll is a bot owned by* \`TAKEFY#9831\`\n\n**Developer :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[rh#0002](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
+    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     setlang: {
         title: `Change language`,
         description: lang => `Actual language : **${ lang }**    \n\n 🇫🇷 ・ French \n\n 🇬🇧 ・ English`,
@@ -681,14 +681,14 @@ module.exports = {
     addShop: {
         noItem: `Please enter an item for the shop`,
         noPrice: `Please enter a correct price to add the item to the shop`,
-        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCES\` You added the item **${ item }** at the price of ${ price }`,
+        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** at the price of ${ price }`,
         priceInf0: `You must enter a price greater than 0`,
         noShop: `<:720681441670725645:780539422479351809> \`ERROR\` Your store is not in our database (\`shop create\` to create the shop)`,
         alreadyShop: `<:720681441670725645:780539422479351809> \`ERROR\` Your server already have a store to delete it use \`shop delete\` `,
         create: `<:720681705219817534:780540043033837622> \`SUCCES\` The store has been created `,
         delete: `<:720681705219817534:780540043033837622> \`SUCCES\` The store has been deleted `,
         successRemove: item => `<:720681705219817534:780540043033837622> \`SUCCES\` You removed the item **${ item }** from the shop`,
-        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCES\` You added the item **${ item }** at the price of ${ price }`,
+        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** at the price of ${ price }`,
         shopShowTitle: guildName => `Store on the server ${ guildName }`,
         nothingInShop: `Nothing in the store`,
         notFoundItem: `<:720681441670725645:780539422479351809> \`ERROR\` I can't find the item associated with this id try wtih another id `,
