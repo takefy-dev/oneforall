@@ -376,8 +376,6 @@ module.exports = {
     },
     authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     setlang: {
-        currentLang: lang => `En ce moment la langue du bot est **${ lang }**`,
-        errorInArgs: availableLang => `Vous devez choisir entre ces ${ availableLang.length } langues **(${ availableLang.join(', ').replace(/.js/g, '') })**`,
         success: lang => `La langue du bot est maintenat définie pour ${ lang }`
     },
     addemoji: {
@@ -1125,16 +1123,20 @@ module.exports = {
         success: member => `L'xp de ${ member } a été reset`,
         errorNothingToReset: `Il n'y a personne a reset`
     },
-    inviteRole: {
-        noRole: `Vous devez spécifier un role`,
-        noInvite: `Vous devez spécifier un nombre d'invite`,
-        notNumber: `Vous devez spécifier un nombre d'invite valide`,
-        listEmbed: inviteRole => new Discord.MessageEmbed().setDescription(!inviteRole.length ? `Aucun invite role` : inviteRole.map((inv, i) => `${ i + 1 } - <@&${ inv.role }> - ${ inv.invite } invite(s)`).join('\n')).setTimestamp().setTitle(`Liste des invites role (${ inviteRole.length })`),
-        success: (role, invite) => `Le role **${ role }** se maintenant ajouté a partir de *${ invite }* invite(s)`,
-        noOnOff: `Vous devez spécifier on ou off\n \`Exemple: !inviterole cumul on\``,
-        successCumul: isOn => `Le cumules des roles est maintenant **${ isOn }**.`,
-        doestNotExist: `L'invite role n'existe pas`,
-        alreadyExist: `L'invite role existe déjà`,
-        successRm: role => `Le ${ role } a été supprimé des invite role`
+
+    inviteRole : {
+        noRole : `Vous devez spécifier un role`,
+        noInvite : `Vous devez spécifier un nombre d'invite`,
+        notNumber : `Vous devez spécifier un nombre d'invite valide`,
+        listEmbed : (inviteRole) => new Discord.MessageEmbed()
+            .setDescription(!inviteRole.length ? `Aucun invite role` :  inviteRole.map((inv, i) => `${i +1} - <@&${inv.role}> - ${inv.invite} invite(s)`).join('\n'))
+            .setTimestamp()
+            .setTitle(`Liste des invites role (${inviteRole.length})`),
+        success: (role, invite) => `Le role **${role}** se maintenant ajouté a partir de *${invite}* invite(s)`,
+        noOnOff : `Vous devez spécifier on ou off\n \`Exemple: !inviterole cumul on\``,
+        successCumul : (isOn) => `Le cumules des roles est maintenant **${isOn}**.`,
+        doestNotExist : `L'invite role n'existe pas`,
+        alreadyExist : `L'invite role existe déjà`,
+        successRm : (role) => `Le ${role} a été supprimé des invite role`
     }
 };
