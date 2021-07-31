@@ -94,7 +94,6 @@ class GuildManager {
                 categoryId: 'Non définie',
                 channelId: 'Non définie',
                 channelName: 'Non définie',
-                name: 'Non définie',
                 enable: false,
             },
             perms: values.perms ? Object.assign(this.guildManager.OneForAll.config.defaultPermSetup,values.perms) : this.guildManager.OneForAll.config.defaultPermSetup,

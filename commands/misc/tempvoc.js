@@ -31,15 +31,10 @@ module.exports = class Test extends Command {
             await msg.react(emoji)
         }
         const tempVoc = client.functions.copyObject(guildData.get('tempvoc'));
-
-        let enableEmoji = () => {
-            return tempVoc.enable ? '<:778348494712340561:781153837850820619>' : '<:778348495157329930:781189773645578311>'
-        }
-
         const embed = new Discord.MessageEmbed()
             .setTitle(lang.tempvoc.embedTitle)
-            .setDescription(lang.tempvoc.embedDescription(categoryNameMapping.get(message.guild.id).chName, enable.get(message.guild.id)))
-            .setColor(`${color}`)
+            .setDescription(lang.tempvoc.embedDescription(tempVoc.channelName, client.functions.enableEmoji(tempVoc.enable)))
+            .setColor(color)
             .setTimestamp()
             .setFooter(client.user.username);
 
@@ -61,12 +56,7 @@ module.exports = class Test extends Command {
                             }],
                             reason: `Auto config tempvoc`
                         }).then(c => {
-                            categoryNameMapping.set(message.guild.id, {
-                                catId: c.id,
-                                chId: 'Non définie',
-                                chName: 'Non définie',
-                                isOn: tempVoc.isOn
-                            })
+                                tempVoc.categoryId = c.id
                             c.guild.channels.create(lang.tempvoc.autoChName, {
                                 type: 'voice',
                                 parent: c.id,
@@ -79,15 +69,8 @@ module.exports = class Test extends Command {
                                 reason: `Auto config tempvoc`
                             }).then(v => {
                                 loading.edit(lang.tempvoc.autoConfigFinish).then(finish => {
-                                    categoryNameMapping.set(message.guild.id, {
-                                        catId: c.id,
-                                        chId: v.id,
-                                        chName: 'Non définie',
-                                        isOn: tempVoc.isOn
-
-                                    })
-
-                                    finish.delete({timeout: 3000});
+                                    tempVoc.channelId = v.id
+                                    finish.delete();
                                     updateEmbed()
                                 })
                             });
@@ -114,13 +97,7 @@ module.exports = class Test extends Command {
                                         }, 2000)
                                     })
                                 }
-                                const info = categoryNameMapping.get(message.guild.id)
-                                categoryNameMapping.set(message.guild.id, {
-                                    catId: info.catId,
-                                    chId: info.chId,
-                                    chName: msg.content,
-                                    isOn: info.isOn
-                                })
+                                tempVoc.channelName = msg.content
                                 updateEmbed()
                                 setTimeout(async () => {
                                     await mp.delete();
@@ -130,17 +107,16 @@ module.exports = class Test extends Command {
                     })
                 }
                 if (r.emoji.name === emojis[2]) {
-                    if (enable.get(message.guild.id) === 'Désactivé') {
-                        enable.set(message.guild.id, 'Activé')
-
-                    } else {
-                        enable.set(message.guild.id, 'Désactivé')
-
-                    }
+                    tempVoc.enable = !tempVoc.enable
                     updateEmbed()
                 }
                 if (r.emoji.name === emojis[3]) {
-                    await message.guild.newTempvoc(null, false).then(async () => {
+                    guildData.set('tempvoc',  {
+                        categoryId: 'Non définie',
+                        channelId: 'Non définie',
+                        channelName: 'Non définie',
+                        enable: false,
+                    }).save().then(async () => {
                         await message.channel.send(lang.reactionRole.successDel).then(async (replyMSG) => {
                             setTimeout(async () => {
                                 await replyMSG.delete();
@@ -152,8 +128,6 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emojis[4]) {
                     message.channel.send(lang.tempvoc.cancel).then((mp) => {
-                        enable.delete(message.guild.id);
-                        categoryNameMapping.delete(message.guild.id);
                         collector.stop('user_stop');
                         setTimeout(async () => {
                             mp.delete()
@@ -163,24 +137,14 @@ module.exports = class Test extends Command {
                     })
                 }
                 if (r.emoji.name === emojis[5]) {
-                    const info = categoryNameMapping.get(message.guild.id)
-                    if (info.catId === 'Non définie') {
+                    if (tempVoc.categoryId === 'Non définie') {
                         return await message.channel.send(lang.tempvoc.noCat).then(async (replyMSG) => {
                             setTimeout(async () => {
                                 return await replyMSG.delete();
                             }, 2000)
                         })
                     }
-                    let isOn;
-                    if (enable.get(message.guild.id) === 'Activé') isOn = true
-                    if (enable.get(message.guild.id) === 'Désactivé') isOn = false
-                    categoryNameMapping.set(message.guild.id, {
-                        catId: info.catId,
-                        chName: info.chName,
-                        chId: info.chId,
-                        isOn: isOn
-                    })
-                    await message.guild.newTempvoc(categoryNameMapping.get(message.guild.id), true)
+                    guildData.set('tempvoc', tempVoc).save()
                     return message.channel.send(lang.tempvoc.success).then(async (replyMSG) => {
                         setTimeout(async () => {
                             await msg.delete();
@@ -190,7 +154,7 @@ module.exports = class Test extends Command {
                 }
 
                 function updateEmbed() {
-                    embed.setDescription(lang.tempvoc.embedDescription(categoryNameMapping.get(message.guild.id).chName, enable.get(message.guild.id)))
+                    embed.setDescription(lang.tempvoc.embedDescription(tempVoc.channelName, client.functions.enableEmoji(tempVoc.enable)))
                     msg.edit(embed)
 
 
@@ -199,21 +163,9 @@ module.exports = class Test extends Command {
             collector.on('end', async (collected, reason) => {
                 if (reason === 'time') {
                     const replyMsg = await message.channel.send(lang.error.timeout)
-                    enable.delete(message.guild.id);
-                    categoryNameMapping.delete(message.guild.id);
-
                     setTimeout(() => {
                         replyMsg.delete()
                     }, 2000)
-                }
-                if (reason === 'user_stop') {
-                    enable.delete(message.guild.id);
-                    categoryNameMapping.delete(message.guild.id);
-
-                }
-                if (reason === "messageDelete") {
-                    enable.delete(message.guild.id);
-                    categoryNameMapping.delete(message.guild.id);
                 }
 
 
