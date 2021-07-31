@@ -377,11 +377,7 @@ module.exports = {
         successChange: `Vous avez bien modifié votre mot de pass !`
     },
     authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
-    setlang: {
-        currentLang: lang => `En ce moment la langue du bot est **${ lang }**`,
-        errorInArgs: availableLang => `Vous devez choisir entre ces ${ availableLang.length } langues **(${ availableLang.join(', ').replace(/.js/g, '') })**`,
-        success: lang => `La langue du bot est maintenat définie pour ${ lang }`
-    },
+    setlang: { success: lang => `La langue du bot est maintenat définie pour ${ lang }` },
     addemoji: {
         missingUrl: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un emoji`,
         missingName: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un nom pour l'emoji`,
