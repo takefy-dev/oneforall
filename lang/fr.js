@@ -326,9 +326,11 @@ module.exports = {
         2 ・ Configurer le message de bienvenue\n
             __Message Actuel__ : ${ inviteMsg } \n
         3 ・ Aide sur le message de bienvenue  \n
-
         4 ・ Activer ou désactiver le message de bienvenue \n
-        __Actif__ : ${ isOnS }`,
+        __Actif__ : ${ isOnS }
+        `
+        ,
+
         chQ: `<a:2366_Loading_Pixels:784472554328555571> Mentionnez le channel où les messages de bienvenue seront envoyés (cancel pour annuler)`,
         successCh: response => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Les messages de bienvenue vont maintenant être envoyé dans le channel ${ response }.`,
         errorCh: response => `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a définir le salon où les messages de bienvenue seront envoyés à ${ response }`,
@@ -1125,5 +1127,21 @@ module.exports = {
         successAll: total => `L'xp de ${ total } membres a été reset`,
         success: member => `L'xp de ${ member } a été reset`,
         errorNothingToReset: `Il n'y a personne a reset`
+    },
+    inviteRole : {
+        noRole : `Vous devez spécifier un role`,
+        noInvite : `Vous devez spécifier un nombre d'invite`,
+        notNumber : `Vous devez spécifier un nombre d'invite valide`,
+        listEmbed : (inviteRole) => new Discord.MessageEmbed()
+            .setDescription(!inviteRole.length ? `Aucun invite role` :  inviteRole.map((inv, i) => `${i +1} - <@&${inv.role}> - ${inv.invite} invite(s)`).join('\n'))
+            .setTimestamp()
+            .setTitle(`Liste des invites role (${inviteRole.length})`),
+        success: (role, invite) => `Le role **${role}** se maintenant ajouté a partir de *${invite}* invite(s)`,
+        noOnOff : `Vous devez spécifier on ou off\n \`Exemple: !inviterole cumul on\``,
+        successCumul : (isOn) => `Le cumules des roles est maintenant **${isOn}**.`,
+        doestNotExist : `L'invite role n'existe pas`,
+        alreadyExist : `L'invite role existe déjà`,
+        successRm : (role) => `Le ${role} a été supprimé des invite role`
+
     }
 };

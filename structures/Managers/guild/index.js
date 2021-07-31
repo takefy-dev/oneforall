@@ -61,7 +61,7 @@ class GuildManager {
             setup: values.setup ? values.setup : false,
             muteRoleId: values.muteRoleId ? values.muteRoleId : null,
             memberRole: values.memberRole ? values.memberRole : null,
-            invite: values.invite ? values.invite : {id: 'Non définie', message: 'Non définie', enable: false},
+            invite: values.invite ? Object.assign( {id: 'Non définie', message: 'Non définie', enable: false, inviteRole: [], cumulRoles: true},{...values.invite, maxRoleInvite: values.invite.inviteRole.sort((a, b) => b.invite - a.invite)[0]}) : {id: 'Non définie', message: 'Non définie', enable: false, inviteRole: [], cumulRoles: true},
             soutien: values.soutien ? values.soutien : {
                 roleId: 'Non définie',
                 message: 'Non définie',

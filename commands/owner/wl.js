@@ -49,7 +49,7 @@ module.exports = class Test extends Command {
 
 
         } else if (remove) {
-            if (!args[1]) return message.channel.send(lang.owner.noMember)
+            if (!args[1]) return message.channel.send(lang.wl.errorSyntaxAdd)
             const member = message.mentions.members.first() || await message.guild.members.fetch(args[1]);
             if (!whitelisted.includes(member.id)) return message.channel.send(lang.wl.errorNotWl(member.user.tag || member.user.username))
             whitelisted = whitelisted.filter(wl => wl !== member.user.id)

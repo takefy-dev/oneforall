@@ -13,7 +13,7 @@ module.exports = class Ready extends Event {
     async run(client, member) {
         const guild = member.guild;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
-        const {id, message, enable} = guildData.get('invite');
+        const {id, message, enable, inviteRole, cumulRoles, maxRoleInvite} = guildData.get('invite');
 
         if (!id || !message || !enable) return;
 
@@ -38,7 +38,7 @@ module.exports = class Ready extends Event {
             }
         } else {
             const fake = (Date.now() - member.createdAt) / (1000 * 60 * 60 * 24) <= 3;
-            let inviter = guild.members.resolve(usedInv.inviter.id);
+            let inviter = await guild.members.fetch(usedInv.inviter.id);
             if (inviter) {
                 const userData = client.managers.userManager.getAndCreateIfNotExists(`${guild.id}-${usedInv.inviter.id}`)
 
@@ -57,11 +57,24 @@ module.exports = class Ready extends Event {
                 while (finalMsg.includes("{space}")) {
                     finalMsg.replace(/{space}/g, space)
                 }
-
-
+                if(!inviteRole.length) return
+                const roleToAdd = []
+                inviteRole.filter(roleInv => roleInv.invite <= count.join).forEach(role => roleToAdd.push(role.role))
+                if(!roleToAdd.length) return
+                await inviter.roles.add(roleToAdd, `Invite role: ${count.join}`)
+                if(!cumulRoles){
+                    const toRemove = []
+                    inviteRole.filter(roleInv => roleInv.role !== maxRoleInvite.role).forEach(role => {
+                        toRemove.push(role.role)
+                    })
+                    await inviter.roles.remove(toRemove, `Cumul roles off`)
+                }
             }
         }
         if (channel && !channel.deleted) channel.send(finalMsg)
+
+
+
 
 
     }

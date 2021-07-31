@@ -19,7 +19,7 @@ module.exports = class Test extends Command{
         else args[0] = message.author.id
         let targetUser = await client.users.fetch(args[0]).catch();
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
-        const userXp = await client.levels.fetch(targetUser.id, message.guild.id)
+        const userXp = await client.levels.fetch(targetUser.id, message.guild.id, true)
         const color = guildData.get('color') === "#36393F" ? "#2EAD4B" : guildData.get('color')
         const rank = new canvacord.Rank()
             .setAvatar(targetUser.displayAvatarURL({ dynamic: false, format: 'png' }))
@@ -30,7 +30,7 @@ module.exports = class Test extends Command{
             .setUsername(targetUser.username)
             .setDiscriminator(targetUser.discriminator, color)
             .setLevel(userXp.level)
-            .setRank(userXp.level)
+            .setRank(userXp.position)
             .setCustomStatusColor(color)
             .setLevelColor(color)
             .setRankColor(color)
