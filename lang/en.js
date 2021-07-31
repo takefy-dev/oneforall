@@ -2,348 +2,345 @@ const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms');
 const Discord = require('discord.js');
 module.exports = {
-    maintenance: `The bot is in maintenance for a few minutes`,
-    clic: 'Click here',
-    yes: 'yes',
-    no: 'no',
-    cancel: 'Operation canceled',
-    loading: `Loading... <a:2366_Loading_Pixels:784472554328555571>`,
-    descriptionTimeLeft: timeLeft => `🕙 __Remaining time__ : **${ prettyMilliseconds(timeLeft) }**`,
+    maintenance: `Le bot est en maintenance pendant quelques minutes`,
+    clic: 'Clique ici',
+    yes: 'oui',
+    no: 'non',
+    cancel: 'Opération annulé',
+    loading: `Chargement... <a:2366_Loading_Pixels:784472554328555571>`,
+    descriptionTimeLeft: timeLeft => `🕙 __Temps restant__ : **${ prettyMilliseconds(timeLeft) }**`,
     error: {
-        YesNo: `Please answer with \`yes or no\` only !`,
-        timeout: `Time elapsed !`,
-        cooldown: time => `Please execute the command in \`${ time }\` seconds.`,
-        noSetup: 'You need to setup the bot to be able to use this command (!setup)',
-        NoYes: 'You must answer only with yes or no !',
-        ownerOnly: `Only the bot owner can do this command`,
-        notListOwner: `You are not in the owner list`,
-        notGuildOwner: `
-Only the server owner or bot buyer can perform this action`,
-        voiceChat: `You must be in a voice room to execute this command`,
-        MissingPermission: `
-Sorry I did not manage to do that I did not have enough permission.`,
-        includesEveryoneMention: `You cannot make me say a message that contains everyone or here
-`,
-        userPermissions: perm => `You do not have the required permission \ `${ perm }\``,
+        YesNo: `Veuillez répondre par \`oui ou non\` uniquement !`,
+        timeout: `Temps écoulé !`,
+        cooldown: time => `Veuillez executer la commande dans \`${ time }\` secondes.`,
+        noSetup: 'Vous devez setup le bot pour pouvoir utiliser cette commande (!setup)',
+        NoYes: 'Vous devez répondre uniquement avec oui ou non !',
+        ownerOnly: `Seulement le propriétaire du bot peut faire cette commande`,
+        notListOwner: `Vous n'êtes pas dans la liste des owners`,
+        notGuildOwner: `Seulement le propiétaire du serveur ou l'acheteur du bot peut executer cette action`,
+        voiceChat: `Vous devez être dans un salon vocal pour executer cette commande`,
+        MissingPermission: `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
+        includesEveryoneMention: `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`,
+        userPermissions: perm => `Vous n'avez pas la permission requise \`${ perm }\``,
         clientPermissions: perm => `Je n'ai pas la permission requise \`${ perm }\``,
         managed: `Vous ne pouvez pas choisir de role gérer par une extension`
     },
     ping: {
         pinging: 'Pinging...',
-        success: (ping, client) => `Bot latency: \`${ ping }\` ms, API latency: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
+        success: (ping, client) => `Latence du bot: \`${ ping }\` ms, Latence de l'api: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
     },
     help: {
-        information2: prefix => `<:778353230484471819:780727288903237663> The prefix for this server is \`${ prefix }\`.\n<:desc2:783422775821729792> To get more information about a command, just type \`${ prefix }help\` \`command\`.\n<:folder:783422648196923452> You can also type \`${ prefix }help commands\` or press on 📄 to get all my commands.`,
-        noCommand: args => `I don't find this command (${ args }) in my commands`,
+        information2: prefix => `<:778353230484471819:780727288903237663> Le préfixe de ce serveur est \`${ prefix }\`.\n<:desc2:783422775821729792> Pour obtenir plus d'informations sur une commande, tapez simplement \`${ prefix }help\` \`commands\`.\n<:folder:783422648196923452> Vous pouvez également taper \`${ prefix }help commands\` ou réagir avec 📄 pour obtenir toutes mes commandes.`,
+        noCommand: args => `Je ne trouve pas la commande **__${ args }__** dans mes commandes`,
         information: `Information and commands`,
-        noAliases: `No aliases`,
-        cmdTitle: `Command help`,
-        footer: `Asked by `,
-        titleNoArgs: `General help page`,
-        command: `Show all commands`,
-        search: `Find detailed help on a command`,
-        noUsage: `No particular use`,
-        requiredOrNot: `\`< >\` are the required arguments and \`[ ]\` are optional arguments`
+        noAliases: `Pas d'aliases`,
+        cmdTitle: `Aide sur la commande`,
+        footer: `Demandé par`,
+        titleNoArgs: `Page d'aide général`,
+        command: `Afficher toutes les commandes`,
+        search: `Chercher une aide détaillé sur un commande`,
+        noUsage: `Pas d'usage en particuler`,
+        requiredOrNot: `\`< >\` sont les arguments requis et \`[ ]\` sont les arguments optionnel`
     },
     helpall: {
-        botOwner: `List of botOwner commands`,
-        moderation: `List of Moderation commands`,
-        antiriraid: `List of Antiraid commands`,
-        giveaway: `List of Giveaway commands`,
-        reactrole: `List of ReactRole & Embed commands`,
-        general: `List of General commands`
+        botOwner: `Liste des commandes de botOwner`,
+        moderation: `Liste des commandes de Modération`,
+        antiriraid: `Liste des commandes de Antiraid`,
+        giveaway: `Liste des commandes de Concours`,
+        reactrole: `Liste des commandes de ReactRole & Embed`,
+        general: `Liste des commandes de Général`
     },
     snipe: {
-        error: 'There is no deleted message in this channel',
-        link: 'Sorry but it\'s a link'
+        error: 'Il n\'y a pas de message delete dans ce channel',
+        link: 'Désolé mais c\'est un lien'
     },
-    inviteBot: { invite: `Invite bot` },
-    support: { support: `Support Server` },
+    inviteBot: { invite: `Inviter le bot` },
+    support: { support: `Serveur d'assistance` },
     vocal: {
-        msg: (count, muteCount, streamingCount, muteHeadSetCount, openMicCount) => `<:voc:801123036576612353> Stats vocal :
-        > <:unmute:801122798629945354> Open microphone : **${ openMicCount }**
-        > <:stream:801122725602000946> Streaming : **${ streamingCount }**
-        > <:mutecasque:801123005287628890> Headphone mute : **${ muteHeadSetCount }**
-        > <:mutemic:801122908445212723> Mute microphone : **${ muteCount }**\n\n<:sageata:788796887121657877> Total of members in voice channel : **${ count }**`
+        msg: (count, muteCount, streamingCount, muteHeadSetCount, openMicCount) => `<:voc:801123036576612353> Statistique vocal :
+        > <:unmute:801122798629945354> Micro ouvert : **${ openMicCount }**
+        > <:stream:801122725602000946> En Stream : **${ streamingCount }**
+        > <:mutecasque:801123005287628890> Mute casque : **${ muteHeadSetCount }**
+        > <:mutemic:801122908445212723> Mute micro : **${ muteCount }**\n\n<:sageata:788796887121657877> Total de personnes en vocal : **${ count }**`
     },
-    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll is a bot owned by* \`TAKEFY#9831\`\n\n**Developer :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[rh#0002](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
+    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     alladmins: {
-        error: `There is 0 admins on server.`,
-        list: `List of admins`
+        error: `Aucun admin sur ce serveur.`,
+        list: `Liste des admins`
     },
     ban: {
-        noBan: '<:720681441670725645:780539422479351809> `ERROR` You must specify a member to ban (`mention / id`)',
-        errorRl: member => `<:720681441670725645:780539422479351809> \`ERROR\` You cannot ban **\`${ member.tag }\`** because they have roles above yours !`,
-        errorBanSelf: '<:720681441670725645:780539422479351809> `ERROR` You cannot ban yourself !',
-        noReason: 'No reason specified',
-        success: member => `<:720681705219817534:780540043033837622> \`SUCCES\` ${ member.tag } was banned.`,
-        error: member => `<:720681441670725645:780539422479351809> \`ERROR\` Sorry, i just couldn't ban ${ member.tag }`,
-        alreadyBan: member => `<:720681441670725645:780539422479351809> \`ERROR\` **${ member.tag }** is already ban`,
-        missingPerm: member => `<:720681441670725645:780539422479351809> \`ERROR\`I don't have enought permissions to ban **${ member.tag }**`,
-        dm: (guildName, bannerName) => `You've been ban from ${ guildName } by ${ bannerName }`
+        noBan: '<:720681441670725645:780539422479351809> `ERREUR` Vous devez spécifier un membre à bannir (`mention / id`)',
+        errorRl: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas bannir **\`${ member.tag }\`** car ils possèdent plus de permissions que vous`,
+        errorBanSelf: '<:720681441670725645:780539422479351809> `ERREUR` Vous ne pouvez pas vous bannir vous-même',
+        noReason: 'Aucune raison spécifique',
+        success: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${ member.tag } a été ban.`,
+        error: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Désolé, je ne suis pas arrivé à bannir ${ member.tag }`,
+        alreadyBan: member => `<:720681441670725645:780539422479351809> \`ERREUR\` **${ member.tag }** est déjà banni`,
+        missingPerm: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Je n'ai pas assé de permission pour bannir **${ member.tag }**`,
+        dm: (guildName, bannerName) => `Vous avez été banni de ${ guildName } par ${ bannerName }`
     },
     banlist: {
-        title: guild => `Member(s) banned from the server __${ guild.name }__`,
-        description: (banned, list) => ` There is <:Banhammer:785492588269535263> **${ banned.size }** banned member(s):  \n  \`${ list }\` `,
-        descriptionInf: banned => `There is <:Banhammer:785492588269535263> **${ banned.size }** banned member(s). `
+        title: guild => `Membre(s) banni sur le serveur __${ guild.name }__`,
+        description: (banned, list) => ` Il y a <:Banhammer:785492588269535263> **${ banned.size }** membres banni(s):  \n  \`${ list }\` `,
+        descriptionInf: banned => `Il y a <:Banhammer:785492588269535263> **${ banned.size }** membres banni(s). `
     },
     clear: {
-        error100: '<:720681441670725645:780539422479351809> `ERROR` You cannot delete more than 100 messages !',
-        errorNaN: '<:720681441670725645:780539422479351809> `ERROR` Put only numbers !',
-        success: deleteAmount => `<:720681705219817534:780540043033837622> \`SUCCES\` You deleted ${ deleteAmount } messages.`
+        error100: '<:720681441670725645:780539422479351809> `ERREUR` Vous ne pouvez pas supprimer plus de 100 messages à la fois!',
+        errorNaN: '<:720681441670725645:780539422479351809> `ERREUR` Mettez uniquement des nombres!',
+        success: deleteAmount => `<:720681705219817534:780540043033837622> \`SUCCÈS\`  Vous avez supprimé ${ deleteAmount } messages.`
     },
     derank: {
-        errorNoMember: '<:720681441670725645:780539422479351809> `ERROR` You must specify a member to unrank (`mention / id`)',
-        errorUnrankMe: '<:720681441670725645:780539422479351809> `ERROR` You can\'t unrank me.',
-        errorRl: member => `<:720681441670725645:780539422479351809> \`ERROR\` You can't unrank **\`${ member.user.tag }\`** ecause they have roles above yours`,
-        errorUnrankSelf: '<:720681441670725645:780539422479351809> `ERROR` You can\'t unrank yourself',
-        errorNoRl: member => `<:720681441670725645:780539422479351809> \`ERROR\` **${ member.user.tag }** has no role !`,
-        reason: executor => `OneForAll - Type: unrank by ${ executor.user.tag }`,
-        success: member => `<:720681705219817534:780540043033837622> \`SUCCES\` **${ member.user.tag }** was unranked.`
+        errorNoMember: '<:720681441670725645:780539422479351809> `ERREUR` Vous devez spécifier un membre à unrank (`mention / id`)',
+        errorUnrankMe: '<:720681441670725645:780539422479351809> `ERREUR`  Vous ne pouvez pas me unrank.',
+        errorRl: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas unrank **\`${ member.user.tag }\`** car ils possèdent des rôles aux dessus des votre`,
+        errorUnrankSelf: '<:720681441670725645:780539422479351809> `ERREUR` Vous ne pouvez pas vous unrank vous-même',
+        errorNoRl: member => `<:720681441670725645:780539422479351809> \`ERREUR\` **${ member.user.tag }** ne possède aucun rôle`,
+        reason: executor => `OneForAll - Type: unrank par ${ executor.user.tag }`,
+        success: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` **${ member.user.tag }** a été unrank.`
     },
-    dero: { success: '<:720681705219817534:780540043033837622> `SUCCES` All waivers have been updated.' },
+    dero: { success: '<:720681705219817534:780540043033837622> `SUCCÈS` Toutes les dérogattions ont été mis à jour.' },
     embedBuilder: {
         descriptionRequired: `La description est obligatoire`,
-        loading: `Loading... <a:2366_Loading_Pixels:784472554328555571>`,
-        title: `Embed creation menu !`,
-        description: ` <a:dboatsSharkDance:788375939234398218> Welcome to the embed creation menu ! \n<a:image0:789413382591348738> Cliquez sur les reactions pour pouvoir personnaliser votre embed !`,
-        titleField: `・Allows you to edit the title`,
-        descriptionField: `・Allows you to modify the description`,
-        authorField: `・Allows you to modify the author`,
-        footerField: `・Allows you to modify the footer`,
-        thumbnailField: `・Allows you to edit the thumbnail`,
-        imageField: `・Allows you to edit the image`,
-        urlField: `・Allows you to modify the url`,
-        colorField: `・Allows you to change the color`,
-        timestampField: `・Allows you to add a timestamp`,
-        copyField: `Copy an embed and edit it`,
-        cancelField: `・Allows to cancel the creation of the embed`,
-        sendField: `・Allows to send the embed with the bot`,
-        titleMsg: `✏ What title do you want for your embed ?`,
-        descriptionMsg: `📝 What description do you want for your embed ?`,
-        authorMsg: `🗣 Which author do you want for your embed ?`,
+        loading: `Chargement ... <a:2366_Loading_Pixels:784472554328555571>`,
+        title: `Menu création d'embed !`,
+        description: ` <a:dboatsSharkDance:788375939234398218> Bienvenue sur le menu de création d'embed ! \n<a:image0:789413382591348738> Cliquez sur les reactions pour pouvoir personnaliser votre embed !`,
+        titleField: `・Permet de modifier le titre`,
+        descriptionField: `・Permet de modifier la description`,
+        authorField: `・Permet de modifier l'auteur`,
+        footerField: `・Permet de modifier le footer`,
+        thumbnailField: `・Permet de modifier la miniature`,
+        imageField: `・Permet de modifier l'image`,
+        urlField: `・Permet de modifier l'url`,
+        colorField: `・Permet de modifier la couleur`,
+        timestampField: `・Permet de ajouter un timestamp`,
+        copyField: `Copier un embed et l'editer`,
+        cancelField: `・Permet d'annuler la création de l'embed`,
+        sendField: `・Permet d'envoyer l'embed avec le bot`,
+        titleMsg: `✏ Quel titre voulez-vous pour votre embed ?`,
+        descriptionMsg: `📝Quelle description voulez-vous pour votre embed ?`,
+        authorMsg: `🗣 Quel auteur voulez-vous pour votre embed ?`,
         authorUrl: `🗣 Quel l'url voulez-vous pour l'auteur de l'embed ? (no pour aucun)`,
         authorIcon: `🗣 Quel est l'image voulez-vous pour l'auteur de l'embed ? (no pour aucun)`,
-        footerMsg: `🖍 What footer do you want for your embed ?`,
+        footerMsg: `🖍 Quel footer voulez-vous pour votre embed ?`,
         footerUrl: `🖍 Quel est l'icon pour le footer (no pour aucun)`,
-        thumbnailMsg: `💶 Which thumbnail do you want for your embed ?`,
-        imageMsg: `🖼 What image do you want for your embed ?`,
-        urlMsg: `🌐 What url do you want for your embed ?`,
+        thumbnailMsg: `💶 Quelle miniature voulez-vous pour votre embed ?`,
+        imageMsg: `🖼 Quelle image voulez-vous pour votre embed ?`,
+        urlMsg: `🌐 Quel url voulez-vous pour votre embed ?`,
         colorMsg: `🎨 Quelle couleur voulez-vous pour votre embed (\`HEX ou des couleurs en anglais\`)?`,
-        copyMsg: `© What is the channel where the embed is located (\`mention / id\`)?`,
-        messageId: `© What is the id of the embed message (\`id\`)?`,
-        cancelMsg: `❌ Do you want to cancel the creation of the embed ? (\`oui/non\`)?`,
-        sendMsg: `✅ In which channel do you want to send the embed \`mention ou id\`?`,
-        errorUrl: `The url must start with __http/https__`,
+        copyMsg: `© Quel est le channel où l'embed est situer (\`mention / id\`)?`,
+        messageId: `© Quel est l'id du message embed (\`id\`)?`,
+        cancelMsg: `❌ Voulez-vous annuler la création de l'embed ? (\`oui/non\`)?`,
+        sendMsg: `✅ Dans quel channel voulez-vous envoyer l'embed \`mention ou id\`?`,
+        errorUrl: `L'url doit commencer par __http/https__`,
         errorColor: `Veuillez entrer une couleur valide \`hex ou des couleur en anglais\``,
-        errorChannel: `I can't find this channel !`,
-        errorWrongId: `Please enter a valid id !`,
-        errorMessage: ch => `I can't find the message in the channel ${ ch } !`
+        errorChannel: `Je ne trouve pas ce channel !`,
+        errorWrongId: `Veuilez entrer un id valide !`,
+        errorMessage: ch => `Je ne trouve pas le message dans le channel ${ ch } !`
     },
     kick: {
-        noKick: '<:720681441670725645:780539422479351809> `ERROR` You must specify a member to kick (`mention / id`)',
-        errorRl: tag => `<:720681441670725645:780539422479351809> \`ERROR\` You cannot ban **\`${ tag }\`** because they have roles above yours`,
-        errorKickSelf: '<:720681441670725645:780539422479351809> `ERROR` You can\'t exclude yourself',
-        noReason: 'No specific reason',
-        success: member => `<:720681705219817534:780540043033837622> \`SUCCES\` ${ member } was kicked.`,
-        error: member => `<:720681441670725645:780539422479351809> \`ERROR\` Sorry, i didn't manage to kick ${ member }`
+        noKick: '<:720681441670725645:780539422479351809> `ERREUR` Vous devez spécifier un membre à exclure (`mention / id`)',
+        errorRl: tag => `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas bannir **\`${ tag }\`** car ils possèdent des rôles aux dessus des votre`,
+        errorKickSelf: '<:720681441670725645:780539422479351809> `ERREUR` Vous ne pouvez pas vous exclure vous-même',
+        noReason: 'Aucune raison spécifique',
+        success: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${ member } a été expulsé.`,
+        error: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Désolé, je ne suis pas arrivé à exclure ${ member }`
     },
     lock: {
-        successLockAll: '<:720681705219817534:780540043033837622> `SUCCES` All channels have been closed.',
-        successOpenAll: '<:720681705219817534:780540043033837622> `SUCCES` All channels have been opened.',
-        successLock: '<:720681705219817534:780540043033837622> `SUCCES` The channel was closed.',
-        successOpen: '<:720681705219817534:780540043033837622> `SUCCES` The channel was opened.'
+        successLockAll: '<:720681705219817534:780540043033837622> `SUCCÈS` Tous les salons ont été fermés.',
+        successOpenAll: '<:720681705219817534:780540043033837622> `SUCCÈS` Tous les salons ont été ouverts.',
+        successLock: '<:720681705219817534:780540043033837622> `SUCCÈS` Le salon a été fermé.',
+        successOpen: '<:720681705219817534:780540043033837622> `SUCCÈS` Le salon a été ouvert.'
     },
     massrole: {
-        errorNoRl: 'You must specify a role / id to add to all members!',
-        errorRlAlready: role => `The role \`${ role.name }\` is already added to all server members !`,
-        title: (role, member) => `I add the role ${ role.name } to **${ member }** members`,
-        descriptionTimeLeft: timeLeft => `🕙 __Remaining time__ : **${ prettyMilliseconds(timeLeft) }**`,
-        descriptionFinish: `  🕙 __Remaining time__ : **Fini**`,
-        successAdd: (role, member) => `I added the role \`${ role.name }\` to ${ member } members`,
-        errorRlNot: role => `The role \`${ role.name }\` is not added to anyone !`,
-        titleRm: (role, member) => `I remove the role ${ role.name } from **${ member }** members`,
-        successRemove: (role, member) => `I took off the role \`${ role.name }\` from ${ member } members`,
+        errorNoRl: 'Vous devez spécifier un rôle / id à ajouter à tous les membres!',
+        errorRlAlready: role => `Le rôle \`${ role.name }\` est déjà ajouté à tous les membres du serveur !`,
+        title: (role, member) => `J'ajoute le rôle ${ role.name } à **${ member }** membres`,
+        descriptionTimeLeft: timeLeft => `🕙 __Temps restant__ : **${ prettyMilliseconds(timeLeft) }**`,
+        descriptionFinish: `  🕙 __Temps restant__ : **Fini**`,
+        successAdd: (role, member) => `J'ai ajouté le role \`${ role.name }\` à ${ member } membres`,
+        errorRlNot: role => `Le rôle \`${ role.name }\` n'est ajouté à personne !`,
+        titleRm: (role, member) => `J'enlève le rôle ${ role.name } à **${ member }** membres`,
+        successRemove: (role, member) => `J'ai enlevé le role \`${ role.name }\` à ${ member } membres`,
         noMassrole: `Aucun massrole n'est en cours...`,
         highPermRole: role => `Vous ne pouvez pas ajouter le rôle ${ role }, a tout le serveur car il possède une permissions sensible`
     },
     mute: {
-        errorNoMember: `<:720681441670725645:780539422479351809> \`ERROR\` You must specify a member to mute \`id/mention\`.`,
-        errorCantFindRole: `<:720681441670725645:780539422479351809> \`ERROR\` I can't find the mute role.`,
-        errorAlreadyMute: member => `<:720681441670725645:780539422479351809> \`ERROR\` You can't mute \`${ member.user.tag }\` because he is already muted !`,
-        success: member => `<:720681705219817534:780540043033837622> \`SUCCES\` I mute \`${ member.user.tag }\` !`
+        errorNoMember: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez spécifier un membre à mute \`id/mention\`.`,
+        errorCantFindRole: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas le rôle mute.`,
+        errorAlreadyMute: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas mute \`${ member.user.tag }\` car il est déjà mute !`,
+        success: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai mute \`${ member.user.tag }\` !`
     },
-    nuke: { success: member => `💥 The channel was recreated by ${ member }.` },
+    nuke: { success: member => `💥 Le salon a été recréé par ${ member }.` },
     role: {
         author: `Informations rôle`,
-        errorAlreadyRl: (member, role) => `<:720681441670725645:780539422479351809> \`ERROR\` **${ member.user.tag }** already has the role ${ role.name }.`,
+        errorAlreadyRl: (member, role) => `<:720681441670725645:780539422479351809> \`ERREUR\` **${ member.user.tag }** possède déjà le rôle ${ role.name }.`,
         successAdd: (member, role) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai ajouté le rôle (${ role.name }) à **${ member.user.tag }**`,
-        errorNoRl: (member, role) => `<:720681441670725645:780539422479351809> \`ERROR\` **${ member.user.tag }** does not have the role ${ role.name }.`,
-        errorCantRm: member => `<:720681441670725645:780539422479351809> \`ERROR\` There was an error I could not remove the role from **${ member.user.tag }**`,
-        successRemove: (member, role) => `<:720681705219817534:780540043033837622> \`SUCCES\` I removed the role (${ role.name }) from **${ member.user.tag }**`,
-        error: member => `<:720681441670725645:780539422479351809> \`ERROR\` There was an error I could not remove the role from **${ member.user.tag }**`
+        errorNoRl: (member, role) => `<:720681441670725645:780539422479351809> \`ERREUR\` **${ member.user.tag }** ne possède pas le rôle ${ role.name }.`,
+        errorCantRm: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Il y a eu une erreur je n'ai pas pu enlever le rôle à **${ member.user.tag }**`,
+        successRemove: (member, role) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai enlevé le rôle (${ role.name }) à **${ member.user.tag }**`,
+        error: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Il y a eu une erreur je n'ai pas pu enlever le rôle à **${ member.user.tag }**`
     },
     setcolor: {
-        noColor: '<:720681441670725645:780539422479351809> `ERROR` You must specify a color !',
-        success: color => `<:720681705219817534:780540043033837622> \`SUCCES\` The color of the embeds has been changed to ${ color } `,
-        successDescription: 'This is the new embeds colors.',
-        titleDescription: 'Result !',
-        errorSql: color => `<:720681441670725645:780539422479351809> \`ERROR\` Oops, updating the embeds color in ${ color } failed.`,
-        errorNoArgs: '<:720681441670725645:780539422479351809> `ERROR` You must specify a valid color (``#36393F``) !'
+        noColor: '<:720681441670725645:780539422479351809> `ERREUR` Vous devez spécifier une couleur !',
+        success: color => `<:720681705219817534:780540043033837622> \`SUCCÈS\` La couleur des embeds a été modfiée à ${ color } `,
+        successDescription: 'Ceci est la nouvelle couleurs des embeds.',
+        titleDescription: 'Résultat !',
+        errorSql: color => `<:720681441670725645:780539422479351809> \`ERREUR\`Oups, la mise à jour de la couleur des embeds en ${ color } a échouée.`,
+        errorNoArgs: '<:720681441670725645:780539422479351809> `ERREUR` Vous devez spécifier une couleur valide (``#36393F``) !'
     },
     setprefix: {
-        errorNoValid: 'Please use the following prefixes: ``!‎``, ``@``, ``#‎``, ``$‎``, ``%‎``, ``^‎``, ``&‎``, ``*‎``, ``(‎``, ``)‎``, ``_‎``, ``+‎``, ``\\‎``, ``-‎``, ``=‎``, ``{‎``, ``}‎``, ``;‎``, ``\'‎``, ``:‎``, ``"‎``, ``|‎``, ``,‎``, ``.‎``, ``<‎``, ``>‎``, ``/‎``, ``?``',
-        success: newPrefix => `<:720681705219817534:780540043033837622> \`SUCCES\` The prefix has been updated to **${ newPrefix }** `,
-        errorSql: newPrefix => `<:720681441670725645:780539422479351809> \`ERROR\` Oops, updating the prefix to ${ newPrefix } failed.`,
-        errorNoArgs: '<:720681441670725645:780539422479351809> `ERROR`Incorrect number of arguments'
+        errorNoValid: 'Veuillez utiliser les prefixes suivants: ``!‎``, ``@``, ``#‎``, ``$‎``, ``%‎``, ``^‎``, ``&‎``, ``*‎``, ``(‎``, ``)‎``, ``_‎``, ``+‎``, ``\\‎``, ``-‎``, ``=‎``, ``{‎``, ``}‎``, ``;‎``, ``\'‎``, ``:‎``, ``"‎``, ``|‎``, ``,‎``, ``.‎``, ``<‎``, ``>‎``, ``/‎``, ``?``',
+        success: newPrefix => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le prefix a été mise à jour en **${ newPrefix }** `,
+        errorSql: newPrefix => `<:720681441670725645:780539422479351809> \`ERREUR\` Oups, la mise à jour du prefix en ${ newPrefix } a échouée.`,
+        errorNoArgs: '<:720681441670725645:780539422479351809> `ERREUR` Nombre d\'argument incorrect'
     },
     tempmute: {
-        errorNoMember: `<:720681441670725645:780539422479351809> \`ERROR\` You must specify a member to mute \`id/mention\`.`,
-        errorCantFindRole: `<:720681441670725645:780539422479351809> \`ERROR\` I can't find the mute role.`,
-        errorTime: `You must specify a valid duration !`,
-        errorAlreadyMute: member => `<:720681441670725645:780539422479351809> \`ERROR\` You can't mute \`${ member.user.tag }\` because he is already muted !`,
-        success: (member, time) => `<:720681705219817534:780540043033837622> \`SUCCES\` I mute \`${ member.user.tag }\` while **${ prettyMilliseconds(ms(time)) }**.`,
-        errorUnMute: (member, time) => `<:720681441670725645:780539422479351809> \`ERROR\` I tried to unmute \`${ member.user.tag }\` after **${ prettyMilliseconds(ms(time)) }**, but he's already no longer muted...`,
-        successUnMute: (member, time) => `<:720681705219817534:780540043033837622> \`SUCCES\` \`${ member.user.tag }\` no longer muted after **${ prettyMilliseconds(ms(time)) }**`
+        errorNoMember: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez spécifier un membre à mute \`id/mention\`.`,
+        errorCantFindRole: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas le rôle mute.`,
+        errorTime: `Vous devez spécifier une durée valide !`,
+        errorAlreadyMute: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas mute \`${ member.user.tag }\` car il est déjà mute !`,
+        success: (member, time) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai mute \`${ member.user.tag }\` pendant **${ prettyMilliseconds(ms(time)) }**.`,
+        errorUnMute: (member, time) => `<:720681441670725645:780539422479351809> \`ERREUR\` J'ai essayé de unmute \`${ member.user.tag }\` après **${ prettyMilliseconds(ms(time)) }**, mais il est déjà plus mute...`,
+        successUnMute: (member, time) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` \`${ member.user.tag }\` n'est plus mute après **${ prettyMilliseconds(ms(time)) }**`
     },
     unban: {
-        unbanAll: `I've unban everybody`,
-        notBan: member => `<:720681441670725645:780539422479351809> \`ERROR\` ${ member.tag } was not banned`,
-        noUnBanAll: `<:720681441670725645:780539422479351809> \`ERROR\` I can't find any member to unban !`,
-        unbanSelf: '<:720681441670725645:780539422479351809> `ERROR` You can\'t unban yourself !',
-        noMember: '<:720681441670725645:780539422479351809> `ERROR` You must specify a member to be unbanned (`mention / id`)',
+        unbanAll: `J'ai débanni tout les membes banni`,
+        notBan: member => `<:720681441670725645:780539422479351809> \`ERREUR\` ${ member.tag } n'est pas banni`,
+        noUnBanAll: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve aucun membre à débannir !`,
+        unbanSelf: '<:720681441670725645:780539422479351809> `ERREUR` Vous ne pouvez pas vous unbannir vous-même',
+        noMember: '<:720681441670725645:780539422479351809> `ERREUR` Vous devez spécifier un membre à unbannir (`mention / id`)',
         noReason: 'Aucune raison spécifique',
-        success: member => `<:720681705219817534:780540043033837622> \`SUCCES\` ${ member.tag } was unban.`,
-        error: member => `<:720681441670725645:780539422479351809> \`ERROR\` Sorry, i can't unban <@${ member }>`
+        success: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${ member.tag } a été unban.`,
+        error: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Désolé, je ne suis pas arrivé à unban <@${ member }>`
     },
     unmute: {
-        noMember: `<:720681441670725645:780539422479351809> \`ERROR\` You must specify a member to unmute \`id/mention\`.`,
-        errorCantFindRole: `<:720681441670725645:780539422479351809> \`ERROR\` I can't find the mute role.`,
-        success: member => `<:720681705219817534:780540043033837622> \`SUCCES\` I unmuted \`${ member.user.tag }\` !`,
-        errorAlreadyUnMute: member => `<:720681441670725645:780539422479351809> \`ERROR\` You can't unmute \`${ member.user.tag }\` because he is already unmute !`
+        noMember: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez spécifier un membre à unmute \`id/mention\`.`,
+        errorCantFindRole: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas le rôle mute.`,
+        success: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai unmute \`${ member.user.tag }\` !`,
+        errorAlreadyUnMute: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas unmute \`${ member.user.tag }\` car il est déjà unmute !`
     },
     webhook: {
-        replyMsg: (guild, webhooks) => '<:778353230589460530:780725963465687060> The server **' + guild.name + '** contient **' + webhooks.size + '** webhook.',
-        replyMsgDelete: '<:720681705219817534:780540043033837622> All webhooks have been deleted.'
+        replyMsg: (guild, webhooks) => '<:778353230589460530:780725963465687060> Le serveur **' + guild.name + '** contient **' + webhooks.size + '** webhook.',
+        replyMsgDelete: '<:720681705219817534:780540043033837622> Tous les webhooks ont été supprimés.'
     },
     wl: {
-        errorSyntaxAdd: '<:720681441670725645:780539422479351809> `ERROR` Syntax error : !wl`<add/ remove/ list>` `<mention / id>`',
-        errorAlreadyWl: member => `<:720681441670725645:780539422479351809> \`ERROR\` **${ member }** is already in the whitelist`,
-        successWl: member => `<:720681705219817534:780540043033837622> \`SUCCES\` I added **${ member }** to the whitelist`,
-        clearWl: `Are you sure you want to clear the whitelist ?`,
-        successClearWl: `I have cleared the whitelist`,
-        error: `Oops an error was detected, so I could not clear the whitelist`,
-        cancel: `Move me in the channel you want me to move all people`,
+        errorSyntaxAdd: '<:720681441670725645:780539422479351809> `ERREUR` Erreur de syntaxe : !wl`<add/ remove/ list>` `<mention / id>`',
+        errorAlreadyWl: member => `<:720681441670725645:780539422479351809> \`ERREUR\` **${ member }** est déjà dans la whitelist`,
+        successWl: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai ajouté **${ member }** à la whitelist`,
+        clearWl: `Êtes-vous sûr de vouloir clear la whitelist ?`,
+        successClearWl: `J'ai clear la whitelist`,
+        error: `Oupsi une erreur a été détectée, je n'ai donc pas pu clear la whitelist`,
+        cancel: `Je n'ai pas clear de la whitelist`,
         errorNotWl: member => `<:720681441670725645:780539422479351809> \`ERREUR\` **${ member }** n'est pas dans les whitelist`,
         successRmWl: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai enlevé **${ member }** des owner`
     },
-    voicemove: { success: author => `<:720681705219817534:780540043033837622> \`SUCCES\` ${ author }, move me in the channel you want me to move all people!` },
+    voicemove: { success: author => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${ author }, déplace moi dans le salon ou tu souhaite que je déplace toutes les personnes du salon!` },
     soutien: {
-        title: `<:771462923855069204:784471984087236658> __Support Parameter__`,
+        title: `<:771462923855069204:784471984087236658> __Paramètre du soutien__`,
         description: (soutienId, soutienMsg, isOnS) => `
-        1 ・ Configure the role that will be given to the member who has the required personalized status. \n
-            __Current role__ : **${ soutienId !== 'Non définie' ? `<@&${ soutienId }>` : soutienId }** \n
-        2 ・ Configure the personalized status message that members should have.\n
-            __Current message__ : **${ soutienMsg }** \n
-        3 ・ Enable or disable support \n
-                __Active__ : ${ isOnS }
+        1 ・ Configurer le rôle qui sera donné au membre qui ont le status personnalisé requis. \n
+            __Rôle actuel__ : **${ soutienId !== 'Non définie' ? `<@&${ soutienId }>` : soutienId }** \n
+        2 ・ Configurer le message du status personnalisé que les membres devront avoir.\n
+            __Message actuel__ : **${ soutienMsg }** \n
+        3 ・ Activer ou désactiver le soutien \n
+                __Actif__ : ${ isOnS }
         `,
-        roleQ: `<a:2366_Loading_Pixels:784472554328555571> Mention the role the supporters will receive (cancel to cancel)`,
-        success: response => `<:720681705219817534:780540043033837622> \`SUCCES\` Supporters will now receive the role: ${ response }.`,
-        errorAdd: response => `<:720681441670725645:780539422479351809> \`ERROR\` I have not been able to define the role where the supporters will receive                                               ${ response }`,
-        errorTimeOut: '<:720681441670725645:780539422479351809> `ERROR` No response after 30 seconds operation will be canceled',
-        msgQ: `<a:2366_Loading_Pixels:784472554328555571> Please define your message to acquire the support role (cancel to cancel)`,
-        successEditRl: `<:720681705219817534:780540043033837622> \`SUCCES\` I have changed the support message to : `,
-        rmAllRlQ: `<a:2366_Loading_Pixels:784472554328555571> You have changed the support message. Do you want to remove the role from all the people who have the support role? Yes / No (cancel to cancel)`,
-        errorRmAllRl: rlId => `I didn't manage to remove the role <@&${ rlId }> to the supports`,
-        successNo: 'The support role is therefore not taken away from former support',
-        removingRl: rlId => `I am removing the whole role <@&${ rlId }> support (this may take a little time!).`,
-        errorTimeout2M: '<:720681441670725645:780539422479351809> `ERROR` No response after 2 minutes operation will be canceled',
-        errorChMsg: `<:720681441670725645:780539422479351809> \`ERROR\` I was unable to change the support message to:`,
-        enableQ: `<a:2366_Loading_Pixels:784472554328555571> Do you want to activate support? Yes / No (cancel to cancel)`,
-        successEnable: `<:720681705219817534:780540043033837622> \`SUCCES\` I have activated the support!`,
-        errorEnable: `<:720681441670725645:780539422479351809> \`ERROR\` I have not arrived to activate the support...`,
-        successDisable: `<:720681705219817534:780540043033837622> \`SUCCES\` I have deactivate  the support !`,
-        errorDisable: `<:720681441670725645:780539422479351809> \`ERROR\` I didn't manage to deactivate the support...`,
-        descriptionCount: count => 'There is currently <:Support:785486768719265813> **' + count + ' ** people who support the server.'
+        roleQ: `<a:2366_Loading_Pixels:784472554328555571> Mentionnez le rôle que les soutiens receveront (cancel pour annuler)`,
+        success: response => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Les soutiens vont maintenant recevoir le rôle: ${ response }.`,
+        errorAdd: response => `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé à définir le rôle où que les soutiens receveront à ${ response }`,
+        errorTimeOut: '<:720681441670725645:780539422479351809> `ERREUR` Pas de réponse après 30 secondes opération annulé',
+        msgQ: `<a:2366_Loading_Pixels:784472554328555571> Veuillez definir votre message pour acquérir le rôle de soutien (cancel pour annuler)`,
+        successEditRl: `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai bien modifié le message de soutien en : `,
+        rmAllRlQ: `<a:2366_Loading_Pixels:784472554328555571> Vous avez modifié le message de soutien. Voulez-vous supprimez le rôle a toutes les personnes qui ont le rôle soutien ? Oui / Non (cancel pour annuler)`,
+        errorRmAllRl: rlId => `Je ne suis pas arrivé à enlever le rôle <@&${ rlId }> aux soutiens`,
+        successNo: 'Le rôle soutien n\'est donc pas enlever aux anciens soutien',
+        removingRl: rlId => `Je suis en train d'enlever tout le rôle <@&${ rlId }> aux soutiens (cela risque de prendre un peu de temps !).`,
+        errorTimeout2M: '<:720681441670725645:780539422479351809> `ERREUR` Pas de réponse après 2 minutes opération annulé',
+        errorChMsg: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé à changer le message de soutien en :`,
+        enableQ: `<a:2366_Loading_Pixels:784472554328555571> Voulez-vous activer le soutien ? Oui / Non (cancel pour annuler)`,
+        successEnable: `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai bien activé le soutien !`,
+        errorEnable: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a activé le soutien ...`,
+        successDisable: `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai bien desactivé le soutien !`,
+        errorDisable: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a desactivé le soutien ...`,
+        descriptionCount: count => 'Il y a actuellement <:Support:785486768719265813> **' + count + ' ** personnes qui soutiennent le serveur.'
     },
     setup: {
-        muteQ: '<:720681705219817534:780540043033837622> `SUCCES` Mention the mute role! (Timeout in 30s & `cancel ` to cancel)',
-        memberRoleQ: '<:720681705219817534:780540043033837622> `SUCCES` Mention the member role (if it\'s everyone put the id of everyone)! (Timeout in 30s & `cancel ` to cancel)',
-        success: (mureRoleId, memberRoleId) => `<:720681705219817534:780540043033837622> \`SUCCES\` The roles \`(${ mureRoleId }, ${ memberRoleId })\` have been added`,
-        error: (mureRoleId, memberRole) => `<:720681441670725645:780539422479351809> \`ERROR\` Oops an error occured adding the roles ${ mureRoleId } ${ memberRole } in the database list.`,
+        muteQ: '<:720681705219817534:780540043033837622> `SUCCÈS` Mentionne le rôle mute !(timeout dans 30s & `cancel` pour annuler)',
+        memberRoleQ: '<:720681705219817534:780540043033837622> `SUCCÈS` Mentionne le rôle membre (si c\'est everyone mettre l\'id de everyone) !(timeout dans 30s & `cancel` pour annuler)',
+        success: (mureRoleId, memberRoleId) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Les roles \`(${ mureRoleId }, ${ memberRoleId })\`ont bien été ajouté`,
+        error: (mureRoleId, memberRole) => `<:720681441670725645:780539422479351809> \`ERREUR\` Oupsi une erreur est survennue pour ajouter les rôles ${ mureRoleId } ${ memberRole } dans la liste base de donée`,
         dontFindMember: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas ce role membre`,
         dontFindMute: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas ce role mute`
     },
     setlogs: {
-        embedTitle: `Logs parameter`,
+        embedTitle: `Configuration des logs`,
         embedDescription: (raid, mod, voc, msg, react) => `
         \n
-           To disable a log just put off as a channel
+            Pour désactiver une log il suffit de mettre off comme channel !
             
             1 ・ Raid Logs
             ***${ raid === 'Non définie' ? raid : `<#${ raid }>` }***\n
-            2 ・ Moderation logs
+            2 ・ Logs modération
             ***${ mod === 'Non définie' ? mod : `<#${ mod }>` }***\n
-            3 ・ voice chat Logs 
+            3 ・ Logs Vocal
             ***${ voc === 'Non définie' ? voc : `<#${ voc }>` }***\n
-            4 ・ Message Logs 
+            4 ・ Logs Message
             ***${ msg === 'Non définie' ? msg : `<#${ msg }>` }***\n
-            ❌ ・ Close the panel\n
-            ✅ ・ Save the logs
+            ❌ ・ Fermer le menu\n
+            ✅ ・ Sauvegarder les logs
         `,
-        errorNotChannel: `You've specified a invalid channel or an id `,
-        raidChQ: `What is the channel for the raid logs ?`,
-        successRaidCh: ch => `You've defined the raid logs for ${ ch }`,
-        disable: type => `The logs ${ type } has been disable`,
-        modChQ: `What is the channel for the moderation logs ?`,
-        successModCh: ch => `You've defined the moderation logs for ${ ch }`,
-        vocChQ: `What is the channel for the voice chat logs ?`,
-        successVocCh: ch => `You've defined the voice chat logs for  ${ ch }`,
-        msgChQ: `What is the channel for the message logs ?`,
-        successMsgCh: ch => `You've defined the message logs for ${ ch }`,
+        errorNotChannel: `vous devez spécifier un channel ou une id valide`,
+        raidChQ: `Quel est le salon pour les raids ?`,
+        successRaidCh: ch => `Vous avez défini le salon pour les raid pour ${ ch }`,
+        disable: type => `Les logs ${ type } ont été désactivé`,
+        modChQ: `Quel est le salon pour les logs de modération ?`,
+        successModCh: ch => `Le salon pour logs de modération a été définie pour ${ ch }`,
+        vocChQ: `Quel est le salon pour les logs vocal ?`,
+        successVocCh: ch => `Le salon pour logs de vocal a été définie pour ${ ch }`,
+        msgChQ: `Quel est le salon pour les logs des messages ?`,
+        successMsgCh: ch => `Le salon pour logs des messages a été définie pour ${ ch }`,
         reactChQ: `Quel est le salon pour les logs des reactions ?`,
         successReactCh: ch => `Le salon pour logs des reactions a été définie pour ${ ch }`,
-        cancel: `You've cancel the configuration`,
-        save: `You've save the configuration`
+        cancel: `Vous avez annulé la configuration des logs`,
+        save: `Vous avez sauvegardé la configuration des logs`
     },
     owner: {
-        noMember: `Please specify a member`,
-        errorSyntax: '<:720681441670725645:780539422479351809> `ERROR` Syntax error (!owner add/remove/list/clear @TAKEFY)',
-        errorSyntaxAdd: '<:720681441670725645:780539422479351809> `ERROR` Syntax error : !owner`<add/ remove/ list>` `<mention / id>`',
-        errorAlreadyOwner: member => `<:720681441670725645:780539422479351809> \`ERROR\` **${ member }** is already in the owner list`,
-        successOwner: member => `<:720681705219817534:780540043033837622> \`SUCCES\` I added **${ member }** to the owner list`,
-        errorNotOwner: member => `<:720681441670725645:780539422479351809> \`ERROR\` **${ member }** it is not in the owner list`,
-        successRmOwner: member => `<:720681705219817534:780540043033837622> \`SUCCES\` I removed **${ member }** from owner list`,
-        clearOwner: `Are you sure you want to clear the owner list?`,
-        successClearOwner: `I have cleared the owner list`,
-        error: `Oops an error was detected, so I could not clear the owner list`,
-        cancel: `I have not cleared the owner list`,
-        titleList: `<:778353230383546419:781153631881265173> List of owners`
+        noMember: `Veuillez spécifier un membre`,
+        errorSyntax: '<:720681441670725645:780539422479351809> `ERREUR` Erreur de syntaxe (!owner add/remove/list/clear @TAKEFY)',
+        errorSyntaxAdd: '<:720681441670725645:780539422479351809> `ERREUR` Erreur de syntaxe : !owner`<add/ remove/ list>` `<mention / id>`',
+        errorAlreadyOwner: member => `<:720681441670725645:780539422479351809> \`ERREUR\` **${ member }** est déjà dans la owner list`,
+        successOwner: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai ajouté **${ member }** à la owner list`,
+        errorNotOwner: member => `<:720681441670725645:780539422479351809> \`ERREUR\` **${ member }** n'est pas dans les owners`,
+        successRmOwner: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai enlevé **${ member }** des owner`,
+        clearOwner: `Êtes-vous sûr de vouloir clear la owner list ?`,
+        successClearOwner: `J'ai clear la owner list`,
+        error: `Oupsi une erreur a été détectée, je n'ai donc pas pu clear la owner list`,
+        cancel: `Je n'ai pas clear de la owner list`,
+        titleList: `<:778353230383546419:781153631881265173> Liste des owners`
     },
     invite: {
         countDesc: (tag, userInviteCount, inv) => `
-        **${ tag }** currently owns : \n
+        **${ tag }** possède actuellement : \n
         <:invite_oeople:785494680904138763> **${ userInviteCount }** ${ inv }. `,
-        titleConfig: `<:771462923855069204:784471984087236658> __Invitations settings__`,
+        titleConfig: `<:771462923855069204:784471984087236658> __Paramètre des invitations__`,
         descConfig: (inviteChannel, guild, isOnS, inviteMsg) => `
-        1 ・Configure the channel where messages will be sent\n
-            __Current channel__ : **<#${ inviteChannel }>**\n
-        2 ・ Configure the welcome message\n
-            __Current message__ : **${ inviteMsg }** \n
-        3 ・ Help for the welcome message  \n
-        4 ・ Activate or deactivate the welcome message \n
-        __Active__ : ${ isOnS }
+        1 ・Configurer le channel où les messages seront envoyés\n
+            __Channel actuel__ : **<#${ inviteChannel }>**\n
+        2 ・ Configurer le message de bienvenue\n
+            __Message Actuel__ : ${ inviteMsg } \n
+        3 ・ Aide sur le message de bienvenue  \n
+        4 ・ Activer ou désactiver le message de bienvenue \n
+        __Actif__ : ${ isOnS }
         `,
-        chQ: `<a:2366_Loading_Pixels:784472554328555571> Mention the channel where the welcome messages will be sent (cancel to cancel)`,
-        successCh: response => `<:720681705219817534:780540043033837622> \`SUCCES\` Welcome messages will now be sent to the channel ${ response }.`,
-        errorCh: response => `<:720681441670725645:780539422479351809> \`ERROR\` I have not been able to define the channel where the welcome messages will be sent to ${ response }`,
-        timeout: '<:720681441670725645:780539422479351809> `ERROR` No response after 30 seconds operation will be canceled',
-        msgQ: `<a:2366_Loading_Pixels:784472554328555571> Please define your welcome message (cancel to cancel)`,
-        successMsg: `<:720681705219817534:780540043033837622> \`SUCCES\` I have modified the welcome message to :`,
-        errorMsg: `<:720681441670725645:780539422479351809> \`ERROR\` I have not been able to change the welcome message to :`,
-        timeout2M: '<:720681441670725645:780539422479351809> `ERROR` No response after 2 minutes operation will be canceled',
-        helpTitle: `<:771462923855069204:784471984087236658> __Help on configuring the welcome message__`,
+        chQ: `<a:2366_Loading_Pixels:784472554328555571> Mentionnez le channel où les messages de bienvenue seront envoyés (cancel pour annuler)`,
+        successCh: response => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Les messages de bienvenue vont maintenant être envoyé dans le channel ${ response }.`,
+        errorCh: response => `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a définir le salon où les messages de bienvenue seront envoyés à ${ response }`,
+        timeout: '<:720681441670725645:780539422479351809> `ERREUR` Pas de réponse après 30 secondes opération annulé',
+        msgQ: `<a:2366_Loading_Pixels:784472554328555571> Veuillez definir votre message de bienvenue (cancel pour annuler)`,
+        successMsg: `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai bien modifié le message de bienvenue en :`,
+        errorMsg: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a changer le message de bienvenue en :`,
+        timeout2M: '<:720681441670725645:780539422479351809> `ERREUR` Pas de réponse après 2 minutes opération annulé',
+        helpTitle: `<:771462923855069204:784471984087236658> __Aide sur la configuration du message de bienvenue__`,
         helpDesc: (invitedHelp, inviterHelp, invitedMention, inviterMention, accountCreate, countHelp, fakeHelp, leaveHelp, totalMemberHelp, space) => `
         ${ invitedHelp } \n
         ${ inviterHelp } \n
@@ -355,233 +352,235 @@ Sorry I did not manage to do that I did not have enough permission.`,
         ${ leaveHelp }\n
         ${ totalMemberHelp } \n
         ${ space }  `,
-        enableQ: `<a:2366_Loading_Pixels:784472554328555571> Do you want to activate welcome messages? Yes / No (cancel to cancel)`,
-        successEnable: `<:720681705219817534:780540043033837622> \`SUCCES\` I have activated the welcome messages !`,
-        errorEnable: `<:720681441670725645:780539422479351809> \`ERROR\` I have not arrived to activate the welcome messages...`,
-        successDisable: `<:720681705219817534:780540043033837622> \`SUCCES\` I have deactivated the welcome messages !`,
-        errorDisable: `<:720681441670725645:780539422479351809> \`ERROR\` I have not been able to deactivate the welcome messages...`,
-        cantTrace: invited => `I don't know how ${ invited } was invited on the server`,
-        vanity: invited => `${ invited } has been invited with custom server url`,
-        syncSuccess: `The invations have been synchronized`,
-        oauth: invited => `${ invited } was invited using oauth `
+        enableQ: `<a:2366_Loading_Pixels:784472554328555571> Voulez-vous activer les messages de bienvenue ? Oui / Non (cancel pour annuler)`,
+        successEnable: `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai bien activé les messages de bienvenue !`,
+        errorEnable: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a activé les messages de bienvenue ...`,
+        successDisable: `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai bien desactivé les messages de bienvenue !`,
+        errorDisable: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a desactivé les messages de bienvenue ...`,
+        cantTrace: invited => `Je ne sais pas comment ${ invited } a été invité sur le serveur`,
+        vanity: invited => `${ invited } a été invité avec l'url personnalisé du serveur`,
+        syncSuccess: `Les invations ont bien été synchronisé`,
+        oauth: invited => `${ invited } a été invité en utilisant l'oauth`
     },
     addinvite: {
-        noMember: `I can't find this member`,
-        noNumber: `Please specify a correct number to add`,
-        success: (number, tag) => `I added **${ number }** ${ number > 1 ? 'invites' : 'invite' } at ${ tag }`
+        noMember: `Je ne trouve pas ce membre`,
+        noNumber: `Veuillez spécifier un nombre correct à ajouter`,
+        success: (number, tag) => `J'ai ajouté **${ number }** ${ number > 1 ? 'invites' : 'invite' } à ${ tag }`
     },
-    rminvite: { success: (number, tag) => `I removed **${ number }** ${ number > 1 ? 'invites' : 'invite' } from ${ tag }` },
-    clearInv: { success: tag => `I have cleared the on ${ tag }` },
+    rminvite: { success: (number, tag) => `J'ai enlevé **${ number }** ${ number > 1 ? 'invites' : 'invite' } à ${ tag }` },
+    clearInv: { success: tag => `J'ai clear les invites sur ${ tag }` },
     password: {
-        reply: `look your private message`,
-        resetQ: `What was your old password ?  (timeout 30 seconds)`,
-        errorNotClient: `Sorry but you are not client. To be a client please subscribe to an offer !`,
-        wrongPassword: `The password is incorrect`,
-        newPasswordQ: `What is the new password ? (timeout 30 seconds)`,
-        successChange: `You've correctly change your password !`
+        reply: `regarde tes messages privés`,
+        resetQ: `Quel etait votre ancien mot de pass ?  (timeout 30 secondes)`,
+        errorNotClient: `Désolé vous n'êtes pas client veuillez souscrire à une offre pour débloquer cette option !`,
+        wrongPassword: `Le mot de pass est incorrect`,
+        newPasswordQ: `Quel doit être le nouveau mot de pass ? (timeout 30 secondes)`,
+        successChange: `Vous avez bien modifié votre mot de pass !`
     },
-    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll is a bot owned by* \`TAKEFY#9831\`\n\n**Developer :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[rh#0002](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
-    setlang: { success: lang => `The bot language is now set to${ lang }**` },
+    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
+    setlang: { success: lang => `La langue du bot est maintenat définie pour ${ lang }` },
     addemoji: {
-        missingUrl: `<:720681441670725645:780539422479351809> \`ERROR\` You need to provide an emoji`,
-        missingName: `<:720681441670725645:780539422479351809> \`ERROR\` You need to provide a name for the emoji`,
-        invalidName: `<:720681441670725645:780539422479351809> \`ERROR\` You need to provide a valid name (between 3 and 31 characters)`,
-        success: emoji => `<:720681705219817534:780540043033837622> \`SUCCES\` The emoji **${ emoji }** has been added`,
-        error: name => `<:720681441670725645:780539422479351809> \`ERROR\` A error has occurred during adding the emoji **${ name }**`
+        missingUrl: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un emoji`,
+        missingName: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un nom pour l'emoji`,
+        invalidName: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un nom valid (3 a 31 caractère)`,
+        success: emoji => `<:720681705219817534:780540043033837622> \`SUCCÈS\` L'emoji **${ emoji }** a été ajouté`,
+        error: name => `<:720681441670725645:780539422479351809> \`ERREUR\` Une erreur est survenue en ajoutant l'emoji **${ name }**`
     },
     removeemoji: {
-        missingUrl: `<:720681441670725645:780539422479351809> \`ERROR\` You need to provide an emoji`,
-        success: emoji => `<:720681705219817534:780540043033837622> \`SUCCES\` The emoji **${ emoji }**  has been delete`,
-        error: name => `<:720681441670725645:780539422479351809> \`ERROR\` A error has occurred during deleting the emoji **${ name }**`
+        missingUrl: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un emoji`,
+        success: emoji => `<:720681705219817534:780540043033837622> \`SUCCÈS\` L'emoji **${ emoji }** a été supprimé`,
+        error: name => `<:720681441670725645:780539422479351809> \`ERREUR\` Une erreur est survenue en supprimant l'emoji **${ name }**`
     },
     backup: {
-        configEmbedT: `<:server:783422366230380565> Backup configuration`,
+        configEmbedT: `<:server:783422366230380565> Configuration de la backups`,
         configEmbedDesc: (ignoreCh, ignoreRl, ignoreEmo, ignoreBans) => `
-        **1** ・ Ignore channels (**${ ignoreCh }**)
-        **2** ・ Ignore roles (**${ ignoreRl }**)
-        **3** ・ Ignore emojis (**${ ignoreEmo }**)
-        **4** ・ Ignore bans (**${ ignoreBans }**)\n
-        **❌** ・ Close menu
-        **✅** ・ Create the backup
+        **1** ・ Ignorer les channels (**${ ignoreCh }**)
+        **2** ・ Ignorer les rôles (**${ ignoreRl }**)
+        **3** ・ Ignorer les emojis (**${ ignoreEmo }**)
+        **4** ・ Ignorer les bans (**${ ignoreBans }**)\n
+        **❌** ・ Fermer le menu 
+        **✅** ・ Créer la backup
         
+
         `,
-        cancel: `<:720681705219817534:780540043033837622> \`SUCCES\` Backup creation canceled!`,
-        successDelete: backupId => `<:720681705219817534:780540043033837622> \`SUCCES\` I deleted the backup **${ backupId }** !`,
-        successCreate: id => `<:720681705219817534:780540043033837622> \`SUCCES\` The backup was created with the id **${ id }**`,
-        successLoad: guildName => `<:720681705219817534:780540043033837622> \`SUCCES\` The backup was loaded on **${ guildName }** !`,
-        errorToManyBackup: `<:720681441670725645:780539422479351809> \`ERROR\` You have reached the maximum backup quota created (5 backups)`,
-        noLoadId: `<:720681441670725645:780539422479351809> \`ERROR\` You must specify the id of a backup`,
-        backupNoFound: `<:720681441670725645:780539422479351809> \`ERROR\` I can't find this backup in my database!`,
-        error: `<:720681441670725645:780539422479351809> \`ERROR\` An error has occurred`,
-        timeout: `<:720681441670725645:780539422479351809> \`ERROR\` You must wait \`20 minutes\` before you can load a backup !`,
+        cancel: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Création de backup annulé`,
+        successDelete: backupId => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai bien supprimé la backup **${ backupId }** !`,
+        successCreate: id => `<:720681705219817534:780540043033837622> \`SUCCÈS\` La backup a été créé avec l'id **${ id }**`,
+        successLoad: guildName => `<:720681705219817534:780540043033837622> \`SUCCÈS\` La backup a été load sur **${ guildName }** !`,
+        errorToManyBackup: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous avez atteind le quota maximum de backup crée (5 backup)`,
+        noLoadId: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez spécifier l'id d'une backup`,
+        backupNoFound: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas cette backup dans ma base de donnée`,
+        error: `<:720681441670725645:780539422479351809> \`ERREUR\` Une erreur est survenue`,
+        timeout: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez patienter \`20 minutes\` avant de pouvoir reload un backup !`,
         notBackupOwner: `<:720681441670725645:780539422479351809> \`ERREUR\` Cette backup de nous appartient pas...`
     },
     blacklist: {
-        errorCantFindMember: `<:720681441670725645:780539422479351809> \`ERROR\` I can't find this member mentioned try with member id! `,
-        successEnable: `<:720681705219817534:780540043033837622> \`SUCCES\` I activated the blacklist for owner(s)!`,
-        successDisable: `<:720681705219817534:780540043033837622> \`SUCCES\` I deactivated the blacklist for owner(s)`,
-        errorAlreadyOff: `<:720681441670725645:780539422479351809> \`ERROR\` The blacklist is already deactivated.`,
-        errorAlreadyOn: `<:720681441670725645:780539422479351809> \`ERROR\` The blacklist is already activated.`,
-        errorSyntax: '<:720681441670725645:780539422479351809> `ERROR` Syntax error : !blacklist on/off/add/remove/list/clear @TAKEFY',
-        errorSyntaxAdd: '<:720681441670725645:780539422479351809> `ERROR` Syntax error : !blacklist `<add/ remove/ list>` `<mention / id>`',
-        errorTryBlOwner: member => `<:720681441670725645:780539422479351809> \`ERROR\` You cannot blacklist **${ member.tag }** because you are part of the owner list and he too.`,
-        errorTryUnBlOwner: member => `<:720681441670725645:780539422479351809> \`ERROR\` You cannot unblacklist **${ member.tag }** because you are part of the owner list and he too.`,
-        successBanBl: member => `<:720681705219817534:780540043033837622> \`SUCCES\` I banned **${ member.tag }**`,
-        successBanGuild: guildCount => `<:720681705219817534:780540043033837622> \`SUCCES\` He was banned on **${ guildCount }** servers...`,
-        successUnBanBl: member => `<:720681705219817534:780540043033837622> \`SUCCES\` I unbanned **${ member.tag }**`,
-        successUnBanGuild: guildCount => `<:720681705219817534:780540043033837622> \`SUCCES\` He was unban on **${ guildCount }** servers...`,
-        errorAlreadyBl: member => `<:720681441670725645:780539422479351809> \`ERROR\` **${ member.tag }** is already in the blacklist.`,
-        successBl: member => `<:720681705219817534:780540043033837622> \`SUCCES\` I added **${ member.tag }** to the blacklist`,
-        errorNotBl: member => `<:720681441670725645:780539422479351809> \`ERROR\` **${ member.tag }** is not in the blacklist`,
-        successRmBl: member => `<:720681705219817534:780540043033837622> \`SUCCES\` I removed **${ member.tag }** from blacklist`,
-        errorCrown: `<:720681441670725645:780539422479351809> \`ERROR\` Sorry, you can't blacklist the server owner`,
-        errorBannable: `<:720681441670725645:780539422479351809> \`ERROR\` Sorry, I cannot ban this person from this server`,
-        clearBl: `Are you sure you want to clear the blacklist?`,
-        successClearBl: `<:720681705219817534:780540043033837622> \`SUCCES\` I cleared the blacklist`,
-        error: `<:720681441670725645:780539422479351809> \`ERROR\` Oops, an error was detected, so I couldn't clear the blacklist`,
-        cancel: `<:720681705219817534:780540043033837622> \`SUCCES\` I have not cleared the blacklist`,
-        titleList: `<:778353230383546419:781153631881265173> Blacklist list`,
-        errorMe: `<:720681441670725645:780539422479351809> \`ERROR\` Sorry, you can't blacklist me!`,
+        errorCantFindMember: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas ce membre mentionné essayez par id! `,
+        successEnable: `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai activé la blacklist pour cet owner`,
+        successDisable: `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai désactivé la blacklist pour cet owner`,
+        errorAlreadyOff: `<:720681441670725645:780539422479351809> \`ERREUR\` La blacklist est déjà desactivé`,
+        errorAlreadyOn: `<:720681441670725645:780539422479351809> \`ERREUR\` La blacklist est déjà activé`,
+        errorSyntax: '<:720681441670725645:780539422479351809> `ERREUR` Erreur de syntaxe (!blacklist on/off/add/remove/list/clear @TAKEFY)',
+        errorSyntaxAdd: '<:720681441670725645:780539422479351809> `ERREUR` Erreur de syntaxe : !blacklist `<add/ remove/ list>` `<mention / id>`',
+        errorTryBlOwner: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas blacklist **${ member.tag }** car vous faites parti de la liste des owner et lui aussi.`,
+        errorTryUnBlOwner: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas unblacklist **${ member.tag }** car vous faites parti de la liste des owner et lui aussi.`,
+        successBanBl: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai ban **${ member.tag }**`,
+        successBanGuild: guildCount => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Il a été ban sur **${ guildCount }** serveurs...`,
+        successUnBanBl: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai unban **${ member.tag }**`,
+        successUnBanGuild: guildCount => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Il a été unban sur **${ guildCount }** serveurs...`,
+        errorAlreadyBl: member => `<:720681441670725645:780539422479351809> \`ERREUR\` **${ member.tag }** est déjà dans la blacklist`,
+        successBl: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai ajouté **${ member.tag }** à la blacklist`,
+        errorNotBl: member => `<:720681441670725645:780539422479351809> \`ERREUR\` **${ member.tag }** n'est pas dans les blacklist`,
+        successRmBl: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai enlevé **${ member.tag }** des blacklist`,
+        errorCrown: `<:720681441670725645:780539422479351809> \`ERREUR\` Désolé vous ne pouvez pas blacklist la couronne du serveur `,
+        errorBannable: `<:720681441670725645:780539422479351809> \`ERREUR\` Désolé je ne peux pas bannir cette personne de ce serveur`,
+        clearBl: `Êtes-vous sûr de vouloir clear la blacklist ?`,
+        successClearBl: `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai clear la blacklist`,
+        error: `<:720681441670725645:780539422479351809> \`ERREUR\` Oupsi une erreur a été détectée, je n'ai donc pas pu clear la blacklist`,
+        cancel: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Je n'ai pas clear de la blacklist`,
+        titleList: `<:778353230383546419:781153631881265173> Liste des blacklist`,
+        errorMe: `<:720681441670725645:780539422479351809> \`ERREUR\` Désolé vous ne pouvez pas me blacklist`,
         errorBotOwner: `<:720681441670725645:780539422479351809> \`ERREUR\` Désolé vous ne pouvez pas blacklist un des owner du bot`,
-        errorNotInDb: prefix => `<:720681441670725645:780539422479351809> \`ERROR\` You are not registered in my database please use \` ${ prefix }bl on\``
+        errorNotInDb: prefix => `<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'êtes pas enregistré dans ma base de donnée veuillez utiliser \` ${ prefix }bl on\``
     },
-    allbot: { title: bots => `Number of bots : ${ bots }` },
+    allbot: { title: bots => `Nombre de bots : ${ bots }` },
     counter: {
-        embedTitle: `Counters Parameter`,
+        embedTitle: `Paramètre des compteurs`,
         embedDescription: ({member, bot, voice, online, offline, channel, role, booster}) => `
         \n
-           To deactivate a counter just put off as channel  !
+            Pour désactiver un compteur il suffit de mettre off comme channel !
             
-            \`👥\`・ Member counter
+            \`👥\`・ Compteur de membres
             ***${ member.name }***\n
-            \`🤖\` ・ Robot counter
+            \`🤖\` ・ Compteur de robots
             ***${ bot.name }***\n
-            \`🔊\`・ Voice connections counter 
+            \`🔊\`・ Compteur de membre en vocal
             ***${ voice.name }***\n
-            \`🟢\` ・ Online members counter 
+            \`🟢\` ・ Compteur de membre en ligne
             ***${ online.name }***\n
-            \`⭕\` ・ Offline members counter 
+            \`⭕\` ・ Compteur de membre en hors-ligne
             ***${ offline.name }***\n
-            \`📖\` ・ Channel counter
+            \`📖\` ・ Compteur de salons
             ***${ channel.name }***\n
-            \`✨\` ・ Roles counter
+            \`✨\` ・ Compteur de roles
             ***${ role.name }***\n
-            \`💠\` ・ Boosts counter 
+            \`💠\` ・ Compteur de booster
             ***${ booster.name }***\n
            
-            \`❌\` ・ Close menu\n
-            \`✅\` ・ Save counters
+            \`❌\` ・ Fermer le menu\n
+            \`✅\` ・ Sauvegarder les compteurs
         `,
-        notVoice: `<:720681441670725645:780539422479351809> \`ERROR\` The desired channel is not a vocal channel`,
-        nameQ: `What must be the name of the **salon** \`ex : 💥・ Members:\`?`,
-        errorNotChannel: `<:720681441670725645:780539422479351809> \`ERROR\` You must specify a valid channel or id`,
-        disable: type => `<:720681705219817534:780540043033837622> \`SUCCES\` The counter ${ type } has been disabled`,
-        successMemberCh: ch => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the members counter to ${ ch }`,
-        memberChQ: `What is the voice channel for the members counter ?`,
-        successMemberName: name => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the name of the channel for the members counter to ${ name }`,
-        botChQ: `What is the voice channel for the bots counter ?`,
-        successBotName: name => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the name of the channel for the bots counter to ${ name }`,
-        successBotCh: ch => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the bots to ${ ch }`,
-        vocalChQ: `What is the voice channel for the voice connections counter?`,
-        successVocalName: name => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the name of the channel for the voice connections counter to ${ name }`,
-        successVocalCh: ch => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the voice connections counter to ${ ch }`,
-        onlineChQ: `What is the voice channel for the online members counter?`,
-        successOnlineName: name => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the name of the channel for the online members counter to ${ name }`,
-        successOnlineCh: ch => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the online members counter to ${ ch }`,
-        offlineChQ: `What is the voice channel for the offline members counter?`,
-        successOfflineName: name => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel name for the offline members counter to ${ name }`,
-        successOfflineCh: ch => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the offline members counter to ${ ch }`,
-        channelChQ: `What is the voice channel for the channels counter?`,
-        successChannelName: name => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel name for the channels counter to ${ name }`,
-        successChannelCh: ch => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the channels counter to ${ ch }`,
-        roleChQ: `What is the voice channel for the roles counter?`,
-        successRoleName: name => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel name for the roles counter to ${ name }`,
-        successRoleCh: ch => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the roles counter to ${ ch }`,
-        boostChQ: `What is the voice channel for the boosts counter?`,
-        successBoostName: name => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel name for the boosts counter to ${ name }`,
-        successBoostCh: ch => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the boosts counter to ${ ch }`
+        notVoice: `<:720681441670725645:780539422479351809> \`ERREUR\` Le channel souhaité n'est pas un channel vocal`,
+        nameQ: `Quel doit être le nom du **salon** \`ex : 💥・ Membres:\`?`,
+        errorNotChannel: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez spécifier un channel ou une id valide`,
+        disable: type => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le compteur ${ type } a été désactivé`,
+        successMemberCh: ch => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le salon pour les compteur de membre ${ ch }`,
+        memberChQ: `Quel est le channel vocal pour le compteur de membres ?`,
+        successMemberName: name => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le nom du salon pour les compteur de membre pour ${ name }`,
+        botChQ: `Quel est le channel vocal pour le compteur des bots ?`,
+        successBotName: name => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le nom du salon pour les compteur des bots pour ${ name }`,
+        successBotCh: ch => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le salon pour les compteur des bots a ${ ch }`,
+        vocalChQ: `Quel est le channel vocal pour le compteur des membre en vocals?`,
+        successVocalName: name => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le nom du salon pour le compteur des membres en vocals pour ${ name }`,
+        successVocalCh: ch => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le salon pour le compteur des membres en vocals a ${ ch }`,
+        onlineChQ: `Quel est le channel vocal pour le compteur de membre en ligne?`,
+        successOnlineName: name => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le nom du salon pour le compteur des membres en ligne pour ${ name }`,
+        successOnlineCh: ch => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le salon pour le compteur des membres en ligne a ${ ch }`,
+        offlineChQ: `Quel est le channel vocal pour le compteur de membre hors-ligne?`,
+        successOfflineName: name => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le nom du salon pour le compteur des membres hors-ligne pour ${ name }`,
+        successOfflineCh: ch => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le salon pour le compteur des membres hors-ligne a ${ ch }`,
+        channelChQ: `Quel est le channel vocal pour le compteur de salons ?`,
+        successChannelName: name => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le nom du salon pour le compteur des salons pour ${ name }`,
+        successChannelCh: ch => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le salon pour le compteur des salons a ${ ch }`,
+        roleChQ: `Quel est le channel vocal pour le compteur de rôles ?`,
+        successRoleName: name => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le nom du salon pour le compteur de role pour ${ name }`,
+        successRoleCh: ch => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le salon pour le compteur de role a ${ ch }`,
+        boostChQ: `Quel est le channel vocal pour le compteur de booster ?`,
+        successBoostName: name => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le nom du salon pour le compteur de booster pour ${ name }`,
+        successBoostCh: ch => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le salon pour le compteur de booster a ${ ch }`
     },
     reactionRole: {
-        embedTitle: `Role reaction creation menu`,
+        embedTitle: `Menu de création du reaction rôle`,
         embedDescription: (channel, id, emoji, role) => `
         \n
-            Click on the reactions to be able to configure the role reaction !
+            Cliquez sur les reactions pour pouvoir configurer le reaction rôle !
             
-            \`📖\` ・ Choose the channel where the reaction role should be
+            \`📖\` ・ Choisir le salon ou doit être le reaction rôle
             ***${ channel }***\n
-            \`🆔\` ・ Define the message id associated with the reaction role
+            \`🆔\` ・ Definir l'id du message associé au reaction rôle
             ***${ id }***\n
-            \`💠\` ・ Add a role\n
+            \`💠\` ・ Ajouter un rôle\n
             **${ emoji.join(`\n`) }**\n
-            \`🚫\` ・ Delete a role\n
-            \`📛\` ・ Delete an existing role reaction
+            \`🚫\` ・ Supprimer un rôle\n
+            \`📛\` ・ Supprimer un reaction rôle existant
             
            
-            \`❌\` ・ Close menu\n
-            \`✅\` ・ Save the reaction role
+            \`❌\` ・ Fermer le menu\n
+            \`✅\` ・ Sauvegarder le reaction rôle
         `,
-        notText: `The channel should only be of the type **text**`,
-        chQ: `📖 What is the channel where you would like to have your reaction role ? (\`mention/id\`) (cancel to cancel)`,
-        successCh: ch => `You have defined the channel to **${ ch }**`,
-        msgIdQ: `🆔 What is the message id for your reaction role ? (\`id\`) (cancel to cancel)`,
-        notId: `Please enter a valid id !`,
-        noChannel: `You have not defined a channel so I could not retrieve the message`,
-        invalid: `The channel or the message id is invalid`,
-        roleQ: `💠 What is the role to add for the reaction role ? (\`mention/id\`) (cancel to cancel)`,
-        managedRole: `This role cannot be added because it is a role **managed by an application**`,
-        emojiQ: `💠 What is the emoji for this role ? (\`send emoji\`)`,
-        emojiDoesNotExist: `The desired emoji does not exist I am ready to add an emoji to the server what name should it have? (cancel to cancel)`,
-        roleAlready: `The desired role is already associated with an emoji`,
-        emojiAlready: `The desired emoji is already associated with a role`,
-        roleDelQ: `🚫 What is the role to remove from the reaction role ? (\`mention/id\`) (cancel to cancel)`,
-        roleNotFound: `The role is not part of the configuration of a role reaction`,
-        noRole: `Before deleting a role please define it`,
-        cancel: `Creating a role reaction canceled.`,
-        chDeleteQ: `📛 What is the channel where the reaction plays a role? ? (\`mention/id\`) (cancel to cancel)`,
-        msgDeleteQ: `📛 What is the id of the message associated with the reaction role ? (cancel to cancel)`,
-        msgNotFound: `The message was not found.`,
-        successDel: `The reaction role has been deleted.`,
-        noMsg: `You have not defined a message.`,
-        noEmoji: `You haven't set an emoji and role.`,
-        alreadyReact: `A reaction role already exists with this message`,
-        success: `The reaction role has been perfectly saved and created !`,
-        tryToPermsRole: `You can't add a role with sensible permissions`
+        notText: `Le salon doit être uniquement du type **text**`,
+        chQ: `📖 Quel est le salon où vous voudriez avoir votre reaction rôle ? (\`mention/id\`) (cancel pour annuler)`,
+        successCh: ch => `Vous avez définie le salon pour **${ ch }**`,
+        msgIdQ: `🆔 Quel est l'id du message pour votre reaction rôle ? (\`id\`) (cancel pour annuler)`,
+        notId: `Veuillez entrer une id valide !`,
+        noChannel: `Vous n'avez pas défini de channel je n'ai donc pas pu récuperer le message`,
+        invalid: `Le salon ou l'id du message est invalide`,
+        roleQ: `💠 Quel est le rôle à ajouter pour le reaction rôle ? (\`mention/id\`) (cancel pour annuler)`,
+        managedRole: `Ce rôle ne peut pas être ajouté car c'est un rôle **géré par une application**`,
+        emojiQ: `💠 Quel est l'emoji pour ce rôle ? (\`envoyer l'emojis\`)`,
+        emojiDoesNotExist: `L'emoji souhaité n'existe pas je suis a prêt à ajouter un emoji au serveur quel nom doit-il avoir(cancel pour annuler)`,
+        roleAlready: `Le rôle désiré est déjà associé à un emoji`,
+        emojiAlready: `L'emoji désiré est déjà associé à un role`,
+        roleDelQ: `🚫 Quel est le rôle à supprimer pour le reaction rôle ? (\`mention/id\`) (cancel pour annuler)`,
+        roleNotFound: `Le role ne fait pas partie de la configuration d'un reaction rôle`,
+        noRole: `Avant de supprimer un rôle veuillez en définir`,
+        cancel: `Création d'un reaction rôle terminé.`,
+        chDeleteQ: `📛 Quel est le salon où le reaction role ce situe ? (\`mention/id\`) (cancel pour annuler)`,
+        msgDeleteQ: `📛 Quel est l'id du message associé au reaction role ? (cancel pour annuler)`,
+        msgNotFound: `Le message n'a pas été trouvé.`,
+        successDel: `Le reaction rôle à bien été supprimé.`,
+        noMsg: `Vous n'avez pas définie de message.`,
+        noEmoji: `Vous n'avez pas définie d'emoji et de rôle.`,
+        alreadyReact: `Un reaction rôle existe déjà avec ce message`,
+        success: `Le reaction rôle a été parfaitement sauvagardé et crée !`,
+        tryToPermsRole: `Vous ne pouvez pas ajouter un role ayant des permissions sensible`
     },
     tempvoc: {
-        embedTitle: `Temporary voice creation menu`,
+        embedTitle: `Menu de création d'un vocal temporaire`,
         embedDescription: (tempname, enable) => `
         \n
-            Click on the reactions to be able to configure the temporary voice !
+            Cliquez sur les reactions pour pouvoir configurer le vocal temporaire !
             
-            \`🕳\` ・ Auto configure temporary voice 
-            \`💬\` ・ Change the name of the user's temporary room 
+            \`🕳\` ・ Auto configurer le vocal temporaire
+
+            \`💬\` ・ Changer le nom du salon temporaire de l'utilisateur
             ***${ tempname }***\n
-            \`💨\` ・ Activate / deactivate temporary voice 
+            \`💨\` ・ Activé / désactiver le vocal temporaire
             **${ enable }**\n
-            \`💥\` ・ Delete an existing temporary voice 
+            \`💥\` ・ Supprimer un vocal temporaire existant
             
            
-            \`❌\` ・ Close menu\n
-            \`✅\` ・ Save temporary voice 
+            \`❌\` ・ Fermer le menu\n
+            \`✅\` ・ Sauvegarder le vocal temporaire
         `,
-        loadingCreation: `Creation in progress...`,
-        autoCat: `Temporary channel`,
-        autoChName: `➕ Create your channel`,
-        autoConfigFinish: `Creation is complete`,
-        nameQ: `What should be the name of the channel? \`ex : ❤ - {username}\` (cancel to cancel)`,
-        errorNoUsername: `You have to put **{username}** in the name of the channel`,
-        cancel: `Creation of a temporary voice canceled`,
-        alreadyTempvoc: `There is already a temporary voice on this server please delete it .`,
-        success: `The temporary voice is well saved `,
-        noCat: `Please configure temporary voice `,
-        tempVocNotFound: `I cannot find any temporary channel for this server`,
-        successDel: `Temporary vocal has been deleted`
+        loadingCreation: `Création en cours...`,
+        autoCat: `Salon temporaire`,
+        autoChName: `➕ Crée ton salon`,
+        autoConfigFinish: `La création est terminé`,
+        nameQ: `Quel doit être le nom du salon ? \`ex : ❤ - {username}\` (cancel pour annuler)`,
+        errorNoUsername: `Vous devez mettre **{username}** dans le nom du salon`,
+        cancel: `Création d'un vocal temporaire annulé`,
+        alreadyTempvoc: `Il y a déjà un vocal temporaire sur ce serveur veuillez le supprimé.`,
+        success: `Le vocal temporaire est bien sauvegardé`,
+        noCat: `Veuillez configurer le vocal temporaire`,
+        tempVocNotFound: `Je ne trouve aucun salon temporaire pour ce serveur`,
+        successDel: `Le vocal temporaire est bien supprimé`
     },
     mutelist: { title: `List des membres muet` },
     serverlist: {
-        title: `List of all the guild`,
-        leave: `To remove the bot from a guild do !serverlist <the number associate to the guild>`,
-        success: name => `The bot has left **${ name }**`,
+        title: `List des serveurs où le bot est présent`,
+        leave: `Pour enlever le bot d'un serveur faites !serverlist <l'id du serveur>`,
+        success: name => `Le bot vient de quitter **${ name }**`,
         errorNotServer: `Le serveur souhaité n'est pas dans la liste`
     },
     say: { cantSendEmptyMsg: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne peux pas envoyer un message vide` },
@@ -596,45 +595,46 @@ Sorry I did not manage to do that I did not have enough permission.`,
         noVoiceChannel: `Salon vocal supprimé`
     },
     warn: {
-        warnDm: (tag, reason, amount) => `You have been warn by **${ tag }** for ${ reason }, you have in total: \`$ {amount}\` warn(s)${ amount }\` warn(s)`,
-        warnSuccess: (tag, reason, amount) => `I have warn **${ tag }** for ${ reason }, **${ tag }** is currently at ${ amount } warn(s)`,
-        banDm: (amount, serverName) => `You were banned from ** $ {serverName} ** because you reached the warn limit with \` ($ {amount}) \` warn (s)${ serverName }** car vous avez atteind la limite de warn avec \`(${ amount })\` warn(s)  `,
-        kickDm: (amount, serverName) => `You were kicked by **${ serverName }** because you reached the warn limit with \`(${ amount })\` warn(s)`,
-        muteDm: (amount, serverName) => `You have been muted from **${ serverName }** because you have reached the warn limit with \`(${ amount })\` warn (s)`,
-        settingsTitle: `Warns configuration`,
+        warnDm: (tag, reason, amount) => `Vous avez été warn par **${ tag }** pour ${ reason }, vous avez au total : \`${ amount }\` warn(s)`,
+        warnSuccess: (tag, reason, amount) => `J'ai warn **${ tag }** pour ${ reason }, **${ tag }** est actuellement à ${ amount } warn(s)`,
+        banDm: (amount, serverName) => `Vous avez été banni de **${ serverName }** car vous avez atteind la limite de warn avec \`(${ amount })\` warn(s)  `,
+        kickDm: (amount, serverName) => `Vous avez été kick de **${ serverName }** car vous avez atteind la limite de warn avec \`(${ amount })\` warn(s)  `,
+        muteDm: (amount, serverName) => `Vous avez été mute de **${ serverName }** car vous avez atteind la limite de warn avec \`(${ amount })\` warn(s)  `,
+        settingsTitle: `Configuration des warns`,
         description: (ban, kick, mute) => ` \n
-        Click on the reactions to be able to configure the warns!
-        To put no sanction, just put __0__ 
-        \`💥\` ・ Modify the number of warn before ban
+        Cliquez sur les reactions pour pouvoir configurer les warns !
+        Pour mettre aucune sanction il suffit de mettre __0__
+
+        \`💥\` ・ Modifier le nombre de warn avant de ban
         ***${ ban }***\n
-        \`💢\` ・ Modify the number of warn before kick 
+        \`💢\` ・ Modifier le nombre de warn avant de kick
         ***${ kick }***\n
-        \`😶\` ・ Modify the number of warn before mute 
+        \`😶\` ・ Modifié le  nombre de warn avant de mute
         **${ mute }**\n
         
-        \`❌\` ・ Close menu\n
-        \`✅\` ・ Save configuration
+        \`❌\` ・ Fermer le menu\n
+        \`✅\` ・ Sauvegarder la configuration
         `,
-        banQ: `What should the new warn count be before ban? **cancel to cancel**`,
-        onlyNumber: `You must enter only numbers`,
-        kickQ: `What must be the new number of warns before kick? **cancel to cancel ** `,
-        muteQ: `What should the new warn count be before mute? **cancel to cancel ** `,
-        cancel: `The configuration of the number of warns has been canceled`,
-        save: `The configuration has been saved`,
-        error: `I encountered an error while updating`,
-        listTitle: tag => `List of warns of ${ tag }`,
-        reason: `Reason`,
-        noWarn: `No warn saved`,
-        nothingToClear: `There is no warn a clear on this member`,
-        successClear: tag => `I have cleared all the warns of $ {tag}${ tag }`,
-        amountHigherThanWarnTotal: `The number of warns to remove is greater than the total number of warns this member has`,
-        successClearAmount: (tag, amount) => `I have clear __ $ {amount} __ warn (s) of ** $ {tag} **${ amount }__ warn(s) de **${ tag }**`,
-        warnNotFound: `The warn does not exist`,
-        successDelete: (tag, amount) => `I removed the warn number $ {amount} a ** $ {tag} **${ amount } a **${ tag }**`,
-        noReason: 'No specific reason',
-        notNumber: `You must enter the warn number to delete`,
-        noMember: '<:720681441670725645:780539422479351809> `ERROR` You must specify a member (`mention / id`)',
-        noGuildWarn: `No warn on this server `
+        banQ: `Quel doit être le nouveau nombre de warn avant de ban ? **Cancel pour annuler**`,
+        onlyNumber: `Vous devez entrer uniquement des nombres`,
+        kickQ: `Quel doit être le nouveau nombre de warn avant de kick ? **Cancel pour annuler**`,
+        muteQ: `Quel doit être le nouveau nombre de warn avant de mute ? **Cancel pour annuler**`,
+        cancel: `La configuration du nombre de warn a été annulé`,
+        save: `La configuration a été sauvegardé`,
+        error: `J'ai rencontré une erreur lors de la mis à jour`,
+        listTitle: tag => `Liste des warns de ${ tag }`,
+        reason: `Raison`,
+        noWarn: `Aucun warn enregistré`,
+        nothingToClear: `Il n'y a aucun warn a clear sur ce membre`,
+        successClear: tag => `J'ai clear tout les warns de ${ tag }`,
+        amountHigherThanWarnTotal: `Le nombre de warn à supprimer est supérieur au nombre total de warn que ce membre possède`,
+        successClearAmount: (tag, amount) => `J'ai clear __${ amount }__ warn(s) de **${ tag }**`,
+        warnNotFound: `Le warn n'existe pas`,
+        successDelete: (tag, amount) => `J'ai enlevé le warn numéro ${ amount } a **${ tag }**`,
+        noReason: 'Aucune raison spécifique',
+        notNumber: `Vous devez entrer le numéro de warn à supprimer`,
+        noMember: '<:720681441670725645:780539422479351809> `ERREUR` Vous devez spécifier un membre (`mention / id`)',
+        noGuildWarn: `Aucun warn sur ce serveur`
     },
     coinSettings: {
         title: `Configuration du système de coins`,
@@ -663,7 +663,7 @@ Sorry I did not manage to do that I did not have enough permission.`,
         save: `Configuration sauvegardé`
     },
     ball: {
-        noQuestion: `Please enter a question.`,
+        noQuestion: `S'il vous plait, veuillez entrer une question.`,
         reponseQuestion: [
             'Oui.',
             'Non.',
@@ -674,61 +674,61 @@ Sorry I did not manage to do that I did not have enough permission.`,
             'j\'espère',
             'J\'imagine bien'
         ],
-        reponse: `Reply`
+        reponse: `Réponse`
     },
-    meme: { reponse: random => `Your meme was found on /r${ random } (if the picture does not load please click the link)` },
-    gaydetector: { title: `Gay Detector Machine` },
+    meme: { reponse: random => `Ton meme a été trouvé sur /r${ random } (si l'image ne charge pas veuillez cliquer sur le lien)` },
+    gaydetector: { title: `Machine de detecteur de gay` },
     addShop: {
-        noItem: `Please enter an item for the shop`,
-        noPrice: `Please enter a correct price to add the item to the shop`,
-        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCES\` You added the item **${ item }** at the price of ${ price }`,
-        priceInf0: `You must enter a price greater than 0`,
-        noShop: `<:720681441670725645:780539422479351809> \`ERROR\` Your store is not in our database (\`shop create\` to create the shop)`,
-        alreadyShop: `<:720681441670725645:780539422479351809> \`ERROR\` Your server already have a store to delete it use \`shop delete\` `,
-        create: `<:720681705219817534:780540043033837622> \`SUCCES\` The store has been created `,
-        delete: `<:720681705219817534:780540043033837622> \`SUCCES\` The store has been deleted `,
-        successRemove: item => `<:720681705219817534:780540043033837622> \`SUCCES\` You removed the item **${ item }** from the shop`,
-        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCES\` You added the item **${ item }** at the price of ${ price }`,
-        shopShowTitle: guildName => `Store on the server ${ guildName }`,
-        nothingInShop: `Nothing in the store`,
-        notFoundItem: `<:720681441670725645:780539422479351809> \`ERROR\` I can't find the item associated with this id try wtih another id `,
-        editCondition: `Only the price and the name of the item can be edited`,
-        newNameQ: `What should the new name of the item be? (cancel for cancel)`,
-        successEditItemName: name => `<:720681705219817534:780540043033837622> \`SUCCES\` You have changed the name of the item to ${ name }`,
-        newPriceQ: `What should be the new price for the item ? (cancel for cancel)`,
-        successEditItemPrice: price => `<:720681705219817534:780540043033837622> \`SUCCES\` You have changed the price of the item to ${ price }`,
-        cancel: `<:720681705219817534:780540043033837622> \`SUCCES\` You canceled the modification of the item`,
-        onlyNumber: `<:720681441670725645:780539422479351809> \`ERROR\` You must enter numbers only`,
-        syntaxEdit: `<:720681441670725645:780539422479351809> \`ERROR\` Syntax Error: (!shop edit <itemId>)`,
-        noModification: `You have not modified anything in the item`,
-        successEdit: `<:720681705219817534:780540043033837622> \`SUCCES\` The item has been modified`,
-        shopDesc: guildName => `:shopping_cart: Store on the server **${ guildName }**.\n<a:coinsoneforall:819646518180446228> Buy an item with the \`buy [number]\` command.`
+        noItem: `Veuillez entrer un item en pour le shop`,
+        noPrice: `Veuillez entrer un prix correct pour ajouter l'item au shop`,
+        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${ item }** au prix de ${ price }`,
+        priceInf0: `Vous devez entrer un prix suppérieur à 0`,
+        noShop: `<:720681441670725645:780539422479351809> \`ERREUR\` Votre magasin n'est pas dans notre base de donné (shop create pour créer le shop)`,
+        alreadyShop: `<:720681441670725645:780539422479351809> \`ERREUR\` Votre serveurs possède déjà un magasin pour le supprimé (shop delete)`,
+        create: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été créé`,
+        delete: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été supprimé`,
+        successRemove: item => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez enlevé l'item **${ item }** du magasin`,
+        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${ item }** au prix de ${ price }`,
+        shopShowTitle: guildName => `Magasin sur le serveur ${ guildName }`,
+        nothingInShop: `Rien dans la magasin`,
+        notFoundItem: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas l'item associé avec cet id essayé un autre id`,
+        editCondition: `Seulement le prix et le nom de l'item est éditable`,
+        newNameQ: `Quel doit être le nouveau nom de l'item ? (cancel pour annuler)`,
+        successEditItemName: name => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez changer le nom de l'item pour ${ name }`,
+        newPriceQ: `Quel doit être le nouveau prix pour l'item ? (cancel pour annuler)`,
+        successEditItemPrice: price => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez changer le prix de l'item pour ${ price }`,
+        cancel: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez annulé la modification de l'item`,
+        onlyNumber: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez entrer uniquement des nombres`,
+        syntaxEdit: `<:720681441670725645:780539422479351809> \`ERREUR\` Erreur de syntax : (!shop edit <itemId>)`,
+        noModification: `Vous n'avez rien modifié dans l'item`,
+        successEdit: `<:720681705219817534:780540043033837622> \`SUCCÈS\` L'item a bien été modifié`,
+        shopDesc: guildName => `:shopping_cart: Magasin sur le serveur **${ guildName }**.\n<a:coinsoneforall:823538178622488616> Achetez un item avec le \`buy [number]\` command.`
     },
     buy: {
-        shoDisable: `<:720681441670725645:780539422479351809> \`ERREUR\` The store is deactivated`,
-        syntaxError: `<:720681441670725645:780539422479351809> \`ERREUR\` Syntax Error: !buy <itemId>`,
-        noCoins: `<:720681441670725645:780539422479351809> \`ERREUR\` You don't have coins.`,
-        nothingInShop: `<:720681441670725645:780539422479351809> \`ERREUR\` There is nothing in the store `,
-        notEnoughCoins: `<:720681441670725645:780539422479351809> \`ERREUR\` You have not enough coins to buy this item`,
-        itemNotInShop: `<:720681441670725645:780539422479351809> \`ERREUR\` The item is not in the store`,
-        success: (name, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` You bought **${ name }** for <a:coinsoneforall:819646518180446228> **${ price }** coins.`,
-        alreadyRole: `<:720681441670725645:780539422479351809> \`ERREUR\` You already have this role so you cannot purchase this item.`,
-        buyLog: (memberPing, itemName, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${ memberPing } bought **${ itemName }** for <a:coinsoneforall:819646518180446228> **${ price }** coins.`
+        shoDisable: `<:720681441670725645:780539422479351809> \`ERREUR\` Le magasin est désactivé`,
+        syntaxError: `<:720681441670725645:780539422479351809> \`ERREUR\` Error de syntaxe : !buy <itemId>`,
+        noCoins: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous avez aucun coins`,
+        nothingInShop: `<:720681441670725645:780539422479351809> \`ERREUR\` Il n'y a rien dans le magasin`,
+        notEnoughCoins: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas assé d'argent pour acheter cet item`,
+        itemNotInShop: `<:720681441670725645:780539422479351809> \`ERREUR\` L'item n'est pas dans le magasin`,
+        success: (name, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez acheté **${ name }** pour <a:coinsoneforall:823538178622488616> **${ price }** coins.`,
+        alreadyRole: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous possédez déjà ce rôle vous ne pouvez donc pas acheter cet item.`,
+        buyLog: (memberPing, itemName, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${ memberPing } a acheté **${ itemName }** pour <a:coinsoneforall:823538178622488616> **${ price }** coins.`
     },
-    coins: { description: coins => `__${ coins.toFixed(2) }__ coins` },
+    coins: { description: coins => `<a:coinsoneforall:823538178622488616> __${ coins.toFixed(2) }__ coins` },
     pay: {
-        noMember: `Please specify a member to pay`,
-        noCoins: `Please specify a number of coins to pay`,
-        coinsInf0: `Please specify a number of coins to pay greater than 0`,
-        coinsDec2: `The number of coins have too many decimals (2 maximum)`,
-        noGoinsToGive: `You don't have coins.`,
-        notEnoughtCoins: coins => `You don't have enough coins to give ${ coins.toFixed(2) }`,
-        giveCoins: (coins, member) => `You paid \`${ coins.toFixed(2) }\` coins at ${ member }`,
-        logs: (coins, giver, receiver) => `${ giver } gave \`${ coins }\` coins at ${ receiver }`
+        noMember: `Veuillez spécifier un membre à payer`,
+        noCoins: `Veuillez spécifier un nombre de coins à payer`,
+        coinsInf0: `Veuillez spécifier un nombre de coins à payer supérieur a 0`,
+        coinsDec2: `Le nombre de coins à trop de décimal 2 maximum`,
+        noGoinsToGive: `Vous n'avez pas de coins`,
+        notEnoughtCoins: coins => `Vous n'avez pas assé de coins pour donné ${ coins.toFixed(2) }`,
+        giveCoins: (coins, member) => `Vous avez payé \`${ coins.toFixed(2) }\` coins à ${ member }`,
+        logs: (coins, giver, receiver) => `${ giver } a donné \`${ coins }\` coins à ${ receiver }`
     },
     lb: {
-        title: `Top 10 members with the most coins`,
-        noCoins: `Nobody has coins on the server.`
+        title: `Top des 10 membres ayant le plus de coins <a:coinsoneforall:823538178622488616>`,
+        noCoins: `Personne a de coins sur le serveur.`
     },
     antiraidConfig: {
         limitQ: `Quelle est la limite pour cet évènement ?`,
@@ -737,23 +737,23 @@ Sorry I did not manage to do that I did not have enough permission.`,
         antiTokenError: `Vous devez entrer uniquement des chiffres par un temps \`Exemple: 10/10m\``,
         limitError: `Vous devez entrer une limite valide`,
         antiDcUnrank: `Vous ne pouvez pas mettre cette sanction`,
-        noVote: `<a:image0:789413382591348738> To unlock this feature you must vote on our page **top.gg**! (https://top.gg/bot/780019344511336518/vote)`,
-        allOn: `All events have been activated `,
-        allOff: `All events have been disabled `,
-        opti: `The antiraid was configured with the optimized parameters `,
-        antiSpamOn: `Antispam has been activated !`,
-        antiSpamOff: `Antispam has been disabled !`,
-        antilinkOn: `The antilink has been activated !`,
-        antilinkOff: `The antilink has been deactivated  !`,
-        p1Title: `<a:3770_this_animated_right:783432503854759936>__Event configuration__ (__15__)`,
-        p2Title: `<a:3770_this_animated_right:783432503854759936>__Event configuration__ (__15__)`,
-        p3Title: `<a:3770_this_animated_right:783432503854759936>__Event configuration__ (__15__)`,
-        timeoutmsg: `Elapsed time your settings are not saved!`,
-        savedmsg: `Anti raid parameters have been saved `,
-        reactsave: `To save your settings, please **react** to this message with **✅ ** `,
-        anulee: `The operation was canceled `,
-        active: `The event has been activated`,
-        deactive: `The event has been deactivated`
+        noVote: `<a:image0:789413382591348738> Pour débloquer cette fonctionnalitée vous devez voter sur notre page **top.gg** ! (https://top.gg/bot/780019344511336518/vote)`,
+        allOn: `Tous les évênements ont été activés`,
+        allOff: `Tous les évênements ont été désactivé`,
+        opti: `L'antiraid est configuré avec les paramètres optimisés`,
+        antiSpamOn: `L'antispam a été activé !`,
+        antiSpamOff: `L'antispam a été désactivé !`,
+        antilinkOn: `L'antilink a été activé !`,
+        antilinkOff: `L'antilink a été désactivé !`,
+        p1Title: `<a:3770_this_animated_right:783432503854759936>__Configuration des évènements__ (__15__)`,
+        p2Title: `<a:3770_this_animated_right:783432503854759936>__Configuration des évènements__ (__15__)`,
+        p3Title: `<a:3770_this_animated_right:783432503854759936>__Configuration des évènements__ (__15__)`,
+        timeoutmsg: `Temps écoulé vos paramètres ne sont donc pas sauvegardés.`,
+        savedmsg: `Les paramètres de l'antiraid ont été sauvegardés`,
+        reactsave: `Pour sauvegarder vos paramètres veuiller **réagir à ce message avec ✅**`,
+        anulee: `L'opération a été annulée`,
+        active: `L'évènement a été activé`,
+        deactive: `L'évènement a été desactivé`
     },
     music: {
         requestedBy: `Demandé par:`,
@@ -869,7 +869,7 @@ Sorry I did not manage to do that I did not have enough permission.`,
         notCorrectSanction: `Veuillez specifier une sanction correct \`(ban/kick/unrank)\``,
         success: (event, sanction) => `Vous avez modifier la sanction de l'évènement **${ event }** pour **${ sanction }**`
     },
-    bypass: { success: (event, enable) => `Les whitelist${ !enable ? ' pas ' : '' }bypass${ !enable ? ' pas ' : '' }l'évènement **${ event }**` },
+    bypass: { success: (event, enable) => `Les whitelist${ !enable ? ' ne ' : '' }bypass${ !enable ? ' ne ' : '' }l'évènement **${ event }**` },
     perm: {
         noPermEnough: `Vous n'avez pas assez de permissions`,
         permNotFound: `La nom de la perm est invalide (1,2,3,4,everyone)`,
@@ -885,38 +885,38 @@ Sorry I did not manage to do that I did not have enough permission.`,
         alreadyExist: `Le role est déjà dans la perm`
     },
     roleEmbed: {
-        typeError: (type, types) => `The embed role ${ type ? `**${ type }**` : '' } there is no such thing as **${ types }**`,
+        typeError: (type, types) => `Le role embed ${ type ? `**${ type }**` : '' } n'existe pas parmis **${ types }**`,
         toSearch: {
             sexe: [
-                'boy',
-                'girl'
+                'homme',
+                'femme'
             ],
             situation: [
-                'in couple',
-                'single',
-                'complicated'
+                'en couple',
+                'célibataire',
+                'compliqué'
             ],
             age: [
-                'major',
-                'minor'
+                'majeur',
+                'mineur'
             ],
             color: [
-                'green',
-                'yellow',
-                'red',
+                'vert',
+                'jaune',
+                'rouge',
                 'orange',
-                'white',
-                'black',
-                'purple',
-                'blue'
+                'blanc',
+                'noir',
+                'violet',
+                'bleu'
             ]
         },
         embeds: {
             sexe: (male, female, color) => {
                 return {
                     embed: {
-                        title: 'Role Gender :fish_cake:',
-                        description: `**Click on the reaction below that suits you**\n\n${ male && female ? `<@&${ male }>\n<@&${ female }>` : '{roles}' }\n\nUn seul rôle disponible, décochez la réaction que vous avez choisis pour sélectionner un autre rôle`,
+                        title: 'Rôle Sexe :fish_cake:',
+                        description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${ male && female ? `<@&${ male }>\n<@&${ female }>` : '{roles}' }\n\nUn seul rôle disponible, décochez la réaction que vous avez choisis pour sélectionner un autre rôle`,
                         color: color
                     }
                 };
@@ -924,8 +924,8 @@ Sorry I did not manage to do that I did not have enough permission.`,
             situation: (couple, difficult, single, color) => {
                 return {
                     embed: {
-                        title: 'Role Situation :fish_cake:',
-                        description: `**Click on the reaction below that suits you **\n\n${ couple && difficult && single ? `<@&${ couple }>\n<@&${ difficult }>\n<@&${ single }>` : '{roles}' }\n\n`,
+                        title: 'Rôle Situation :fish_cake:',
+                        description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${ couple && difficult && single ? `<@&${ couple }>\n<@&${ difficult }>\n<@&${ single }>` : '{roles}' }\n\nUn seul rôle disponible, décochez la réaction que vous avez choisis pour sélectionner un autre rôle`,
                         color: color
                     }
                 };
@@ -933,8 +933,8 @@ Sorry I did not manage to do that I did not have enough permission.`,
             age: (major, minor, color) => {
                 return {
                     embed: {
-                        title: 'Role Age :fish_cake:',
-                        description: `**Click on the reaction below that suits you **\n\n${ minor && major ? `<@&${ major }>\n<@&${ minor }>` : '{roles}' }\n\n`,
+                        title: 'Rôle Âge :fish_cake:',
+                        description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${ minor && major ? `<@&${ major }>\n<@&${ minor }>` : '{roles}' }\n\nUn seul rôle disponible, décochez la réaction que vous avez choisis pour sélectionner un autre rôle`,
                         color: color
                     }
                 };
@@ -942,8 +942,8 @@ Sorry I did not manage to do that I did not have enough permission.`,
             color: (red, green, yellow, blue, white, orange, black, purple, color) => {
                 return {
                     embed: {
-                        title: 'Role Colors :art:',
-                        description: `**Click on the reaction below that suits you **\n\n${ red && green && yellow && blue && white && orange && black && purple ? `<@&${ red }>\n<@&${ green }>\n<@&${ yellow }>\n<@&${ blue }>\n<@&${ white }>\n<@&${ orange }>\n<@&${ black }>\n<@&${ purple }>` : '{roles}' }\n\n`,
+                        title: 'Rôle Couleurs :art:',
+                        description: `**Cliquez sur la réaction ci-dessous qui vous conviennent**\n\n${ red && green && yellow && blue && white && orange && black && purple ? `<@&${ red }>\n<@&${ green }>\n<@&${ yellow }>\n<@&${ blue }>\n<@&${ white }>\n<@&${ orange }>\n<@&${ black }>\n<@&${ purple }>` : '{roles}' }\n\nUn seul rôle disponible, décochez la réaction que vous avez choisis pour sélectionner un autre rôle`,
                         color: color
                     }
                 };
@@ -951,26 +951,26 @@ Sorry I did not manage to do that I did not have enough permission.`,
         },
         potentialRoles: (roles = [], type = '', avatar = '', color = '') => new Discord.MessageEmbed().setTitle(`Role potentiel`).setDescription(`*Potentiel role pour le type ${ type }.\nRéagir sur les reactions pour selectionner pour modifier les roles.\nAdapter vos rôles avec l'embed au dessus*\n➕ ・ Ajouter un role\n➖ ・ Supprimer un role\n✅ ・ Sauvegarder\n❌ ・ Fermer \n\n${ roles.length < 1 ? 'Aucun roles trouvés' : roles.map((role, i) => `${ i + 1 } ・ <@&${ role }>`).join('\n') }`).setTimestamp().setColor(color).setFooter('OneForall', avatar),
         changeRoleQ: `Quel doit être le nouveau role ?`,
-        addRoleQ: `What is the role to add ?`,
-        removeRoleQ: `What is the role to delete ?`,
-        sendEmbedQ: `In which room will the embed be sent?`,
-        emojiNotFoundOnrole: role => `I could not determine an emoji associated with the role. What emoji corresponds to the role **${ role }**? `,
-        colorEmbedQ: `What should be the color of the embed (HEX or red / green / yellow / purple / pink / black / white / blue / orange / invisible)?`,
-        errorNoRole: `Please specify a correct role`,
-        errorNoChannel: `Please specify a correct channel`,
-        successChangeRole: newRole => `The role is now changed to **${ newRole }**`,
-        successAddRole: role => `The role **${ role }** has been added`,
-        successRemoveRole: role => `The role **${ role }  has been deleted`,
-        successChannel: channel => `The embed will be sent to **${ channel }**`,
-        maxRoleReach: `You have reached the maximum number of roles for this role embed`
+        addRoleQ: `Quel est le role à ajouter ?`,
+        removeRoleQ: `Quel est le role à supprimer ?`,
+        sendEmbedQ: `Dans quel salon sera envoyé l'embed ?`,
+        emojiNotFoundOnrole: role => `Je n'ai pas pu déterminer un emoji associé au rôle. Quel est l'emoji qui correspond au rôle **${ role }** ?`,
+        colorEmbedQ: `Quel doit être la couleur de l'embed (HEX ou rouge / vert / jaune / violet / rose / noir / blanc / bleu / orange / invisible)?`,
+        errorNoRole: `Veuillez spécifier un role correct`,
+        errorNoChannel: `Veuillez spécifier un channel correct`,
+        successChangeRole: newRole => `Le role est maintenant changer pour **${ newRole }**`,
+        successAddRole: role => `Le role **${ role }** a été ajouté`,
+        successRemoveRole: role => `Le role **${ role }** a été supprimé`,
+        successChannel: channel => `L'embed sera envoyé dans **${ channel }**`,
+        maxRoleReach: `Vous avez atteind le maximum de roles pour ce role embed`
     },
     giveaway: {
-        reroll: { noMsgId: `<:720681441670725645:780539422479351809> \`ERREUR\` Please specify giveaway message id !` },
+        reroll: { noMsgId: `<:720681441670725645:780539422479351809> \`ERREUR\` Veuillez spécifiez l'id du message de giveaway !` },
         create: {
-            incorrectTime: `The duration is not valid \nExample usage: \`!gcreate 10m 1w Nitro ($ 9.99) \``,
-            inccorectWinner: `The number of winners is not valid \nExample usage: \`!gcreate 10m 1w Nitro ($ 9.99)\``,
-            winnerMustRange: `The number of winners must be greater than 0 \nExample usage: \`!gcreate 10m 1w Nitro ($9.99)\``,
-            noPrize: `The gain is invalid \nExample usage: \`!gcreate 10m 1w Nitro ($ 9.99)\``,
+            incorrectTime: `La durée n'est pas valide\nExemple usage: \`!gcreate 10m 1w Nitro(9.99$)\``,
+            inccorectWinner: `La nombre de gagnants n'est pas valide\nExemple usage: \`!gcreate 10m 1w Nitro(9.99$)\``,
+            winnerMustRange: `Le nombre de gagnants doit être supérieur à 0\nExemple usage: \`!gcreate 10m 1w Nitro(9.99$)\``,
+            noPrize: `Le gain est invalide\nExemple usage: \`!gcreate 10m 1w Nitro(9.99$)\``,
             embed: (time = 'Non définie', channel = 'Non définie', winners = 0, voice = false, boost = false, reaction = '🎉', prize = 'Non définie', color) => new Discord.MessageEmbed().setDescription(`
                 <a:image2:789413408676118538> **INFORMATIONS:**\n\n 
                 Cliquer 🕙 pour modifier la durée
@@ -993,63 +993,63 @@ Sorry I did not manage to do that I did not have enough permission.`,
                 💫 Reaction **-** ${ reaction }
                 🎁 Gain **-** ${ prize }`).setColor(color),
             question: {
-                time: `How long is the giveaway?`,
-                channel: `In which channel should the giveaway be launched?`,
-                winnerCount: `How many winners must there be?`,
-                reaction: `What is the reaction for the giveaway?`,
-                prize: `What do you want to win?`
+                time: `Quel est la durée du giveaway ?`,
+                channel: `Dans quel channel le giveaway doit être lancé ?`,
+                winnerCount: `Combien doit-il y avoir de gagnants ?`,
+                reaction: `Quel est la reaction pour le giveaway ?`,
+                prize: `Que voulez-vous faire gagner ?`
             },
             inccorectResponse: {
-                time: `The duration is not valid \nExample: \`30m \``,
-                channel: `The channel is incorrect`
+                time: `La durée n'est pas valide\nExemple : \`30m\``,
+                channel: `Le channel est incorrect`
             },
             successMessage: {
-                time: time => `The giveaway time is therefore scheduled for **${ time }**`,
-                channel: channel => `The giveaway will be launched from the lounge ${ channel }`,
-                winnerCount: winner => `The number of winner is now set to **${ winner }**`,
-                prize: prize => `You want to win **${ prize }**`,
-                reaction: emoji => `The reaction for the giveaway is now ${ emoji }`
+                time: time => `Le temps du giveaway est donc prévue pour **${ time }**`,
+                channel: channel => `Le giveaway sera lancé de le salon ${ channel }`,
+                winnerCount: winner => `Le nombre de gagnant est maintenant définie pour **${ winner }**`,
+                prize: prize => `Vous voulez faire gagner **${ prize }**`,
+                reaction: emoji => `La reaction pour le giveaway est maintenant ${ emoji }`
             }
         },
         messages: {
             giveaway: ' ',
             giveawayEnded: '',
-            timeRemaining: 'Time Remaining: **{duration}**',
-            inviteToParticipate: 'React with {reaction} to participate in the giveaway     ',
-            winMessage: '{winners}, win **{prize}**',
-            embedFooter: 'Finish at',
-            noWinner: 'Sorry I couldn\'t determine a winner(s)',
-            hostedBy: 'Launch by {user}',
-            winners: 'winner(s)',
-            endedAt: 'Finish at',
+            timeRemaining: '\nFini: **{duration}**',
+            inviteToParticipate: 'Réagis avec {reaction} pour participer au giveaway     ',
+            winMessage: '{winners}, remporte(nt) **{prize}**',
+            embedFooter: 'Fini à',
+            noWinner: 'Désole je n\'ai pas pu déterminer de gagnant(s)',
+            hostedBy: 'Lancé par {user}',
+            winners: 'gagnant(s)',
+            endedAt: 'Fini à',
             units: {
                 seconds: 'seconde(s)',
                 minutes: 'minute(s)',
-                hours: 'hors(s)',
-                days: 'days(s)',
+                hours: 'heure(s)',
+                days: 'jour(s)',
                 pluralS: false
             }
         }
     },
     piconly: {
-        success: channel => `Only images will be allowed in the channel ${ channel } `,
-        wrongType: `The piconly cannot be activated in a channel other than voice`,
-        disable: channel => `Piconly is disabled for channel ${ channel }`
+        success: channel => `Uniquement les images seront autorisées dans le channel ${ channel } `,
+        wrongType: `Le piconly ne peut être activé dans un salon autre que texte`,
+        disable: channel => `Piconly est désactivé pour le channel ${ channel }`
     },
     voicekick: {
-        noMember: `Please specify a member to be kicked from voice`,
-        notInVoice: `The member is not in voice`,
-        success: member => `$ {member} was kicked from voice${ member } a été exclu vocalement`
+        noMember: `Veuillez spécifier un membre à exclure voicalement`,
+        notInVoice: `Le membre n'est pas en vocal`,
+        success: member => `${ member } a été exclu vocalement`
     },
     cleanUp: {
-        wrongType: `The cleanup cannot be performed in a channel other than vocal`,
-        success: channel => `The channel ${ channel } **has been cleanup**`
+        wrongType: `Le cleanup ne peut être effectué dans un salon autre que vocal`,
+        success: channel => `Le salon ${ channel } **a été cleanup**`
     },
     reactionsToMessages: {
-        nochannel: `You must specify a channel`,
-        noEmoji: `You must specify a maximum of 3 reactions`,
-        success: (channel, reactions) => `**All messages sent** in ${ channel } will have ${ reactions.length > 1 ? `reactions ($ {reactions.join (',')})${ reactions.join(', ') })` : `a reaction ($ {reactions.join (',')})${ reactions.join(', ') })` } `,
-        successDelete: channel => `Messages in ${ channel } will no longer receive reactions`
+        nochannel: `Vous devez spécifier un channel`,
+        noEmoji: `Vous devez spécifier au maximum 3 reactions`,
+        success: (channel, reactions) => `**Tous les messages envoyés** dans ${ channel } auront ${ reactions.length > 1 ? `des reactions (${ reactions.join(', ') })` : `une reaction (${ reactions.join(', ') })` }`,
+        successDelete: channel => `Les messages dans ${ channel } ne recevront plus de reactions`
     },
     xpSettings: {
         embed: (config, enable) => new Discord.MessageEmbed().setDescription(`
@@ -1126,22 +1126,16 @@ Sorry I did not manage to do that I did not have enough permission.`,
         errorNothingToReset: `Il n'y a personne a reset`
     },
     inviteRole: {
-        noRole: `You must specify a role`,
-        noInvite: `
-You must specify a prompt number`,
-        notNumber: `
-You must specify a valid prompt number`,
+        noRole: `Vous devez spécifier un role`,
+        noInvite: `Vous devez spécifier un nombre d'invite`,
+        notNumber: `Vous devez spécifier un nombre d'invite valide`,
         listEmbed: inviteRole => new Discord.MessageEmbed().setDescription(!inviteRole.length ? `Aucun invite role` : inviteRole.map((inv, i) => `${ i + 1 } - <@&${ inv.role }> - ${ inv.invite } invite(s)`).join('\n')).setTimestamp().setTitle(`Liste des invites role (${ inviteRole.length })`),
-        success: (role, invite) => `
-The role **${ role }** now added from *${ invite }* invite(s)`,
-        noOnOff: `You must specify on or off \n \`Example: !inviterole cumul on \``,
-        successCumul: isOn => `
-The cumulative roles are now **${ isOn }**.`,
-        doestNotExist: `the invite role does not exist`,
-        alreadyExist: `the invite role already exists`,
-        successRm: role => `
-the${ role }
-has been removed from the invite role`
+        success: (role, invite) => `Le role **${ role }** se maintenant ajouté a partir de *${ invite }* invite(s)`,
+        noOnOff: `Vous devez spécifier on ou off\n \`Exemple: !inviterole cumul on\``,
+        successCumul: isOn => `Le cumules des roles est maintenant **${ isOn }**.`,
+        doestNotExist: `L'invite role n'existe pas`,
+        alreadyExist: `L'invite role existe déjà`,
+        successRm: role => `Le ${ role } a été supprimé des invite role`
     },
     blacklistRole: {
         noRole: `Vous devez spécifier un role`,
