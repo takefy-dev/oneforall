@@ -1128,11 +1128,11 @@ module.exports = {
         errorNothingToReset: `Il n'y a personne a reset`
     },
     inviteRole: {
-        noRole: `Vous devez spécifier un role`,
-        noInvite: `Vous devez spécifier un nombre d'invite`,
-        notNumber: `Vous devez spécifier un nombre d'invite valide`,
+        noRole: `bite`,
+        noInvite: `bite`,
+        notNumber: `bite`,
         listEmbed: inviteRole => new Discord.MessageEmbed().setDescription(!inviteRole.length ? `Aucun invite role` : inviteRole.map((inv, i) => `${ i + 1 } - <@&${ inv.role }> - ${ inv.invite } invite(s)`).join('\n')).setTimestamp().setTitle(`Liste des invites role (${ inviteRole.length })`),
-        success: (role, invite) => `Le role **${ role }** se maintenant ajouté a partir de *${ invite }* invite(s)`,
+        success: (role, invite) => `Le role **${ role }bite de nwar${ invite }* invite(s)`,
         noOnOff: `Vous devez spécifier on ou off\n \`Exemple: !inviterole cumul on\``,
         successCumul: isOn => `Le cumules des roles est maintenant **${ isOn }**.`,
         doestNotExist: `L'invite role n'existe pas`,
