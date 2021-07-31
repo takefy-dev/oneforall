@@ -100,6 +100,7 @@ module.exports = {
     },
     dero: { success: '<:720681705219817534:780540043033837622> `SUCCÈS` Toutes les dérogattions ont été mis à jour.' },
     embedBuilder: {
+        descriptionRequired: `La description est obligatoire`,
         loading: `Chargement ... <a:2366_Loading_Pixels:784472554328555571>`,
         title: `Menu création d'embed !`,
         description: ` <a:dboatsSharkDance:788375939234398218> Bienvenue sur le menu de création d'embed ! \n<a:image0:789413382591348738> Cliquez sur les reactions pour pouvoir personnaliser votre embed !`,
@@ -118,6 +119,8 @@ module.exports = {
         titleMsg: `✏ Quel titre voulez-vous pour votre embed ?`,
         descriptionMsg: `📝Quelle description voulez-vous pour votre embed ?`,
         authorMsg: `🗣 Quel auteur voulez-vous pour votre embed ?`,
+        authorUrl: `🗣 Quel l'url voulez-vous pour l'auteur de l'embed ? (no pour aucun)`,
+        authorIcon: `🗣 Quel est l'image voulez-vous pour l'auteur de l'embed ? (no pour aucun)`,
         footerMsg: `🖍 Quel footer voulez-vous pour votre embed ?`,
         thumbnailMsg: `💶 Quelle miniature voulez-vous pour votre embed ?`,
         imageMsg: `🖼 Quelle image voulez-vous pour votre embed ?`,
@@ -326,6 +329,7 @@ module.exports = {
         2 ・ Configurer le message de bienvenue\n
             __Message Actuel__ : ${ inviteMsg } \n
         3 ・ Aide sur le message de bienvenue  \n
+
         4 ・ Activer ou désactiver le message de bienvenue \n
         __Actif__ : ${ isOnS }
         `,
@@ -678,14 +682,14 @@ module.exports = {
     addShop: {
         noItem: `Veuillez entrer un item en pour le shop`,
         noPrice: `Veuillez entrer un prix correct pour ajouter l'item au shop`,
-        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${ item }** au prix de ${ price }`,
+        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** au prix de ${ price }`,
         priceInf0: `Vous devez entrer un prix suppérieur à 0`,
         noShop: `<:720681441670725645:780539422479351809> \`ERREUR\` Votre magasin n'est pas dans notre base de donné (shop create pour créer le shop)`,
         alreadyShop: `<:720681441670725645:780539422479351809> \`ERREUR\` Votre serveurs possède déjà un magasin pour le supprimé (shop delete)`,
         create: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été créé`,
         delete: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été supprimé`,
         successRemove: item => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez enlevé l'item **${ item }** du magasin`,
-        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${ item }** au prix de ${ price }`,
+        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** au prix de ${ price }`,
         shopShowTitle: guildName => `Magasin sur le serveur ${ guildName }`,
         nothingInShop: `Rien dans la magasin`,
         notFoundItem: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas l'item associé avec cet id essayé un autre id`,
@@ -1132,5 +1136,13 @@ module.exports = {
         doestNotExist: `L'invite role n'existe pas`,
         alreadyExist: `L'invite role existe déjà`,
         successRm: role => `Le ${ role } a été supprimé des invite role`
+    },
+    blacklistRole: {
+        noRole: `Vous devez spécifier un role`,
+        alreadyBl: role => `Le role **${ role }** est déjà dans la blacklist des rôles`,
+        successBl: role => `Le role **${ role }** est maintenant dans la blacklist des rôles`,
+        notBl: role => `Le role **${ role }** n'est pas dans la blacklist des rôles`,
+        successRemove: role => `Le role **${ role }** n'est plus dans la blacklist des rôles`,
+        successRemovedRole: roleSize => `Le role a été enlevé de **${ roleSize }** membres`
     }
 };
