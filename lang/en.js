@@ -376,10 +376,9 @@ module.exports = {
     },
     authorinfo: { description: `__**OneforAll**__\n\n*OneforAll is a bot owned by* \`TAKEFY#9831\`\n\n**Developer :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[rh#0002](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     setlang: {
-        title: `Change language`,
-        description: lang => `Actual language : **${ lang }**    \n\n 🇫🇷 ・ French \n\n 🇬🇧 ・ English`,
-        errorSelected: `<:720681441670725645:780539422479351809> \`ERROR\` The lang you wanted is already the actual language.`,
-        success: lang => `<:720681705219817534:780540043033837622> \`SUCCES\` The bot language as been set for : **${ lang }**`
+        currentLang: lang => `En ce moment la langue du bot est **${ lang }**`,
+        errorInArgs: availableLang => `Vous devez choisir entre ces ${ availableLang.length } langues **(${ availableLang.join(', ').replace(/.js/g, '') })**`,
+        success: lang => `La langue du bot est maintenat définie pour ${ lang }**`
     },
     addemoji: {
         missingUrl: `<:720681441670725645:780539422479351809> \`ERROR\` You need to provide an emoji`,
