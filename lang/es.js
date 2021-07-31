@@ -2,19 +2,25 @@ const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms');
 const Discord = require('discord.js');
 module.exports = {
-    maintenance: `Le bot est en maintenance pendant quelques minutes`,
-    clic: 'Clique ici',
-    yes: 'oui',
-    no: 'non',
-    cancel: 'Opération annulé',
-    loading: `Chargement... <a:2366_Loading_Pixels:784472554328555571>`,
-    descriptionTimeLeft: timeLeft => `🕙 __Temps restant__ : **${ prettyMilliseconds(timeLeft) }**`,
+    maintenance: `El bot está en mantenimiento durante unos minutos.`,
+    clic: 'haga clic aquí',
+    yes: '\nsí',
+    no: 'No',
+    cancel: 'Operación cancelada',
+    loading: `
+Cargando...<a:2366_Loading_Pixels:784472554328555571>`,
+    descriptionTimeLeft: timeLeft => `
+🕙 __Tiempo restante__: **
+${ prettyMilliseconds(timeLeft) }**`,
     error: {
-        YesNo: `Veuillez répondre par \`oui ou non\` uniquement !`,
-        timeout: `Temps écoulé !`,
-        cooldown: time => `Veuillez executer la commande dans \`${ time }\` secondes.`,
-        noSetup: 'Vous devez setup le bot pour pouvoir utiliser cette commande (!setup)',
-        NoYes: 'Vous devez répondre uniquement avec oui ou non !',
+        YesNo: `
+¡Por favor, responda solo con \ `sí o no \`!`,
+        timeout: `
+Tiempo pasado !`,
+        cooldown: time => `
+Ejecute el comando en \ `${ time }\ `segundos.`,
+        noSetup: 'Debe configurar el bot para poder usar este comando (! Configuración)',
+        NoYes: '¡Debes responder solo con sí o no!',
         ownerOnly: `Seulement le propriétaire du bot peut faire cette commande`,
         notListOwner: `Vous n'êtes pas dans la liste des owners`,
         notGuildOwner: `Seulement le propiétaire du serveur ou l'acheteur du bot peut executer cette action`,
@@ -377,9 +383,8 @@ module.exports = {
     },
     authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     setlang: {
-        currentLang: lang => `En ce moment la langue du bot est **${ lang }**`,
-        errorInArgs: availableLang => `Vous devez choisir entre ces ${ availableLang.length } langues **(${ availableLang.join(', ').replace(/.js/g, '') })**`,
-        success: lang => `La langue du bot est maintenat définie pour ${ lang }`
+        success: lang => `
+El idioma del bot ahora está configurado en${ lang }`
     },
     addemoji: {
         missingUrl: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un emoji`,
@@ -1127,15 +1132,20 @@ module.exports = {
         errorNothingToReset: `Il n'y a personne a reset`
     },
     inviteRole: {
-        noRole: `Vous devez spécifier un role`,
-        noInvite: `Vous devez spécifier un nombre d'invite`,
-        notNumber: `Vous devez spécifier un nombre d'invite valide`,
+        noRole: `Debes especificar un rol`,
+        noInvite: `Debe especificar un número de 
+invitación`,
+        notNumber: `Debe especificar un número de invitación válido`,
         listEmbed: inviteRole => new Discord.MessageEmbed().setDescription(!inviteRole.length ? `Aucun invite role` : inviteRole.map((inv, i) => `${ i + 1 } - <@&${ inv.role }> - ${ inv.invite } invite(s)`).join('\n')).setTimestamp().setTitle(`Liste des invites role (${ inviteRole.length })`),
-        success: (role, invite) => `Le role **${ role }** se maintenant ajouté a partir de *${ invite }* invite(s)`,
-        noOnOff: `Vous devez spécifier on ou off\n \`Exemple: !inviterole cumul on\``,
-        successCumul: isOn => `Le cumules des roles est maintenant **${ isOn }**.`,
-        doestNotExist: `L'invite role n'existe pas`,
-        alreadyExist: `L'invite role existe déjà`,
-        successRm: role => `Le ${ role } a été supprimé des invite role`
+        success: (role, invite) => `Le role **${ role }
+** ahora agregado de *${ invite }* invite(s)`,
+        noOnOff: `Debe especificar encendido o apagado \ n \ `Ejemplo:! Inviterole cumul on \``,
+        successCumul: isOn => `
+Los roles acumulativos son ahora **${ isOn }**.`,
+        doestNotExist: `
+La solicitud de rol no existe`,
+        alreadyExist: `La solicitud de función ya existe`,
+        successRm: role => `
+la${ role }se ha eliminado de las indicaciones de función`
     }
 };
