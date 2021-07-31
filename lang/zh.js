@@ -329,6 +329,7 @@ module.exports = {
         2 ・ Configurer le message de bienvenue\n
             __Message Actuel__ : ${ inviteMsg } \n
         3 ・ Aide sur le message de bienvenue  \n
+
         4 ・ Activer ou désactiver le message de bienvenue \n
         __Actif__ : ${ isOnS }
         `,
@@ -681,14 +682,14 @@ module.exports = {
     addShop: {
         noItem: `Veuillez entrer un item en pour le shop`,
         noPrice: `Veuillez entrer un prix correct pour ajouter l'item au shop`,
-        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${ item }** au prix de ${ price }`,
+        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** au prix de ${ price }`,
         priceInf0: `Vous devez entrer un prix suppérieur à 0`,
         noShop: `<:720681441670725645:780539422479351809> \`ERREUR\` Votre magasin n'est pas dans notre base de donné (shop create pour créer le shop)`,
         alreadyShop: `<:720681441670725645:780539422479351809> \`ERREUR\` Votre serveurs possède déjà un magasin pour le supprimé (shop delete)`,
         create: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été créé`,
         delete: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été supprimé`,
         successRemove: item => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez enlevé l'item **${ item }** du magasin`,
-        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${ item }** au prix de ${ price }`,
+        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** au prix de ${ price }`,
         shopShowTitle: guildName => `Magasin sur le serveur ${ guildName }`,
         nothingInShop: `Rien dans la magasin`,
         notFoundItem: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas l'item associé avec cet id essayé un autre id`,
@@ -830,6 +831,7 @@ module.exports = {
         shuffle: `<a:music:822494244434214982> Les musics seront joué aléatoirement`
     },
     logs: {
+        antiMassMention: (executor, color, channel, sanction) => new Discord.MessageEmbed().setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({ dynamic: true }) : '').setDescription(`${ executor || executor.user.tag || executor.user.username } à massmention dans ${ channel }\nSanction: ${ sanction }`).addField(`ID:`, `\`\`\`js\nExecutor = ${ executor.id }\nChannel = ${ channel.id }\`\`\``).setTimestamp().setFooter('🕙').setColor(color),
         reactRolePerm: (executor, color, message, link) => new Discord.MessageEmbed().setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({ dynamic: true }) : '').setDescription(`${ executor || executor.user.tag || executor.user.username } essaye de créer un reactrole avec des permissions sensible\n**[Se rendre sur le message](${ link })**`).addField(`ID:`, `\`\`\`js\nExecutor = ${ executor.id }\nMessage = ${ message }\`\`\``).setTimestamp().setFooter('🕙').setColor(color),
         targetExecutorLogs: (type, executor, target, color, sanction) => new Discord.MessageEmbed().setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({ dynamic: true }) : '').setDescription(`${ executor || executor.user.tag || executor.user.username } a ${ type }: **${ target.tag || target.username }**\n${ !sanction ? '' : `**SANCTION:** ${ sanction }` }`).addField(`ID:`, `\`\`\`js\nExecutor = ${ executor.id }\nTarget = ${ target.id }\`\`\``).setTimestamp().setFooter('🕙').setColor(color),
         editionMsg: (executor, before, after, color, extra) => new Discord.MessageEmbed().setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({ dynamic: true }) : '').setDescription(`${ executor || executor.user.tag || executor.user.username } a edité son message:`).addField(`Edition:`, `[Se rendre sur le message](${ extra })`).addField('AVANT:', before).addField('APRES:', after).addField(`ID:`, `\`\`\`js\nExecutor = ${ executor.id }\nMessage = ${ extra.split('/')[6] }\nChannel = ${ extra.split('/')[5] }\`\`\``).setTimestamp().setFooter('🕙').setColor(color),
