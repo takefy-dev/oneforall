@@ -1138,5 +1138,13 @@ module.exports = {
         doestNotExist : `L'invite role n'existe pas`,
         alreadyExist : `L'invite role existe déjà`,
         successRm : (role) => `Le ${role} a été supprimé des invite role`
+    },
+    blacklistRole : {
+        noRole : `Vous devez spécifier un role`,
+        alreadyBl : (role) => `Le role **${role}** est déjà dans la blacklist des rôles`,
+        successBl : (role) => `Le role **${role}** est maintenant dans la blacklist des rôles`,
+        notBl: (role) => `Le role **${role}** n'est pas dans la blacklist des rôles`,
+        successRemove: (role) => `Le role **${role}** n'est plus dans la blacklist des rôles`,
+        successRemovedRole : (roleSize) => `Le role a été enlevé de **${roleSize}** membres`
     }
 };

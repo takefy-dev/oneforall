@@ -9,7 +9,7 @@ module.exports = class Test extends Command {
             description: 'Manage the blacklist of the server | Gérer la blacklist du serveur',
             // Optionnals :
             usage: 'blacklist <remove / add /list / on /off>',
-            category: 'tempdata',
+            category: 'blacklist',
             aliases: ['bl'],
             userPermissions: ['ADMINISTRATOR'],
             clientPermissions: ['BAN_MEMBERS'],

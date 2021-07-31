@@ -1,4 +1,3 @@
-const {Collection} = require("discord.js");
 module.exports = {
     sleep: ms => new Promise(resolve => setTimeout(resolve, ms)),
 
@@ -203,6 +202,9 @@ module.exports = {
     },
     enableEmoji (enable)  {
         return enable ? '<:778348494712340561:781153837850820619>' : '<:778348495157329930:781189773645578311>'
+    },
+    getRoleWithoutSensiblePermissions (roles) {
+        return roles.filter(role => !role.permissions.has('KICK_MEMBERS') && !role.permissions.has('ADMINISTRATOR') && !role.permissions.has('MANAGE_ROLES') && !role.permissions.has('MANAGE_GUILD') && !role.permissions.has('MANAGE_CHANNELS') && !role.permissions.has('MENTION_EVERYONE') && !role.permissions.has('BAN_MEMBERS'))
     }
 
 }

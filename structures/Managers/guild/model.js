@@ -114,6 +114,10 @@ module.exports =  (database, DataTypes, modelName, config) => {
             level : {
                 type: DataTypes.JSON,
                 allowNull: true
+            },
+            blacklistRole : {
+                type: DataTypes.JSON,
+                allowNull: true
             }
 
         }, {
