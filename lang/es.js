@@ -100,6 +100,7 @@ module.exports = {
     },
     dero: { success: '<:720681705219817534:780540043033837622> `SUCCÈS` Toutes les dérogattions ont été mis à jour.' },
     embedBuilder: {
+        descriptionRequired: `La description est obligatoire`,
         loading: `Chargement ... <a:2366_Loading_Pixels:784472554328555571>`,
         title: `Menu création d'embed !`,
         description: ` <a:dboatsSharkDance:788375939234398218> Bienvenue sur le menu de création d'embed ! \n<a:image0:789413382591348738> Cliquez sur les reactions pour pouvoir personnaliser votre embed !`,
@@ -118,12 +119,14 @@ module.exports = {
         titleMsg: `✏ Quel titre voulez-vous pour votre embed ?`,
         descriptionMsg: `📝Quelle description voulez-vous pour votre embed ?`,
         authorMsg: `🗣 Quel auteur voulez-vous pour votre embed ?`,
+        authorUrl: `🗣 Quel l'url voulez-vous pour l'auteur de l'embed ? (no pour aucun)`,
+        authorIcon: `🗣 Quel est l'image voulez-vous pour l'auteur de l'embed ? (no pour aucun)`,
         footerMsg: `🖍 Quel footer voulez-vous pour votre embed ?`,
+        footerUrl: `🖍 Quel est l'icon pour le footer (no pour aucun)`,
         thumbnailMsg: `💶 Quelle miniature voulez-vous pour votre embed ?`,
         imageMsg: `🖼 Quelle image voulez-vous pour votre embed ?`,
         urlMsg: `🌐 Quel url voulez-vous pour votre embed ?`,
         colorMsg: `🎨 Quelle couleur voulez-vous pour votre embed (\`HEX ou rouge/vert/jaune/violet/rose/noir/blanc/bleu/orange/invisible\`)?`,
-        timestampMsg: `⏲ Voulez-vous ajouter un timestamp à votre embed (\`oui/non\`)?`,
         copyMsg: `© Quel est le channel où l'embed est situer (\`mention / id\`)?`,
         messageId: `© Quel est l'id du message embed (\`id\`)?`,
         cancelMsg: `❌ Voulez-vous annuler la création de l'embed ? (\`oui/non\`)?`,
@@ -376,11 +379,7 @@ module.exports = {
         successChange: `Vous avez bien modifié votre mot de pass !`
     },
     authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
-    setlang: {
-        currentLang: lang => `En ce moment la langue du bot est **${ lang }**`,
-        errorInArgs: availableLang => `Vous devez choisir entre ces ${ availableLang.length } langues **(${ availableLang.join(', ').replace(/.js/g, '') })**`,
-        success: lang => `La langue du bot est maintenat définie pour ${ lang }`
-    },
+    setlang: { success: lang => `La langue du bot est maintenat définie pour ${ lang }` },
     addemoji: {
         missingUrl: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un emoji`,
         missingName: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un nom pour l'emoji`,
@@ -832,6 +831,7 @@ module.exports = {
         shuffle: `<a:music:822494244434214982> Les musics seront joué aléatoirement`
     },
     logs: {
+        antiMassMention: (executor, color, channel, sanction) => new Discord.MessageEmbed().setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({ dynamic: true }) : '').setDescription(`${ executor || executor.user.tag || executor.user.username } à massmention dans ${ channel }\nSanction: ${ sanction }`).addField(`ID:`, `\`\`\`js\nExecutor = ${ executor.id }\nChannel = ${ channel.id }\`\`\``).setTimestamp().setFooter('🕙').setColor(color),
         reactRolePerm: (executor, color, message, link) => new Discord.MessageEmbed().setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({ dynamic: true }) : '').setDescription(`${ executor || executor.user.tag || executor.user.username } essaye de créer un reactrole avec des permissions sensible\n**[Se rendre sur le message](${ link })**`).addField(`ID:`, `\`\`\`js\nExecutor = ${ executor.id }\nMessage = ${ message }\`\`\``).setTimestamp().setFooter('🕙').setColor(color),
         targetExecutorLogs: (type, executor, target, color, sanction) => new Discord.MessageEmbed().setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({ dynamic: true }) : '').setDescription(`${ executor || executor.user.tag || executor.user.username } a ${ type }: **${ target.tag || target.username }**\n${ !sanction ? '' : `**SANCTION:** ${ sanction }` }`).addField(`ID:`, `\`\`\`js\nExecutor = ${ executor.id }\nTarget = ${ target.id }\`\`\``).setTimestamp().setFooter('🕙').setColor(color),
         editionMsg: (executor, before, after, color, extra) => new Discord.MessageEmbed().setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({ dynamic: true }) : '').setDescription(`${ executor || executor.user.tag || executor.user.username } a edité son message:`).addField(`Edition:`, `[Se rendre sur le message](${ extra })`).addField('AVANT:', before).addField('APRES:', after).addField(`ID:`, `\`\`\`js\nExecutor = ${ executor.id }\nMessage = ${ extra.split('/')[6] }\nChannel = ${ extra.split('/')[5] }\`\`\``).setTimestamp().setFooter('🕙').setColor(color),
@@ -1137,5 +1137,13 @@ module.exports = {
         doestNotExist: `L'invite role n'existe pas`,
         alreadyExist: `L'invite role existe déjà`,
         successRm: role => `Le ${ role } a été supprimé des invite role`
+    },
+    blacklistRole: {
+        noRole: `Vous devez spécifier un role`,
+        alreadyBl: role => `Le role **${ role }** est déjà dans la blacklist des rôles`,
+        successBl: role => `Le role **${ role }** est maintenant dans la blacklist des rôles`,
+        notBl: role => `Le role **${ role }** n'est pas dans la blacklist des rôles`,
+        successRemove: role => `Le role **${ role }** n'est plus dans la blacklist des rôles`,
+        successRemovedRole: roleSize => `Le role a été enlevé de **${ roleSize }** membres`
     }
 };

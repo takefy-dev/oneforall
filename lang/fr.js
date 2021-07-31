@@ -378,9 +378,7 @@ module.exports = {
         successChange: `Vous avez bien modifié votre mot de pass !`
     },
     authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
-    setlang: {
-        success: lang => `La langue du bot est maintenat définie pour ${ lang }`
-    },
+    setlang: { success: lang => `La langue du bot est maintenat définie pour ${ lang }` },
     addemoji: {
         missingUrl: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un emoji`,
         missingName: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un nom pour l'emoji`,
@@ -832,7 +830,7 @@ module.exports = {
         shuffle: `<a:music:822494244434214982> Les musics seront joué aléatoirement`
     },
     logs: {
-        antiMassMention : (executor, color, channel, sanction) => new Discord.MessageEmbed().setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({ dynamic: true }) : '').setDescription(`${ executor || executor.user.tag || executor.user.username } à massmention dans ${channel}\nSanction: ${sanction}`).addField(`ID:`, `\`\`\`js\nExecutor = ${ executor.id }\nChannel = ${ channel.id }\`\`\``).setTimestamp().setFooter('🕙').setColor(color),
+        antiMassMention: (executor, color, channel, sanction) => new Discord.MessageEmbed().setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({ dynamic: true }) : '').setDescription(`${ executor || executor.user.tag || executor.user.username } à massmention dans ${ channel }\nSanction: ${ sanction }`).addField(`ID:`, `\`\`\`js\nExecutor = ${ executor.id }\nChannel = ${ channel.id }\`\`\``).setTimestamp().setFooter('🕙').setColor(color),
         reactRolePerm: (executor, color, message, link) => new Discord.MessageEmbed().setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({ dynamic: true }) : '').setDescription(`${ executor || executor.user.tag || executor.user.username } essaye de créer un reactrole avec des permissions sensible\n**[Se rendre sur le message](${ link })**`).addField(`ID:`, `\`\`\`js\nExecutor = ${ executor.id }\nMessage = ${ message }\`\`\``).setTimestamp().setFooter('🕙').setColor(color),
         targetExecutorLogs: (type, executor, target, color, sanction) => new Discord.MessageEmbed().setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({ dynamic: true }) : '').setDescription(`${ executor || executor.user.tag || executor.user.username } a ${ type }: **${ target.tag || target.username }**\n${ !sanction ? '' : `**SANCTION:** ${ sanction }` }`).addField(`ID:`, `\`\`\`js\nExecutor = ${ executor.id }\nTarget = ${ target.id }\`\`\``).setTimestamp().setFooter('🕙').setColor(color),
         editionMsg: (executor, before, after, color, extra) => new Discord.MessageEmbed().setAuthor(executor.user.tag || executor.user.username, executor.user.tag ? executor.user.displayAvatarURL({ dynamic: true }) : '').setDescription(`${ executor || executor.user.tag || executor.user.username } a edité son message:`).addField(`Edition:`, `[Se rendre sur le message](${ extra })`).addField('AVANT:', before).addField('APRES:', after).addField(`ID:`, `\`\`\`js\nExecutor = ${ executor.id }\nMessage = ${ extra.split('/')[6] }\nChannel = ${ extra.split('/')[5] }\`\`\``).setTimestamp().setFooter('🕙').setColor(color),
@@ -1128,27 +1126,24 @@ module.exports = {
         errorNothingToReset: `Il n'y a personne a reset`
     },
 
-    inviteRole : {
-        noRole : `Vous devez spécifier un role`,
-        noInvite : `Vous devez spécifier un nombre d'invite`,
-        notNumber : `Vous devez spécifier un nombre d'invite valide`,
-        listEmbed : (inviteRole) => new Discord.MessageEmbed()
-            .setDescription(!inviteRole.length ? `Aucun invite role` :  inviteRole.map((inv, i) => `${i +1} - <@&${inv.role}> - ${inv.invite} invite(s)`).join('\n'))
-            .setTimestamp()
-            .setTitle(`Liste des invites role (${inviteRole.length})`),
-        success: (role, invite) => `Le role **${role}** se maintenant ajouté a partir de *${invite}* invite(s)`,
-        noOnOff : `Vous devez spécifier on ou off\n \`Exemple: !inviterole cumul on\``,
-        successCumul : (isOn) => `Le cumules des roles est maintenant **${isOn}**.`,
-        doestNotExist : `L'invite role n'existe pas`,
-        alreadyExist : `L'invite role existe déjà`,
-        successRm : (role) => `Le ${role} a été supprimé des invite role`
+    inviteRole: {
+        noRole: `Vous devez spécifier un role`,
+        noInvite: `Vous devez spécifier un nombre d'invite`,
+        notNumber: `Vous devez spécifier un nombre d'invite valide`,
+        listEmbed: inviteRole => new Discord.MessageEmbed().setDescription(!inviteRole.length ? `Aucun invite role` : inviteRole.map((inv, i) => `${ i + 1 } - <@&${ inv.role }> - ${ inv.invite } invite(s)`).join('\n')).setTimestamp().setTitle(`Liste des invites role (${ inviteRole.length })`),
+        success: (role, invite) => `Le role **${ role }** se maintenant ajouté a partir de *${ invite }* invite(s)`,
+        noOnOff: `Vous devez spécifier on ou off\n \`Exemple: !inviterole cumul on\``,
+        successCumul: isOn => `Le cumules des roles est maintenant **${ isOn }**.`,
+        doestNotExist: `L'invite role n'existe pas`,
+        alreadyExist: `L'invite role existe déjà`,
+        successRm: role => `Le ${ role } a été supprimé des invite role`
     },
-    blacklistRole : {
-        noRole : `Vous devez spécifier un role`,
-        alreadyBl : (role) => `Le role **${role}** est déjà dans la blacklist des rôles`,
-        successBl : (role) => `Le role **${role}** est maintenant dans la blacklist des rôles`,
-        notBl: (role) => `Le role **${role}** n'est pas dans la blacklist des rôles`,
-        successRemove: (role) => `Le role **${role}** n'est plus dans la blacklist des rôles`,
-        successRemovedRole : (roleSize) => `Le role a été enlevé de **${roleSize}** membres`
+    blacklistRole: {
+        noRole: `Vous devez spécifier un role`,
+        alreadyBl: role => `Le role **${ role }** est déjà dans la blacklist des rôles`,
+        successBl: role => `Le role **${ role }** est maintenant dans la blacklist des rôles`,
+        notBl: role => `Le role **${ role }** n'est pas dans la blacklist des rôles`,
+        successRemove: role => `Le role **${ role }** n'est plus dans la blacklist des rôles`,
+        successRemovedRole: roleSize => `Le role a été enlevé de **${ roleSize }** membres`
     }
 };
