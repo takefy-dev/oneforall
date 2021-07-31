@@ -2,26 +2,27 @@ const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms');
 const Discord = require('discord.js');
 module.exports = {
-    maintenance: `Le bot est en maintenance pendant quelques minutes`,
-    clic: 'Clique ici',
-    yes: 'oui',
-    no: 'non',
-    cancel: 'Opération annulé',
-    loading: `Chargement... <a:2366_Loading_Pixels:784472554328555571>`,
-    descriptionTimeLeft: timeLeft => `🕙 __Temps restant__ : **${ prettyMilliseconds(timeLeft) }**`,
+    maintenance: `Botul este în întreținere timp de câteva minute`,
+    clic: 'Click aici',
+    yes: 'da',
+    no: 'nu',
+    cancel: 'Operațiunea a fost anulată',
+    loading: `Se încarcă...
+<a:2366_Loading_Pixels:784472554328555571>`,
+    descriptionTimeLeft: timeLeft => `🕙 __Timp rămas__ : **${ prettyMilliseconds(timeLeft) }**`,
     error: {
-        YesNo: `Veuillez répondre par \`oui ou non\` uniquement !`,
-        timeout: `Temps écoulé !`,
-        cooldown: time => `Veuillez executer la commande dans \`${ time }\` secondes.`,
-        noSetup: 'Vous devez setup le bot pour pouvoir utiliser cette commande (!setup)',
-        NoYes: 'Vous devez répondre uniquement avec oui ou non !',
-        ownerOnly: `Seulement le propriétaire du bot peut faire cette commande`,
-        notListOwner: `Vous n'êtes pas dans la liste des owners`,
-        notGuildOwner: `Seulement le propiétaire du serveur ou l'acheteur du bot peut executer cette action`,
-        voiceChat: `Vous devez être dans un salon vocal pour executer cette commande`,
-        MissingPermission: `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
-        includesEveryoneMention: `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`,
-        userPermissions: perm => `Vous n'avez pas la permission requise \`${ perm }\``,
+        YesNo: `Vă rugăm să răspundeți numai cu \`da sau nu\` !`,
+        timeout: `Timpul scurs !`,
+        cooldown: time => `Rulați comanda în \`${ time }\` secunde.`,
+        noSetup: 'Trebuie să configurați botul pentru a putea utiliza această comandă (!setup)',
+        NoYes: 'Trebuie să răspundeți doar cu da sau nu !',
+        ownerOnly: `Numai proprietarul botului poate face această comandă`,
+        notListOwner: `Nu sunteți în lista de proprietari`,
+        notGuildOwner: `Numai proprietarul serverului sau cumpărătorul botului poate efectua această acțiune`,
+        voiceChat: `Trebuie să fiți într-o cameră vocală pentru a executa această comandă`,
+        MissingPermission: `Îmi pare rău că nu am reușit să fac asta, nu am permisiunea suficientă.`,
+        includesEveryoneMention: `Nu mă puteți face să spun un mesaj care conține pe everyone sau here`,
+        userPermissions: perm => `Nu aveți permisiunea necesară \`${ perm }\``,
         clientPermissions: perm => `Je n'ai pas la permission requise \`${ perm }\``,
         managed: `Vous ne pouvez pas choisir de role gérer par une extension`
     },
@@ -328,7 +329,8 @@ module.exports = {
         3 ・ Aide sur le message de bienvenue  \n
 
         4 ・ Activer ou désactiver le message de bienvenue \n
-        __Actif__ : ${ isOnS }`,
+        __Actif__ : ${ isOnS }
+        `,
         chQ: `<a:2366_Loading_Pixels:784472554328555571> Mentionnez le channel où les messages de bienvenue seront envoyés (cancel pour annuler)`,
         successCh: response => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Les messages de bienvenue vont maintenant être envoyé dans le channel ${ response }.`,
         errorCh: response => `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a définir le salon où les messages de bienvenue seront envoyés à ${ response }`,
@@ -376,10 +378,9 @@ module.exports = {
     },
     authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     setlang: {
-        title: `Changer la langue`,
-        description: lang => `Langue actuelle : **${ lang }**    \n\n 🇫🇷 ・ Français \n\n 🇬🇧 ・ Anglais`,
-        errorSelected: `<:720681441670725645:780539422479351809> \`ERREUR\` La langue souhaité est déjà celle actuelle.`,
-        success: lang => `<:720681705219817534:780540043033837622> \`SUCCÈS\` La langue du bot est maintenat définie pour ${ lang }`
+        currentLang: lang => `En ce moment la langue du bot est **${ lang }**`,
+        errorInArgs: availableLang => `Vous devez choisir entre ces ${ availableLang.length } langues **(${ availableLang.join(', ').replace(/.js/g, '') })**`,
+        success: lang => `La langue du bot est maintenat définie pour ${ lang }`
     },
     addemoji: {
         missingUrl: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un emoji`,
@@ -1125,5 +1126,17 @@ module.exports = {
         successAll: total => `L'xp de ${ total } membres a été reset`,
         success: member => `L'xp de ${ member } a été reset`,
         errorNothingToReset: `Il n'y a personne a reset`
+    },
+    inviteRole: {
+        noRole: `Vous devez spécifier un role`,
+        noInvite: `Vous devez spécifier un nombre d'invite`,
+        notNumber: `Vous devez spécifier un nombre d'invite valide`,
+        listEmbed: inviteRole => new Discord.MessageEmbed().setDescription(!inviteRole.length ? `Aucun invite role` : inviteRole.map((inv, i) => `${ i + 1 } - <@&${ inv.role }> - ${ inv.invite } invite(s)`).join('\n')).setTimestamp().setTitle(`Liste des invites role (${ inviteRole.length })`),
+        success: (role, invite) => `Le role **${ role }** se maintenant ajouté a partir de *${ invite }* invite(s)`,
+        noOnOff: `Vous devez spécifier on ou off\n \`Exemple: !inviterole cumul on\``,
+        successCumul: isOn => `Le cumules des roles est maintenant **${ isOn }**.`,
+        doestNotExist: `L'invite role n'existe pas`,
+        alreadyExist: `L'invite role existe déjà`,
+        successRm: role => `Le ${ role } a été supprimé des invite role`
     }
 };

@@ -328,9 +328,7 @@ module.exports = {
         3 ・ Aide sur le message de bienvenue  \n
         4 ・ Activer ou désactiver le message de bienvenue \n
         __Actif__ : ${ isOnS }
-        `
-        ,
-
+        `,
         chQ: `<a:2366_Loading_Pixels:784472554328555571> Mentionnez le channel où les messages de bienvenue seront envoyés (cancel pour annuler)`,
         successCh: response => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Les messages de bienvenue vont maintenant être envoyé dans le channel ${ response }.`,
         errorCh: response => `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a définir le salon où les messages de bienvenue seront envoyés à ${ response }`,
@@ -378,8 +376,6 @@ module.exports = {
     },
     authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     setlang: {
-        currentLang: (lang) => `En ce moment la langue du bot est **${lang}**`,
-        errorInArgs : (availableLang) => `Vous devez choisir entre ces ${availableLang.length} langues **(${availableLang.join(', ').replace(/.js/g, '')})**`,
         success: lang => `La langue du bot est maintenat définie pour ${ lang }`
     },
     addemoji: {
@@ -1127,6 +1123,7 @@ module.exports = {
         success: member => `L'xp de ${ member } a été reset`,
         errorNothingToReset: `Il n'y a personne a reset`
     },
+
     inviteRole : {
         noRole : `Vous devez spécifier un role`,
         noInvite : `Vous devez spécifier un nombre d'invite`,
@@ -1141,6 +1138,5 @@ module.exports = {
         doestNotExist : `L'invite role n'existe pas`,
         alreadyExist : `L'invite role existe déjà`,
         successRm : (role) => `Le ${role} a été supprimé des invite role`
-
     }
 };
