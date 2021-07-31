@@ -15,6 +15,7 @@
     "bcryptjs": "^2.4.3",
     "canvacord": "^5.2.1",
     "child_process": "^1.0.2",
+    "colornames": "^1.1.1",
     "date2mysqlformat": "^1.0.1",
     "dblapi.js": "^2.4.1",
     "deepmerge": "^4.2.2",

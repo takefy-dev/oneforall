@@ -13,6 +13,7 @@ module.exports = class messageReactionAdd extends Event {
 
     async run(client, id, unavailableGuilds) {
         console.log(`Shard ${id} is ready with ${unavailableGuilds}`)
+        if(client.config.dev) return;
         hook.send(`\`[${new Date().toString().split(" ", 5).join(" ")}]\` <:464520569975603200:868814251186348042> Shard \`#${id+ 1}\`  prêt \n▬▬▬▬▬▬▬▬`)
     }
 }
