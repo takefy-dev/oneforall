@@ -103,6 +103,7 @@ Sorry I did not manage to do that I did not have enough permission.`,
     },
     dero: { success: '<:720681705219817534:780540043033837622> `SUCCES` All waivers have been updated.' },
     embedBuilder: {
+        descriptionRequired: `La description est obligatoire`,
         loading: `Loading... <a:2366_Loading_Pixels:784472554328555571>`,
         title: `Embed creation menu !`,
         description: ` <a:dboatsSharkDance:788375939234398218> Welcome to the embed creation menu ! \n<a:image0:789413382591348738> Cliquez sur les reactions pour pouvoir personnaliser votre embed !`,
@@ -121,6 +122,8 @@ Sorry I did not manage to do that I did not have enough permission.`,
         titleMsg: `✏ What title do you want for your embed ?`,
         descriptionMsg: `📝 What description do you want for your embed ?`,
         authorMsg: `🗣 Which author do you want for your embed ?`,
+        authorUrl: `🗣 Quel l'url voulez-vous pour l'auteur de l'embed ? (no pour aucun)`,
+        authorIcon: `🗣 Quel est l'image voulez-vous pour l'auteur de l'embed ? (no pour aucun)`,
         footerMsg: `🖍 What footer do you want for your embed ?`,
         thumbnailMsg: `💶 Which thumbnail do you want for your embed ?`,
         imageMsg: `🖼 What image do you want for your embed ?`,
@@ -1138,5 +1141,13 @@ The cumulative roles are now **${ isOn }**.`,
         successRm: role => `
 the${ role }
 has been removed from the invite role`
+    },
+    blacklistRole: {
+        noRole: `Vous devez spécifier un role`,
+        alreadyBl: role => `Le role **${ role }** est déjà dans la blacklist des rôles`,
+        successBl: role => `Le role **${ role }** est maintenant dans la blacklist des rôles`,
+        notBl: role => `Le role **${ role }** n'est pas dans la blacklist des rôles`,
+        successRemove: role => `Le role **${ role }** n'est plus dans la blacklist des rôles`,
+        successRemovedRole: roleSize => `Le role a été enlevé de **${ roleSize }** membres`
     }
 };
