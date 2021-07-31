@@ -62,11 +62,7 @@ module.exports = class Ready extends Event{
                             `OneForAll - Type: antiMassKick `
                         ).then(async () => antiraidLimit.kick = 0)
                     } else if (sanction === 'unrank') {
-                        let roles = []
-                        await member.roles.cache
-                            .map(role => roles.push(role.id))
-
-                        member.roles.remove(roles, `OneForAll - Type: antiMassKick`).then(async () => antiraidLimit.kick = 0)
+                        await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache) `OneForAll - Type: antiMassKick`).then(async () => antiraidLimit.kick = 0)
                         if (action.executor.bot) {
                             let botRole = member.roles.cache.filter(r => r.managed)
 

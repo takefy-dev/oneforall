@@ -63,11 +63,7 @@ module.exports = class Ready extends Event {
                             `OneForAll - Type: antiDeco `
                         ).then(async () => antiraidLimit.deco = 0)
                     } else if (sanction === 'unrank') {
-                        let roles = []
-                        await executor
-                            .map(role => roles.push(role.id))
-
-                        await executor.roles.remove(roles, `OneForAll - Type: antiDeco`).then(async () => antiraidLimit.deco = 0)
+                        await executor.roles.set(client.functions.getRoleWithoutSensiblePermissions(executor.roles.cache)`OneForAll - Type: antiDeco`).then(async () => antiraidLimit.deco = 0)
                         if (action.executor.bot) {
                             let botRole = executor.roles.cache.filter(r => r.managed)
                             for (const [id] of botRole) {

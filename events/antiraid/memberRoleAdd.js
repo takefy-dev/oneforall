@@ -34,7 +34,7 @@ module.exports = class Ready extends Event {
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
-        let isWlBypass = antiraidConfig.bypass[this.name];
+        let isWlBypass = antiraidConfig.bypass["roleAdd"];
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `${this.name}`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
@@ -55,15 +55,11 @@ module.exports = class Ready extends Event {
                 if (sanction === 'ban') {
                     await guild.members.ban(action.executor.id, `OneForAll - Type : roleAdd`)
                 } else if (sanction === 'kick') {
-                    executor.kick(
+                    await executor.kick(
                         `OneForAll - Type: roleAdd `
                     )
                 } else if (sanction === 'unrank') {
-                    let roles = []
-                    await executor.roles.cache
-                        .map(role => roles.push(role.id))
-
-                    await executor.roles.remove(roles, `OneForAll - Type: roleAdd`)
+                    await executor.roles.set(client.functions.getRoleWithoutSensiblePermissions(executor.roles.cache),`OneForAll - Type: roleAdd`)
                     if (action.executor.bot) {
                         let botRole = executor.roles.cache.filter(r => r.managed)
                         // let r = guild.roles.cache.get(botRole.id)

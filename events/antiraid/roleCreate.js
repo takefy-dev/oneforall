@@ -56,15 +56,11 @@ module.exports = class roleCreate extends Event {
                 if (sanction === 'ban') {
                     await guild.members.ban(action.executor.id, {reason: "OneForAll - Type : roleCreate"})
                 } else if (sanction === 'kick') {
-                    member.kick(
+                    await member.kick(
                         `OneForAll - Type: roleCreate `
                     )
                 } else if (sanction === 'unrank') {
-                    let roles = []
-                    await member.roles.cache
-                        .map(role => roles.push(role.id))
-
-                    await member.roles.remove(roles, `OneForAll - Type: roleCreate`)
+                    await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `OneForAll - Type: roleCreate`)
                     if (action.executor.bot) {
                         let botRole = member.roles.cache.filter(r => r.managed)
 

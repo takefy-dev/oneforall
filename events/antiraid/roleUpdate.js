@@ -74,14 +74,11 @@ module.exports = class roleUpdate extends Event {
                 if (sanction === 'ban') {
                     await guild.members.ban(action.executor.id, {reason: `OneForAll - Type: ${this.name} `})
                 } else if (sanction === 'kick') {
-                    member.kick(
+                    await member.kick(
                         `OneForAll - Type: roleUpdate `
                     )
                 } else if (sanction === 'unrank') {
-                    let roles = []
-                    await member.roles.cache
-                        .map(role => roles.push(role.id))
-                    await member.roles.remove(roles, `OneForAll - Type: roleUpdate`)
+                    await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `OneForAll - Type: roleUpdate`)
                     if (action.executor.bot) {
                         let botRole = member.roles.cache.filter(r => r.managed)
                         // let r = guild.roles.cache.get(botRole.id)

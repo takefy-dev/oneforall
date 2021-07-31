@@ -53,15 +53,11 @@ module.exports = class Ready extends Event {
                     if (sanction === 'ban') {
                         await guild.members.ban(action.executor.id, {reason: 'OneForAll - Type : antiMassBan'})
                     } else if (sanction === 'kick') {
-                     member.kick(
-                            `OneForAll - Type: antiMassBan `
-                        )
+                     await member.kick(
+                         `OneForAll - Type: antiMassBan `
+                     )
                     } else if (sanction === 'unrank') {
-                        let roles = []
-                        await member.roles.cache
-                            .map(role => roles.push(role.id))
-
-                        await member.roles.remove(roles, `OneForAll - Type: antiMassBan`)
+                        await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `OneForAll - Type: antiMassBan`)
                         if (action.executor.bot) {
                             let botRole = member.roles.cache.filter(r => r.managed)
 

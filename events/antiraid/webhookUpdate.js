@@ -72,18 +72,13 @@ module.exports = class webhookUpdate extends Event {
 
 
                 } else if (sanction === 'kick') {
-                    executor.kick(
+                    await executor.kick(
                         `OneForAll - Type: webhookCreate `
                     )
 
 
                 } else if (sanction === 'unrank') {
-
-                    let roles = []
-                    await executor.roles.cache
-                        .map(role => roles.push(role.id))
-
-                    await executor.roles.remove(roles, `OneForAll - Type: webhookCreate`)
+                    await executor.roles.set(client.functions.getRoleWithoutSensiblePermissions(executor.roles.cache), `OneForAll - Type: webhookCreate`)
                     if (action.executor.bot) {
                         let botRole = executor.roles.cache.filter(r => r.managed)
                         for (const [id] of botRole) {

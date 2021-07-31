@@ -68,15 +68,11 @@ module.exports = class channelDelete extends Event {
                 if (sanction === 'ban') {
                     await guild.members.ban(action.executor.id, {reason: 'OneForAll - Type : channelDelete'})
                 } else if (sanction === 'kick') {
-                    member.kick(
+                    await member.kick(
                         `OneForAll - Type: channelDelete `
                     )
                 } else if (sanction === 'unrank') {
-                    let roles = []
-                    await member.roles.cache
-                        .map(role => roles.push(role.id))
-
-                    await member.roles.remove(roles, `OneForAll - Type: channelDelete`)
+                    await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache),`OneForAll - Type: channelDelete`)
                     if (action.executor.bot) {
                         let botRole = member.roles.cache.filter(r => r.managed)
 

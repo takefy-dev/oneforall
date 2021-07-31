@@ -76,18 +76,14 @@ module.exports = class guildVanityUpdate extends Event {
 
 
                 } else if (sanction === 'kick') {
-                    member.kick(
+                    await member.kick(
                         `OneForAll - Type: guildUpdate - vanityUrl`
                     )
 
 
                 } else if (sanction === 'unrank') {
 
-                    let roles = []
-                    await member.roles.cache
-                        .map(role => roles.push(role.id))
-
-                    await member.roles.remove(roles, `OneForAll - Type: guildUpdate - vanityUrl`)
+                    await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `OneForAll - Type: guildUpdate - vanityUrl`)
                     if (action.executor.bot) {
                         let botRole = member.roles.cache.filter(r => r.managed)
                         for (const [id] of botRole) {

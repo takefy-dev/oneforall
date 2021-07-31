@@ -56,7 +56,7 @@ module.exports = class channelCreate extends Event {
                 if (sanction === 'ban') {
                     await guild.members.ban(action.executor.id, {reason: 'OneForAll - Type : channelCreate'})
                 } else if (sanction === 'kick') {
-                    member.kick(
+                    await member.kick(
                         `OneForAll - Type: channelCreate `
                     )
                 } else if (sanction === 'unrank') {
@@ -64,7 +64,7 @@ module.exports = class channelCreate extends Event {
                     // await member.roles.cache
                     //     .map(role => roles.push(role.id))
 
-                    await member.roles.set(member.roles.cache.filter(role => role.permissions.has('ADMINISTRATOR') || role.permissions.has('KICK_MEMBERS') || role.permissions.has('BAN_MEMBERS') || role.permissions.has('MENTION_EVERYONE') || role.permissions.has('MANAGE_GUILD')), `OneForAll - Type: channelCreate`)
+                   await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `OneForAll - Type: channelCreate`)
                     if (action.executor.bot) {
                         let botRole = member.roles.cache.filter(r => r.managed)
 

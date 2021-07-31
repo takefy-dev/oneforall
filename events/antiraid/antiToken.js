@@ -72,8 +72,7 @@ module.exports = class antiToken extends Event {
                     await m.kick(`OneForAll - Type : antiToken`)
                 }
             } else if (sanction === 'unrank') {
-                await member.roles.set(member.roles.cache.filter(role => !role.permissions.has("KICK_MEMBERS") || !role.permissions.has("BAN_MEMBERS") || !role.permissions.has("ADMINISTRATOR") || !role.permissions.has("MANAGE_CHANNELS") ||
-                    !role.permissions.has("MANAGE_GUILD") || !role.permissions.has("MANAGE_ROLES") || !role.permissions.has("MENTION_EVERYONE") || !role.permissions.has("MOVE_MEMBERS")))
+                await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `Anti token`)
 
             }
 

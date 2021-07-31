@@ -71,11 +71,7 @@ module.exports = class roleDelete extends Event {
 						`OneForAll - Type: roleDelete `
 					)
 				} else if (sanction === 'unrank') {
-					let roles = []
-					await member.roles.cache
-						.map(role => roles.push(role.id))
-
-					await member.roles.remove(roles, `OneForAll - Type: roleDelete`)
+					await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `OneForAll - Type: roleDelete`)
 					if (action.executor.bot) {
 						let botRole = member.roles.cache.filter(r => r.managed)
 

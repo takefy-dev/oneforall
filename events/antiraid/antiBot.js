@@ -41,7 +41,6 @@ module.exports = class AntiBot extends Event {
             if(!guild.me.hasPermission("KICK_MEMBERS")){
                 if (channel && !channel.deleted) {
                     channel.send(logs.botAdd(executor, member.user.username, member.id, color, "Je n'ai pas assé de permissions"))
-
                 }
                 return
             }else{
@@ -49,9 +48,7 @@ module.exports = class AntiBot extends Event {
             }
 
 
-
             let sanction = antiraidConfig.config['antiBot'];
-
             if (sanction === 'ban') {
                 await guild.members.ban(action.executor.id, {reason:`OneForAll - Type : BotAdd`})
             } else if (sanction === 'kick') {
@@ -59,11 +56,8 @@ module.exports = class AntiBot extends Event {
                     `OneForAll - Type: BotAdd `
                 )
             } else if (sanction === 'unrank') {
-                let roles = []
-                await executor.roles.cache
-                    .map(role => roles.push(role.id))
 
-                await executor.roles.remove(roles, `OneForAll - Type: BotAdd`)
+                await executor.roles.set(client.functions.getRoleWithoutSensiblePermissions(executor.roles.cache), `OneForAll - Type: BotAdd`)
                 if (action.executor.bot) {
                     let botRole = executor.roles.cache.filter(r => r.managed)
                     // let r = guild.roles.cache.get(botRole.id)
