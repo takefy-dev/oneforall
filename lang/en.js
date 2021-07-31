@@ -12,11 +12,11 @@ module.exports = {
     error: {
         YesNo: `Please answer with \`yes or no\` only !`,
         timeout: `Time elapsed !`,
-        cooldown: time => `Veuillez executer la commande dans \`${ time }\` secondes.`,
+        cooldown: time => `Please execute the command in \`${ time }\` seconds.`,
         noSetup: 'You need to setup the bot to be able to use this command (!setup)',
         NoYes: 'You must answer only with yes or no !',
-        ownerOnly: `Seulement le propriétaire du bot peut faire cette commande`,
-        notListOwner: `Vous n'êtes pas dans la liste des owners`,
+        ownerOnly: `Only the bot owner can do this command`,
+        notListOwner: `You are not in the owner list`,
         notGuildOwner: `Seulement le propiétaire du serveur ou l'acheteur du bot peut executer cette action`,
         voiceChat: `Vous devez être dans un salon vocal pour executer cette commande`,
         MissingPermission: `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
@@ -27,7 +27,7 @@ module.exports = {
     },
     ping: {
         pinging: 'Pinging...',
-        success: (ping, client) => `Bot latency: \`${ ping }\` ms, API latency: \`${ Math.round(parseInt(client.ws.ping)) }\`ms`
+        success: (ping, client) => `Bot latency: \`${ ping }\` ms, API latency: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
     },
     help: {
         information2: prefix => `<:778353230484471819:780727288903237663> The prefix for this server is \`${ prefix }\`.\n<:desc2:783422775821729792> To get more information about a command, just type \`${ prefix }help\` \`command\`.\n<:folder:783422648196923452> You can also type \`${ prefix }help commands\` or press on 📄 to get all my commands.`,
@@ -63,7 +63,7 @@ module.exports = {
         > <:mutecasque:801123005287628890> Headphone mute : **${ muteHeadSetCount }**
         > <:mutemic:801122908445212723> Mute microphone : **${ muteCount }**\n\n<:sageata:788796887121657877> Total of members in voice channel : **${ count }**`
     },
-    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
+    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll is a bot owned by* \`TAKEFY#9831\`\n\n**Developer :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[rh#0002](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     alladmins: {
         error: `There is 0 admins on server.`,
         list: `List of admins`
@@ -324,9 +324,8 @@ module.exports = {
         1 ・Configure the channel where messages will be sent\n
             __Current channel__ : **<#${ inviteChannel }>**\n
         2 ・ Configure the welcome message\n
-            __Current message__ : ${ inviteMsg } \n
+            __Current message__ : **${ inviteMsg }** \n
         3 ・ Help for the welcome message  \n
-        
         4 ・ Activate or deactivate the welcome message \n
         __Active__ : ${ isOnS }
         `,
@@ -375,12 +374,12 @@ module.exports = {
         newPasswordQ: `What is the new password ? (timeout 30 seconds)`,
         successChange: `You've correctly change your password !`
     },
-    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
+    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll is a bot owned by* \`TAKEFY#9831\`\n\n**Developer :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[rh#0002](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     setlang: {
         title: `Change language`,
         description: lang => `Actual language : **${ lang }**    \n\n 🇫🇷 ・ French \n\n 🇬🇧 ・ English`,
         errorSelected: `<:720681441670725645:780539422479351809> \`ERROR\` The lang you wanted is already the actual language.`,
-        success: lang => `<:720681705219817534:780540043033837622> \`SUCCES\` The bot language as been set for : **${ lang }`
+        success: lang => `<:720681705219817534:780540043033837622> \`SUCCES\` The bot language as been set for : **${ lang }**`
     },
     addemoji: {
         missingUrl: `<:720681441670725645:780539422479351809> \`ERROR\` You need to provide an emoji`,
@@ -605,7 +604,6 @@ module.exports = {
         description: (ban, kick, mute) => ` \n
         Click on the reactions to be able to configure the warns!
         To put no sanction, just put __0__ 
-
         \`💥\` ・ Modify the number of warn before ban
         ***${ ban }***\n
         \`💢\` ・ Modify the number of warn before kick 
@@ -682,14 +680,14 @@ module.exports = {
     addShop: {
         noItem: `Please enter an item for the shop`,
         noPrice: `Please enter a correct price to add the item to the shop`,
-        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** at the price of ${ price }`,
+        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCES\` You added the item **${ item }** at the price of ${ price }`,
         priceInf0: `You must enter a price greater than 0`,
         noShop: `<:720681441670725645:780539422479351809> \`ERROR\` Your store is not in our database (\`shop create\` to create the shop)`,
         alreadyShop: `<:720681441670725645:780539422479351809> \`ERROR\` Your server already have a store to delete it use \`shop delete\` `,
         create: `<:720681705219817534:780540043033837622> \`SUCCES\` The store has been created `,
         delete: `<:720681705219817534:780540043033837622> \`SUCCES\` The store has been deleted `,
         successRemove: item => `<:720681705219817534:780540043033837622> \`SUCCES\` You removed the item **${ item }** from the shop`,
-        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** at the price of ${ price }`,
+        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCES\` You added the item **${ item }** at the price of ${ price }`,
         shopShowTitle: guildName => `Store on the server ${ guildName }`,
         nothingInShop: `Nothing in the store`,
         notFoundItem: `<:720681441670725645:780539422479351809> \`ERROR\` I can't find the item associated with this id try wtih another id `,
@@ -869,7 +867,7 @@ module.exports = {
         notCorrectSanction: `Veuillez specifier une sanction correct \`(ban/kick/unrank)\``,
         success: (event, sanction) => `Vous avez modifier la sanction de l'évènement **${ event }** pour **${ sanction }**`
     },
-    bypass: { success: (event, enable) => `Les whitelist${ !enable ? ' ne ' : '' }bypass${ !enable ? ' ne ' : '' }l'évènement **${ event }**` },
+    bypass: { success: (event, enable) => `Les whitelist${ !enable ? ' pas ' : '' }bypass${ !enable ? ' pas ' : '' }l'évènement **${ event }**` },
     perm: {
         noPermEnough: `Vous n'avez pas assez de permissions`,
         permNotFound: `La nom de la perm est invalide (1,2,3,4,everyone)`,
@@ -1039,7 +1037,7 @@ module.exports = {
     voicekick: {
         noMember: `Please specify a member to be kicked from voice`,
         notInVoice: `The member is not in voice`,
-        success: member => `${ member } a été exclu vocalement`
+        success: member => `$ {member} was kicked from voice${ member } a été exclu vocalement`
     },
     cleanUp: {
         wrongType: `The cleanup cannot be performed in a channel other than vocal`,
@@ -1048,7 +1046,7 @@ module.exports = {
     reactionsToMessages: {
         nochannel: `You must specify a channel`,
         noEmoji: `You must specify a maximum of 3 reactions`,
-        success: (channel, reactions) => `**All messages sent** in ${ channel } will have ${ reactions.length > 1 ? `reactions ($ {reactions.join (',')})${ reactions.join(', ') })` : `a reaction ($ {reactions.join (',')})${ reactions.join(', ') })` }`,
+        success: (channel, reactions) => `**All messages sent** in ${ channel } will have ${ reactions.length > 1 ? `reactions ($ {reactions.join (',')})${ reactions.join(', ') })` : `a reaction ($ {reactions.join (',')})${ reactions.join(', ') })` } `,
         successDelete: channel => `Messages in ${ channel } will no longer receive reactions`
     },
     xpSettings: {
@@ -1126,7 +1124,7 @@ module.exports = {
         errorNothingToReset: `Il n'y a personne a reset`
     },
     inviteRole: {
-        noRole: `Vous devez spécifier un role`,
+        noRole: `You must specify a role`,
         noInvite: `Vous devez spécifier un nombre d'invite`,
         notNumber: `Vous devez spécifier un nombre d'invite valide`,
         listEmbed: inviteRole => new Discord.MessageEmbed().setDescription(!inviteRole.length ? `Aucun invite role` : inviteRole.map((inv, i) => `${ i + 1 } - <@&${ inv.role }> - ${ inv.invite } invite(s)`).join('\n')).setTimestamp().setTitle(`Liste des invites role (${ inviteRole.length })`),
