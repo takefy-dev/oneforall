@@ -114,6 +114,9 @@ module.exports = class Test extends Command {
             config["vanityUpdate"] = "ban"
             bypass["vanityUpdate"] = false
 
+            config["antiToken"] = "kick"
+            bypass["antiToken"] = false
+
             guildData.set('antiraid', antiraidConfig).save().then(async () => {
                 const msg = await message.channel.send(lang.antiraidConfig.opti)
                 setTimeout(() => {
@@ -300,17 +303,14 @@ module.exports = class Test extends Command {
                                             if (isNaN(msg.content.split('')[0]) || !msg.content.endsWith('s') || !msg.content.endsWith('m') || !msg.content.endsWith('h') || !msg.content.endsWith('d') || !msg.content.endsWith('w') || !msg.content.endsWith('y')) {
                                                 return message.channel.send(lang.antiraidConfig.antiDcError)
                                             }
-                                        }else if(eventName === 'antiToken') {
+                                        }else if(eventName === 'antiToken' || eventName === 'antiMassMention') {
                                             if (!msg.content.endsWith('s') && !msg.content.endsWith('m') && !msg.content.endsWith('h') && !msg.content.endsWith('d') && !msg.content.endsWith('w') && !msg.content.endsWith('y')) {
-                                                console.log('heys')
-
                                                 return message.channel.send(lang.antiraidConfig.antiTokenError)
                                             }
                                             const args = msg.content.split('/')
                                             const limit = args[0];
                                             const time = args[1];
                                             if(!limit && !time && isNaN(limit)){
-                                                console.log('hey')
                                                 return message.channel.send(lang.antiraidConfig.antiTokenError)
                                             }
 

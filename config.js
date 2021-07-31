@@ -12,6 +12,7 @@ module.exports = {
     dev : true,
     defaultAntiraidConfig: {
         enable: {
+
             webhookUpdate: false,
             roleCreate: false,
             roleUpdate: false,
@@ -31,6 +32,7 @@ module.exports = {
             nameUpdate: false,
             vanityUpdate: false,
             antiToken : false,
+            antiMassMention: false,
         },
         config: {
             webhookUpdate: 'unrank',
@@ -57,6 +59,8 @@ module.exports = {
             vanityUpdate: 'unrank',
             antiToken : 'kick',
             antiTokenLimit: '10/10s',
+            antiMassMention: 'kick',
+            antiMassMentionLimit: '10/10s'
         },
         bypass: {
             webhookUpdate: false,
@@ -78,6 +82,7 @@ module.exports = {
             nameUpdate: false,
             vanityUpdate: false,
             antiToken: false,
+            antiMassMention: false,
         }
     },
     defaultPermSetup: {

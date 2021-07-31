@@ -1,5 +1,5 @@
 const {Collection} = require('discord.js');
-
+const merge = require('deepmerge')
 class Guild extends Collection {
 
     constructor(OneForAll) {
@@ -53,7 +53,7 @@ class GuildManager {
             lang: values.lang ? values.lang : 'fr',
             whitelisted: values.whitelisted ? values.whitelisted : [],
             owners: values.owners ? values.owners : this.guildManager.OneForAll.botperso ? [] : [this.guildManager.OneForAll.guilds.cache.get(values.guildId).ownerID],
-            antiraid: values.antiraid ? Object.assign(this.guildManager.OneForAll.config.defaultAntiraidConfig,values.antiraid) : this.guildManager.OneForAll.config.defaultAntiraidConfig,
+            antiraid: values.antiraid ?  merge(this.guildManager.OneForAll.config.defaultAntiraidConfig,values.antiraid) : this.guildManager.OneForAll.config.defaultAntiraidConfig,
             antiraidLimits: values.antiraidLimits ? values.antiraidLimits : {
                 antiToken: {recentJoined : [], counter: 0}
             },
@@ -61,7 +61,7 @@ class GuildManager {
             setup: values.setup ? values.setup : false,
             muteRoleId: values.muteRoleId ? values.muteRoleId : null,
             memberRole: values.memberRole ? values.memberRole : null,
-            invite: values.invite ? Object.assign( {id: 'Non définie', message: 'Non définie', enable: false, inviteRole: [], cumulRoles: true},{...values.invite, maxRoleInvite: values.invite.inviteRole.sort((a, b) => b.invite - a.invite)[0]}) : {id: 'Non définie', message: 'Non définie', enable: false, inviteRole: [], cumulRoles: true},
+            invite: values.invite ? merge({id: 'Non définie', message: 'Non définie', enable: false, inviteRole: [], cumulRoles: true}, {...values.invite, maxRoleInvite: values.invite.inviteRole.sort((a, b) => b.invite - a.invite)[0]}) : {id: 'Non définie', message: 'Non définie', enable: false, inviteRole: [], cumulRoles: true},
             soutien: values.soutien ? values.soutien : {
                 roleId: 'Non définie',
                 message: 'Non définie',
@@ -96,7 +96,7 @@ class GuildManager {
                 channelName: 'Non définie',
                 enable: false,
             },
-            perms: values.perms ? Object.assign(this.guildManager.OneForAll.config.defaultPermSetup,values.perms) : this.guildManager.OneForAll.config.defaultPermSetup,
+            perms: values.perms ? merge(this.guildManager.OneForAll.config.defaultPermSetup,values.perms) : this.guildManager.OneForAll.config.defaultPermSetup,
             reactroles: values.reactroles ? values.reactroles : [],
             piconly: values.piconly ? values.piconly : [],
             coinsSettings: values.coinsSettings ? values.coinsSettings : {
@@ -118,6 +118,8 @@ class GuildManager {
         }
         this.cachedInv = new Collection()
         this.snipes = new Collection()
+
+
     }
 
     get(key) {

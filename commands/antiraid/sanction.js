@@ -20,7 +20,7 @@ module.exports = class Test extends Command{
         const eventToEdit = args[0].toLowerCase();
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang
-        const sanction = args[0].toLowerCase()
+        const sanction = args[1].toLowerCase()
         if(sanction !== 'ban' && sanction !== 'kick' && sanction !== 'unrank') return message.channel.send(lang.sanction.notCorrectSanction)
         const antiraidConfig = guildData.get('antiraid');
         const events = new Collection()

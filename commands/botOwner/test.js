@@ -19,12 +19,7 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-
-        const userBackup = client.managers.backupManager.getAndCreateIfNotExists(message.author.id)
-        const backups = userBackup.get('backupEmbed');
-        client.shard.broadcastEval(`this.managers.backupManager.getAndCreateIfNotExists(${message.author.id}).set('backupEmbed', ${JSON.stringify(backups)}).save()`).then((res) => {
-            console.log(res)
-        })
+        console.log(!args[0].endsWith('s')  && !args[0].endsWith('m'))
 
     }
 }

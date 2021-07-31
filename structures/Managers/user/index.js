@@ -1,5 +1,5 @@
 const {Collection} = require('discord.js');
-
+const merge = require('deepmerge')
 class User extends Collection {
 
     constructor(OneForAll) {
@@ -48,7 +48,7 @@ class UserManager {
         this.values = {
             ...this.where,
             invite : values.invite ? values.invite : {join:0, leave:0, fake:0, bonus:0, invitedBy: null},
-            antiraidLimit: values.antiraidLimit ? values.antiraidLimit : {ban:0, kick:0, deco:0},
+            antiraidLimit: values.antiraidLimit ? merge({ban:0, kick:0, deco:0, mentions: {counter:0, date: null}}, values.antiraidLimit) : {ban:0, kick:0, deco:0, mentions: {counter: 0, date: null}},
             mute: values.mute ? values.mute : {muted: false, createdAt: null, expireAt: null},
             warns : values.warns ? values.warns : [],
             coins: values.coins ? values.coins : 0,
