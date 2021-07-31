@@ -2,7 +2,7 @@ const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms');
 const Discord = require('discord.js');
 module.exports = {
-    maintenance: `Le bot est en maintenance pendant quelques minutes`,
+    maintenance: `The bot is in maintenance for a few minutes`,
     clic: 'Click here',
     yes: 'yes',
     no: 'no',
@@ -17,11 +17,14 @@ module.exports = {
         NoYes: 'You must answer only with yes or no !',
         ownerOnly: `Only the bot owner can do this command`,
         notListOwner: `You are not in the owner list`,
-        notGuildOwner: `Seulement le propiétaire du serveur ou l'acheteur du bot peut executer cette action`,
-        voiceChat: `Vous devez être dans un salon vocal pour executer cette commande`,
-        MissingPermission: `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
-        includesEveryoneMention: `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`,
-        userPermissions: perm => `Vous n'avez pas la permission requise \`${ perm }\``,
+        notGuildOwner: `
+Only the server owner or bot buyer can perform this action`,
+        voiceChat: `You must be in a voice room to execute this command`,
+        MissingPermission: `
+Sorry I did not manage to do that I did not have enough permission.`,
+        includesEveryoneMention: `You cannot make me say a message that contains everyone or here
+`,
+        userPermissions: perm => `You do not have the required permission \ `${ perm }\``,
         clientPermissions: perm => `Je n'ai pas la permission requise \`${ perm }\``,
         managed: `Vous ne pouvez pas choisir de role gérer par une extension`
     },
@@ -376,9 +379,10 @@ module.exports = {
     },
     authorinfo: { description: `__**OneforAll**__\n\n*OneforAll is a bot owned by* \`TAKEFY#9831\`\n\n**Developer :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[rh#0002](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     setlang: {
-        currentLang: lang => `En ce moment la langue du bot est **${ lang }**`,
-        errorInArgs: availableLang => `Vous devez choisir entre ces ${ availableLang.length } langues **(${ availableLang.join(', ').replace(/.js/g, '') })**`,
-        success: lang => `La langue du bot est maintenat définie pour ${ lang }**`
+        currentLang: lang => `At the moment the bot language is **${ lang }**`,
+        errorInArgs: availableLang => `You must choose between these${ availableLang.length }
+languages ​​**(${ availableLang.join(', ').replace(/.js/g, '') })**`,
+        success: lang => `The bot language is now set to${ lang }**`
     },
     addemoji: {
         missingUrl: `<:720681441670725645:780539422479351809> \`ERROR\` You need to provide an emoji`,
@@ -1124,14 +1128,20 @@ module.exports = {
     },
     inviteRole: {
         noRole: `You must specify a role`,
-        noInvite: `Vous devez spécifier un nombre d'invite`,
-        notNumber: `Vous devez spécifier un nombre d'invite valide`,
+        noInvite: `
+You must specify a prompt number`,
+        notNumber: `
+You must specify a valid prompt number`,
         listEmbed: inviteRole => new Discord.MessageEmbed().setDescription(!inviteRole.length ? `Aucun invite role` : inviteRole.map((inv, i) => `${ i + 1 } - <@&${ inv.role }> - ${ inv.invite } invite(s)`).join('\n')).setTimestamp().setTitle(`Liste des invites role (${ inviteRole.length })`),
-        success: (role, invite) => `Le role **${ role }** se maintenant ajouté a partir de *${ invite }* invite(s)`,
-        noOnOff: `Vous devez spécifier on ou off\n \`Exemple: !inviterole cumul on\``,
-        successCumul: isOn => `Le cumules des roles est maintenant **${ isOn }**.`,
-        doestNotExist: `L'invite role n'existe pas`,
-        alreadyExist: `L'invite role existe déjà`,
-        successRm: role => `Le ${ role } a été supprimé des invite role`
+        success: (role, invite) => `
+The role **${ role }** now added from *${ invite }* invite(s)`,
+        noOnOff: `You must specify on or off \n \`Example: !inviterole cumul on \``,
+        successCumul: isOn => `
+The cumulative roles are now **${ isOn }**.`,
+        doestNotExist: `the invite role does not exist`,
+        alreadyExist: `the invite role already exists`,
+        successRm: role => `
+the${ role }
+has been removed from the invite role`
     }
 };
