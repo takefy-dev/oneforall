@@ -2,53 +2,36 @@ const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms');
 const Discord = require('discord.js');
 module.exports = {
-    maintenance: `El bot está en mantenimiento durante unos minutos.`,
-    clic: 'haga clic aquí',
-    yes: '\nsí',
-    no: 'No',
-    cancel: 'Operación cancelada',
-    loading: `
-Cargando...<a:2366_Loading_Pixels:784472554328555571>`,
-    descriptionTimeLeft: timeLeft => `
-🕙 __Tiempo restante__: **
-${ prettyMilliseconds(timeLeft) }**`,
+    maintenance: `Le bot est en maintenance pendant quelques minutes`,
+    clic: 'Clique ici',
+    yes: 'oui',
+    no: 'non',
+    cancel: 'Opération annulé',
+    loading: `Chargement... <a:2366_Loading_Pixels:784472554328555571>`,
+    descriptionTimeLeft: timeLeft => `🕙 __Temps restant__ : **${ prettyMilliseconds(timeLeft) }**`,
     error: {
-        YesNo: `
-¡Por favor, responda solo con \ `sí o no \`!`,
-        timeout: `
-Tiempo pasado !`,
-        cooldown: time => `
-Ejecute el comando en \ `${ time }\ `segundos.`,
-        noSetup: 'Debe configurar el bot para poder usar este comando (! Configuración)',
-        NoYes: '¡Debes responder solo con sí o no!',
-        ownerOnly: `Solo el propietario del bot puede hacer este comando`,
-        notListOwner: `No estás en la lista de propietarios`,
-        notGuildOwner: `
-Solo el propietario del servidor o el comprador del bot pueden realizar esta acción`,
-        voiceChat: `
-Debe estar en una sala de voz para ejecutar este comando`,
-        MissingPermission: `
-Lo siento, no pude hacer eso, no tenía suficiente permiso.`,
-        includesEveryoneMention: `
-No puedes hacerme decir un mensaje que contenga a todos o aquí`,
-        userPermissions: perm => `
-No tiene el permiso requerido \ `${ perm }\``,
-        clientPermissions: perm => `
-No tengo el permiso requerido \ `${ perm }\``,
-        managed: `
-No puede elegir un rol para ser administrado por una extensión`
+        YesNo: `Veuillez répondre par \`oui ou non\` uniquement !`,
+        timeout: `Temps écoulé !`,
+        cooldown: time => `Veuillez executer la commande dans \`${ time }\` secondes.`,
+        noSetup: 'Vous devez setup le bot pour pouvoir utiliser cette commande (!setup)',
+        NoYes: 'Vous devez répondre uniquement avec oui ou non !',
+        ownerOnly: `Seulement le propriétaire du bot peut faire cette commande`,
+        notListOwner: `Vous n'êtes pas dans la liste des owners`,
+        notGuildOwner: `Seulement le propiétaire du serveur ou l'acheteur du bot peut executer cette action`,
+        voiceChat: `Vous devez être dans un salon vocal pour executer cette commande`,
+        MissingPermission: `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
+        includesEveryoneMention: `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`,
+        userPermissions: perm => `Vous n'avez pas la permission requise \`${ perm }\``,
+        clientPermissions: perm => `Je n'ai pas la permission requise \`${ perm }\``,
+        managed: `Vous ne pouvez pas choisir de role gérer par une extension`
     },
     ping: {
-        pinging: 'Haciendo ping ...',
-        success: (ping, client) => `
-Latencia del bot: \ `${ ping }
-\ `ms, latencia de API: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
+        pinging: 'Pinging...',
+        success: (ping, client) => `Latence du bot: \`${ ping }\` ms, Latence de l'api: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
     },
     help: {
-        information2: prefix => `<:778353230484471819:780727288903237663> El prefijo de este servidor es \`${ prefix }\`.\n<:desc2:783422775821729792> Para obtener más información sobre un comando, simplemente escriba \ `${ prefix }help\` \`commands\`.\n<:folder:783422648196923452> También puede escribir \ `${ prefix }help commands\` o reacciona con 📄 para obtener todos mis comandos.`,
-        noCommand: args => `
-No puedo encontrar el comando ** __${ args }
-__ ** en mis pedidos`,
+        information2: prefix => `<:778353230484471819:780727288903237663> Le préfixe de ce serveur est \`${ prefix }\`.\n<:desc2:783422775821729792> Pour obtenir plus d'informations sur une commande, tapez simplement \`${ prefix }help\` \`commands\`.\n<:folder:783422648196923452> Vous pouvez également taper \`${ prefix }help commands\` ou réagir avec 📄 pour obtenir toutes mes commandes.`,
+        noCommand: args => `Je ne trouve pas la commande **__${ args }__** dans mes commandes`,
         information: `Information and commands`,
         noAliases: `Pas d'aliases`,
         cmdTitle: `Aide sur la commande`,
@@ -143,13 +126,13 @@ __ ** en mis pedidos`,
         thumbnailMsg: `💶 Quelle miniature voulez-vous pour votre embed ?`,
         imageMsg: `🖼 Quelle image voulez-vous pour votre embed ?`,
         urlMsg: `🌐 Quel url voulez-vous pour votre embed ?`,
-        colorMsg: `🎨 Quelle couleur voulez-vous pour votre embed (\`HEX ou des couleurs en anglais\`)?`,
+        colorMsg: `🎨 Quelle couleur voulez-vous pour votre embed (\`HEX ou rouge/vert/jaune/violet/rose/noir/blanc/bleu/orange/invisible\`)?`,
         copyMsg: `© Quel est le channel où l'embed est situer (\`mention / id\`)?`,
         messageId: `© Quel est l'id du message embed (\`id\`)?`,
         cancelMsg: `❌ Voulez-vous annuler la création de l'embed ? (\`oui/non\`)?`,
         sendMsg: `✅ Dans quel channel voulez-vous envoyer l'embed \`mention ou id\`?`,
         errorUrl: `L'url doit commencer par __http/https__`,
-        errorColor: `Veuillez entrer une couleur valide \`hex ou des couleur en anglais\``,
+        errorColor: `Veuillez entrer une couleur valide \`#0CAE45/rouge/vert/jaune/violet/rose/noir/blanc/bleu/orange/invisible\``,
         errorChannel: `Je ne trouve pas ce channel !`,
         errorWrongId: `Veuilez entrer un id valide !`,
         errorMessage: ch => `Je ne trouve pas le message dans le channel ${ ch } !`
@@ -396,10 +379,7 @@ __ ** en mis pedidos`,
         successChange: `Vous avez bien modifié votre mot de pass !`
     },
     authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
-    setlang: {
-        success: lang => `
-El idioma del bot ahora está configurado en${ lang }`
-    },
+    setlang: { success: lang => `La langue du bot est maintenat définie pour ${ lang }` },
     addemoji: {
         missingUrl: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un emoji`,
         missingName: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un nom pour l'emoji`,
@@ -1147,21 +1127,16 @@ El idioma del bot ahora está configurado en${ lang }`
         errorNothingToReset: `Il n'y a personne a reset`
     },
     inviteRole: {
-        noRole: `Debes especificar un rol`,
-        noInvite: `Debe especificar un número de 
-invitación`,
-        notNumber: `Debe especificar un número de invitación válido`,
+        noRole: `Vous devez spécifier un role`,
+        noInvite: `Vous devez spécifier un nombre d'invite`,
+        notNumber: `Vous devez spécifier un nombre d'invite valide`,
         listEmbed: inviteRole => new Discord.MessageEmbed().setDescription(!inviteRole.length ? `Aucun invite role` : inviteRole.map((inv, i) => `${ i + 1 } - <@&${ inv.role }> - ${ inv.invite } invite(s)`).join('\n')).setTimestamp().setTitle(`Liste des invites role (${ inviteRole.length })`),
-        success: (role, invite) => `Le role **${ role }
-** ahora agregado de *${ invite }* invite(s)`,
-        noOnOff: `Debe especificar encendido o apagado \ n \ `Ejemplo:! Inviterole cumul on \``,
-        successCumul: isOn => `
-Los roles acumulativos son ahora **${ isOn }**.`,
-        doestNotExist: `
-La solicitud de rol no existe`,
-        alreadyExist: `La solicitud de función ya existe`,
-        successRm: role => `
-la${ role }se ha eliminado de las indicaciones de función`
+        success: (role, invite) => `Le role **${ role }** se maintenant ajouté a partir de *${ invite }* invite(s)`,
+        noOnOff: `Vous devez spécifier on ou off\n \`Exemple: !inviterole cumul on\``,
+        successCumul: isOn => `Le cumules des roles est maintenant **${ isOn }**.`,
+        doestNotExist: `L'invite role n'existe pas`,
+        alreadyExist: `L'invite role existe déjà`,
+        successRm: role => `Le ${ role } a été supprimé des invite role`
     },
     blacklistRole: {
         noRole: `Vous devez spécifier un role`,
