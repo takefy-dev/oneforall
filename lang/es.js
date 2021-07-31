@@ -21,23 +21,34 @@ Tiempo pasado !`,
 Ejecute el comando en \ `${ time }\ `segundos.`,
         noSetup: 'Debe configurar el bot para poder usar este comando (! Configuración)',
         NoYes: '¡Debes responder solo con sí o no!',
-        ownerOnly: `Seulement le propriétaire du bot peut faire cette commande`,
-        notListOwner: `Vous n'êtes pas dans la liste des owners`,
-        notGuildOwner: `Seulement le propiétaire du serveur ou l'acheteur du bot peut executer cette action`,
-        voiceChat: `Vous devez être dans un salon vocal pour executer cette commande`,
-        MissingPermission: `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
-        includesEveryoneMention: `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`,
-        userPermissions: perm => `Vous n'avez pas la permission requise \`${ perm }\``,
-        clientPermissions: perm => `Je n'ai pas la permission requise \`${ perm }\``,
-        managed: `Vous ne pouvez pas choisir de role gérer par une extension`
+        ownerOnly: `Solo el propietario del bot puede hacer este comando`,
+        notListOwner: `No estás en la lista de propietarios`,
+        notGuildOwner: `
+Solo el propietario del servidor o el comprador del bot pueden realizar esta acción`,
+        voiceChat: `
+Debe estar en una sala de voz para ejecutar este comando`,
+        MissingPermission: `
+Lo siento, no pude hacer eso, no tenía suficiente permiso.`,
+        includesEveryoneMention: `
+No puedes hacerme decir un mensaje que contenga a todos o aquí`,
+        userPermissions: perm => `
+No tiene el permiso requerido \ `${ perm }\``,
+        clientPermissions: perm => `
+No tengo el permiso requerido \ `${ perm }\``,
+        managed: `
+No puede elegir un rol para ser administrado por una extensión`
     },
     ping: {
-        pinging: 'Pinging...',
-        success: (ping, client) => `Latence du bot: \`${ ping }\` ms, Latence de l'api: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
+        pinging: 'Haciendo ping ...',
+        success: (ping, client) => `
+Latencia del bot: \ `${ ping }
+\ `ms, latencia de API: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
     },
     help: {
-        information2: prefix => `<:778353230484471819:780727288903237663> Le préfixe de ce serveur est \`${ prefix }\`.\n<:desc2:783422775821729792> Pour obtenir plus d'informations sur une commande, tapez simplement \`${ prefix }help\` \`commands\`.\n<:folder:783422648196923452> Vous pouvez également taper \`${ prefix }help commands\` ou réagir avec 📄 pour obtenir toutes mes commandes.`,
-        noCommand: args => `Je ne trouve pas la commande **__${ args }__** dans mes commandes`,
+        information2: prefix => `<:778353230484471819:780727288903237663> El prefijo de este servidor es \`${ prefix }\`.\n<:desc2:783422775821729792> Para obtener más información sobre un comando, simplemente escriba \ `${ prefix }help\` \`commands\`.\n<:folder:783422648196923452> También puede escribir \ `${ prefix }help commands\` o reacciona con 📄 para obtener todos mis comandos.`,
+        noCommand: args => `
+No puedo encontrar el comando ** __${ args }
+__ ** en mis pedidos`,
         information: `Information and commands`,
         noAliases: `Pas d'aliases`,
         cmdTitle: `Aide sur la commande`,
@@ -106,6 +117,7 @@ Ejecute el comando en \ `${ time }\ `segundos.`,
     },
     dero: { success: '<:720681705219817534:780540043033837622> `SUCCÈS` Toutes les dérogattions ont été mis à jour.' },
     embedBuilder: {
+        descriptionRequired: `La description est obligatoire`,
         loading: `Chargement ... <a:2366_Loading_Pixels:784472554328555571>`,
         title: `Menu création d'embed !`,
         description: ` <a:dboatsSharkDance:788375939234398218> Bienvenue sur le menu de création d'embed ! \n<a:image0:789413382591348738> Cliquez sur les reactions pour pouvoir personnaliser votre embed !`,
@@ -124,6 +136,8 @@ Ejecute el comando en \ `${ time }\ `segundos.`,
         titleMsg: `✏ Quel titre voulez-vous pour votre embed ?`,
         descriptionMsg: `📝Quelle description voulez-vous pour votre embed ?`,
         authorMsg: `🗣 Quel auteur voulez-vous pour votre embed ?`,
+        authorUrl: `🗣 Quel l'url voulez-vous pour l'auteur de l'embed ? (no pour aucun)`,
+        authorIcon: `🗣 Quel est l'image voulez-vous pour l'auteur de l'embed ? (no pour aucun)`,
         footerMsg: `🖍 Quel footer voulez-vous pour votre embed ?`,
         thumbnailMsg: `💶 Quelle miniature voulez-vous pour votre embed ?`,
         imageMsg: `🖼 Quelle image voulez-vous pour votre embed ?`,
@@ -1147,5 +1161,13 @@ La solicitud de rol no existe`,
         alreadyExist: `La solicitud de función ya existe`,
         successRm: role => `
 la${ role }se ha eliminado de las indicaciones de función`
+    },
+    blacklistRole: {
+        noRole: `Vous devez spécifier un role`,
+        alreadyBl: role => `Le role **${ role }** est déjà dans la blacklist des rôles`,
+        successBl: role => `Le role **${ role }** est maintenant dans la blacklist des rôles`,
+        notBl: role => `Le role **${ role }** n'est pas dans la blacklist des rôles`,
+        successRemove: role => `Le role **${ role }** n'est plus dans la blacklist des rôles`,
+        successRemovedRole: roleSize => `Le role a été enlevé de **${ roleSize }** membres`
     }
 };
