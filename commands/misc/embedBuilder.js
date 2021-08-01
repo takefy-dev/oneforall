@@ -49,7 +49,7 @@ module.exports = {
             const value = interaction.values[0]
             if (value === "back") {
                 page = 0;
-                return updateOptions(interaction)
+                return  updateOptions(interaction)
             }
             if (value.includes('copy')) {
                 if (value === 'copy') {
@@ -407,12 +407,6 @@ module.exports = {
         }
 
         function updateOptions(interaction, placeHolder = 'Create your embed', options = defaultOptions) {
-            if (page !== 0) options.push({
-                label: 'Back',
-                value: 'back',
-                description: 'Go back to the default selection',
-                emoji: '↩'
-            })
             row.components[0].spliceOptions(0, row.components[0].options.length, options).setPlaceholder(placeHolder)
             return interaction.update({
                 components: [row]
