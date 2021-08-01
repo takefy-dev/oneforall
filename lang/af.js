@@ -63,7 +63,6 @@ module.exports = {
         > <:mutecasque:801123005287628890> Mute casque : **${ muteHeadSetCount }**
         > <:mutemic:801122908445212723> Mute micro : **${ muteCount }**\n\n<:sageata:788796887121657877> Total de personnes en vocal : **${ count }**`
     },
-    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     alladmins: {
         error: `Aucun admin sur ce serveur.`,
         list: `Liste des admins`
@@ -101,6 +100,139 @@ module.exports = {
     dero: { success: '<:720681705219817534:780540043033837622> `SUCCÈS` Toutes les dérogattions ont été mis à jour.' },
     embedBuilder: {
         descriptionRequired: `La description est obligatoire`,
+        authorPlaceHoler: `Change l'auteur de votre embed`,
+        footerPlaceHolder: `Change le footer de votre embed`,
+        copyPlaceHolder: `Copier un embed`,
+        authorOptions: [
+            {
+                label: 'Name',
+                value: 'author-text',
+                description: 'Change le nom de l\'auteur',
+                emoji: '🗣'
+            },
+            {
+                label: 'Icon',
+                value: 'author-icon',
+                description: 'Change l\'icon de l\'auteur',
+                emoji: '🗣'
+            },
+            {
+                label: 'Url',
+                value: 'author-url',
+                description: 'Change l\'url de l\'auteur',
+                emoji: '🗣'
+            }
+        ],
+        footerOptions: [
+            {
+                label: 'Text',
+                value: 'footer-text',
+                description: 'Change le texte du footer',
+                emoji: '🖍'
+            },
+            {
+                label: 'Icon',
+                value: 'footer-icon',
+                description: 'Change l\'icon du footer',
+                emoji: '🖍'
+            }
+        ],
+        baseMenu: [
+            {
+                label: 'Title',
+                value: 'title',
+                description: 'Changer le titre de votre embed',
+                emoji: '✏',
+                questionOnly: true
+            },
+            {
+                label: 'Description',
+                value: 'description',
+                description: 'Changer la description de votre embed',
+                emoji: '📝',
+                questionOnly: true
+            },
+            {
+                label: 'Author',
+                value: 'author',
+                description: 'Ajouter un auteur à votre embed',
+                emoji: '🗣'
+            },
+            {
+                label: 'Footer',
+                value: 'footer',
+                description: 'Ajouter un footer à votre embed',
+                emoji: '🖍'
+            },
+            {
+                label: 'Miniature',
+                value: 'thumbnail',
+                description: 'Ajouter une miniature à votre embed',
+                emoji: '💶',
+                questionOnly: true
+            },
+            {
+                label: 'Image',
+                value: 'image',
+                description: 'Ajouter une image à votre embed',
+                emoji: '🖼',
+                questionOnly: true
+            },
+            {
+                label: 'Url',
+                value: 'url',
+                description: 'Ajouter un url au titre de votre embed',
+                emoji: '🌐',
+                questionOnly: true
+            },
+            {
+                label: 'Couleur',
+                value: 'color',
+                description: 'Changer la couleur de votre embed',
+                emoji: '🎨',
+                questionOnly: true
+            },
+            {
+                label: 'Timestamp',
+                value: 'timestamp',
+                description: 'Changer le timestamp de votre embed',
+                emoji: '⏲',
+                questionOnly: true
+            },
+            {
+                label: 'Copier un embed',
+                value: 'copy',
+                description: 'Copier un embed',
+                emoji: '©'
+            },
+            {
+                label: 'Envoyer l\'embed',
+                value: 'send',
+                description: 'Envoyer l\'embed dans un channel',
+                emoji: '✅',
+                questionOnly: true
+            }
+        ],
+        copyOptions: [
+            {
+                label: 'Channel',
+                value: 'copy-channel',
+                description: 'Définir le channel où copier l\'embed',
+                emoji: '©'
+            },
+            {
+                label: 'Message',
+                value: 'copy-id',
+                description: 'Définir l\'id du message qu\'il faut copier',
+                emoji: '©'
+            },
+            {
+                label: 'Copier',
+                value: 'copy-valid',
+                description: 'Commencer à copier l\'embed',
+                emoji: '✅'
+            }
+        ],
         loading: `Chargement ... <a:2366_Loading_Pixels:784472554328555571>`,
         title: `Menu création d'embed !`,
         description: ` <a:dboatsSharkDance:788375939234398218> Bienvenue sur le menu de création d'embed ! \n<a:image0:789413382591348738> Cliquez sur les reactions pour pouvoir personnaliser votre embed !`,
@@ -133,7 +265,7 @@ module.exports = {
         sendMsg: `✅ Dans quel channel voulez-vous envoyer l'embed \`mention ou id\`?`,
         errorUrl: `L'url doit commencer par __http/https__`,
         errorColor: `Veuillez entrer une couleur valide \`hex ou des couleur en anglais\``,
-        errorChannel: `Je ne trouve pas ce channel !`,
+        errorChannel: `Vous devez entrer un channel valide !`,
         errorWrongId: `Veuilez entrer un id valide !`,
         errorMessage: ch => `Je ne trouve pas le message dans le channel ${ ch } !`
     },
@@ -378,7 +510,11 @@ module.exports = {
         successChange: `Vous avez bien modifié votre mot de pass !`
     },
     authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
-    setlang: { success: lang => `La langue du bot est maintenat définie pour ${ lang }` },
+    setlang: {
+        currentLang: lang => `En ce moment la langue du bot est **${ lang }**`,
+        errorInArgs: availableLang => `Vous devez choisir entre ces ${ availableLang.length } langues **(${ availableLang.join(', ').replace(/.js/g, '') })**`,
+        success: lang => `La langue du bot est maintenat définie pour ${ lang }`
+    },
     addemoji: {
         missingUrl: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un emoji`,
         missingName: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un nom pour l'emoji`,
@@ -401,7 +537,6 @@ module.exports = {
         **❌** ・ Fermer le menu 
         **✅** ・ Créer la backup
         
-
         `,
         cancel: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Création de backup annulé`,
         successDelete: backupId => `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai bien supprimé la backup **${ backupId }** !`,
@@ -552,7 +687,6 @@ module.exports = {
             Cliquez sur les reactions pour pouvoir configurer le vocal temporaire !
             
             \`🕳\` ・ Auto configurer le vocal temporaire
-
             \`💬\` ・ Changer le nom du salon temporaire de l'utilisateur
             ***${ tempname }***\n
             \`💨\` ・ Activé / désactiver le vocal temporaire
@@ -604,7 +738,6 @@ module.exports = {
         description: (ban, kick, mute) => ` \n
         Cliquez sur les reactions pour pouvoir configurer les warns !
         Pour mettre aucune sanction il suffit de mettre __0__
-
         \`💥\` ・ Modifier le nombre de warn avant de ban
         ***${ ban }***\n
         \`💢\` ・ Modifier le nombre de warn avant de kick
@@ -641,7 +774,6 @@ module.exports = {
         description: (streamBoost, muteDiviseur, logs, enable) => ` \n
         Cliquez sur les reactions pour pouvoir configurer les warns !
         
-
         \`🎥\` ・ Modifier le multiplicateur de coins quand un membre est en stream/cam
         ***${ streamBoost }***\n
         \`😶\` ・ Modifier le diviseur si un membre est mute
@@ -650,7 +782,6 @@ module.exports = {
         **${ logs }**\n
         \`🌀\` ・Activer ou désactiver le système de coins
         **${ enable }**
-
         \`❌\` ・ Fermer le menu\n
         \`✅\` ・ Sauvegarder la configuration
         `,
