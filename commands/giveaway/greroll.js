@@ -6,7 +6,7 @@ module.exports = {
     category: 'giveaway',
     aliases: ['grl', 'gredo'],
     userPermissions: ['MANAGE_GUILD'],
-    clientPermissions: ['ADMINISTRATOR'],
+    clientPermissions: ['EMBED_LINKS'],
     cooldown: 5,
 
 

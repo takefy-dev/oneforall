@@ -8,7 +8,7 @@ module.exports = {
     category: 'giveaway',
     aliases: ['list-giveaways'],
     userPermissions: ['MANAGE_GUILD'],
-    clientPermissions: ['ADMINISTRATOR'],
+    clientPermissions: ['EMBED_LINKS'],
     cooldown: 5,
 
 
