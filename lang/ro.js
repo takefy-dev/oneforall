@@ -2,7 +2,7 @@ const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms');
 const Discord = require('discord.js');
 module.exports = {
-    maintenance: `Botul este în întreținere timp de câteva minute`,
+    maintenance: `Botul este în mentenanta timp de câteva minute`,
     clic: 'Click aici',
     yes: 'da',
     no: 'nu',
