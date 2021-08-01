@@ -122,7 +122,7 @@ module.exports = {
         authorUrl: `🗣 Quel l'url voulez-vous pour l'auteur de l'embed ? (no pour aucun)`,
         authorIcon: `🗣 Quel est l'image voulez-vous pour l'auteur de l'embed ? (no pour aucun)`,
         footerMsg: `🖍 Quel footer voulez-vous pour votre embed ?`,
-        footerUrl : `🖍 Quel est l'icon pour le footer (no pour aucun)`,
+        footerUrl: `🖍 Quel est l'icon pour le footer (no pour aucun)`,
         thumbnailMsg: `💶 Quelle miniature voulez-vous pour votre embed ?`,
         imageMsg: `🖼 Quelle image voulez-vous pour votre embed ?`,
         urlMsg: `🌐 Quel url voulez-vous pour votre embed ?`,
@@ -1125,7 +1125,6 @@ module.exports = {
         success: member => `L'xp de ${ member } a été reset`,
         errorNothingToReset: `Il n'y a personne a reset`
     },
-
     inviteRole: {
         noRole: `Vous devez spécifier un role`,
         noInvite: `Vous devez spécifier un nombre d'invite`,
