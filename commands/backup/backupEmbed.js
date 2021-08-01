@@ -11,7 +11,6 @@ module.exports = class Test extends Command {
             category: 'backup',
             usage: 'backup-embed <create/load/info/delete>',
             aliases: ['embed-backup'],
-            clientPermissions: [''],
             userPermissions: ['ADMINISTRATOR'],
             cooldown: 4
         });

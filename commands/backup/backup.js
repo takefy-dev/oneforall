@@ -13,7 +13,7 @@ module.exports = class Test extends Command {
             usage: 'backup <create / list / delete / info>',
             category: 'backup',
             userPermissions: ['ADMINISTRATOR'],
-            clientPermissions: ["SEND_MESSAGES", "EMBED_LINKS", "ADMINISTRATOR"],
+            clientPermissions: ["SEND_MESSAGES", "EMBED_LINKS"],
         });
     }
 

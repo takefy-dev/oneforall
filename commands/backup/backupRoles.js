@@ -11,7 +11,6 @@ module.exports = class Test extends Command {
             category: 'backup',
             usage: 'backup-roles <create/load/info/delete>',
             aliases: ['roles-backup', 'backup-role'],
-            clientPermissions: [''],
             userPermissions: ['ADMINISTRATOR'],
             cooldown: 4
         });
