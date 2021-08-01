@@ -23,7 +23,7 @@ module.exports = class Test extends Command {
         const color = guildData.get('color')
         const lang = guildData.lang;
         const admins = message.guild.members.cache.filter(
-            (m) => m.hasPermission('ADMINISTRATOR')
+            (m) => m.permissions.has('ADMINISTRATOR')
         ).map(m => tempdata.push(m.user.id))
 
 

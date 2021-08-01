@@ -25,7 +25,7 @@ module.exports = class Test extends Command {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
 
-        // if(!message.member.hasPermission('MANAGE_CHANNELS')) return message.channel.send("<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas la permission requise \`MANAGE_CHANNELS\`")
+        // if(!message.member.permissions.has('MANAGE_CHANNELS')) return message.channel.send("<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas la permission requise \`MANAGE_CHANNELS\`")
         let isSetup =guildData.get('setup')
         if (!isSetup) return message.channel.send(lang.error.noSetup)
         const on = args[0] === 'on';

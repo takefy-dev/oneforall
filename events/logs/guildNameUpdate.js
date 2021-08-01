@@ -10,7 +10,7 @@ module.exports = class Ready extends Event{
         });
     }
     async run(client, oldGuild, newGuild){
-        if (!oldGuild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!oldGuild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(oldGuild.id)
         let  modLog  = guildData.get('logs');
         const { logs } = guildData.lang

@@ -17,7 +17,7 @@ module.exports = class guildCreate extends Event {
             owners: client.botperso ? [] : [guild.ownerID]
         }).save()
 
-        const newInv = await guild.fetchInvites()
+        const newInv = await guild.invites.fetch()
         for (const [code, invite] of newInv) {
             guildData.cachedInv.set(code, invite)
         }

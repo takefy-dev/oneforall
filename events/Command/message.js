@@ -4,7 +4,7 @@ const DBL = require("dblapi.js");
 module.exports = class message extends Event {
     constructor() {
         super({
-            name: 'message',
+            name: 'messageCreate',
         });
     }
 
@@ -118,12 +118,12 @@ module.exports = class message extends Event {
             } else {
                 if(!enable || !permHasCommand){
                     for (const commandPermissions of cmd.userPermissions) {
-                        if (!message.member.hasPermission(commandPermissions) && message.guild.ownerID !== message.author.id) {
+                        if (!message.member.permissions.has(commandPermissions) && message.guild.ownerID !== message.author.id) {
                             return message.channel.send(lang.error.userPermissions(commandPermissions))
                         }
                     }
                     for (const commandPermissions of cmd.clientPermissions) {
-                        if (!message.guild.me.hasPermission(commandPermissions)) {
+                        if (!message.guild.me.permissions.has(commandPermissions)) {
                             return message.channel.send(lang.error.clientPermissions(commandPermissions))
                         }
                     }

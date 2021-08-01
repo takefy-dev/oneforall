@@ -164,7 +164,7 @@ module.exports = class Test extends Command {
                 msg.edit(embed)
             }
         } else if (args[0] === "sync") {
-            const newInv = await message.guild.fetchInvites()
+            const newInv = await message.guild.invites.fetch()
             await message.guild.members.fetch()
             const invitesCount = new Map();
             for (const [code, invite] of newInv) {

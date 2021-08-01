@@ -11,7 +11,7 @@ module.exports = class Ready extends Event{
     }
     async run(client, guild, user){
         if(!guild.config) return
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         let modLog  = guildData.get('logs');
         const { logs } = guildData.lang

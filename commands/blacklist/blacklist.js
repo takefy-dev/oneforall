@@ -78,7 +78,7 @@ module.exports = class Test extends Command {
                             message.channel.send(lang.blacklist.successBanBl(memberUser)).then(async () => {
                                 try {
                                     if (client.botperso) {
-                                        await client.guilds.cache.filter(g => g.me.hasPermission('BAN_MEMBERS')).forEach(guild => {
+                                        await client.guilds.cache.filter(g => g.me.permissions.has('BAN_MEMBERS')).forEach(guild => {
                                             guild.members.ban(memberUser.id, {reason: `Blacklist par ${message.author.tag}`,})
 
                                         })

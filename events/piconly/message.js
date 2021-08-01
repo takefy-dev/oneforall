@@ -2,7 +2,7 @@ const Event = require('../../structures/Handler/Event');
 module.exports = class message extends Event {
     constructor() {
         super({
-            name: 'message',
+            name: 'messageCreate',
         });
     }
 

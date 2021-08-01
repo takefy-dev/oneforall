@@ -10,7 +10,7 @@ module.exports = class roleUpdate extends Event {
     async run(client, oldRole, newRole) {
         if (oldRole === newRole) return;
         const guild = oldRole.guild;
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         if (oldRole.managed && newRole.managed) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         const color = guildData.get('color')

@@ -23,7 +23,7 @@ module.exports = class Test extends Command{
     const color = guildData.get('color')
     const add = args[0] === 'add';
         const remove = args[0] === 'remove';
-        // if(!message.member.hasPermission('MANAGE_ROLES')) return message.channel.send("<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas la permission requise \`MANAGER_ROLES\`");
+        // if(!message.member.permissions.has('MANAGE_ROLES')) return message.channel.send("<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas la permission requise \`MANAGER_ROLES\`");
         let member = message.mentions.members.first() || message.guild.members.cache.get(args[1]);
         let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[2]);
         if(!role) return message.channel.send("Le rôle spécifié n'existe pas.")
