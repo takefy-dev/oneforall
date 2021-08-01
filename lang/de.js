@@ -71,8 +71,8 @@ module.exports = {
     ban: {
         noBan: '<:720681441670725645: 780539422479351809> `FEHLER` Sie müssen ein zu sperrendes Mitglied angeben (`Erwähnung/ID`)',
         errorRl: member => `<:720681441670725645: 780539422479351809> \ `FEHLER \` Sie können nicht sperren **\`${ member.tag }\`** weil sie mehr Berechtigungen haben als du`,
-        errorBanSelf: '<:720681441670725645:780539422479351809> `ERREUR` Vous ne pouvez pas vous bannir vous-même',
-        noReason: 'Aucune raison spécifique',
+        errorBanSelf: '<:720681441670725645: 780539422479351809> `FEHLER` Sie können sich nicht selbst sperren',
+        noReason: 'Kein konkreter Grund',
         success: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${ member.tag } a été ban.`,
         error: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Désolé, je ne suis pas arrivé à bannir ${ member.tag }`,
         alreadyBan: member => `<:720681441670725645:780539422479351809> \`ERREUR\` **${ member.tag }** est déjà banni`,
