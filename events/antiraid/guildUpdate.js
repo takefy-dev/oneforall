@@ -9,7 +9,7 @@ module.exports = class guildUpdate extends Event {
 
     async run(client, oldGuild, newGuild) {
 
-        if (!oldGuild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!oldGuild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(oldGuild.id)
         const color = guildData.get('color')
         let {antiraidLog} = guildData.get('logs').antiraid;

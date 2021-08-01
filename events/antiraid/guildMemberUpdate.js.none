@@ -28,7 +28,7 @@ module.exports = class guildMemberUpdate extends Event {
 
 
 		let guild = oldMember.guild;
-		if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+		if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
 		const color = guildEmbedColor.get(oldMember.guild.id)
 
 

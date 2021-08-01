@@ -5,7 +5,7 @@ const ms = require("ms");
 module.exports = class Message extends Event {
     constructor() {
         super({
-            name: 'message',
+            name: 'messageCreate',
         });
     }
 
@@ -31,12 +31,12 @@ module.exports = class Message extends Event {
             const limit = parsedLimit[0];
             const time = ms(parsedLimit[1]);
             const { roles, members } = message.mentions;
+            if(!roles.size && !members.size) return
             const userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${member.id}`);
             const { mentions } = userData.get('antiraidLimit')
             if (mentions.date) {
                 const diff = new Date() - new Date(mentions.date)
                 const counter = mentions.counter;
-                console.log(mentions)
                 if (diff < time && counter < limit) {
                     mentions.counter += roles.size;
                     mentions.counter += members.size;

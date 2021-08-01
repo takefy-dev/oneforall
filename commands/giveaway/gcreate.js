@@ -77,12 +77,12 @@ module.exports = class Test extends Command {
             const msg = await message.channel.send(lang.loading)
             for (const em of emojis) await msg.react(em);
             msg.edit('', embed).then(async m => {
-                const collector = m.createReactionCollector(filter, {time: 900000});
+                const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
                     if (r.emoji.name === emojis[0]) {
                         message.channel.send(lang.giveaway.create.question.time).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages( {dureefiltrer,max: 1, time: 30000, errors: ['time']})
                                 .then(cld => {
                                     const msg = cld.first();
                                     if (!isValideTime(msg.content)) return message.channel.send(lang.giveaway.create.inccorectResponse.time).then((reply) => {

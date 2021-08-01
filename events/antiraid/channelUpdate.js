@@ -10,7 +10,7 @@ module.exports = class channelUpdate extends Event {
     async run(client, oldChannel, newChannel) {
         let guild = oldChannel.guild;
 
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         const color = guildData.get('color')
         let antiraidLog = guildData.get('logs').antiraid;

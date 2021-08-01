@@ -14,7 +14,7 @@ module.exports = class Ready extends Event {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
         const {enable, blacklistedRoles} = guildData.get('blacklistRole');
         if (!enable && !blacklistedRoles.length && !blacklistedRoles.includes(role.id)) return
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         let action = await guild.fetchAuditLogs({type: "MEMBER_ROLE_UPDATE"}).then(async (audit) => audit.entries.first());
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
         if (guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');

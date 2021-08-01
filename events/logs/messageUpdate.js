@@ -8,7 +8,7 @@ module.exports = class messageUpdate extends Event {
     }
 
     async run(client, oldMessage, newMessage) {
-        if (!oldMessage.guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!oldMessage.guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         if (!oldMessage.guild) return;
         if (!oldMessage.author) return;
         if (oldMessage.author.bot || newMessage.author.bot) return;

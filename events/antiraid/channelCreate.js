@@ -12,7 +12,7 @@ module.exports = class channelCreate extends Event {
     async run(client, channel) {
         let guild = channel.guild
         if (channel.type === "dm") return;
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         const color = guildData.get('color');
         const antiraidConfig = guildData.get('antiraid');

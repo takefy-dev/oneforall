@@ -4,13 +4,9 @@ const gdate = require('gdate')
 require('dotenv').config();
 const prettyMilliseconds = require('pretty-ms');
 const dateFormater = require('pm-date-formater');
-const importer = require('node-mysql-importer')
-const password = require('secure-random-password');
-const bcrypt = require('bcryptjs');
 const BotPerso = require('../../utils/BotPerso');
 const fetch = require('node-fetch')
 const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
 const Discord = require('discord.js')
 module.exports = class Test extends Command{
     constructor() {
@@ -59,8 +55,6 @@ module.exports = class Test extends Command{
         let yyyy = now.getFullYear();
         const today = yyyy + '-' + mm + '-' + dd;
         if (create) {
-            const randomPassword = password.randomPassword({length: 8})
-            let hashPass = await bcrypt.hash(randomPassword, 8)
             message.channel.send("<:720681705219817534:780540043033837622> \`SUCCÈS\` Mentionne le client !(timeout dans 30s & \`cancel\` pour annuler)")
             const responseClient = await message.channel.awaitMessages(m => m.author.id === message.author.id, {
                 max: 1,
@@ -101,8 +95,7 @@ module.exports = class Test extends Command{
             const formattime = dateFormater.formatDate(new Date(time), 'yyyy-MM-dd');
             console.log(time)
             const discordName = !member.nickname ? member.user.username : member.nickname;
-            const botpersoSqlPath = `/home/oneforall/assets/botperso.sql`
-          
+
 
             try {
                 const newBot = {

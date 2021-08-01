@@ -14,7 +14,7 @@ module.exports = class AntiBot extends Event {
     async run(client, member) {
         if(!member.user.bot) return
         const guild = member.guild;
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         const color = guildData.get('color');
         const antiraidConfig = guildData.get('antiraid');
@@ -38,7 +38,7 @@ module.exports = class AntiBot extends Event {
         if (isWlBypass && !isWl || !isWlBypass) {
             const executor = await guild.members.fetch(action.executor.id)
             const channel = guild.channels.cache.get(antiraidLog)
-            if(!guild.me.hasPermission("KICK_MEMBERS")){
+            if(!guild.me.permissions.has("KICK_MEMBERS")){
                 if (channel && !channel.deleted) {
                     channel.send(logs.botAdd(executor, member.user.username, member.id, color, "Je n'ai pas assé de permissions"))
                 }

@@ -6,7 +6,7 @@ let now = new Date()
 module.exports = class Ready extends Event {
     constructor() {
         super({
-            name: 'message',
+            name: 'messageCreate',
         });
     }
 

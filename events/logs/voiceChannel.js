@@ -12,7 +12,7 @@ module.exports = class Ready extends Event {
 
     async run(client, oldState, newState) {
         const guild = oldState.guild;
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         let voiceLog = guildData.get('logs').voice;
         const {logs} = guildData.lang

@@ -9,7 +9,7 @@ const spammer = new Collection()
 module.exports = class Message extends Event{
     constructor() {
         super({
-            name: 'message',
+            name: 'messageCreate',
         });
     }
     async run(client, message){

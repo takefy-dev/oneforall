@@ -12,6 +12,7 @@ let token = config.token;
 const io = require('socket.io-client')
 const Cluster = require("discord-hybrid-sharding");
 const {XpSystem} = require('../../utils/Classes/discord-xp')
+const Discord = require("discord.js");
 let owner = [...config.owners];
 if (config.botperso) {
     const path = './config.json';
@@ -35,8 +36,13 @@ class OneForAll extends Client {
     constructor(options) {
         super(options);
         if (!config.botperso && !config.dev) {
-
             this.cluster = new Cluster.Client(this)
+            this.shardWebhook = new Discord.WebhookClient({
+                id: '801060243785383936',
+                token: 'foWpfz4X8OEwrZ4SQfOR1khPOH0YdF1AsHzjfIqFW_iRpTSqtPfDwFJYUOx91Y4xv5oq',
+                url: 'https://discord.com/api/webhooks/801060243785383936/foWpfz4X8OEwrZ4SQfOR1khPOH0YdF1AsHzjfIqFW_iRpTSqtPfDwFJYUOx91Y4xv5oq'
+            });
+
         }
         this.login(token);
 
@@ -55,7 +61,6 @@ class OneForAll extends Client {
         //         "provenance": 'shards'
         //     }
         // })
-        this.finishLoad = false;
         this.Logger = Logger
         this.database = new Sequelize(name, user, pass, {
             dialect: 'mysql',
@@ -71,12 +76,6 @@ class OneForAll extends Client {
                 connectTimeout: 60000
 
             },
-            // pool: {
-            //     max: 9999999,
-            //     min: 0,
-            //     acquire: 60000,
-            //     idle: 10000
-            // },
             logging: false
         })
         logs(this)

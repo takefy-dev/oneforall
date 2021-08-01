@@ -1,9 +1,10 @@
-const url = new Map();
+
 const fetch = require('node-fetch');
 const colorNameToHex = require('colornames')
 let hexColorRegex = require('hex-color-regex');
 const Command = require('../../structures/Handler/Command');
 const Discord = require('discord.js')
+const {MessageActionRow, MessageSelectMenu} = require("discord.js");
 
 module.exports = class Test extends Command {
     constructor() {
@@ -22,6 +23,381 @@ module.exports = class Test extends Command {
     }
 
     async run(client, message, args) {
+        const lang = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id).lang
+        let embed = {
+            description: lang.embedBuilder.descriptionRequired,
+            author: {},
+            thumbnail: {},
+            image: {},
+            footer: {},
+        }
+        let tempCopy = {}
+
+        let defaultOptions = lang.embedBuilder.baseMenu
+        let page = 0;
+        const row = new MessageActionRow().addComponents(
+            new MessageSelectMenu()
+                .setCustomId('embed-builder')
+                .setPlaceholder('Create your embed')
+                .addOptions(defaultOptions)
+        )
+
+        const filter = (interaction) => interaction.customId === 'embed-builder' && interaction.user.id === message.author.id,
+            dureefiltrer = response => {
+                return response.author.id === message.author.id
+            };
+        const panel = await message.channel.send({components: [row], embeds: [embed]})
+
+        const collector = panel.channel.createMessageComponentCollector({filter, time: 90000});
+        collector.on('collect', async (interaction) => {
+            let options;
+            let placeHolder;
+            const value = interaction.values[0]
+            if (value === "back") {
+                page = 0;
+                return updateOptions(interaction)
+            }
+            if(value.includes('copy')){
+                if(value === 'copy'){
+                    options = lang.embedBuilder.copyOptions
+                    page = 1
+                    placeHolder = lang.embedBuilder.copyPlaceHolder
+                }
+                if(value === 'copy-channel'){
+                    const msg = await message.channel.send(lang.embedBuilder.copyMsg);
+                    row.components[0].setDisabled(true)
+                    await panel.edit({
+                        components: [row]
+                    })
+                    await interaction.deferUpdate()
+                    await msg.channel.awaitMessages({
+                        filter: dureefiltrer,
+                        limit: 1,
+                        max: 1,
+                        time: 60000,
+
+                        errors: ['time']
+                    }).then(async (cld) => {
+                        const receivedMsg = cld.first()
+                        if (receivedMsg.content !== 'cancel') {
+                            const tempChannel = receivedMsg.mentions.channels.first() || message.guild.channels.cache.get(receivedMsg.content);
+                            tempCopy.channel = tempChannel.id
+                        }
+                        msg.delete()
+                        await receivedMsg.delete()
+                        row.components[0].setDisabled(false)
+                        await panel.edit({
+                            components: [row]
+                        })
+                    })
+                }
+                if(value === 'copy-id'){
+                    if(! tempCopy.channel) return message.channel.send(lang.embedBuilder.errorChannel)
+                    const msg = await message.channel.send(lang.embedBuilder.messageId);
+                    row.components[0].setDisabled(true)
+                    await panel.edit({
+                        components: [row]
+                    })
+                    await interaction.deferUpdate()
+                    await msg.channel.awaitMessages({
+                        filter: dureefiltrer,
+                        limit: 1,
+                        max: 1,
+                        time: 60000,
+
+                        errors: ['time']
+                    }).then(async (cld) => {
+                        const receivedMsg = cld.first()
+                        if (receivedMsg.content !== 'cancel') {
+                            tempCopy.message = await message.guild.channels.cache.get(tempCopy.channel).messages.fetch(receivedMsg.content);
+                        }
+                        msg.delete()
+                        await receivedMsg.delete()
+                        row.components[0].setDisabled(false)
+                        await panel.edit({
+                            components: [row]
+                        })
+                    })
+                }
+                if(value === 'copy-valid'){
+                    if(!tempCopy.message) return message.channel.send(lang.embedBuilder.errorMessage(tempCopy.channel ? tempCopy.channel : 'Non définie'));
+                    embed = tempCopy.message.embeds[0];
+                    updateEmbed()
+                    interaction.deferUpdate()
+                }
+
+            }
+            if (value.includes('footer')) {
+                if (value === 'footer') {
+                    options = lang.embedBuilder.footerOptions
+                    page = 1
+                    placeHolder = lang.embedBuilder.footerPlaceHolder
+                }
+                if (value === 'footer-text') {
+                    const msg = await message.channel.send(lang.embedBuilder.footerMsg);
+                    row.components[0].setDisabled(true)
+                    await panel.edit({
+                        components: [row]
+                    })
+                    await interaction.deferUpdate()
+                    await msg.channel.awaitMessages({
+                        filter: dureefiltrer,
+                        limit: 1,
+                        max: 1,
+                        time: 60000,
+
+                        errors: ['time']
+                    }).then(async (cld) => {
+                        const receivedMsg = cld.first()
+                        if (receivedMsg.content !== 'cancel') {
+                            embed.footer.text = receivedMsg.content
+                        } else {
+                            delete embed.footer.text
+                        }
+                        msg.delete()
+                        await receivedMsg.delete()
+                        row.components[0].setDisabled(false)
+                        await panel.edit({
+                            components: [row]
+                        })
+                    })
+                }
+                if (value === 'footer-icon') {
+                    const msg = await message.channel.send(lang.embedBuilder.footerUrl);
+                    row.components[0].setDisabled(true)
+                    await panel.edit({
+                        components: [row]
+                    })
+                    await interaction.deferUpdate()
+                    await msg.channel.awaitMessages({
+                        filter: dureefiltrer,
+                        limit: 1,
+                        max: 1,
+                        time: 60000,
+                        errors: ['time']
+                    }).then(async (cld) => {
+                        const receivedMsg = cld.first()
+
+
+                        if (receivedMsg.content !== 'cancel') {
+                            if (receivedMsg.attachments.size > 0) {
+                                const imgData = await imgUrImage(receivedMsg.attachments.first().url)
+                                embed.footer.icon_url = imgData.data.link
+                            } else if (receivedMsg.content) {
+                                if (!receivedMsg.content.includes('i.imgur.com') && !receivedMsg.content.includes('tenor.com')) {
+                                    const imgData = await imgUrImage(receivedMsg.content)
+                                    embed.author.icon_url = imgData.data.link
+
+                                } else {
+                                    embed.footer.icon_url = msg.content
+                                }
+                            }
+                        } else {
+                            delete embed.footer.icon_url
+                        }
+                        msg.delete()
+                        await receivedMsg.delete()
+                        row.components[0].setDisabled(false)
+                        await panel.edit({
+                            components: [row]
+                        })
+                    })
+                }
+                updateEmbed()
+            }
+            if (value.includes('author')) {
+                if (value === 'author') {
+
+                    options = lang.embedBuilder.authorOptions
+                    page = 1
+                    placeHolder = lang.embedBuilder.authorPlaceHoler
+
+                }
+                if (value === 'author-text') {
+                    const msg = await message.channel.send(lang.embedBuilder.authorMsg);
+                    row.components[0].setDisabled(true)
+                    await panel.edit({
+                        components: [row]
+                    })
+                    await interaction.deferUpdate()
+                    await msg.channel.awaitMessages({
+                        filter: dureefiltrer,
+                        limit: 1,
+                        max: 1,
+                        time: 60000,
+
+                        errors: ['time']
+                    }).then(async (cld) => {
+                        const receivedMsg = cld.first()
+                        if (receivedMsg.content !== 'cancel') {
+                            embed.author.name = receivedMsg.content
+                        } else {
+                            delete embed.author.name
+                        }
+                        msg.delete()
+                        await receivedMsg.delete()
+                        row.components[0].setDisabled(false)
+                        await panel.edit({
+                            components: [row]
+                        })
+                    })
+                }
+                if (value === 'author-url') {
+                    const msg = await message.channel.send(lang.embedBuilder.authorUrl);
+                    row.components[0].setDisabled(true)
+                    await panel.edit({
+                        components: [row]
+                    })
+                    await interaction.deferUpdate()
+                    await msg.channel.awaitMessages({
+                        filter: dureefiltrer,
+                        limit: 1,
+                        time: 60000,
+
+                        max: 1,
+                        errors: ['time']
+                    }).then(async (cld) => {
+                        const receivedMsg = cld.first()
+                        if (!receivedMsg.content.toLowerCase().startsWith('http') && !receivedMsg.content.toLowerCase().startsWith('https') && msg.content.toLowerCase() !== 'cancel') return message.channel.send(lang.embedBuilder.errorUrl).then((rp) => {
+                            setTimeout(() => {
+                                rp.delete()
+                            }, 3000)
+                        })
+                        if (receivedMsg.content !== 'cancel') {
+                            embed.author.url = receivedMsg.content
+                        } else {
+                            delete embed.author.url
+                        }
+                        msg.delete()
+                        await receivedMsg.delete()
+                        row.components[0].setDisabled(false)
+                        await panel.edit({
+                            components: [row]
+                        })
+                    })
+                }
+                if (value === 'author-icon') {
+                    const msg = await message.channel.send(lang.embedBuilder.authorIcon);
+                    row.components[0].setDisabled(true)
+                    await panel.edit({
+                        components: [row]
+                    })
+                    await interaction.deferUpdate()
+                    await msg.channel.awaitMessages({
+                        filter: dureefiltrer,
+                        limit: 1,
+                        max: 1,
+                        time: 60000,
+                        errors: ['time']
+                    }).then(async (cld) => {
+                        const receivedMsg = cld.first()
+
+
+                        if (receivedMsg.content !== 'cancel') {
+                            if (receivedMsg.attachments.size > 0) {
+                                const imgData = await imgUrImage(receivedMsg.attachments.first().url)
+                                embed.author.icon_url = imgData.data.link
+                            } else if (receivedMsg.content) {
+                                if (!receivedMsg.content.includes('i.imgur.com') && !receivedMsg.content.includes('tenor.com')) {
+                                    const imgData = await imgUrImage(receivedMsg.content)
+                                    embed.author.icon_url = imgData.data.link
+
+                                } else {
+                                    embed.author.icon_url = msg.content
+                                }
+                            }
+                        } else {
+                            delete embed.author.icon_url
+                        }
+                        msg.delete()
+                        await receivedMsg.delete()
+                        row.components[0].setDisabled(false)
+                        await panel.edit({
+                            components: [row]
+                        })
+                    })
+                }
+                updateEmbed()
+
+            }
+            if (value === 'author' || value === 'footer' || value === 'copy') updateOptions(interaction, placeHolder, options)
+            if (page === 0) {
+                const theOptions = defaultOptions.find(opts => opts.value === value);
+                if (theOptions.questionOnly) {
+                    const toSend = lang.embedBuilder[`${value}Msg`]
+                    if (!toSend) {
+                        embed.timestamp = new Date()
+                        updateEmbed()
+                        return interaction.deferUpdate()
+                    }
+
+                    const msg = await message.channel.send(toSend)
+                    row.components[0].setDisabled(true)
+                    await panel.edit({
+                        components: [row]
+                    })
+                    await interaction.deferUpdate()
+                    await msg.channel.awaitMessages({
+                        filter: dureefiltrer,
+                        limit: 1,
+                        max: 1,
+                        time: 60000,
+                        errors: ['time']
+                    }).then(async (cld) => {
+                        const receivedMsg = cld.first()
+                        if (receivedMsg.content !== 'cancel') {
+                            if (value === 'thumbnail' || value === 'image') {
+                                if (receivedMsg.attachments.size > 0) {
+                                    const imgData = await imgUrImage(receivedMsg.attachments.first().url)
+                                    embed[value].url = imgData.data.link
+                                } else if (receivedMsg.content) {
+                                    if (!receivedMsg.content.includes('i.imgur.com') && !receivedMsg.content.includes('tenor.com')) {
+                                        const imgData = await imgUrImage(receivedMsg.content)
+                                        embed[value].url = imgData.data.link
+
+                                    } else {
+                                        embed[value].url = receivedMsg.content
+                                    }
+                                }
+                            } else if(value === 'color'){
+                                const color = colorNameToHex(receivedMsg.content.toLowerCase()) || hexColorCheck(receivedMsg.content)
+                                if (!color) message.channel.send(lang.embedBuilder.errorColor)
+                                embed[value] = color
+                            }else{
+                                embed[value] = receivedMsg.content
+
+                            }
+                            if(value === 'send'){
+                                const channel = receivedMsg.mentions.channels.first() || message.guild.channels.cache.get(receivedMsg.content);
+                                if(channel){
+                                    channel.send({embeds: [embed]})
+                                }
+                            }
+
+                        } else {
+                            if (value === 'thumbnail' || value === 'image') {
+                                delete embed[value].url
+                            } else {
+
+                                delete embed[value]
+                            }
+                        }
+                        msg.delete()
+                        await receivedMsg.delete()
+                        row.components[0].setDisabled(false)
+                        updateEmbed()
+                        await panel.edit({
+                            components: [row]
+                        })
+
+
+                    })
+
+                }
+            }
+
+
+        });
         const imgUrImage = async (image) => {
             const request = await fetch(`https://api.imgur.com/3/upload/`, {
                 "credentials": "include",
@@ -35,361 +411,24 @@ module.exports = class Test extends Command {
             })
             return request.json()
         }
-        const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-        const color = guildData.get('color')
-        const lang = guildData.lang;
-        let embed = {
-            description: lang.embedBuilder.descriptionRequired,
-            author: {},
-            thumbnail: {},
-            image: {},
-            footer: {},
-        }
-        const editEmbed = await message.channel.send({embed})
-        const msg = await message.channel.send(lang.embedBuilder.loading)
-        const emojis = ['✏', '📝', '🗣', '🖍', '💶', '🖼', '🌐', '🎨', '⏲', '©', '❌', '✅',]
-        for (const em of emojis) await msg.react(em)
-        const embedBuilder = new Discord.MessageEmbed()
-            .setTitle(lang.embedBuilder.title)
-            .setDescription(lang.embedBuilder.description)
-            .addField(`\`✏\``, lang.embedBuilder.titleField, true)
-            .addField(`\`📝\``, lang.embedBuilder.descriptionField, true)
-            .addField(`\`🗣\``, lang.embedBuilder.authorField, true)
-            .addField(`\`🖍\``, lang.embedBuilder.footerField, true)
-            .addField(`\`💶\``, lang.embedBuilder.thumbnailField, true)
-            .addField(`\`🖼\``, lang.embedBuilder.imageField, true)
-            .addField(`\`🌐\``, lang.embedBuilder.urlField, true)
-            .addField(`\`🎨\``, lang.embedBuilder.colorField, true)
-            .addField(`\`⏲\``, lang.embedBuilder.timestampField, true)
-            .addField(`\`©\``, lang.embedBuilder.copyField, true)
-            .addField(`\`❌\``, lang.embedBuilder.cancelField, true)
-            .addField(`\`✅\``, lang.embedBuilder.sendField, true)
-            .setTimestamp()
-            .setFooter(client.user.tag)
-            .setColor(color);
-        const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id,
-            dureefiltrer = response => {
-                return response.member.id === message.member.id
-            };
-        msg.edit("", embedBuilder).then(async m => {
-            const collector = m.createReactionCollector(filter, {time: 900000});
-            collector.on('collect', async r => {
-                await r.users.remove(message.author);
-                if (r.emoji.name === '✏') {
-                    await message.channel.send(lang.embedBuilder.titleMsg).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                            .then(async cld => {
-                                let msg = cld.first();
-                                embed.title = msg.content;
-                                mp.delete()
-                                updateEmbed()
-                                await msg.delete()
-                            });
-                    })
-                } else if (r.emoji.name === '📝') {
-                    await message.channel.send(lang.embedBuilder.descriptionMsg).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                            .then(async cld => {
-                                let msg = cld.first();
-                                embed.description = msg.content
-                                mp.delete()
-                                updateEmbed()
-                                await msg.delete()
 
-                            });
-                    })
-                } else if (r.emoji.name === '🗣') {
-                    await message.channel.send(lang.embedBuilder.authorMsg).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                            .then(async cld => {
-                                let msg = cld.first();
-                                embed.author.name = msg.content
-                                mp.delete()
-                                updateEmbed()
-                                await msg.delete()
-                                await message.channel.send(lang.embedBuilder.authorUrl).then(mp => {
-                                    mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                                        .then(async cld => {
-                                            let msg = cld.first();
-                                            mp.delete()
-                                            await msg.delete()
-                                            if (!msg.content.toLowerCase().startsWith('http') && !msg.content.toLowerCase().startsWith('https') && msg.content.toLowerCase() !== 'no') return message.channel.send(lang.embedBuilder.errorUrl)
-
-                                            if (msg.content.toLowerCase() !== 'no') {
-                                                embed.author.url = msg.content
-                                            } else {
-                                                delete embed.author.url
-                                            }
-                                            updateEmbed()
-
-                                            await message.channel.send(lang.embedBuilder.authorIcon).then(mp => {
-                                                mp.channel.awaitMessages(dureefiltrer, {
-                                                    max: 1,
-                                                    time: 60000,
-                                                    errors: ['time']
-                                                })
-                                                    .then(async cld => {
-                                                        let msg = cld.first();
-                                                        if (msg.content.toLowerCase() !== 'no') {
-
-                                                            if (msg.attachments.size > 0) {
-                                                                const imgData = await imgUrImage(msg.attachments.first().url)
-                                                                embed.author.icon_url = imgData.data.link
-                                                            } else if (msg.content) {
-                                                                if (!msg.content.includes('i.imgur.com') && !msg.content.includes('tenor.com')) {
-                                                                    const imgData = await imgUrImage(msg.content)
-                                                                    embed.author.icon_url = imgData.data.link
-
-                                                                } else {
-                                                                    embed.author.icon_url = msg.content
-                                                                }
-                                                            }
-                                                        } else {
-                                                            delete embed.author.icon_url
-                                                        }
-                                                        mp.delete()
-                                                        updateEmbed()
-                                                        await msg.delete()
-                                                    })
-                                            })
-
-                                        });
-                                })
-                            });
-                    })
-                } else if (r.emoji.name === '🖍') {
-                    await message.channel.send(lang.embedBuilder.footerMsg).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                            .then(async cld => {
-                                let msg = cld.first();
-                                embed.footer.text = msg.content
-                                mp.delete()
-                                updateEmbed()
-                                await msg.delete()
-                                await message.channel.send(lang.embedBuilder.footerUrl).then(mp => {
-                                    mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                                        .then(async cld => {
-                                            let msg = cld.first();
-                                            if (msg.content.toLowerCase() !== 'no') {
-                                                if (msg.attachments.size > 0) {
-                                                    const imgData = await imgUrImage(msg.attachments.first().url)
-                                                    embed.footer.icon_url = imgData.data.link
-                                                } else if (msg.content) {
-                                                    if (!msg.content.includes('i.imgur.com') && !msg.content.includes('tenor.com')) {
-                                                        const imgData = await imgUrImage(msg.content)
-                                                        embed.footer.icon_url = imgData.data.link
-                                                    } else {
-                                                        embed.footer.icon_url = msg.content
-                                                    }
-                                                }
-                                            } else {
-                                                delete embed.footer.icon_url
-                                            }
-                                            mp.delete()
-                                            updateEmbed()
-                                            await msg.delete()
-
-                                        });
-                                })
-                            });
-                    })
-                } else if (r.emoji.name === '💶') {
-                    await message.channel.send(lang.embedBuilder.thumbnailMsg).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                            .then(async cld => {
-                                let msg = cld.first();
-                                if (msg.attachments.size > 0) {
-                                    const imgData = await imgUrImage(msg.attachments.first().url)
-                                    embed.thumbnail.url = imgData.data.link
-                                } else if (msg.content) {
-                                    if (!msg.content.includes('i.imgur.com') && !msg.content.includes('tenor.com')) {
-                                        const imgData = await imgUrImage(msg.content)
-                                        embed.thumbnail.url = imgData.data.link
-                                    } else {
-                                        embed.thumbnail.url = msg.content
-                                    }
-                                }
-                                mp.delete()
-                                updateEmbed()
-                                await msg.delete()
-
-                            });
-                    })
-                } else if (r.emoji.name === '🖼') {
-                    await message.channel.send(lang.embedBuilder.imageMsg).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                            .then(async cld => {
-                                let msg = cld.first();
-                                if (msg.attachments.size > 0) {
-                                    const imgData = await imgUrImage(msg.attachments.first().url)
-                                    embed.image.url = imgData.data.link
-                                } else if (msg.content) {
-                                    if (!msg.content.includes('i.imgur.com') && !msg.content.includes('tenor.com')) {
-                                        const imgData = await imgUrImage(msg.content)
-                                        embed.image.url = imgData.data.link
-                                    } else {
-                                        embed.image.url = msg.content
-                                    }
-                                }
-                                mp.delete()
-                                updateEmbed()
-                                await msg.delete()
-                            });
-                    })
-                } else if (r.emoji.name === '🌐') {
-                    await message.channel.send(lang.embedBuilder.urlMsg).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                            .then(async cld => {
-                                let msg = cld.first()
-                                if (!msg.content.toLowerCase().startsWith('http') && !msg.content.toLowerCase().startsWith('https')) return message.channel.send(lang.embedBuilder.errorUrl)
-                                embed.url = msg.content
-                                mp.delete()
-                                updateEmbed()
-                                await msg.delete()
-
-                            });
-                    })
-                } else if (r.emoji.name === '🎨') {
-                    await message.channel.send(lang.embedBuilder.colorMsg).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                            .then(async cld => {
-                                let msg = cld.first();
-                                const color = colorNameToHex(msg.content.toLowerCase()) || hexColorCheck(msg.content)
-                                await msg.delete()
-                                mp.delete()
-                                if (!color) return message.channel.send(lang.embedBuilder.errorColor)
-                                embed.color = color
-                                updateEmbed()
-
-                            });
-                    })
-                } else if (r.emoji.name === '⏲') {
-                    embed.timestamp = new Date()
-                    updateEmbed()
-                } else if (r.emoji.name === '©') {
-                    let ch;
-                    let embedMsg;
-                    await message.channel.send(lang.embedBuilder.copyMsg).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                            .then(async cld => {
-                                let msg = cld.first();
-                                // if(isNaN(msg)) return message.channel.send(`Veuilez entrer un id valide !`).then(() =>{
-                                //     msg.delete()
-                                // })
-                                // embedMsg = message.guild.channels
-                                ch = await msg.mentions.channels.first() || message.guild.channels.cache.get(msg.content)
-                                await mp.delete();
-                                await msg.delete();
-
-                                if (!ch || ch.deleted) return await message.channel.send(lang.embedBuilder.errorChannel)
-
-                                await message.channel.send(lang.embedBuilder.messageId).then(id => {
-                                    id.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                                        .then(async cld => {
-                                            let msg = cld.first();
-                                            if (isNaN(msg)) return message.channel.send(lang.embedBuilder.errorWrongId).then(() => {
-                                                mp.delete();
-                                                msg.delete()
-                                            })
-                                            try {
-                                                embedMsg = await ch.messages.fetch(msg.content)
-                                                mp.delete();
-                                                // msg.delete()
-                                                // console.log(embedMsg.embeds[0].author.name)
-                                                embed = embedMsg.embeds[0]
-                                                updateEmbed()
-
-                                            } catch (err) {
-                                                return await message.channel.send(lang.embedBuilder.errorMessage(ch)).then(async () => {
-                                                    await mp.delete()
-                                                    await msg.delete();
-                                                })
-                                            }
-
-                                        });
-                                })
-                            });
-
-                    })
-
-                } else if (r.emoji.name === '❌') {
-                    await message.channel.send(lang.embedBuilder.cancelMsg).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                            .then(async cld => {
-                                let msG = cld.first();
-                                if (msG.content.toLowerCase() === lang.yes) {
-                                    await mp.delete()
-                                    await editEmbed.delete()
-                                    await msg.delete()
-                                    await msG.delete()
-                                    await message.delete()
-                                }
-                                if (msg.content.toLowerCase() === lang.no) {
-                                    mp.delete()
-                                    await msG.delete()
-                                }
-                            });
-                    })
-                } else if (r.emoji.name === '✅') {
-                    await message.channel.send(lang.embedBuilder.sendMsg).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
-                            .then(async cld => {
-                                let msgs = cld.first();
-                                const channel = msgs.mentions.channels.first() || msgs.guild.channels.cache.get(msgs.content);
-                                if (!client.botperso && !client.config.dev) {
-                                    if (embed.thumbnail.url) {
-                                        client.shard.broadcastEval(`
-                                    (async () => {
-                                        let channel = this.channels.cache.get('803206140858990632');
-                                        let msg;
-                                        if (channel) {
-                                            msg = await channel.send('${embed.thumbnail.url}');
-                                        }
-                                        return msg;
-                                    })();
-                                      
-                                    `);
-
-
-                                    }
-                                    if (embed.image.url) {
-                                        await client.cluster.broadcastEval(`
-                                    (async () => {
-                                        let channel = this.channels.cache.get('803206140858990632');
-                                        let msg;
-                                        if (channel) {
-                                            msg = await channel.send('${embed.image.url}');
-                                        }
-                                        return msg;
-                                    })();
-                                    `);
-
-
-                                    }
-                                }
-
-                                finishEmbed(channel)
-                                await mp.delete()
-                                await msg.delete();
-                                await msgs.delete();
-                                await editEmbed.delete();
-                            });
-                    })
-                }
+        function updateOptions(interaction, placeHolder = 'Create your embed', options = defaultOptions) {
+            if (page !== 0) options.push({
+                label: 'Back',
+                value: 'back',
+                description: 'Go back to the default selection',
+                emoji: '↩'
             })
-            collector.on('end', async (collected, reason) => {
-                if (reason === 'time') {
-                    message.channel.send(lang.error.timeout)
-                }
-            });
-        })
+            row.components[0].spliceOptions(0, row.components[0].options.length, options).setPlaceholder(placeHolder)
+            return interaction.update({
+                components: [row]
+            })
+        }
 
         function updateEmbed() {
-            editEmbed.edit({embed})
-        }
-
-        function finishEmbed(channel) {
-            channel.send({embed})
+            panel.edit({
+                embeds: [embed]
+            })
         }
 
         function hexColorCheck(a) {
