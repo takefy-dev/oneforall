@@ -124,6 +124,12 @@ Sorry I did not manage to do that I did not have enough permission.`,
                 value: 'author-url',
                 description: 'Change l\'url de l\'auteur',
                 emoji: '🗣'
+            },
+            {
+                label: 'Back',
+                value: 'back',
+                description: 'Go back to the default selection',
+                emoji: '↩'
             }
         ],
         footerOptions: [
@@ -138,6 +144,12 @@ Sorry I did not manage to do that I did not have enough permission.`,
                 value: 'footer-icon',
                 description: 'Change l\'icon du footer',
                 emoji: '🖍'
+            },
+            {
+                label: 'Back',
+                value: 'back',
+                description: 'Go back to the default selection',
+                emoji: '↩'
             }
         ],
         baseMenu: [
