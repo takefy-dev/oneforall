@@ -2,41 +2,40 @@ const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms');
 const Discord = require('discord.js');
 module.exports = {
-    maintenance: `Botul este în mentenanta timp de câteva minute`,
-    clic: 'Click aici',
-    yes: 'da',
-    no: 'nu',
-    cancel: 'Operațiunea a fost anulată',
-    loading: `Se încarcă...
-<a:2366_Loading_Pixels:784472554328555571>`,
-    descriptionTimeLeft: timeLeft => `🕙 __Timp rămas__ : **${ prettyMilliseconds(timeLeft) }**`,
+    maintenance: `Bot birkaç dakikalığına bakımda`,
+    clic: 'Buraya Tıkla',
+    yes: 'Evet',
+    no: 'hayir',
+    cancel: 'İşlem iptal edildi',
+    loading: `Yükleniyor...<a:2366_Loading_Pixels:784472554328555571>`,
+    descriptionTimeLeft: timeLeft => `🕙 __Kalan zaman__ : **${ prettyMilliseconds(timeLeft) }**`,
     error: {
-        YesNo: `Vă rugăm să răspundeți numai cu \`da sau nu\` !`,
-        timeout: `Timpul scurs !`,
-        cooldown: time => `Rulați comanda în \`${ time }\` secunde.`,
-        noSetup: 'Trebuie să configurați botul pentru a putea utiliza această comandă (!setup)',
-        NoYes: 'Trebuie să răspundeți doar cu da sau nu !',
-        ownerOnly: `Numai proprietarul botului poate face această comandă`,
-        notListOwner: `Nu sunteți în lista de proprietari`,
-        notGuildOwner: `Numai proprietarul serverului sau cumpărătorul botului poate efectua această acțiune`,
-        voiceChat: `Trebuie să fiți într-o cameră vocală pentru a executa această comandă`,
-        MissingPermission: `Îmi pare rău că nu am reușit să fac asta, nu am permisiunea suficientă.`,
-        includesEveryoneMention: `Nu mă puteți face să spun un mesaj care conține pe everyone sau here`,
-        userPermissions: perm => `Nu aveți permisiunea necesară \`${ perm }\``,
-        clientPermissions: perm => `Nu am permisiunea necesară \`${ perm }\``,
-        managed: `Nu puteți alege un rol care să fie gestionat de o extensie`
+        YesNo: `Lütfen yanıtlayın \`evet veya hayır\` benzersiz !`,
+        timeout: `Süre geçti !`,
+        cooldown: time => `Lütfen şu komutu çalıştırın \`${ time }\` saniye.`,
+        noSetup: 'Bu komutu kullanabilmek için botu kurmalısınız (!setup)',
+        NoYes: 'Sadece evet veya hayır ile cevap vermelisiniz !',
+        ownerOnly: `Bu komutu yalnızca bot sahibi yapabilir`,
+        notListOwner: `Sahip listesinde değilsiniz`,
+        notGuildOwner: `Bu işlemi yalnızca sunucu sahibi veya bot alıcısı gerçekleştirebilir`,
+        voiceChat: `Bu komutu yürütmek için bir ses odasında olmalısınız `,
+        MissingPermission: `Üzgünüm, bunu başaramadım, yeterli iznim yoktu.`,
+        includesEveryoneMention: `Herkesi içeren bir mesajı bana everyone veya here `,
+        userPermissions: perm => `Gerekli izne sahip değilsiniz \ ` ${ perm }\``,
+        clientPermissions: perm => `Gerekli izne sahip değilim \ `${ perm }\``,
+        managed: `Bir uzantı tarafından yönetilecek bir rol seçemezsiniz `
     },
     ping: {
         pinging: 'Pinging...',
-        success: (ping, client) => `Latence du bot: \`${ ping }\` ms, Latence de l'api: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
+        success: (ping, client) => `bot gecikmesi: \`${ ping }\`ms, l'api gecikmesi: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
     },
     help: {
-        information2: prefix => `<:778353230484471819:780727288903237663> Le préfixe de ce serveur est \`${ prefix }\`.\n<:desc2:783422775821729792> Pour obtenir plus d'informations sur une commande, tapez simplement \`${ prefix }help\` \`commands\`.\n<:folder:783422648196923452> Vous pouvez également taper \`${ prefix }help commands\` ou réagir avec 📄 pour obtenir toutes mes commandes.`,
-        noCommand: args => `Je ne trouve pas la commande **__${ args }__** dans mes commandes`,
-        information: `Information and commands`,
-        noAliases: `Pas d'aliases`,
-        cmdTitle: `Aide sur la commande`,
-        footer: `Demandé par`,
+        information2: prefix => `<:778353230484471819:780727288903237663> Bu sunucunun prefix \`${ prefix }\`.\n<:desc2:783422775821729792> Bir sipariş hakkında daha fazla bilgi almak için yazmanız yeterlidir \` ${ prefix }Yardım\` \`komutlar\`.\n<:folder:783422648196923452> Ayrıca yazabilirsiniz \`${ prefix }Yardım komutlar\` veya tepki ile birlikte📄 tüm siparişlerimi almak için. `,
+        noCommand: args => `siparişi bulamıyorum **__${ args }__** komutlarımda `,
+        information: `Bilgi ve komutlar `,
+        noAliases: `takma ad yok `,
+        cmdTitle: `komutlar hakkında yardım`,
+        footer: `tarafından sor `,
         titleNoArgs: `Page d'aide général`,
         command: `Afficher toutes les commandes`,
         search: `Chercher une aide détaillé sur un commande`,
@@ -127,13 +126,13 @@ module.exports = {
         thumbnailMsg: `💶 Quelle miniature voulez-vous pour votre embed ?`,
         imageMsg: `🖼 Quelle image voulez-vous pour votre embed ?`,
         urlMsg: `🌐 Quel url voulez-vous pour votre embed ?`,
-        colorMsg: `🎨 Quelle couleur voulez-vous pour votre embed (\`HEX ou rouge/vert/jaune/violet/rose/noir/blanc/bleu/orange/invisible\`)?`,
+        colorMsg: `🎨 Quelle couleur voulez-vous pour votre embed (\`HEX ou des couleurs en anglais\`)?`,
         copyMsg: `© Quel est le channel où l'embed est situer (\`mention / id\`)?`,
         messageId: `© Quel est l'id du message embed (\`id\`)?`,
         cancelMsg: `❌ Voulez-vous annuler la création de l'embed ? (\`oui/non\`)?`,
         sendMsg: `✅ Dans quel channel voulez-vous envoyer l'embed \`mention ou id\`?`,
         errorUrl: `L'url doit commencer par __http/https__`,
-        errorColor: `Veuillez entrer une couleur valide \`#0CAE45/rouge/vert/jaune/violet/rose/noir/blanc/bleu/orange/invisible\``,
+        errorColor: `Veuillez entrer une couleur valide \`hex ou des couleur en anglais\``,
         errorChannel: `Je ne trouve pas ce channel !`,
         errorWrongId: `Veuilez entrer un id valide !`,
         errorMessage: ch => `Je ne trouve pas le message dans le channel ${ ch } !`
@@ -330,7 +329,6 @@ module.exports = {
         2 ・ Configurer le message de bienvenue\n
             __Message Actuel__ : ${ inviteMsg } \n
         3 ・ Aide sur le message de bienvenue  \n
-
         4 ・ Activer ou désactiver le message de bienvenue \n
         __Actif__ : ${ isOnS }
         `,
@@ -683,14 +681,14 @@ module.exports = {
     addShop: {
         noItem: `Veuillez entrer un item en pour le shop`,
         noPrice: `Veuillez entrer un prix correct pour ajouter l'item au shop`,
-        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** au prix de ${ price }`,
+        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${ item }** au prix de ${ price }`,
         priceInf0: `Vous devez entrer un prix suppérieur à 0`,
         noShop: `<:720681441670725645:780539422479351809> \`ERREUR\` Votre magasin n'est pas dans notre base de donné (shop create pour créer le shop)`,
         alreadyShop: `<:720681441670725645:780539422479351809> \`ERREUR\` Votre serveurs possède déjà un magasin pour le supprimé (shop delete)`,
         create: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été créé`,
         delete: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été supprimé`,
         successRemove: item => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez enlevé l'item **${ item }** du magasin`,
-        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** au prix de ${ price }`,
+        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${ item }** au prix de ${ price }`,
         shopShowTitle: guildName => `Magasin sur le serveur ${ guildName }`,
         nothingInShop: `Rien dans la magasin`,
         notFoundItem: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas l'item associé avec cet id essayé un autre id`,

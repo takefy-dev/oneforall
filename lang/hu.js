@@ -2,29 +2,28 @@ const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms');
 const Discord = require('discord.js');
 module.exports = {
-    maintenance: `Botul este în mentenanta timp de câteva minute`,
-    clic: 'Click aici',
-    yes: 'da',
-    no: 'nu',
-    cancel: 'Operațiunea a fost anulată',
-    loading: `Se încarcă...
-<a:2366_Loading_Pixels:784472554328555571>`,
-    descriptionTimeLeft: timeLeft => `🕙 __Timp rămas__ : **${ prettyMilliseconds(timeLeft) }**`,
+    maintenance: `Le bot est en maintenance pendant quelques minutes`,
+    clic: 'Clique ici',
+    yes: 'oui',
+    no: 'non',
+    cancel: 'Opération annulé',
+    loading: `Chargement... <a:2366_Loading_Pixels:784472554328555571>`,
+    descriptionTimeLeft: timeLeft => `🕙 __Temps restant__ : **${ prettyMilliseconds(timeLeft) }**`,
     error: {
-        YesNo: `Vă rugăm să răspundeți numai cu \`da sau nu\` !`,
-        timeout: `Timpul scurs !`,
-        cooldown: time => `Rulați comanda în \`${ time }\` secunde.`,
-        noSetup: 'Trebuie să configurați botul pentru a putea utiliza această comandă (!setup)',
-        NoYes: 'Trebuie să răspundeți doar cu da sau nu !',
-        ownerOnly: `Numai proprietarul botului poate face această comandă`,
-        notListOwner: `Nu sunteți în lista de proprietari`,
-        notGuildOwner: `Numai proprietarul serverului sau cumpărătorul botului poate efectua această acțiune`,
-        voiceChat: `Trebuie să fiți într-o cameră vocală pentru a executa această comandă`,
-        MissingPermission: `Îmi pare rău că nu am reușit să fac asta, nu am permisiunea suficientă.`,
-        includesEveryoneMention: `Nu mă puteți face să spun un mesaj care conține pe everyone sau here`,
-        userPermissions: perm => `Nu aveți permisiunea necesară \`${ perm }\``,
-        clientPermissions: perm => `Nu am permisiunea necesară \`${ perm }\``,
-        managed: `Nu puteți alege un rol care să fie gestionat de o extensie`
+        YesNo: `Veuillez répondre par \`oui ou non\` uniquement !`,
+        timeout: `Temps écoulé !`,
+        cooldown: time => `Veuillez executer la commande dans \`${ time }\` secondes.`,
+        noSetup: 'Vous devez setup le bot pour pouvoir utiliser cette commande (!setup)',
+        NoYes: 'Vous devez répondre uniquement avec oui ou non !',
+        ownerOnly: `Seulement le propriétaire du bot peut faire cette commande`,
+        notListOwner: `Vous n'êtes pas dans la liste des owners`,
+        notGuildOwner: `Seulement le propiétaire du serveur ou l'acheteur du bot peut executer cette action`,
+        voiceChat: `Vous devez être dans un salon vocal pour executer cette commande`,
+        MissingPermission: `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
+        includesEveryoneMention: `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`,
+        userPermissions: perm => `Vous n'avez pas la permission requise \`${ perm }\``,
+        clientPermissions: perm => `Je n'ai pas la permission requise \`${ perm }\``,
+        managed: `Vous ne pouvez pas choisir de role gérer par une extension`
     },
     ping: {
         pinging: 'Pinging...',
@@ -127,13 +126,13 @@ module.exports = {
         thumbnailMsg: `💶 Quelle miniature voulez-vous pour votre embed ?`,
         imageMsg: `🖼 Quelle image voulez-vous pour votre embed ?`,
         urlMsg: `🌐 Quel url voulez-vous pour votre embed ?`,
-        colorMsg: `🎨 Quelle couleur voulez-vous pour votre embed (\`HEX ou rouge/vert/jaune/violet/rose/noir/blanc/bleu/orange/invisible\`)?`,
+        colorMsg: `🎨 Quelle couleur voulez-vous pour votre embed (\`HEX ou des couleurs en anglais\`)?`,
         copyMsg: `© Quel est le channel où l'embed est situer (\`mention / id\`)?`,
         messageId: `© Quel est l'id du message embed (\`id\`)?`,
         cancelMsg: `❌ Voulez-vous annuler la création de l'embed ? (\`oui/non\`)?`,
         sendMsg: `✅ Dans quel channel voulez-vous envoyer l'embed \`mention ou id\`?`,
         errorUrl: `L'url doit commencer par __http/https__`,
-        errorColor: `Veuillez entrer une couleur valide \`#0CAE45/rouge/vert/jaune/violet/rose/noir/blanc/bleu/orange/invisible\``,
+        errorColor: `Veuillez entrer une couleur valide \`hex ou des couleur en anglais\``,
         errorChannel: `Je ne trouve pas ce channel !`,
         errorWrongId: `Veuilez entrer un id valide !`,
         errorMessage: ch => `Je ne trouve pas le message dans le channel ${ ch } !`
@@ -330,7 +329,6 @@ module.exports = {
         2 ・ Configurer le message de bienvenue\n
             __Message Actuel__ : ${ inviteMsg } \n
         3 ・ Aide sur le message de bienvenue  \n
-
         4 ・ Activer ou désactiver le message de bienvenue \n
         __Actif__ : ${ isOnS }
         `,
@@ -683,14 +681,14 @@ module.exports = {
     addShop: {
         noItem: `Veuillez entrer un item en pour le shop`,
         noPrice: `Veuillez entrer un prix correct pour ajouter l'item au shop`,
-        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** au prix de ${ price }`,
+        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${ item }** au prix de ${ price }`,
         priceInf0: `Vous devez entrer un prix suppérieur à 0`,
         noShop: `<:720681441670725645:780539422479351809> \`ERREUR\` Votre magasin n'est pas dans notre base de donné (shop create pour créer le shop)`,
         alreadyShop: `<:720681441670725645:780539422479351809> \`ERREUR\` Votre serveurs possède déjà un magasin pour le supprimé (shop delete)`,
         create: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été créé`,
         delete: `<:720681705219817534:780540043033837622> \`SUCCÈS\` Le magasin a bien été supprimé`,
         successRemove: item => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez enlevé l'item **${ item }** du magasin`,
-        successAdd: (item, price) => `Vous avez ajouter l'item **${ item }** au prix de ${ price }`,
+        successAdd: (item, price) => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez ajouté l'item **${ item }** au prix de ${ price }`,
         shopShowTitle: guildName => `Magasin sur le serveur ${ guildName }`,
         nothingInShop: `Rien dans la magasin`,
         notFoundItem: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne trouve pas l'item associé avec cet id essayé un autre id`,
