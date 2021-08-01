@@ -79,16 +79,9 @@ class OneForAll extends Client {
             logging: false
         })
         logs(this)
-        if (!this.botperso && !this.config.dev) {
-            setTimeout(() => {
-                this.loadEvents();
-                this.loadCommands();
 
-            }, 10000)
-        } else {
-            this.loadEvents();
-            this.loadCommands();
-        }
+        this.loadEvents();
+        this.loadCommands();
 
         // this.loadWebsocket();
         this.managers = new Managers(this);
