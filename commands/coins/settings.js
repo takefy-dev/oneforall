@@ -42,7 +42,7 @@ module.exports = class Test extends Command {
             .setColor(`${color}`)
             .setFooter(client.user.username)
             .setTimestamp()
-        principalMsg.edit({embeds : [embed]).then(async m => {
+        principalMsg.edit({embeds : [embed]}).then(async m => {
             const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                 await r.users.remove(message.author);

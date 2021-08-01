@@ -113,8 +113,8 @@ module.exports = class Test extends Command {
             } else {
                 warnsEmbed.description = allWarns.map((warn, i) => `${i + 1} ・ <@${warn.userId}> - Raison : ${warn.reason.join(', ')}`).join('\n')
                 return message.channel.send({
-                    embed:
-                    warnsEmbed
+                    embeds:
+                    [warnsEmbed]
 
                 })
             }

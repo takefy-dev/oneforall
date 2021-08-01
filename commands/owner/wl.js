@@ -83,6 +83,7 @@ module.exports = class Test extends Command {
                 const embedPageChanger = (page) => {
                     whitelistedEmbed.description = whitelisted.map((id, i) => `${i + 1} ・ <@${id}>`).slice(slicerIndicatorMin, slicerIndicatorMax).join('\n')
                     whitelistedEmbed.footer.text = `Page ${page + 1} / ${totalPage}`
+                    console.log(whitelistedEmbed)
                     return whitelistedEmbed
                 }
                 const msg = await message.channel.send(lang.loading)
@@ -133,8 +134,8 @@ module.exports = class Test extends Command {
             } else {
                 whitelistedEmbed.description = whitelisted.map((id, i) => `${i + 1} ・ <@${id}>`).join('\n')
                 return message.channel.send({
-                    embed:
-                    whitelistedEmbed
+                    embeds:
+                    [whitelistedEmbed]
 
                 })
             }
@@ -153,7 +154,7 @@ module.exports = class Test extends Command {
                 dureefiltrer = response => {
                     return response.author.id === message.author.id
                 };
-            const collector = msg.createReactionCollector(filter, {time: 30000});
+            const collector = msg.createReactionCollector({filter, time: 30000});
             collector.on('collect', async (r, user) => {
 
                 if (r.emoji.name === '✅') {

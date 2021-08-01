@@ -1,5 +1,4 @@
 const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 module.exports = class Test extends Command {
     constructor() {
@@ -40,10 +39,8 @@ module.exports = class Test extends Command {
             .addField(`<:778353230484471819:780727288903237663> Général:`, `[\`helpall\`](https://discord.gg/WHPSxcQkVk), [\`support\`](https://discord.gg/WHPSxcQkVk), [\`addbot\`](https://discord.gg/WHPSxcQkVk), [\`snipe\`](https://discord.gg/WHPSxcQkVk),  [\`pic\`](https://discord.gg/WHPSxcQkVk), [\`vocal\`](https://discord.gg/WHPSxcQkVk), [\`authorinfo\`](https://discord.gg/WHPSxcQkVk), [\`ping\`](https://discord.gg/WHPSxcQkVk), [\`botinfo\`](https://discord.gg/WHPSxcQkVk), [\`serverinfo\`](https://discord.gg/WHPSxcQkVk), [\`userinfo\`](https://discord.gg/WHPSxcQkVk), [\`8ball\`](https://discord.gg/WHPSxcQkVk), [\`gay\`](https://discord.gg/WHPSxcQkVk), [\`meme\`](https://discord.gg/WHPSxcQkVk)`)
         const prefix = guildData.get('prefix')
         if (!args[0]) {
-            const filter = (reaction, user) => ['📄'].includes(reaction.emoji.name) && user.id === message.author.id,
-                dureefiltrer = response => {
-                    return response.author.id === message.author.id
-                };
+            const filter = (reaction, user) => ['📄'].includes(reaction.emoji.name) && user.id === message.author.id
+
             const embed = new Discord.MessageEmbed()
                 .setTitle(lang.help.titleNoArgs)
                 .setColor(`${color}`)

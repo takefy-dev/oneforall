@@ -51,7 +51,7 @@ module.exports = class Test extends Command {
             dureefiltrer = response => {
                 return response.author.id === message.author.id;
             };
-        const msg = await message.channel.send({embeds :[finalEmbed]})
+        const msg = await message.channel.send({embeds :[finalEmbed.embed]})
         await msg.react('✏')
         await msg.react('📝')
         await msg.react('🗣')

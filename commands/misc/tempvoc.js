@@ -79,7 +79,7 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emojis[1]) {
                     await message.channel.send(lang.tempvoc.nameQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 50000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 50000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (msg.content.toLowerCase() === "cancel") {

@@ -39,20 +39,14 @@ module.exports = class Test extends Command {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
 
         const color = guildData.get('color')
-
-        const member = message.mentions.members.first() || message.guild.members.cache.get(argument) || message.member;
+        if(!argument) return
+        const member = message.mentions.members.first() || await message.guild.members.fetch(argument) || message.member;
         let Statusfilter = {
             online: `<:online2:801064570277724170>`,
             idle: `<:charliewave_idle:786331151144714291>`,
             dnd: `<:charliewave_dnd:786331160744689704>`,
             offline: `<:charliewave_offline:786331156010106890>`
         };
-        let online;
-        if (member.user.presence.status === "offline") {
-             online = "offline"
-        } else {
-            online = "online"
-        }
         const roles = member.roles.cache
             .sort((a, b) => b.position - a.position)
             .map(role => role.toString())

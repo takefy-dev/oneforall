@@ -45,13 +45,14 @@ module.exports = class Test extends Command {
                 .setColor(`${color}`)
                 .setFooter(client.user.username);
             msg.edit({content:null, embeds: [embed]})
-            const data_res = msg.createReactionCollector((reaction, user) => user.id === message.author.id);
+            const data_res = msg.createReactionCollector({filter: (reaction, user) => user.id === message.author.id});
             data_res.on("collect", async (reaction) => {
                 await reaction.users.remove(message.author);
                 if (reaction.emoji.name === "1️⃣") {
                     let question = await message.channel.send(lang.soutien.roleQ)
                     const filter = m => message.author.id === m.author.id;
-                    message.channel.awaitMessages(filter, {
+                    message.channel.awaitMessages( {
+                        filter,
                         max: 1,
                         time: 30000,
                     }).then(async (collected) => {

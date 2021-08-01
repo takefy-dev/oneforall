@@ -33,7 +33,7 @@ module.exports = class Test extends Command {
         const color = guildData.get('color');
         const embed = new Discord.MessageEmbed()
             .setTitle(`Top 10 invites ${message.guild.name}`)
-            .setDescription(lb.map((invite, i) => `${i+1} - <@${invite.userId}> : **${invite.invite.join}** join,**${invite.invite.leave}** leave, **${invite.invite.fake}** fake, **${invite.invite.bonus}** bonus\n`))
+            .setDescription(`${lb.map((invite, i) => `${i+1} - <@${invite.userId}> : **${invite.invite.join}** join,**${invite.invite.leave}** leave, **${invite.invite.fake}** fake, **${invite.invite.bonus}** bonus`).join('\n')}`)
             .setTimestamp()
             .setFooter(message.guild.name)
             .setColor(color)

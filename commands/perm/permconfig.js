@@ -31,10 +31,12 @@ module.exports = class Test extends Command {
             const {perm1, perm2, perm3, perm4} = guildPerm.role;
             const embed = new Discord.MessageEmbed()
                 .setTitle(`Perm configuration`)
-                .addField(`Perm1:`, `${perm1.length < 1 ? lang.perm.noRole : `${perm1.map((role) => `<@&${role}>`).join(',')}`}`)
-                .addField(`Perm2:`, `${perm2.length < 1 ? lang.perm.noRole : `${perm2.map((role) => `<@&${role}>`).join(',')}`}`)
-                .addField(`Perm3:`, `${perm3.length < 1 ? lang.perm.noRole : `${perm3.map((role) => `<@&${role}>`).join(',')}`}`)
-                .addField(`Perm4:`, `${perm4.length < 1 ? lang.perm.noRole : `${perm4.map((role) => `<@&${role}>`).join(',')}`}`)
+                .setDescription(`**Perm1:** ${perm1.length < 1 ? lang.perm.noRole : `${perm1.map((role) => `<@&${role}>`).join(',')}`}
+                \n**Perm2:** ${perm2.length < 1 ? lang.perm.noRole : `${perm2.map((role) => `<@&${role}>`).join(',')}`}
+                \n**Perm3:**${perm3.length < 1 ? lang.perm.noRole : `${perm3.map((role) => `<@&${role}>`).join(',')}`}
+                \n**Perm4:**${perm4.length < 1 ? lang.perm.noRole : `${perm4.map((role) => `<@&${role}>`).join(',')}`}
+                `)
+
                 .addField(`Enable:`, `${emojiEnable[guildPerm.enable]}`)
                 .setColor(color)
                 .setFooter(client.user.username)

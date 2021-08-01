@@ -26,10 +26,11 @@ module.exports = class Test extends Command {
         if (!args[0]) {
             const embed = new Discord.MessageEmbed()
                 .setTitle(`Perms commands`)
-                .addField(`Perm1:`, commands.perm1.length < 1 ? lang.perm.noCommand : commands.perm1.map((name, i) => `${i + 1} - ${name}`).join(', '))
-                .addField(`Perm2:`, commands.perm2.length < 1 ? lang.perm.noCommand : commands.perm2.map((name, i) => `${i + 1} - ${name}`).join(', '))
-                .addField(`Perm3:`, commands.perm3.length < 1 ? lang.perm.noCommand : commands.perm3.map((name, i) => `${i + 1} - ${name}`).join(', '))
-                .addField(`Perm4:`, commands.perm4.length < 1 ? lang.perm.noCommand : commands.perm4.map((name, i) => `${i + 1} - ${name}`).join(', '))
+                .setDescription(`**Perm1:**\n${commands.perm1.length < 1 ? lang.perm.noCommand : commands.perm1.map((name, i) => `${i + 1} - ${name}`).join(', ')}\n**Perm2:**\n${commands.perm2.length < 1 ? lang.perm.noCommand : commands.perm2.map((name, i) => `${i + 1} - ${name}`).join(', ')}
+                \n**Perm3:**\n${commands.perm3.length < 1 ? lang.perm.noCommand : commands.perm3.map((name, i) => `${i + 1} - ${name}`).join(', ')}\n
+                \n**Perm4:**\n${commands.perm4.length < 1 ? lang.perm.noCommand : commands.perm4.map((name, i) => `${i + 1} - ${name}`).join(', ')}
+                `)
+
                 .setColor(guildData.get('color'))
                 .setTimestamp()
                 .setFooter(client.user.username, message.author.displayAvatarURL({dynamic: true}))

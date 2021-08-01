@@ -37,7 +37,7 @@ module.exports = class Test extends Command {
             .setDescription(lang.reactionRole.embedDescription(reactRole.channel, reactRole.message, ['Non définie']))
             .setFooter(client.user.tag)
             .setTimestamp()
-            .setColor(`${color}`);
+            .setColor(color);
 
         const filter = (reaction, user) => emojisReact.includes(reaction.emoji.name) && user.id === message.author.id,
             dureefiltrer = response => {
@@ -50,7 +50,7 @@ module.exports = class Test extends Command {
                     await r.users.remove(message.author);
                     if (r.emoji.name === emojisReact[0]) {
                         await message.channel.send(lang.reactionRole.chQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 50000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 50000, errors: ['time']})
                                 .then(async cld => {
                                     let msg = cld.first();
                                     let channel;
@@ -96,7 +96,7 @@ module.exports = class Test extends Command {
                         })
                     } else if (r.emoji.name === emojisReact[1]) {
                         await message.channel.send(lang.reactionRole.msgIdQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 50000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 50000, errors: ['time']})
                                 .then(async cld => {
                                     let msg = cld.first();
                                     if (msg.content.toLowerCase() === 'cancel') return message.channel.send(lang.cancel)
@@ -136,7 +136,7 @@ module.exports = class Test extends Command {
                     } else if (r.emoji.name === emojisReact[2]) {
 
                         await message.channel.send(lang.reactionRole.roleQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 50000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 50000, errors: ['time']})
                                 .then(async cld => {
                                     let msg = cld.first();
                                     let role;
@@ -192,7 +192,7 @@ module.exports = class Test extends Command {
                                     }
 
                                     await message.channel.send(lang.reactionRole.emojiQ).then(async mps => {
-                                        mps.channel.awaitMessages(dureefiltrer, {max: 1, time: 50000, errors: ['time']})
+                                        mps.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 50000, errors: ['time']})
                                             .then(async cld => {
                                                 let msg = cld.first();
                                                 let emoji = Util.parseEmoji(msg.content);
@@ -284,7 +284,7 @@ module.exports = class Test extends Command {
 
                     } else if (r.emoji.name === emojisReact[3]) {
                         await message.channel.send(lang.reactionRole.roleDelQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 50000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 50000, errors: ['time']})
                                 .then(async cld => {
                                     let msg = cld.first();
                                     let role;
@@ -357,7 +357,7 @@ module.exports = class Test extends Command {
 
                     } else if (r.emoji.name === emojisReact[5]) {
                         await message.channel.send(lang.reactionRole.chDeleteQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 50000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 50000, errors: ['time']})
                                 .then(async cld => {
                                     let msg = cld.first();
                                     let channel;
@@ -391,7 +391,7 @@ module.exports = class Test extends Command {
                                     })
 
                                     await message.channel.send(lang.reactionRole.msgDeleteQ).then((mp) => {
-                                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 50000, errors: ['time']})
+                                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 50000, errors: ['time']})
                                             .then(async cld => {
                                                 let msg = cld.first();
                                                 if (msg.content.toLowerCase() === "cancel") {

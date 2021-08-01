@@ -76,7 +76,7 @@ module.exports = class Test extends Command {
             const embed = lang.giveaway.create.embed(giveawaysOptions.time, giveawaysOptions.channel, giveawaysOptions.winnerCount, giveawaysOptions.voice, giveawaysOptions.boost, isNaN(giveawaysOptions.reaction) ? giveawaysOptions.reaction : `<${!giveawaysOptions.emoji.animated ? '' : 'a'}:${giveawaysOptions.emoji.name}:${giveawaysOptions.reaction}>`, giveawaysOptions.prize, color).setAuthor(`🎉 ${message.guild.name}`)
             const msg = await message.channel.send(lang.loading)
             for (const em of emojis) await msg.react(em);
-            msg.edit({embeds : [embed]).then(async m => {
+            msg.edit({embeds : [embed]}).then(async m => {
                 const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);

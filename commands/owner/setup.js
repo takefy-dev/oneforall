@@ -22,7 +22,8 @@ module.exports = class Test extends Command {
 
 
         message.channel.send(lang.setup.muteQ)
-        const responseMuteRole = await message.channel.awaitMessages(m => m.author.id === message.author.id, {
+        const responseMuteRole = await message.channel.awaitMessages( {
+            filter: m => m.author.id === message.author.id,
             max: 1,
             timeout: 30000,
             errors: ['time']

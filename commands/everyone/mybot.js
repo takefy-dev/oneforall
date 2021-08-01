@@ -89,7 +89,7 @@ module.exports = class Test extends Command {
                     .setTimestamp()
                     .setColor(`${color}`)
                     .setFooter(message.author.tag, avatar)
-                msg.edit({embeds : [embed])
+                msg.edit({embeds : [embed]})
 
             }
         })

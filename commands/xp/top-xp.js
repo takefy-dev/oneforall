@@ -19,7 +19,7 @@ module.exports = class Test extends Command{
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const color = guildData.get('color')
         const embed = new MessageEmbed()
-            .setDescription(lb.map((user => `${user.position} - **${user.username}#${user.discriminator}** - Level : ${user.level} - Xp: ${user.xp}`)))
+            .setDescription(`${lb.map((user => `${user.position} - **${user.username}#${user.discriminator}** - Level : ${user.level} - Xp: ${user.xp}`)).join('\n')}`)
             .setTimestamp()
             .setTitle(`Top 10 best members`)
             .setColor(color)

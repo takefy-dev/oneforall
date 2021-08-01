@@ -20,11 +20,10 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
-        const color = guildData.get('color')
         const lang = guildData.lang;
 
 
-        message.guild.fetchBans()
+        message.guild.bans.fetch()
             .then(banned => {
                 let list = banned.map(ban => ban.user.tag).join('\n');
                 const color = guildData.get('color')
@@ -35,13 +34,13 @@ module.exports = class Test extends Command {
                     .setFooter(client.user.tag)
                     .setTitle(lang.banlist.title(message.guild))
                     .setDescription(lang.banlist.description(banned, list))
-                    .setColor(`${color}`)
+                    .setColor(color)
                 const embedinf = new Discord.MessageEmbed()
                     .setTimestamp()
                     .setTitle(lang.banlist.title(message.guild))
                     .setFooter(client.user.tag)
                     .setDescription(lang.banlist.descriptionInf(banned))
-                    .setColor(`${color}`)
+                    .setColor(color)
                 if (list.length > 0) {
                     message.channel.send({embeds: [embed]});
 

@@ -28,7 +28,7 @@ module.exports = class Test extends Command {
         const color = guildData.get('color');
         const embed = new Discord.MessageEmbed()
             .setTitle(lang.lb.title)
-            .setDescription(lb.map((user, i) => `${i + 1} . <@${user.userId}> : ${user.coins.toFixed(2)} coins <a:coinsoneforall:823538178622488616>`))
+            .setDescription(`${lb.map((user, i) => `${i + 1} . <@${user.userId}> : ${user.coins.toFixed(2)} coins <a:coinsoneforall:823538178622488616>`).join('\n')}`)
             .setFooter(`OneForAll coins`)
             .setColor(color)
         message.channel.send({embeds: [embed]})

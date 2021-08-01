@@ -98,7 +98,6 @@ module.exports = class Test extends Command {
             await guildData.set('coinsShop', shop).save()
 
 
-
             return await message.channel.send(lang.addShop.successRemove(itemRemove[0].item)).then(mp => mp.delete({timeout: 4000})).then(() => {
                 showShop(newShop)
 
@@ -108,9 +107,15 @@ module.exports = class Test extends Command {
         } else if (!args[0]) {
             showShop(shop)
         } else if (args[0] === 'edit') {
-            if (!args[1]) return message.channel.send(lang.addShop.syntaxEdit).then(mp => mp.delete({timeout: 4000}))
+            if (!args[1]) return message.channel.send(lang.addShop.syntaxEdit).then(mp => {
+                setTimeout(() => {
+                    mp.delete()
+                }, 4000)
+            })
             if (isNaN(args[1])) return message.channel.send(lang.addShop.onlyNumber).then(mp => mp.delete({timeout: 4000}))
-            if (!actualShop.find(shop => shop.id === parseInt(args[1]))) return message.channel.send(lang.addShop.notFoundItem).then(mp => mp.delete({timeout: 4000}))
+            if (!actualShop.find(shop => shop.id === parseInt(args[1]))) return message.channel.send(lang.addShop.notFoundItem).then(mp =>  setTimeout(() => {
+                mp.delete()
+            }, 4000))
             const itemToEdit = actualShop.filter(shop => shop.id === parseInt(args[1]));
             const editMsg = await message.channel.send(lang.loading)
             const emoji = ['🎫', '💰', '❌', '✅']
@@ -134,7 +139,7 @@ module.exports = class Test extends Command {
                 .setTimestamp()
                 .setColor(`${color}`)
                 .setFooter(`OneForAll Shop`, client.user.displayAvatarURL())
-            editMsg.edit({embeds : [embed]).then(async m => {
+            editMsg.edit({embeds: [embed]}).then(async m => {
                 const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
@@ -233,7 +238,7 @@ module.exports = class Test extends Command {
             const embed = new Discord.MessageEmbed()
                 .setAuthor(message.author.tag, message.author.displayAvatarURL)
                 .setDescription(lang.addShop.shopDesc(message.guild.name))
-                .addField('\u200b', shop.map(shop => !shop.price ? lang.addShop.nothingInShop : `\`${shop.id}\` ${shop.item} — [⏣ ${shop.price.toLocaleString()}](https://discord.gg/n2EvRECf88) coins`))
+                .addField('\u200b', `${shop.map(shop => !shop.price ? lang.addShop.nothingInShop : `\`${shop.id}\` ${shop.item} — [⏣ ${shop.price.toLocaleString()}](https://discord.gg/n2EvRECf88) coins`)}`)
                 .setColor(`${color}`)
                 .setTimestamp()
                 .setFooter(`⏣ OneForAll coins`);

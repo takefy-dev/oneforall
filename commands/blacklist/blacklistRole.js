@@ -149,8 +149,8 @@ module.exports = class Test extends Command {
                 tempdataEmbed.description = blacklistedRoles.map((id, i) => `${i + 1} ・ **<@&${id}>**`).join('\n')
 
                 return message.channel.send({
-                    embed:
-                    tempdataEmbed
+                    embeds:
+                    [tempdataEmbed]
 
                 })
             }
@@ -166,7 +166,7 @@ module.exports = class Test extends Command {
             await msg.react('❌')
 
             const filter = (reaction, user) => ['❌', '✅'].includes(reaction.emoji.name) && user.id === message.author.id
-            const collector = msg.createReactionCollector(filter, {time: 30000});
+            const collector = msg.createReactionCollector({filter, time: 30000});
             collector.on('collect', async (r, user) => {
 
                 if (r.emoji.name === '✅') {
