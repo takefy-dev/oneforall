@@ -1,3 +1,4 @@
+const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms');
 const Discord = require('discord.js');
 module.exports = {
@@ -22,8 +23,8 @@ module.exports = {
         MissingPermission: `Îmi pare rău că nu am reușit să fac asta, nu am permisiunea suficientă.`,
         includesEveryoneMention: `Nu mă puteți face să spun un mesaj care conține pe everyone sau here`,
         userPermissions: perm => `Nu aveți permisiunea necesară \`${ perm }\``,
-        clientPermissions: perm => `Je n'ai pas la permission requise \`${ perm }\``,
-        managed: `Vous ne pouvez pas choisir de role gérer par une extension`
+        clientPermissions: perm => `Nu am permisiunea necesară \`${ perm }\``,
+        managed: `Nu puteți alege un rol care să fie gestionat de o extensie`
     },
     ping: {
         pinging: 'Pinging...',
