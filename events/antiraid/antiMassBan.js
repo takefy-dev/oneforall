@@ -9,7 +9,7 @@ module.exports = class Ready extends Event {
     }
 
     async run(client, guild, user) {
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         const color = guildData.get('color');
         const antiraidConfig = guildData.get('antiraid');
@@ -19,7 +19,8 @@ module.exports = class Ready extends Event {
         if (!isOn) return;
         let action = await guild.fetchAuditLogs({type: "MEMBER_BAN_ADD"}).then(async (audit) => audit.entries.first());
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `MassBAN`, 'pink');
-        if (guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `MassBAN`, 'pink');
+        if (guild.ownerId
+ === action.executor.id) return Logger.log(`No sanction crown`, `MassBAN`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
@@ -43,7 +44,7 @@ module.exports = class Ready extends Event {
             if (antiraidLimit.ban < banLimit) {
                 antiraidLimit.ban += 1
                 if (logsChannel && !logsChannel.deleted) {
-                    logsChannel.send(logs.targetExecutorLogs("ban", member, action.target, color, `${antiraidLimit.ban + 1 === banLimit ? `Aucun ban restant` : `${antiraidLimit.ban + 1}/${banLimit}`} before sanction`))
+                    logsChannel.send({embeds : [logs.targetExecutorLogs("ban", member, action.target, color, `${antiraidLimit.ban + 1 === banLimit ? `Aucun ban restant` : `${antiraidLimit.ban + 1}/${banLimit}`} before sanction`)]})
                 }
             } else {
                 let sanction = antiraidConfig.config["antiMassBan"];
@@ -69,13 +70,13 @@ module.exports = class Ready extends Event {
                         }
                     }
                     if (logsChannel && !logsChannel.deleted) {
-                        logsChannel.send(logs.targetExecutorLogs("ban", member, action.target, color, sanction))
+                        logsChannel.send({embeds: [logs.targetExecutorLogs("ban", member, action.target, color, sanction)]})
                     }
                     antiraidLimit.ban = 0
 
                 } else {
                     if (logsChannel && !logsChannel.deleted) {
-                        logsChannel.send(logs.targetExecutorLogs("ban", member, action.target, color, "Je n'ai pas assé de permissions"))
+                        logsChannel.send({embeds : [logs.targetExecutorLogs("ban", member, action.target, color, "Je n'ai pas assé de permissions")]})
                     }
                     antiraidLimit.ban = 0
 

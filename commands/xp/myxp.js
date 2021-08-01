@@ -1,7 +1,7 @@
 const Command = require('../../structures/Handler/Command');
 const Discord = require('discord.js')
 const canvacord = require("canvacord");
-module.exports = class Test extends Command{
+module.exports = class Test extends Command {
     constructor() {
         super({
             name: 'xp',
@@ -9,11 +9,12 @@ module.exports = class Test extends Command{
             category: 'xp',
             usage: 'xp [mention/id]',
             aliases: ['lvl'],
-            clientPermissions : ['ATTACH_FILES'],
+            clientPermissions: ['ATTACH_FILES'],
             cooldown: 4
         });
     }
-    async run(client, message,args){
+
+    async run(client, message, args) {
         if (args[0])
             args[0] = args[0].startsWith("<@") && args[0].endsWith(">") ? args[0].replace(/!/, '').slice(2, -1) : args[0];
         else args[0] = message.author.id
@@ -22,7 +23,7 @@ module.exports = class Test extends Command{
         const userXp = await client.levels.fetch(targetUser.id, message.guild.id, true)
         const color = guildData.get('color') === "#36393F" ? "#2EAD4B" : guildData.get('color')
         const rank = new canvacord.Rank()
-            .setAvatar(targetUser.displayAvatarURL({ dynamic: false, format: 'png' }))
+            .setAvatar(targetUser.displayAvatarURL({dynamic: false, format: 'png'}))
             .setCurrentXP(userXp.cleanXp)
             .setRequiredXP(userXp.cleanNextLevelXp)
             .setStatus("dnd")
@@ -38,7 +39,9 @@ module.exports = class Test extends Command{
         rank.build()
             .then(data => {
                 const attachment = new Discord.MessageAttachment(data, "xp.png");
-                message.channel.send(attachment);
+                message.channel.send({
+                    files: [attachment]
+                })
             });
     }
 }

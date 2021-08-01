@@ -12,7 +12,8 @@ module.exports = class Ready extends Event{
         const tempVoc = guildData.get('tempvoc');
         const { channelName, channelId, categoryId, enable } = tempVoc;
         if(!enable) return;
-        if(channel.parentID !== categoryId) return
+        if(channel.parentId
+ !== categoryId) return
         const chName = `${channelName.replace(/{username}/g, member.user.username)}`
         if(channel.id === channelId){
             member.guild.channels.create(chName, {

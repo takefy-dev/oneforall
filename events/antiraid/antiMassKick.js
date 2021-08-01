@@ -9,7 +9,7 @@ module.exports = class Ready extends Event{
     }
     async run(client, member){
         const guild = member.guild;
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         const color = guildData.get('color');
         const antiraidConfig = guildData.get('antiraid');
@@ -23,7 +23,8 @@ module.exports = class Ready extends Event{
         const diff = now - timeOfAction
         if(diff >= 600) return
         if (action.executor.id === client.user.id)  return Logger.log(`No sanction oneforall`, `masskick`, 'pink');
-        if(guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `masskick`, 'pink');
+        if(guild.ownerId
+ === action.executor.id) return Logger.log(`No sanction crown`, `masskick`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
@@ -48,7 +49,7 @@ module.exports = class Ready extends Event{
             if(antiraidLimit.kick < kickLimit){
                 antiraidLimit.kick +=1
                 if(logsChannel && !logsChannel.deleted){
-                    logsChannel.send(logs.targetExecutorLogs("kick", member, action.target, color, `${antiraidLimit.kick + 1 === kickLimit ? `Aucun kick restant` : `${antiraidLimit.kick+1}/${kickLimit}`} before sanction`))
+                    logsChannel.send({embeds : [logs.targetExecutorLogs("kick", member, action.target, color, `${antiraidLimit.kick + 1 === kickLimit ? `Aucun kick restant` : `${antiraidLimit.kick+1}/${kickLimit}`} before sanction`)]})
                 }
             }else{
                 let sanction = antiraidConfig.config["antiKick"];
@@ -74,12 +75,12 @@ module.exports = class Ready extends Event{
                         }
                     }
                     if(logsChannel && !logsChannel.deleted){
-                        logsChannel.send(logs.targetExecutorLogs("kick", member, action.target, color, sanction))
+                        logsChannel.send({embeds : [logs.targetExecutorLogs("kick", member, action.target, color, sanction)]})
                     }
 
                 }else{
                     if(logsChannel && !logsChannel.deleted){
-                        logsChannel.send(logs.targetExecutorLogs("kick", member, action.target, color, "Je n'ai pas assé de permissions"))
+                        logsChannel.send({embeds : [logs.targetExecutorLogs("kick", member, action.target, color, "Je n'ai pas assé de permissions")]})
                     }
                     antiraidLimit.kick = 0
 

@@ -36,7 +36,7 @@ module.exports = class messageDelete extends Event {
         if(!channel) return;
         if (!deletionLog) {
             //delete his msg
-            channel.send(logs.messageDelete(message.member, message.author,message.channel.id, color,message.content))
+            channel.send({embeds : [logs.messageDelete(message.member, message.author,message.channel.id, color,message.content)]})
 
         }
         const {executor, target} = deletionLog;
@@ -44,11 +44,11 @@ module.exports = class messageDelete extends Event {
         if (target.id === message.author.id) {
             // delete the message of
             const member = message.guild.members.cache.get(executor.id) || await message.guild.members.fetch(executor.id)
-            channel.send(logs.messageDelete(member, message.author,message.channel.id, color,message.content))
+            channel.send({embeds : [logs.messageDelete(member, message.author,message.channel.id, color,message.content)]})
 
         } else {
             //delete his msg
-            channel.send(logs.messageDelete(message.member, message.author,message.channel.id, color,message.content))
+            channel.send({embeds:  [logs.messageDelete(message.member, message.author,message.channel.id, color,message.content)]})
         }
 
 

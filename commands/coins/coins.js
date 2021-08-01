@@ -36,7 +36,7 @@ module.exports = class Test extends Command {
             .setTimestamp()
             .setDescription(lang.coins.description(coins));
 
-        await message.channel.send(embed)
+        await message.channel.send({embeds: [embed]})
 
     }
 }

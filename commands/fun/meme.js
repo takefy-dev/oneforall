@@ -34,6 +34,6 @@ module.exports = class Test extends Command {
             .setTitle(lang.meme.reponse(random))
             .setURL(`https://reddit.com/r/${random}`)
 
-        message.channel.send(embed)
+        message.channel.send({embeds: [embed]})
     }
 };

@@ -5,7 +5,7 @@ const ms = require("ms");
 module.exports = class Message extends Event {
     constructor() {
         super({
-            name: 'message',
+            name: 'messageCreate',
         });
     }
 
@@ -19,7 +19,8 @@ module.exports = class Message extends Event {
         let {logs} = guildData.lang
         const isOn = antiraidConfig.enable["antiMassMention"];
         if (!isOn) return;
-        if (message.author.id === client.user.id || message.guild.ownerID === message.author.id) return
+        if (message.author.id === client.user.id || message.guild.ownerId
+ === message.author.id) return
         let isGuildOwner = guildData.isGuildOwner(message.author.id);
         let isBotOwner = client.isOwner(message.author.id);
         let isWlBypass = antiraidConfig.bypass["antiMassMention"];
@@ -76,7 +77,7 @@ module.exports = class Message extends Event {
                 await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `antiMassMention`)
             }
             if (channel && !channel.deleted) {
-                channel.send(logs.antiMassMention(member, color, newChannel, sanction))
+                channel.send({embeds : [logs.antiMassMention(member, color, newChannel, sanction)]})
             }
 
 

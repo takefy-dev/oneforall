@@ -7,7 +7,7 @@ const spammer = new Collection()
 module.exports = class Message extends Event {
     constructor() {
         super({
-            name: 'message',
+            name: 'messageCreate',
         });
     }
 
@@ -24,7 +24,8 @@ module.exports = class Message extends Event {
         const isOn = antiraidConfig.enable["antiLink"];
         if (!isOn) return;
         if (message.author.id === client.user.id) return
-        if (message.guild.ownerID === message.author.id) return
+        if (message.guild.ownerId
+ === message.author.id) return
 
         let isGuildOwner = guildData.isGuildOwner(message.author.id);
         let isBotOwner = client.isOwner(message.author.id);
@@ -47,9 +48,9 @@ module.exports = class Message extends Event {
                 let embed = new Discord.MessageEmbed()
                     .setColor(color)
                     .setDescription(msg);
-                message.channel.send(embed).then(m => m.delete({timeout: 2000}))
+                message.channel.send({embeds: [embed]}).then(m => m.delete({timeout: 2000}))
                 if (channel && !channel.deleted) {
-                    return channel.send(logs.antiLink(member, message.channel.id, message.content, color, 'delete'))
+                    return channel.send({embeds : [logs.antiLink(member, message.channel.id, message.content, color, 'delete')]})
                 }
                 if (!muteRoleId || !muteRole || muteRole.deleted || muteRole.managed) return;
 
@@ -66,7 +67,7 @@ module.exports = class Message extends Event {
                     await message.member.roles.add(muteRole, `Oneforall - anti spam link`)
                     message.channel.send(`Vous avez été mute car vous postez trop de lien`)
                     if (channel && !channel.deleted) {
-                        return channel.send(logs.antiLink(member, message.channel.id, message.content, color, 'mute'))
+                        return channel.send({embeds : [logs.antiLink(member, message.channel.id, message.content, color, 'mute')]})
                     }
                 }
 

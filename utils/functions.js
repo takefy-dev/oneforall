@@ -145,7 +145,7 @@ module.exports = {
             if (channel) {
                 for (const embed of channelBackup.embeds[0]) {
                     channel.send({
-                        embed
+                        embeds : [embed]
                     });
                 }
             }

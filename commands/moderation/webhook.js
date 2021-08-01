@@ -30,7 +30,7 @@ module.exports = class Test extends Command {
                 .setThumbnail(`https://images-ext-1.discordapp.net/external/io8pRqFGLz1MelORzIv2tAiPB3uulaHCX_QH7XEK0y4/%3Fwidth%3D588%26height%3D588/https/media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg`)
                 .setFooter("Massrole", `https://media.discordapp.net/attachments/780528735345836112/780725370584432690/c1258e849d166242fdf634d67cf45755cc5af310r1-1200-1200v2_uhq.jpg?width=588&height=588`)
                 .addField('<:invite_oeople:785494680904138763> MassRole:', `[\`massrole add\`](https://discord.gg/WHPSxcQkVk) ・ Setup du système d'invitations\n[\`massrole remove\`](https://discord.gg/WHPSxcQkVk) ・ Suppression de rôle en masse`)
-            message.channel.send(embed)
+            message.channel.send({embeds: [embed]})
         }
         const size = args[0] === "size";
         if (size) {

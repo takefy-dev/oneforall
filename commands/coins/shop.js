@@ -134,13 +134,13 @@ module.exports = class Test extends Command {
                 .setTimestamp()
                 .setColor(`${color}`)
                 .setFooter(`OneForAll Shop`, client.user.displayAvatarURL())
-            editMsg.edit('', embed).then(async m => {
-                const collector = m.createReactionCollector(filter, {time: 900000});
+            editMsg.edit({embeds : [embed]).then(async m => {
+                const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
                     if (r.emoji.name === emoji[0]) {
                         message.channel.send(lang.addShop.newNameQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(cld => {
                                     let msg = cld.first();
                                     if (msg.content === "cancel") return message.channel.send(lang.cancel).then(mps => {
@@ -171,7 +171,7 @@ module.exports = class Test extends Command {
                         })
                     } else if (r.emoji.name === emoji[1]) {
                         message.channel.send(lang.addShop.newPriceQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(cld => {
                                     let msg = cld.first();
                                     if (isNaN(msg.content)) return message.channel.send(lang.addShop.noPrice).then(mp => mp.delete({timeout: 4000}))
@@ -223,7 +223,7 @@ module.exports = class Test extends Command {
     
                 ${emoji[3]} : SAVE
             `)
-                    editMsg.edit(embed)
+                    editMsg.edit({embeds: [embed]})
 
                 }
             })
@@ -239,7 +239,7 @@ module.exports = class Test extends Command {
                 .setFooter(`⏣ OneForAll coins`);
 
 
-            return message.channel.send(embed)
+            return message.channel.send({embeds: [embed]})
         }
     }
 };

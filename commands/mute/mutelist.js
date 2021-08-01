@@ -66,7 +66,7 @@ module.exports = class Test extends Command {
                 reac3 = await tdata.react("➡");
             }
 
-            tdata.edit(" ", embed);
+            tdata.edit({content:null, embeds: [embed]});
 
             const data_res = tdata.createReactionCollector((reaction, user) => user.id === message.author.id);
 
@@ -89,7 +89,7 @@ module.exports = class Test extends Command {
                     embed.setDescription(mutedData
                         .slice(p0, p1)
                         .join('\n') + `\n\n<:778353230467825704:781155103566331904> Page **${page}** / **${Math.ceil(mutedData.length / 10)}**`)
-                    tdata.edit(embed);
+                    tdata.edit({embeds: [embed]});
 
                 }
 
@@ -111,7 +111,7 @@ module.exports = class Test extends Command {
                     embed.setDescription(mutedData
                         .slice(p0, p1)
                         .join('\n') + `\n\n<:778353230467825704:781155103566331904> Page **${page}** / **${Math.ceil(mutedData.length / 10)}**`)
-                    tdata.edit(embed);
+                    tdata.edit({embeds: [embed]});
 
                 }
 

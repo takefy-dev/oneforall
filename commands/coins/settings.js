@@ -42,13 +42,13 @@ module.exports = class Test extends Command {
             .setColor(`${color}`)
             .setFooter(client.user.username)
             .setTimestamp()
-        principalMsg.edit('', embed).then(async m => {
-            const collector = m.createReactionCollector(filter, {time: 900000});
+        principalMsg.edit({embeds : [embed]).then(async m => {
+            const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                 await r.users.remove(message.author);
                 if (r.emoji.name === emoji[0]) {
                     message.channel.send(lang.coinSettings.streamBoostQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (msg.content === "cancel") return message.channel.send(lang.cancel).then(mps => mps.delete({timeout: 4000}))
@@ -61,7 +61,7 @@ module.exports = class Test extends Command {
                     })
                 } else if (r.emoji.name === emoji[1]) {
                     message.channel.send(lang.coinSettings.muteDiviseurQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (msg.content === "cancel") return message.channel.send(lang.cancel).then(mp => mp.delete({timeout: 4000}))
@@ -75,7 +75,7 @@ module.exports = class Test extends Command {
 
                 } else if (r.emoji.name === emoji[2]) {
                     message.channel.send(lang.coinSettings.logsQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
 
@@ -140,7 +140,7 @@ module.exports = class Test extends Command {
 
                 function updateEmbed() {
                     embed.setDescription(lang.coinSettings.description(config.streamBoost, config.muteDiviseur, config.logs, config.enable == false ? 'Désactiver' : 'Activer'))
-                    principalMsg.edit(embed)
+                    principalMsg.edit({embeds: [embed]})
                 }
             });
 

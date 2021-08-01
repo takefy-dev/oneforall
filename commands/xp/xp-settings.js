@@ -28,13 +28,13 @@ module.exports = class Test extends Command {
                 return response.author.id === message.author.id
             };
         for (const em of emojis) await fistMsg.react(em)
-        fistMsg.edit('', lang.xpSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.enable)).setColor(color)).then(async m => {
-            const collector = m.createReactionCollector(filter, {time: 900000});
+        fistMsg.edit({content:null, embeds : [lang.xpSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.enable)).setColor(color)]}).then(async m => {
+            const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                 await r.users.remove(message.author);
                 if (r.emoji.name === emojis[0]) {
                     message.channel.send(lang.xpSettings.question.xpPerMsg).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(cld => {
                                 const msg = cld.first();
                                 if (msg.content === 'cancel') {
@@ -81,7 +81,7 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emojis[1]) {
                     message.channel.send(lang.xpSettings.question.xpPerVoc).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(cld => {
                                 const msg = cld.first();
                                 if (msg.content === 'cancel') {
@@ -125,7 +125,7 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emojis[2]) {
                     message.channel.send(lang.xpSettings.question.allowChannel).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(cld => {
                                 const msg = cld.first();
                                 if (msg.content === 'cancel') {
@@ -157,7 +157,7 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emojis[3]) {
                     message.channel.send(lang.xpSettings.question.forbidChannel).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(cld => {
                                 const msg = cld.first();
                                 if (msg.content === 'cancel') {
@@ -192,7 +192,7 @@ module.exports = class Test extends Command {
                 if (r.emoji.name === emojis[4]) {
                     const temp = {}
                     message.channel.send(lang.xpSettings.question.multiplierChannel).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(cld => {
                                 const msg = cld.first();
                                 if (msg.content === 'cancel') {
@@ -211,7 +211,7 @@ module.exports = class Test extends Command {
                                 })
                                 temp.channel = channel.id
                                 message.channel.send(lang.xpSettings.question.multiplier).then(mp => {
-                                    mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                                    mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                         .then(cld => {
                                             const msg = cld.first();
                                             if (msg.content === 'cancel') {
@@ -303,7 +303,7 @@ module.exports = class Test extends Command {
         })
 
         function updateEmbed() {
-            fistMsg.edit(lang.xpSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.enable)).setColor(color))
+            fistMsg.edit({embeds : [lang.xpSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.enable)).setColor(color)]})
         }
 
 

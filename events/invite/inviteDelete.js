@@ -11,7 +11,7 @@ module.exports = class inviteCreate extends Event {
     async run(client, invite) {
         const guild = invite.guild;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
-        const guildInv = await guild.fetchInvites()
+        const guildInv = await guild.invites.fetch()
         for(const [code, invite] of guildInv){
             guildData.cachedInv.set(code, invite)
         }

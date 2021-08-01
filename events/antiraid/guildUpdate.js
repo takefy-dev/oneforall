@@ -9,7 +9,7 @@ module.exports = class guildUpdate extends Event {
 
     async run(client, oldGuild, newGuild) {
 
-        if (!oldGuild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!oldGuild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(oldGuild.id)
         const color = guildData.get('color')
         let {antiraidLog} = guildData.get('logs').antiraid;
@@ -22,7 +22,8 @@ module.exports = class guildUpdate extends Event {
         let action = await oldGuild.fetchAuditLogs({type: "GUILD_UPDATE"}).then(async (audit) => audit.entries.first());
         if(action.changes[0].key !== "name") return;
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
-        if (oldGuild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+        if (oldGuild.ownerId
+ === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
@@ -41,7 +42,7 @@ module.exports = class guildUpdate extends Event {
 
                 if (e.toString().toLowerCase().includes('missing permissions')) {
                     if(channel && !channel.deleted){
-                        channel.send(logs.guildNameUpdate(member, oldName, newName, oldGuild.id, color, "Je n'ai pas assé de permissions"))
+                        channel.send({embeds : [logs.guildNameUpdate(member, oldName, newName, oldGuild.id, color, "Je n'ai pas assé de permissions")]})
                     }
 
                 }
@@ -80,13 +81,13 @@ module.exports = class guildUpdate extends Event {
 
 
                 if(channel && !channel.deleted){
-                    channel.send(logs.guildNameUpdate(member, oldName, newName, oldGuild.id, color, sanction))
+                    channel.send({embeds : [logs.guildNameUpdate(member, oldName, newName, oldGuild.id, color, sanction)]})
                 }
 
             } else {
 
                 if(channel && !channel.deleted){
-                    channel.send(logs.guildNameUpdate(member, oldName, newName, oldGuild.id, color, "Je n'ai pas assé de permissions"))
+                    channel.send({embeds : [logs.guildNameUpdate(member, oldName, newName, oldGuild.id, color, "Je n'ai pas assé de permissions")]})
                 }
             }
         }

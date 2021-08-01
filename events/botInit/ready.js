@@ -16,7 +16,8 @@ module.exports = class Ready extends Event {
         await client.managers.voiceManager.load();
         if(!client.botperso){
             client.guilds.cache.forEach(guild => {
-                client.managers.blackListManager.getAndCreateIfNotExists(guild.ownerID)
+                client.managers.blackListManager.getAndCreateIfNotExists(guild.ownerId
+)
             })
         }else{
             client.managers.blackListManager.getAndCreateIfNotExists(client.owners[client.owners.length - 1])

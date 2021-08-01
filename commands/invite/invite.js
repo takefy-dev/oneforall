@@ -39,7 +39,7 @@ module.exports = class Test extends Command {
                 .setColor(`${color}`)
                 .setTimestamp()
                 .setFooter(client.user.tag)
-            message.reply(embed);
+            message.reply({embeds :[embed]});
         } else if (message.mentions.members.first() || !isNaN(args[0])) {
             const member = await message.mentions.members.first() || await message.guild.members.fetch(args[0]).catch(async err => {
             })
@@ -79,8 +79,8 @@ module.exports = class Test extends Command {
                 .setTimestamp()
                 .setColor(`${color}`)
                 .setFooter(client.user.username);
-            msg.edit(" ", embed).then(async m => {
-                const collector = m.createReactionCollector(filter, {time: 900000});
+            msg.edit({content:null, embeds: [embed]}).then(async m => {
+                const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('end', () => {
                     m.delete()
                 })
@@ -88,7 +88,7 @@ module.exports = class Test extends Command {
                     await r.users.remove(message.author);
                     if (r.emoji.name === emojis[0]) {
                         message.channel.send(lang.invite.chQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(async cld => {
                                     let msg = cld.first();
                                     if (msg.content.toLowerCase() === 'cancel') {
@@ -107,7 +107,7 @@ module.exports = class Test extends Command {
                     }
                     if (r.emoji.name === emojis[1]) {
                         message.channel.send(lang.invite.msgQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(async cld => {
                                     let msg = cld.first();
                                     if (msg.content.toLowerCase() === 'cancel') {
@@ -161,10 +161,10 @@ module.exports = class Test extends Command {
 
             function updateEmbed() {
                 embed.setDescription(lang.invite.descConfig(tempInvite.id, message.guild, enableEmoji(), tempInvite.message))
-                msg.edit(embed)
+                msg.edit({embeds: [embed]})
             }
         } else if (args[0] === "sync") {
-            const newInv = await message.guild.fetchInvites()
+            const newInv = await message.guild.invites.fetch()
             await message.guild.members.fetch()
             const invitesCount = new Map();
             for (const [code, invite] of newInv) {

@@ -43,7 +43,7 @@ module.exports = class Test extends Command {
                     .setDescription(lang.banlist.descriptionInf(banned))
                     .setColor(`${color}`)
                 if (list.length > 0) {
-                    message.channel.send(embed);
+                    message.channel.send({embeds: [embed]});
 
                 } else {
                     message.channel.send(embedinf);

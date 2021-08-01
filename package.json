@@ -24,7 +24,7 @@
     "discord-hybrid-sharding": "^1.1.1",
     "discord-logs": "^1.9.0",
     "discord-reply": "^0.1.2",
-    "discord.js": "^12.5.3",
+    "discord.js": "^13.0.0-dev.t1627831263.774f5b7",
     "discord.js-pagination": "^1.0.3",
     "distube": "^2.8.11",
     "dotenv": "^8.2.0",

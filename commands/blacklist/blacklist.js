@@ -19,7 +19,8 @@ module.exports = class Test extends Command {
 
     async run(client, message, args) {
 
-        let owner = !client.botperso ? message.guild.ownerID : client.buyer;
+        let owner = !client.botperso ? message.guild.ownerId
+ : client.buyer;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const blacklistData = client.managers.blackListManager.getAndCreateIfNotExists(owner);
         let tempdata = blacklistData.get('blacklisted')
@@ -78,18 +79,20 @@ module.exports = class Test extends Command {
                             message.channel.send(lang.blacklist.successBanBl(memberUser)).then(async () => {
                                 try {
                                     if (client.botperso) {
-                                        await client.guilds.cache.filter(g => g.me.hasPermission('BAN_MEMBERS')).forEach(guild => {
+                                        await client.guilds.cache.filter(g => g.me.permissions.has('BAN_MEMBERS')).forEach(guild => {
                                             guild.members.ban(memberUser.id, {reason: `Blacklist par ${message.author.tag}`,})
 
                                         })
                                         await message.channel.send(lang.blacklist.successBanGuild(client.guilds.cache.size))
 
                                     } else {
-                                        const guildCount = await client.cluster.broadcastEval(`this.guilds.cache.filter(guild => guild.ownerID === '${owner}' && guild.id !== '${message.guild.id}' && guild.me.hasPermissions('BAN_MEMBERS')).size`).then(async (res) => res.reduce((acc, guildCount) => acc + guildCount), 0)
+                                        const guildCount = await client.cluster.broadcastEval(`this.guilds.cache.filter(guild => guild.ownerId
+ === '${owner}' && guild.id !== '${message.guild.id}' && guild.me.hasPermissions('BAN_MEMBERS')).size`).then(async (res) => res.reduce((acc, guildCount) => acc + guildCount), 0)
                                         const reason = `Blacklist par ${message.author.tag}`
                                         await client.cluster.broadcastEval(`
                                         (async () => {
-                                            let guilds = this.guilds.cache.filter(guild => guild.ownerID === '${owner}' && guild.id !== '${message.guild.id}');
+                                            let guilds = this.guilds.cache.filter(guild => guild.ownerId
+ === '${owner}' && guild.id !== '${message.guild.id}');
                                             guilds.forEach(guild => {
                                                 guild.members.ban('${memberUser.id}', {reason: 'Blacklist'})
                                             })
@@ -118,7 +121,8 @@ module.exports = class Test extends Command {
             }
 
 
-            if (memberUser.id === owner && memberUser === message.guild.ownerID) return message.channel.send(lang.blacklist.errorCrown)
+            if (memberUser.id === owner && memberUser === message.guild.ownerId
+) return message.channel.send(lang.blacklist.errorCrown)
             if (memberUser.id === client.user.id) return message.channel.send(lang.blacklist.errorMe)
             if (!memberUser) return message.channel.send(lang.blacklist.errorSyntaxAdd)
             let isTargetOwner = client.isOwner(message.guild.id, memberUser.id)
@@ -145,12 +149,14 @@ module.exports = class Test extends Command {
 
 
                                     } else {
-                                        const guildCount = await client.cluster.broadcastEval(`this.guilds.cache.filter(guild => guild.ownerID === '${owner}' && guild.id !== '${message.guild.id}').size`).then(async (res) => res.reduce((acc, guildCount) => acc + guildCount), 0)
+                                        const guildCount = await client.cluster.broadcastEval(`this.guilds.cache.filter(guild => guild.ownerId
+ === '${owner}' && guild.id !== '${message.guild.id}').size`).then(async (res) => res.reduce((acc, guildCount) => acc + guildCount), 0)
                                         console.log(guildCount);
                                         const reason = `Blacklist par ${message.author.tag}`
                                         await client.cluster.broadcastEval(`
                                         (async () => {
-                                            let guilds = this.guilds.cache.filter(guild => guild.ownerID === '${owner}' && guild.id !== '${message.guild.id}');
+                                            let guilds = this.guilds.cache.filter(guild => guild.ownerId
+ === '${owner}' && guild.id !== '${message.guild.id}');
                                             guilds.forEach(guild => {
                                                 guild.members.unban('${memberUser.id}', {reason: 'UnBlacklist'})
                                             })
@@ -204,12 +210,12 @@ module.exports = class Test extends Command {
                 const msg = await message.channel.send(lang.loading)
                 for(const em of emojis) await msg.react(em)
                 msg.edit({
-                    content: '',
-                    embed: embedPageChanger(page)
+                    content: null,
+                    embeds: [embedPageChanger(page)]
                 })
 
                 const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id;
-                const collector = msg.createReactionCollector( filter, {time: 900000})
+                const collector = msg.createReactionCollector( {filter, time: 900000})
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
                     if(r.emoji.name === emojis[0]){
@@ -237,8 +243,8 @@ module.exports = class Test extends Command {
                     }
 
                     msg.edit({
-                        embed:
-                            embedPageChanger(page)
+                        embeds:
+                            [embedPageChanger(page)]
 
                     })
                 })
@@ -262,7 +268,7 @@ module.exports = class Test extends Command {
                 .setFooter(client.user.username)
                 .setTimestamp()
                 .setColor(`${color}`)
-            const msg = await message.channel.send(embed)
+            const msg = await message.channel.send({embeds: [embed]})
             await msg.react('✅')
             await msg.react('❌')
 

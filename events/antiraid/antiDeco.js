@@ -12,7 +12,7 @@ module.exports = class Ready extends Event {
 
     async run(client, member, channel) {
         const guild = member.guild;
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
         const color = guildData.get('color');
         const antiraidConfig = guildData.get('antiraid');
@@ -27,7 +27,8 @@ module.exports = class Ready extends Event {
         if (diff >= 600) return;
 
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `Deco`, 'pink');
-        if (guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `Deco`, 'pink');
+        if (guild.ownerId
+ === action.executor.id) return Logger.log(`No sanction crown`, `Deco`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
@@ -49,7 +50,7 @@ module.exports = class Ready extends Event {
             if (antiraidLimit < decoLimit) {
                 antiraidLimit.deco += 1
                 if (logsChannel && !logsChannel.deleted) {
-                    logsChannel.send(logs.targetExecutorLogs("déconnecté", executor, member.user, color, `${deco + 1 === decoLimit ? `Aucune déconnexion restant` : `${deco + 1}/${decoLimit}`} before sanction`))
+                    logsChannel.send({embeds : [logs.targetExecutorLogs("déconnecté", executor, member.user, color, `${antiraidLimit + 1 === decoLimit ? `Aucune déconnexion restant` : `${antiraidLimit + 1}/${decoLimit}`} before sanction`)]})
                 }
             } else {
                 let sanction = antiraidConfig.config["antiDeco"];
@@ -73,12 +74,12 @@ module.exports = class Ready extends Event {
                         }
                     }
                     if (logsChannel && !logsChannel.deleted) {
-                        logsChannel.send(logs.targetExecutorLogs("déconnecté", executor, member.user, color, sanction))
+                        logsChannel.send({embeds : [logs.targetExecutorLogs("déconnecté", executor, member.user, color, sanction)]})
                     }
 
                 } else {
                     if (logsChannel && !logsChannel.deleted) {
-                        logsChannel.send(logs.targetExecutorLogs("déconnecté", executor, member.user, color, "Je n'ai pas assé de permissions"))
+                        logsChannel.send({embeds : [logs.targetExecutorLogs("déconnecté", executor, member.user, color, "Je n'ai pas assé de permissions")]})
                     }
                     antiraidLimit.deco = 0
 

@@ -37,6 +37,6 @@ module.exports = class Test extends Command {
             .setTimestamp()
             .setFooter(message.guild.name)
             .setColor(color)
-        await message.channel.send(embed)
+        await message.channel.send({embeds: [embed]})
     }
 }

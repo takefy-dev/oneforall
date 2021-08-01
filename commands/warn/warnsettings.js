@@ -45,13 +45,13 @@ module.exports = class Test extends Command {
             .setFooter(client.user.tag)
             .setColor(`${color}`)
             .setTimestamp();
-        principalMsg.edit(' ', embed).then(async m => {
-            const collector = m.createReactionCollector(filter, {time: 900000});
+        principalMsg.edit({content:null, embeds: [embed]}).then(async m => {
+            const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                 await r.users.remove(message.author);
                 if (r.emoji.name === emoji[0]) {
                     message.channel.send(lang.warn.banQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (msg.content.toLowerCase() === 'cancel') return message.channel.send(lang.cancel).then(mps => {
@@ -81,7 +81,7 @@ module.exports = class Test extends Command {
                     })
                 } else if (r.emoji.name === emoji[1]) {
                     message.channel.send(lang.warn.kickQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (msg.content.toLowerCase() === 'cancel') return message.channel.send(lang.cancel).then(mps => {
@@ -111,7 +111,7 @@ module.exports = class Test extends Command {
                     })
                 } else if (r.emoji.name === emoji[2]) {
                     message.channel.send(lang.warn.muteQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (msg.content.toLowerCase() === 'cancel') return message.channel.send(lang.cancel).then(mps => {
@@ -166,7 +166,7 @@ module.exports = class Test extends Command {
 
             function updateEmbed() {
                 embed.setDescription(lang.warn.description(tempWarn.settings.ban, tempWarn.settings.kick, tempWarn.settings.mute))
-                principalMsg.edit(embed)
+                principalMsg.edit({embeds: [embed]})
 
             }
         })

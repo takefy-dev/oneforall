@@ -24,6 +24,6 @@ module.exports = class Test extends Command{
             .setTitle(`Top 10 best members`)
             .setColor(color)
             .setFooter(message.author.username, message.author.displayAvatarURL({dynamic: true}))
-        message.channel.send(embed)
+        message.channel.send({embeds: [embed]})
     }
 }

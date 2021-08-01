@@ -84,12 +84,12 @@ module.exports = class Test extends Command {
                 const msg = await message.channel.send(lang.loading)
                 for(const em of emojis) await msg.react(em)
                 msg.edit({
-                    content: '',
-                    embed: embedPageChanger(page)
+                    content: null,
+                    embeds: [embedPageChanger(page)]
                 })
 
                 const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id;
-                const collector = msg.createReactionCollector( filter, {time: 900000})
+                const collector = msg.createReactionCollector( {filter, time: 900000})
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
                     if(r.emoji.name === emojis[0]){
@@ -117,8 +117,8 @@ module.exports = class Test extends Command {
                     }
 
                     msg.edit({
-                        embed:
-                            embedPageChanger(page)
+                        embeds:
+                            [embedPageChanger(page)]
 
                     })
                 })
@@ -143,7 +143,7 @@ module.exports = class Test extends Command {
                 .setFooter(client.user.username)
                 .setTimestamp()
                 .setColor(`${color}`)
-            const msg = await message.channel.send(embed)
+            const msg = await message.channel.send({embeds: [embed]})
             await msg.react('✅')
             await msg.react('❌')
 
@@ -153,7 +153,8 @@ module.exports = class Test extends Command {
             collector.on('collect', async (r, user) => {
                 if (r.emoji.name === '✅') {
                     try {
-                        owners = [client.botperso ? '' : message.guild.ownerID]
+                        owners = [client.botperso ? '' : message.guild.ownerId
+]
                         guildData.set('owners', owners).save()
                         msg.delete()
                         return message.channel.send(lang.owner.successClearOwner)

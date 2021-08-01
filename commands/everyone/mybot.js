@@ -71,7 +71,7 @@ module.exports = class Test extends Command {
                     .setColor(`${color}`)
                     .setFooter(message.author.tag, avatar)
 
-                return message.channel.send(embed)
+                return message.channel.send({embeds: [embed]})
             } else {
 
                 let now = Date.now();
@@ -89,7 +89,7 @@ module.exports = class Test extends Command {
                     .setTimestamp()
                     .setColor(`${color}`)
                     .setFooter(message.author.tag, avatar)
-                msg.edit('', embed)
+                msg.edit({embeds : [embed])
 
             }
         })

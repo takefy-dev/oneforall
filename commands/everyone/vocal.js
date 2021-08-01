@@ -19,7 +19,8 @@ module.exports = class Test extends Command {
     async run(client, message, args) {
 
         const voiceChannels = message.guild.channels.cache.filter(c => c.type === 'voice');
-        const members = message.guild.members.cache.filter(m => !m.bot && m.voice.channelID != null);
+        const members = message.guild.members.cache.filter(m => !m.bot && m.voice.channelId
+ != null);
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
         const lang = guildData.lang;

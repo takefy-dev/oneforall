@@ -27,7 +27,8 @@ module.exports = class webhookUpdate extends Event {
         }).then(async (audit) => audit.entries.first());
 
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
-        if (guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+        if (guild.ownerId
+ === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
@@ -52,14 +53,14 @@ module.exports = class webhookUpdate extends Event {
                         .setColor(color)
                         .setTimestamp()
                         .setFooter(client.user.username)
-                    newChannel.send(embed)
+                    newChannel.send({embeds: [embed]})
                 }
 
 
             } catch (e) {
                 if (e.toString().toLowerCase().includes('missing permissions')) {
                     if (logsChannel && newChannel) {
-                        logsChannel.send(logs.webhookCreate(executor, newChannel.id, color, "Je n'ai pas assé de permissions"))
+                        logsChannel.send({embeds : [logs.webhookCreate(executor, newChannel.id, color, "Je n'ai pas assé de permissions")]})
                     }
                 }
             }
@@ -91,11 +92,11 @@ module.exports = class webhookUpdate extends Event {
                 }
 
                 if (logsChannel && newChannel) {
-                    logsChannel.send(logs.webhookCreate(executor, newChannel.id, color, sanction))
+                    logsChannel.send({embeds: [logs.webhookCreate(executor, newChannel.id, color, sanction)]})
                 }
             } else {
                 if (logsChannel && newChannel) {
-                    logsChannel.send(logs.webhookCreate(executor, newChannel.id, color, "Je n'ai pas assé de permissions"))
+                    logsChannel.send({embeds : [logs.webhookCreate(executor, newChannel.id, color, "Je n'ai pas assé de permissions")]})
                 }
             }
         }

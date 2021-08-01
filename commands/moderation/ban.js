@@ -23,9 +23,7 @@ module.exports = class Test extends Command {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
         const color = guildData.get('color')
-
         const user = message.mentions.users.first() || await client.users.fetch(args[0])
-        console.log(user)
         if (user.id === message.author.id) {
             return await message.channel.send(lang.ban.errorBanSelf).then(mp => mp.delete({timeout: 4000}));
         }
@@ -41,7 +39,8 @@ module.exports = class Test extends Command {
         if (member) {
             const memberPosition = member.roles.highest.position;
             const moderationPosition = message.member.roles.highest.position;
-            if (message.guild.ownerID !== message.author.id && !(moderationPosition > memberPosition) && !client.isOwner(message.author.id)) {
+            if (message.guild.ownerId
+ !== message.author.id && !(moderationPosition > memberPosition) && !client.isOwner(message.author.id)) {
                 return message.channel.send(lang.ban.errorRl(user)).then(mp => mp.delete({timeout: 4000}));
             }
             if (!member.bannable) {
@@ -69,13 +68,14 @@ module.exports = class Test extends Command {
             const color = guildData.get('color');
 
             if (channel && !channel.deleted) {
-                channel.send(channel.send(logs.targetExecutorLogs("ban", message.member, user, color)))
+                channel.send(channel.send({embeds : [logs.targetExecutorLogs("ban", message.member, user, color)]}))
             }
             const antiraidConfig = guildData.get('antiraid');
             let antiraidLog = guildData.get('logs').antiraid;
             const isOn = antiraidConfig.enable["antiMassBan"];
             if (!isOn) return;
-            if (guild.ownerID === message.author.id) return Logger.log(`No sanction crown`, `MassBAN`, 'pink');
+            if (guild.ownerId
+ === message.author.id) return Logger.log(`No sanction crown`, `MassBAN`, 'pink');
             let isGuildOwner = guildData.isGuildOwner(message.author.id);
             let isBotOwner = client.isOwner(message.author.id);
 
@@ -98,7 +98,7 @@ module.exports = class Test extends Command {
                 if (antiraidLimit.ban < banLimit) {
                     antiraidLimit.ban += 1
                     if (logsChannel && !logsChannel.deleted) {
-                        logsChannel.send(logs.targetExecutorLogs("ban", message.member, member, color, `${antiraidLimit.ban + 1 === banLimit ? `Aucun ban restant` : `${antiraidLimit.ban + 1}/${banLimit}`} before sanction`))
+                        logsChannel.send({embeds : [logs.targetExecutorLogs("ban", message.member, member, color, `${antiraidLimit.ban + 1 === banLimit ? `Aucun ban restant` : `${antiraidLimit.ban + 1}/${banLimit}`} before sanction`)]})
                     }
                 } else {
                     let sanction = antiraidConfig.config["antiMassBan"];
@@ -120,13 +120,13 @@ module.exports = class Test extends Command {
 
                         }
                         if (logsChannel && !logsChannel.deleted) {
-                            logsChannel.send(logs.targetExecutorLogs("ban", message.member, user, color, sanction))
+                            logsChannel.send({embeds : [logs.targetExecutorLogs("ban", message.member, user, color, sanction)]})
                         }
                         antiraidLimit.ban = 0
 
                     } else {
                         if (logsChannel && !logsChannel.deleted) {
-                            logsChannel.send(logs.targetExecutorLogs("ban", message.member, user, color, "Je n'ai pas assé de permissions"))
+                            logsChannel.send({embeds : [logs.targetExecutorLogs("ban", message.member, user, color, "Je n'ai pas assé de permissions")]})
                         }
                         antiraidLimit.ban = 0
 

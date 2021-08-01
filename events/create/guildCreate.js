@@ -14,10 +14,11 @@ module.exports = class guildCreate extends Event {
 
 
         const guildData = await client.managers.guildManager.getAndCreateIfNotExists(guild.id, {
-            owners: client.botperso ? [] : [guild.ownerID]
+            owners: client.botperso ? [] : [guild.ownerId
+]
         }).save()
 
-        const newInv = await guild.fetchInvites()
+        const newInv = await guild.invites.fetch()
         for (const [code, invite] of newInv) {
             guildData.cachedInv.set(code, invite)
         }
@@ -29,10 +30,11 @@ module.exports = class guildCreate extends Event {
                 `<:778353230484471819:780727288903237663> Nom : **${guild.name}**\n
      <:778353230589460530:780725963465687060> GuildId : **${guild.id}**\n
      <:778353230383546419:781153631881265173> GuildCount : **${guild.memberCount}**\n
-     <:778353230383546419:781153631881265173> OnwerName : **<@${guild.ownerID}>**\n
+     <:778353230383546419:781153631881265173> OnwerName : **<@${guild.ownerId
+}>**\n
   `)
 
-        await hook.send(embed);
+        await hook.send({embeds: [embed]});
 
     }
 }

@@ -47,7 +47,7 @@ module.exports = class Test extends Command {
             .setFooter(`${client.user.username} | Date: ${msg.date}`)
             .setColor(`${color}`)
         if (msg.image) embed.setImage(msg.image)
-        message.channel.send(embed)
+        message.channel.send({embeds: [embed]})
     }
 };
 

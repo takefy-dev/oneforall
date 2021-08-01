@@ -1,9 +1,5 @@
-const StateManager = require('../../utils/StateManager');
 
-const guildInventory = new Map();
-const userCoins = new Map();
 const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
 module.exports = class Test extends Command {
@@ -26,7 +22,6 @@ module.exports = class Test extends Command {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
-        const lang = guildData.lang;
         const userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${message.author.id}`)
         const memberInvetory = userData.get('inventory')
         const formatedInventory = !memberInvetory ? `Inventaire vide` : memberInvetory.map((inv) => `**${inv.item}**  •  x\`${inv.amount}\``); // inv.item == itemName and inv.amount = number of 1 item
@@ -36,7 +31,7 @@ module.exports = class Test extends Command {
             .setThumbnail(`https://media.discordapp.net/attachments/747028239884615751/821044567833968710/706473362813091931.gif`)
             .setColor(`${color}`)
             .setFooter(`© OneForAll Coins`)
-        message.channel.send(`> **Viewing server inventory • [**  ${message.author.tag} **] •** `, {embed: embed})
+        message.channel.send(`> **Viewing server inventory • [**  ${message.author.tag} **] •** `, {embeds: [embed]})
 
     }
 }

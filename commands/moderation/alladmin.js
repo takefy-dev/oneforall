@@ -9,7 +9,6 @@ module.exports = class Test extends Command {
             description: 'Show all members with administator permissions | Afficher tout les membres avec les perm admin',
             usage: 'alladmins',
             category: 'moderation',
-            clientPermissions: ["MANAGE_GUILD"],
             userPermissions: ['ADMINISTRATOR'],
             cooldown: 5
 
@@ -22,8 +21,9 @@ module.exports = class Test extends Command {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
         const lang = guildData.lang;
-        const admins = message.guild.members.cache.filter(
-            (m) => m.hasPermission('ADMINISTRATOR')
+        const allMember = await message.guild.members.fetch()
+        allMember.filter(
+            (m) => m.permissions.has('ADMINISTRATOR')
         ).map(m => tempdata.push(m.user.id))
 
 
@@ -66,7 +66,7 @@ module.exports = class Test extends Command {
                 reac3 = await tdata.react("➡");
             }
 
-            tdata.edit(" ", embed);
+            tdata.edit({content:null, embeds: [embed]});
 
             const data_res = tdata.createReactionCollector((reaction, user) => user.id === message.author.id);
 
@@ -92,7 +92,7 @@ module.exports = class Test extends Command {
                         .map((user, i) => `${i + 1} ・  **<@${message.guild.members.cache.get(user).user.id}>**`)
                         .slice(p0, p1)
                         .join('\n') + `\n\n<:778353230467825704:781155103566331904> Page **${page}** / **${Math.ceil(tempdata.length / 10)}**`)
-                    tdata.edit(embed);
+                    tdata.edit({embeds: [embed]});
 
                 }
 
@@ -117,7 +117,7 @@ module.exports = class Test extends Command {
                         .map((user, i) => `${i + 1} ・ **<@${message.guild.members.cache.get(user).user.id}>**`)
                         .slice(p0, p1)
                         .join('\n') + `\n\n<:778353230467825704:781155103566331904> Page **${page}** / **${Math.ceil(tempdata.length / 10)}**`)
-                    tdata.edit(embed);
+                    tdata.edit({embeds: [embed]});
 
                 }
 

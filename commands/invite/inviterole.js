@@ -21,7 +21,9 @@ module.exports = class Test extends Command {
         const lang = guildData.lang
         const color = guildData.get('color')
         if (args[0] === 'list') {
-            return message.channel.send(lang.inviteRole.listEmbed(inviteRole).setColor(color).setFooter(client.user.username, message.author.displayAvatarURL({dynamic: true})))
+            return message.channel.send({
+                embeds :[lang.inviteRole.listEmbed(inviteRole).setColor(color).setFooter(client.user.username, message.author.displayAvatarURL({dynamic: true}))]
+            })
         }
         if (args[0] === 'cumul') {
             if (args[1] !== 'on' && args[1] !== 'off') return message.channel.send(lang.inviteRole.noOnOff).then((mp) => {

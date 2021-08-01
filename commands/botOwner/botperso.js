@@ -129,7 +129,7 @@ module.exports = class Test extends Command{
                                     .setTitle(`Nouvelle création de bot pour ${member.user.tag}`)
                                     .setDescription(JSON.stringify(result, null, "  "))
                                     .setTimestamp()
-                                await user.send(embed)
+                                await user.send({embeds: [embed]})
                             }
                         })
                 })
@@ -179,7 +179,7 @@ module.exports = class Test extends Command{
                                         .setTitle(`Nouvelle suppressions de bot pour ${member.user.tag}`)
                                         .setDescription(JSON.stringify(result, null, "  "))
                                         .setTimestamp()
-                                    user.send(embed)
+                                    user.send({embeds: [embed]})
                                 }
                             })
                         }

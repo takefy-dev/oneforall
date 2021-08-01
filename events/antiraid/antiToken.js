@@ -77,7 +77,7 @@ module.exports = class antiToken extends Event {
             }
 
             if (channel && !channel.deleted) {
-                channel.send(logs.antiToken(member, color, sanction))
+                channel.send({embeds : [logs.antiToken(member, color, sanction)]})
             }
 
 

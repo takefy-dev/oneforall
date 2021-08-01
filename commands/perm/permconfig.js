@@ -41,7 +41,7 @@ module.exports = class Test extends Command {
                 .setTimestamp()
                 .setURL('https://www.discord.gg/oneforall')
 
-            return await message.channel.send(embed)
+            return await message.channel.send({embeds: [embed]})
         }
 
         if (permToPutCommand !== "on" && permToPutCommand !== "off" && args[1] !== "remove") {

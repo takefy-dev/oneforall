@@ -59,7 +59,7 @@ module.exports = new Command({
             .addField(lang.stats.voiceMostActive, mostActiveChannel === undefined ? lang.stats.noVoiceChannel : `**${mostActiveChannel.name}**  __${prettyMilliseconds(mostActiveChannelDuration)}__`, true)
             .setColor(`${color}`)
             .setFooter(client.user.username, member.user.displayAvatarURL({ dynamic: true }))
-        message.channel.send(embed)
+        message.channel.send({embeds: [embed]})
     }
 
 });

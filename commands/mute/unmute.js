@@ -33,7 +33,7 @@ module.exports = class Test extends Command {
             const {modLog} = guildData.get('logs').mod;
             const channel = message.guild.channels.cache.get(modLog);
             if (channel && !channel.deleted) {
-                channel.send(logs.unmute(member.user, "commande", color))
+                channel.send({embeds :[logs.unmute(member.user, "commande", color)]})
             }
             message.channel.send(lang.unmute.success(member));
             const userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${message.author.id}`)

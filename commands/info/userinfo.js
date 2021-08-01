@@ -47,10 +47,11 @@ module.exports = class Test extends Command {
             dnd: `<:charliewave_dnd:786331160744689704>`,
             offline: `<:charliewave_offline:786331156010106890>`
         };
+        let online;
         if (member.user.presence.status === "offline") {
-            let online = "online"
+             online = "offline"
         } else {
-            online = "offline"
+            online = "online"
         }
         const roles = member.roles.cache
             .sort((a, b) => b.position - a.position)
@@ -75,7 +76,7 @@ module.exports = class Test extends Command {
             .addField(`**CREATED:**`, `${moment(member.user.createdTimestamp).format('LT')} ${moment(member.user.createdTimestamp).format('LL')} ${moment(member.user.createdTimestamp).fromNow()}`, true)
             .addField(`**JOINED:**`, `${moment(member.joinedAt).format('LL LTS')}`, true)
 
-        return message.channel.send(embedUser);
+        return message.channel.send({embeds :[embedUser]});
     }
 };
 

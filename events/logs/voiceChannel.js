@@ -12,7 +12,7 @@ module.exports = class Ready extends Event {
 
     async run(client, oldState, newState) {
         const guild = oldState.guild;
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         let voiceLog = guildData.get('logs').voice;
         const {logs} = guildData.lang
@@ -22,17 +22,26 @@ module.exports = class Ready extends Event {
         const color = guildData.get('color')
         const channel = guild.channels.cache.get(voiceLog);
         if(!channel) return;
-        if (oldState.channelID == null && newState.channelID != null) {
+        if (oldState.channelId
+ == null && newState.channelId
+ != null) {
             // connect
-            channel.send(logs.voiceConnect(oldState.member, newState.channelID, color))
+            channel.send({embeds : [logs.voiceConnect(oldState.member, newState.channelId, color)]})
         }
-        if (oldState.channelID != null && newState.channelID == null) {
-            channel.send(logs.voiceLeave(oldState.member, oldState.channelID, color))
+        if (oldState.channelId
+ != null && newState.channelId
+ == null) {
+            channel.send({embeds : [logs.voiceLeave(oldState.member, oldState.channelId
+, color)]})
             // disconnect
 
 
         }
-        if (oldState.channelID && newState.channelID && oldState.channelID !== newState.channelID) {
+        if (oldState.channelId
+ && newState.channelId
+ && oldState.channelId
+ !== newState.channelId
+) {
             let action = await oldState.guild.fetchAuditLogs({
                 type: "MEMBER_MOVE",
             }).then(async (audit) => audit.entries.first());
@@ -40,25 +49,33 @@ module.exports = class Ready extends Event {
 
             if(!action || action.executor.id === oldState.id){
 
-                return channel.send(logs.voiceChange(oldState.member, oldState.member.user, oldState.channelID, newState.channelID, color))
+                return channel.send({embeds : [logs.voiceChange(oldState.member, oldState.member.user, oldState.channelId
+, newState.channelId
+, color)]})
 
             }
             const member = await guild.members.fetch(action.executor.id)
 
             if (action.extra.channel.id !== oldState.id && action.executor.id !== oldState.id) {
                 const user = client.users.cache.get(oldState.id)
-                channel.send(logs.voiceChange(member, user, oldState.channelID, newState.channelID, color))
+                channel.send({embeds : [logs.voiceChange(member, user, oldState.channelId
+, newState.channelId
+, color)]})
 
 
             }
 
 
         }
-        if (!oldState.selfMute && newState.selfMute && oldState.channelID != null) {
-            channel.send(logs.voiceMute(oldState.member, newState.channelID, color))
+        if (!oldState.selfMute && newState.selfMute && oldState.channelId
+ != null) {
+            channel.send({embeds : [logs.voiceMute(oldState.member, newState.channelId
+, color)]})
         }
-        if (oldState.selfMute && !newState.selfMute && newState.channelID != null) {
-            channel.send(logs.voiceUnMute(oldState.member, newState.channelID, color))
+        if (oldState.selfMute && !newState.selfMute && newState.channelId
+ != null) {
+            channel.send({embeds : [logs.voiceUnMute(oldState.member, newState.channelId
+, color)]})
         }
 
 

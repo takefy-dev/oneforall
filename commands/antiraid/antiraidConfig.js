@@ -231,8 +231,9 @@ module.exports = class Test extends Command {
                 putEmoji()
 
 
-                await subMenu.edit('', {
-                    embed: {
+                await subMenu.edit({
+                    content: null,
+                    embeds:[ {
                         title: name,
                         description: pageSection[index].value,
                         color,
@@ -241,7 +242,7 @@ module.exports = class Test extends Command {
                             text: name,
                             icon_url: message.author.displayAvatarURL({dynamic: true}) || ''
                         },
-                    }
+                    }]
 
                 })
                 const indispensableEmoji = ['↩', '❌']
@@ -273,7 +274,7 @@ module.exports = class Test extends Command {
 
                     if (r.emoji.name === indispensableEmoji[0]) {
 
-                        subMenu.edit('', {embed: embed(page)[0]})
+                        subMenu.edit({content: null,embeds: [embed(page)[0]]})
                         await subMenu.reactions.removeAll()
                         for (const em of emojis) {
                             await subMenu.react(em)
@@ -295,7 +296,7 @@ module.exports = class Test extends Command {
                     if (Object.keys(emojiQuestion).includes(r.emoji.name)) {
                         const {question, type} = emojiQuestion[r.emoji.name];
                         await message.channel.send(question).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(cld => {
                                     let msg = cld.first();
                                     if (type === 'limit') {
@@ -334,8 +335,9 @@ module.exports = class Test extends Command {
                                     initFields(true)
                                     pageSection = fields.slice(slicerIndicatorMin, slicerIndicatorMax)
                                     putEmoji()
-                                    return subMenu.edit('', {
-                                        embed: {
+                                    return subMenu.edit({
+                                        content: null,
+                                        embeds: [{
                                             title: name,
                                             description: pageSection[index].value,
                                             color,
@@ -344,7 +346,7 @@ module.exports = class Test extends Command {
                                                 text: name,
                                                 icon_url: message.author.displayAvatarURL({dynamic: true}) || ''
                                             },
-                                        }
+                                        }]
 
                                     })
                                 });
@@ -355,8 +357,9 @@ module.exports = class Test extends Command {
                     pageSection = fields.slice(slicerIndicatorMin, slicerIndicatorMax)
                     putEmoji()
 
-                    return await subMenu.edit('', {
-                        embed: {
+                    return await subMenu.edit({
+                        content: null,
+                        embeds: [{
                             title: name,
                             description: pageSection[index].value,
                             color,
@@ -365,8 +368,7 @@ module.exports = class Test extends Command {
                                 text: name,
                                 icon_url: message.author.displayAvatarURL({dynamic: true}) || ''
                             },
-                        }
-
+                        }]
                     })
 
 
@@ -390,8 +392,8 @@ module.exports = class Test extends Command {
                 }
             });
 
-            msg.edit('', {embed: embed(page)[0]}).then(async m => {
-                const collector = m.createReactionCollector(filter, {time: 900000});
+            msg.edit({content: null,embeds: [embed(page)[0]]}).then(async m => {
+                const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
 
@@ -399,14 +401,14 @@ module.exports = class Test extends Command {
                         page = page === 0 ? page = totalPage - 1 : page <= totalPage - 1 ? page -= 1 : page += 1
                         slicerIndicatorMin -= maxPerPage
                         slicerIndicatorMax -= maxPerPage
-                        return msg.edit('', {embed: embed(page)[0]})
+                        return msg.edit({content: null,embeds: [embed(page)[0]]})
                     } else if (r.emoji.name === emojis[emojis.length - 2]) {
                         page = page !== totalPage - 1 ? page += 1 : page = 0
                         slicerIndicatorMin += maxPerPage
                         slicerIndicatorMax += maxPerPage
 
 
-                        return msg.edit('', {embed: embed(page)[0]})
+                        return msg.edit({content: null,embeds: [embed(page)[0]]})
                     } else if (r.emoji.name === emojis[emojis.length - 1]) {
                         msg.delete()
                         saveCollector.stop()

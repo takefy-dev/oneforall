@@ -35,7 +35,7 @@ module.exports = class Test extends Command {
                     .setFooter(`⏣ OneForAll coins`);
 
 
-                return message.channel.send(embed)
+                return message.channel.send({embeds: [embed]})
             }
             return showShop(shop)
         }
@@ -101,7 +101,7 @@ module.exports = class Test extends Command {
                 .setDescription(lang.buy.buyLog(message.member, !roleCol ? item : roleCol.name, price))
                 .setTimestamp()
                 .setColor(`${color}`)
-            logsChannel.send(embed)
+            logsChannel.send({embeds: [embed]})
         }
 
 

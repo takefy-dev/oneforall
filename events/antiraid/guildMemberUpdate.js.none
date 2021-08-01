@@ -28,7 +28,7 @@ module.exports = class guildMemberUpdate extends Event {
 
 
 		let guild = oldMember.guild;
-		if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+		if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
 		const color = guildEmbedColor.get(oldMember.guild.id)
 
 
@@ -78,9 +78,11 @@ module.exports = class guildMemberUpdate extends Event {
 		// if (isWl1.includes(action.executor.id)) { isWl = true };
 		// if (!isWl1.includes(action.executor.id)) { isWl = false };
 
-		if (isOwner == true || guild.ownerID == action.executor.id || isOn == false) {
+		if (isOwner == true || guild.ownerId
+ == action.executor.id || isOn == false) {
 			return;
-		} else if (isOwner == true || guild.ownerID == action.executor.id || isOn == false || action.changes[0].key != "$add" || isOnWl == true && isWl == true) {
+		} else if (isOwner == true || guild.ownerId
+ == action.executor.id || isOn == false || action.changes[0].key != "$add" || isOnWl == true && isWl == true) {
 
 			return;
 		} else if (isOn == true && action.changes[0].key == "$add" && isOwner == false || guild.owner.id !== action.executor.id || isOnWl == true && isWl == false || isOnWl == false) {
@@ -118,7 +120,7 @@ module.exports = class guildMemberUpdate extends Event {
 							.setFooter("🕙")
 							.setColor(`${color}`)
 						if (logChannel != undefined) {
-							logChannel.send(logsEmbed);
+							logChannel.send({embeds: [logsEmbed]});
 
 						}
 					}
@@ -183,7 +185,7 @@ module.exports = class guildMemberUpdate extends Event {
 					.setFooter("🕙")
 					.setColor(`${color}`)
 				if (logChannel != undefined) {
-					logChannel.send(logsEmbed);
+					logChannel.send({embeds: [logsEmbed]});
 
 				}
 			} else {
@@ -201,7 +203,7 @@ module.exports = class guildMemberUpdate extends Event {
 					.setFooter("🕙")
 					.setColor(`${color}`)
 				if (logChannel != undefined) {
-					logChannel.send(logsEmbed);
+					logChannel.send({embeds: [logsEmbed]});
 
 				}
 			}

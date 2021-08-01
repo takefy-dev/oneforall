@@ -222,7 +222,7 @@ class GiveawaysManager extends EventEmitter {
                 lastChance: options.lastChance
             });
             const embed = this.generateMainEmbed(giveaway);
-            const message = await channel.send(giveaway.messages.giveaway, {embed});
+            const message = await channel.send(giveaway.messages.giveaway, {embeds : [embed]});
             await message.react(giveaway.reaction);
             giveaway.messageID = message.id;
             this.giveaways.set(giveaway.messageID, giveaway);
@@ -419,7 +419,7 @@ class GiveawaysManager extends EventEmitter {
                 return;
             }
             const embed = this.generateMainEmbed(giveaway, giveaway.lastChance.enabled && giveaway.remainingTime < giveaway.lastChance.threshold);
-            giveaway.message.edit(giveaway.messages.giveaway, {embed}).catch(() => {
+            giveaway.message.edit(giveaway.messages.giveaway, {embeds : [embed]}).catch(() => {
             });
             // if (giveaway.remainingTime < this.options.updateCountdownEvery) {
             //     setTimeout(() => this.end.call(this, giveaway.messageID), giveaway.remainingTime);
@@ -427,7 +427,7 @@ class GiveawaysManager extends EventEmitter {
             if (giveaway.lastChance.enabled && (giveaway.remainingTime - giveaway.lastChance.threshold) < this.options.updateCountdownEvery) {
                 setTimeout(() => {
                     const embed = this.generateMainEmbed(giveaway, true);
-                    giveaway.message.edit(giveaway.messages.giveaway, {embed}).catch(() => {
+                    giveaway.message.edit(giveaway.messages.giveaway, {embeds : [embed]}).catch(() => {
                     });
                 }, giveaway.remainingTime - giveaway.lastChance.threshold);
             }

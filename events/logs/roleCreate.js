@@ -11,7 +11,7 @@ module.exports = class roleCreate extends Event {
     async run(client, role) {
         if (role.managed) return;
         let guild = role.guild;
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         const color = guildData.get('color');
         let {logs} = guildData.lang
@@ -26,7 +26,7 @@ module.exports = class roleCreate extends Event {
         const channel = guild.channels.cache.get(modLog)
 
         if (channel && !channel.deleted) {
-            channel.send(logs.roleCreate(member, role.name, role.id, color))
+            channel.send({embeds : [logs.roleCreate(member, role.name, role.id, color)]})
         }
 
 

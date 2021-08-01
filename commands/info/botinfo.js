@@ -73,7 +73,7 @@ module.exports = class Test extends Command {
 
             .setTimestamp();
 
-        message.channel.send(embedBot);
+        message.channel.send({embeds :[embedBot]});
     }
 };
 

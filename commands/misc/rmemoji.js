@@ -1,7 +1,6 @@
 const {Util} = require('discord.js')
 const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
+
 
 module.exports = class Test extends Command {
     constructor() {

@@ -78,7 +78,7 @@ module.exports = class Test extends Command {
                 .setColor(color)
                 .setTimestamp()
                 .setFooter(client.user.username)
-            message.channel.send(embed);
+            message.channel.send({embeds: [embed]});
         }
         if(args[0] === "delete"){
             if (!backupId) return message.channel.send(lang.backup.noLoadId)
@@ -104,7 +104,7 @@ module.exports = class Test extends Command {
                 .setColor(`${color}`)
                 .setTimestamp()
                 .setFooter(client.user.username)
-            message.channel.send(embed)
+            message.channel.send({embeds: [embed]})
         }
     }
 }

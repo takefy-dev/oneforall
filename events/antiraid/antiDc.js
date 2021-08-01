@@ -34,11 +34,14 @@ module.exports = class AntiDc extends Event {
                 )
             }
             if(logsChannel && !logsChannel.deleted){
-                logsChannel.send(logs.antiDc(member,  moment(user.createdAt).format("DD/MM/YYYY"), antiraidConfig.config["antiDcLimit"], color, sanction))
+                logsChannel.send({
+                    embeds : [logs.antiDc(member, moment(user.createdAt).format("DD/MM/YYYY"), antiraidConfig.config["antiDcLimit"], color, sanction)]
+                })
             }
             try{
-                user.send(logs.antiDc(member, moment(user.createdAt).format("DD/MM/YYYY"), antiraidConfig.config["antiDcLimit"], color, sanction))
-
+                user.send({
+                    embeds : [logs.antiDc(member, moment(user.createdAt).format("DD/MM/YYYY"), antiraidConfig.config["antiDcLimit"], color, sanction)]
+                })
             }catch (e){
 
             }

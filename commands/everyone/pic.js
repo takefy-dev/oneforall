@@ -29,7 +29,7 @@ module.exports = class Test extends Command {
             .setColor(`${color}`)
             .setTimestamp()
             .setFooter(client.user.username)
-        message.channel.send(embed);
+        message.channel.send({embeds: [embed]});
     }
 };
 

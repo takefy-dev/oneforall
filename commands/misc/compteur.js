@@ -1,5 +1,4 @@
 const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
 module.exports = class Test extends Command {
@@ -38,13 +37,13 @@ module.exports = class Test extends Command {
             .setTimestamp()
             .setColor(color)
             .setFooter(client.user.username)
-        msg.edit(' ', embed).then(async m => {
-            const collector = m.createReactionCollector(filter, {time: 900000});
+        msg.edit({content:null, embeds: [embed]}).then(async m => {
+            const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                 await r.users.remove(message.author);
                 if (r.emoji.name === emoji[0]) {
                     message.channel.send(lang.counter.memberChQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content !== 'off') {
@@ -121,7 +120,7 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emoji[1]) {
                     message.channel.send(lang.counter.botChQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content !== 'off') {
@@ -198,7 +197,7 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emoji[2]) {
                     message.channel.send(lang.counter.vocalChQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content !== 'off') {
@@ -274,7 +273,7 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emoji[3]) {
                     message.channel.send(lang.counter.onlineChQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content !== 'off') {
@@ -351,7 +350,7 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emoji[4]) {
                     message.channel.send(lang.counter.offlineChQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content !== 'off') {
@@ -427,7 +426,7 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emoji[5]) {
                     message.channel.send(lang.counter.channelChQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content !== 'off') {
@@ -506,7 +505,7 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emoji[6]) {
                     message.channel.send(lang.counter.roleChQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content !== 'off') {
@@ -583,7 +582,7 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === emoji[7]) {
                     message.channel.send(lang.counter.boostChQ).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 let msg = cld.first();
                                 if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content !== 'off') {
@@ -728,7 +727,7 @@ module.exports = class Test extends Command {
                 function updateEmbed() {
 
                     embed.setDescription(lang.counter.embedDescription(guildData.get('counter')))
-                    msg.edit(embed)
+                    msg.edit({embeds: [embed]})
 
 
                 }

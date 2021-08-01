@@ -44,8 +44,8 @@ module.exports = class Test extends Command {
                 return response.author.id === message.author.id
             };
 
-        msg.edit("", embed).then(async m => {
-            const collector = m.createReactionCollector(filter, {time: 900000});
+        msg.edit({embeds : [embed]}).then(async m => {
+            const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                     await r.users.remove(message.author);
                     if (r.emoji.name === emojisReact[0]) {
@@ -509,7 +509,7 @@ module.exports = class Test extends Command {
                         }
 
                         embed.setDescription(lang.reactionRole.embedDescription(channelMsg, reactRole.message, emoji))
-                        msg.edit(embed)
+                        msg.edit({embeds: [embed]})
                     }
 
                 }

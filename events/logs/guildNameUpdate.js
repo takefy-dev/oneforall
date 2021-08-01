@@ -10,7 +10,7 @@ module.exports = class Ready extends Event{
         });
     }
     async run(client, oldGuild, newGuild){
-        if (!oldGuild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!oldGuild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(oldGuild.id)
         let  modLog  = guildData.get('logs');
         const { logs } = guildData.lang
@@ -22,7 +22,7 @@ module.exports = class Ready extends Event{
         if(channel){
             const color = oldGuild.color
             const executor = await oldGuild.members.fetch(action.executor.id);
-            channel.send(logs.guildNameUpdate(executor, oldGuild.name, newGuild.name, oldGuild.id, color))
+            channel.send({embeds : [logs.guildNameUpdate(executor, oldGuild.name, newGuild.name, oldGuild.id, color)]})
         }
     }
 }

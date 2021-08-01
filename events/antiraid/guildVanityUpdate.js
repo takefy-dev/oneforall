@@ -10,7 +10,7 @@ module.exports = class guildVanityUpdate extends Event {
     }
 
     async run(client, guild, oldVanityURL, newVanityURL) {
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         const color = guildData.get('color')
         let antiraidLog = guildData.get('logs').antiraid;
@@ -23,7 +23,8 @@ module.exports = class guildVanityUpdate extends Event {
         let action = await guild.fetchAuditLogs({type: "GUILD_UPDATE"}).then(async (audit) => audit.entries.first());
         if (action.changes[0].key !== 'vanity_url_code') return;
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
-        if (guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+        if (guild.ownerId
+ === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
@@ -55,11 +56,11 @@ module.exports = class guildVanityUpdate extends Event {
 
                     if (newVanityURL !== null) {
                         if (channel && !channel.deleted) {
-                            channel.send(logs.guildVanityUpdate(member, oldVanityURL, newVanityURL, guild.id, color, "Je n'ai pas assé de permissions"))
+                            channel.send({embeds : [logs.guildVanityUpdate(member, oldVanityURL, newVanityURL, guild.id, color, "Je n'ai pas assé de permissions")]})
                         }
                     } else {
                         if (channel && !channel.deleted) {
-                            channel.send(logs.guildVanityUpdate(member, oldVanityURL, "None", guild.id, color, "Je n'ai pas assé de permissions"))
+                            channel.send({embeds : [logs.guildVanityUpdate(member, oldVanityURL, "None", guild.id, color, "Je n'ai pas assé de permissions")]})
                         }
                     }
 
@@ -98,9 +99,9 @@ module.exports = class guildVanityUpdate extends Event {
 
                 if (channel && !channel.deleted) {
                     if (newVanityURL != null) {
-                        channel.send(logs.guildVanityUpdate(member, oldVanityURL, newVanityURL, guild.id, color, sanction))
+                        channel.send({embeds : [logs.guildVanityUpdate(member, oldVanityURL, newVanityURL, guild.id, color, sanction)]})
                     } else {
-                        channel.send(logs.guildVanityUpdate(member, oldVanityURL, "None", guild.id, color, sanction))
+                        channel.send({embeds :[logs.guildVanityUpdate(member, oldVanityURL, "None", guild.id, color, sanction)]})
                     }
 
                 }
@@ -108,11 +109,11 @@ module.exports = class guildVanityUpdate extends Event {
             } else {
                 if (newVanityURL != null) {
                     if (channel && !channel.deleted) {
-                        channel.send(logs.guildVanityUpdate(member, oldVanityURL, newVanityURL, guild.id, color, "Je n'ai pas assé de permissions"))
+                        channel.send({embeds :[logs.guildVanityUpdate(member, oldVanityURL, newVanityURL, guild.id, color, "Je n'ai pas assé de permissions")]})
                     }
                 } else {
                     if (channel && !channel.deleted) {
-                        channel.send(logs.guildVanityUpdate(member, oldVanityURL, "None", guild.id, color, "Je n'ai pas assé de permissions"))
+                        channel.send({embeds :[logs.guildVanityUpdate(member, oldVanityURL, "None", guild.id, color, "Je n'ai pas assé de permissions")]})
                     }
                 }
 

@@ -46,12 +46,12 @@ module.exports = class Test extends Command {
             .setTimestamp()
             .setFooter(client.user.tag)
             .setColor(`${color}`);
-        const embedBuilderMsg = await message.channel.send(embedBuilder)
+        const embedBuilderMsg = await message.channel.send({embeds: [embedBuilder]})
         const filter = (reaction, user) => roleChooserEmojis.includes(reaction.emoji.name) && user.id === message.author.id,
             dureefiltrer = response => {
                 return response.author.id === message.author.id;
             };
-        const msg = await message.channel.send(finalEmbed)
+        const msg = await message.channel.send({embeds :[finalEmbed]})
         await msg.react('✏')
         await msg.react('📝')
         await msg.react('🗣')
@@ -63,12 +63,12 @@ module.exports = class Test extends Command {
         await msg.react('⏲')
         await msg.react('©')
         let filterEmbed = (reaction, user) => ['✏', '📝', '🗣', '🖍', '🖼', '✅', '💶', '🌐', '🎨', '❌', '⏲', '©'].includes(reaction.emoji.name) && user.id === message.author.id;
-        const collectorEmbed = msg.createReactionCollector(filterEmbed, {time: 900000});
+        const collectorEmbed = msg.createReactionCollector({filter: filterEmbed, time: 900000});
         collectorEmbed.on('collect', async r => {
             await r.users.remove(message.author);
             if (r.emoji.name === '✏') {
                 await message.channel.send(lang.embedBuilder.titleMsg).then(mp => {
-                    mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
+                    mp.channel.awaitMessages({filter: dureefiltrer,max: 1, time: 60000, errors: ['time']})
                         .then(async cld => {
                             let msg = cld.first();
                             finalEmbed.embed.title = msg.content
@@ -81,7 +81,7 @@ module.exports = class Test extends Command {
                 })
             } else if (r.emoji.name === '📝') {
                 await message.channel.send(lang.embedBuilder.descriptionMsg).then(mp => {
-                    mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
+                    mp.channel.awaitMessages({filter: dureefiltrer,max: 1, time: 60000, errors: ['time']})
                         .then(async cld => {
                             let msg = cld.first();
                             finalEmbed.embed.description = msg.content
@@ -93,7 +93,7 @@ module.exports = class Test extends Command {
                 })
             } else if (r.emoji.name === '🗣') {
                 await message.channel.send(lang.embedBuilder.authorMsg).then(mp => {
-                    mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
+                    mp.channel.awaitMessages({filter: dureefiltrer,max: 1, time: 60000, errors: ['time']})
                         .then(async cld => {
                             let msg = cld.first();
                             finalEmbed.embed.author.name = msg.content
@@ -105,7 +105,7 @@ module.exports = class Test extends Command {
                 })
             } else if (r.emoji.name === '🖍') {
                 await message.channel.send(lang.embedBuilder.footerMsg).then(mp => {
-                    mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
+                    mp.channel.awaitMessages({filter: dureefiltrer,max: 1, time: 60000, errors: ['time']})
                         .then(async cld => {
                             let msg = cld.first();
                             finalEmbed.embed.footer.text = msg.content
@@ -117,7 +117,7 @@ module.exports = class Test extends Command {
                 })
             } else if (r.emoji.name === '💶') {
                 await message.channel.send(lang.embedBuilder.thumbnailMsg).then(mp => {
-                    mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
+                    mp.channel.awaitMessages({filter: dureefiltrer,max: 1, time: 60000, errors: ['time']})
                         .then(async cld => {
                             let link;
                             let msg = cld.first();
@@ -180,7 +180,7 @@ module.exports = class Test extends Command {
                 })
             } else if (r.emoji.name === '🖼') {
                 await message.channel.send(lang.embedBuilder.imageMsg).then(mp => {
-                    mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
+                    mp.channel.awaitMessages({filter: dureefiltrer,max: 1, time: 60000, errors: ['time']})
                         .then(async cld => {
                             let link;
                             let msg = cld.first();
@@ -244,7 +244,7 @@ module.exports = class Test extends Command {
                 })
             } else if (r.emoji.name === '🌐') {
                 await message.channel.send(lang.embedBuilder.urlMsg).then(mp => {
-                    mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
+                    mp.channel.awaitMessages({filter: dureefiltrer,max: 1, time: 60000, errors: ['time']})
                         .then(async cld => {
                             let msg = cld.first()
                             if (!msg.content.toLowerCase().startsWith('http') || !msg.content.toLowerCase().startsWith('https')) return message.channel.send(lang.embedBuilder.errorUrl)
@@ -257,7 +257,7 @@ module.exports = class Test extends Command {
                 })
             } else if (r.emoji.name === '🎨') {
                 await message.channel.send(lang.embedBuilder.colorMsg).then(mp => {
-                    mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
+                    mp.channel.awaitMessages({filter: dureefiltrer,max: 1, time: 60000, errors: ['time']})
                         .then(async cld => {
                             let msg = cld.first();
                             const rouge = '#FF0000'
@@ -329,7 +329,7 @@ module.exports = class Test extends Command {
                 })
             } else if (r.emoji.name === '⏲') {
                 await message.channel.send(lang.embedBuilder.timestampMsg).then(mp => {
-                    mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
+                    mp.channel.awaitMessages({filter: dureefiltrer,max: 1, time: 60000, errors: ['time']})
                         .then(async cld => {
                             let msg = cld.first();
                             if (msg.content.toLowerCase() === 'oui') {
@@ -354,7 +354,7 @@ module.exports = class Test extends Command {
                 let ch;
                 let embedMsg;
                 await message.channel.send(lang.embedBuilder.copyMsg).then(mp => {
-                    mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
+                    mp.channel.awaitMessages({filter: dureefiltrer,max: 1, time: 60000, errors: ['time']})
                         .then(async cld => {
                             let msg = cld.first();
                             // if(isNaN(msg)) return message.channel.send(`Veuilez entrer un id valide !`).then(() =>{
@@ -373,7 +373,7 @@ module.exports = class Test extends Command {
                                 })
                             }
                             await message.channel.send(lang.embedBuilder.messageId).then(id => {
-                                id.channel.awaitMessages(dureefiltrer, {max: 1, time: 60000, errors: ['time']})
+                                id.channel.awaitMessages({filter: dureefiltrer,max: 1, time: 60000, errors: ['time']})
                                     .then(async cld => {
                                         let msg = cld.first();
                                         if (isNaN(msg)) return message.channel.send(lang.embedBuilder.errorWrongId).then(() => {
@@ -436,19 +436,19 @@ module.exports = class Test extends Command {
 
             if (finalEmbed.embed.description && roles.length > 0)
                 finalEmbed.embed.description = finalEmbed.embed.description.replace(/{roles}/g, roles.map((role, i) => `<@&${role}>`).join('\n'))
-            msg.edit(finalEmbed)
+            msg.edit({embeds :[finalEmbed]})
 
         }
 
         for await(const em of roleChooserEmojis) await roleChooserMessage.react(em);
-        const collector = roleChooserMessage.createReactionCollector(filter, {time: 900000});
+        const collector = roleChooserMessage.createReactionCollector({filter, time: 900000});
         collector.on('collect', async r => {
             await r.users.remove(message.author);
             const emojisLenght = roleChooserEmojis.length
             if (r.emoji.name !== roleChooserEmojis[0] && r.emoji.name !== roleChooserEmojis[1] && r.emoji.name !== roleChooserEmojis[2] && r.emoji.name !== roleChooserEmojis[3]) {
                 const index = client.functions.emojiToNumber(r.emoji.name);
                 const question = await message.channel.send(lang.roleEmbed.changeRoleQ)
-                question.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                question.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                     .then(async cld => {
                         let msg = cld.first();
                         if (!msg.mentions.roles.first() && isNaN(msg.content)) return message.channel.send(lang.roleEmbed.errorNoRole).then((reply) => {
@@ -505,7 +505,7 @@ module.exports = class Test extends Command {
                         }, 2000);
                     })
                     const question = await message.channel.send(lang.roleEmbed.addRoleQ)
-                    question.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                    question.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                         .then(async cld => {
                             const msg = cld.first()
                             if (!msg.mentions.roles.first() && isNaN(msg.content)) return message.channel.send(lang.roleEmbed.errorNoRole).then((reply) => {
@@ -657,7 +657,7 @@ module.exports = class Test extends Command {
                 }
                 if (r.emoji.name === roleChooserEmojis[1]) {
                     const question = await message.channel.send(lang.roleEmbed.removeRoleQ)
-                    question.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                    question.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                         .then(async cld => {
                             const msg = cld.first()
                             if (!msg.mentions.roles.first() && isNaN(msg.content)) return message.channel.send(lang.roleEmbed.errorNoRole).then((reply) => {
@@ -703,7 +703,7 @@ module.exports = class Test extends Command {
                 if (r.emoji.name === roleChooserEmojis[3]) {
                     if (roles.length < 1 || roles.length < toSearch.length) return message.channel.send(`No roles are selected or not enought roles`)
                     const question = await message.channel.send(lang.roleEmbed.sendEmbedQ)
-                    question.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                    question.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                         .then(async cld => {
                             const msg = cld.first()
                             if (!msg.mentions.channels.first() && isNaN(msg.content)) return message.channel.send(lang.roleEmbed.errorNoRole).then((reply) => {
@@ -762,7 +762,7 @@ module.exports = class Test extends Command {
 
 
         function updateEmbed() {
-            roleChooserMessage.edit(lang.roleEmbed.potentialRoles(roles, type, client.users.resolve(message.author.id).displayAvatarURL({dynamic: true}), color))
+            roleChooserMessage.edit({embeds :[lang.roleEmbed.potentialRoles(roles, type, client.users.resolve(message.author.id).displayAvatarURL({dynamic: true}), color)]})
         }
 
         function hexColorCheck(a) {

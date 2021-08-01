@@ -13,7 +13,7 @@ module.exports = class Ready extends Event {
     async run(client, member, role) {
         let guild = member.guild;
         if (!role.permissions.has("KICK_MEMBERS") || !role.permissions.has("BAN_MEMBERS") || !role.permissions.has("ADMINISTRATOR") || !role.permissions.has("MANAGE_CHANNELS") || !role.permissions.has("MANAGE_GUILD") || !role.permissions.has("MANAGE_ROLES") || !role.permissions.has("MENTION_EVERYONE")) return;
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         const color = guildData.get('color')
         let antiraidLog = guildData.get('logs').antiraid;
@@ -29,7 +29,8 @@ module.exports = class Ready extends Event {
         const diff = now - timeOfAction
         if (diff > 600 || action.changes[0].key !== "$add") return;
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
-        if (guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+        if (guild.ownerId
+ === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
@@ -45,7 +46,7 @@ module.exports = class Ready extends Event {
             } catch (e) {
                 if (e.toString().toLowerCase().includes('missing permissions')) {
                     if (channel) {
-                        channel.send(logs.memberRole(executor, action.target, role.id, color, "Je n'ai pas assé de permissions", "ADD"))
+                        channel.send({embeds : [logs.memberRole(executor, action.target, role.id, color, "Je n'ai pas assé de permissions", "ADD")]})
                     }
                 }
             }
@@ -72,14 +73,14 @@ module.exports = class Ready extends Event {
                 }
 
                 if (channel && !channel.deleted) {
-                    channel.send(logs.memberRole(executor, action.target, role.id, color, sanction, "ADD"))
+                    channel.send({embeds : [logs.memberRole(executor, action.target, role.id, color, sanction, "ADD")]})
                 }
 
             } else {
 
 
                 if (channel && !channel.deleted) {
-                    channel.send(logs.memberRole(executor, action.target, role.id, color, "Je n'ai pas assé de permissions", "ADD"))
+                    channel.send({embeds: [logs.memberRole(executor, action.target, role.id, color, "Je n'ai pas assé de permissions", "ADD")]})
 
 
                 }

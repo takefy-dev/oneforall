@@ -50,7 +50,7 @@ module.exports = class Test extends Command {
                 .setColor(`${color}`)
                 .setFooter(client.user.tag)
                 .setTimestamp();
-            const msg = await message.channel.send(embed)
+            const msg = await message.channel.send({embeds: [embed]})
 
 
             counts.set(message.guild.id, 0)
@@ -103,7 +103,7 @@ module.exports = class Test extends Command {
                 .setColor(`${color}`)
                 .setFooter(client.user.tag)
                 .setTimestamp();
-            const msg = await message.channel.send(embed)
+            const msg = await message.channel.send({embeds: [embed]})
 
 
             counts.set(message.guild.id, 0)

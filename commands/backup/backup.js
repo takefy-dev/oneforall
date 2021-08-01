@@ -64,8 +64,8 @@ module.exports = class Test extends Command {
                 .setTimestamp()
                 .setFooter(client.user.username);
 
-            msg.edit(" ", configEmbed).then(async m => {
-                const collector = m.createReactionCollector(filter, {time: 900000});
+            msg.edit({content: null, embeds : [configEmbed]}).then(async m => {
+                const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
                     if (r.emoji.name === '1️⃣') {
@@ -196,7 +196,7 @@ module.exports = class Test extends Command {
                 .setColor(`${color}`)
                 .setTimestamp()
                 .setFooter(client.user.username)
-            message.channel.send(embed)
+            message.channel.send({embeds: [embed]})
         }
         if (load) {
             if (!guildData.isGuildOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
@@ -263,7 +263,7 @@ module.exports = class Test extends Command {
             for (let emo of emoji) {
                 await msg.react(client.emojis.cache.get(emo))
             }
-            msg.edit(' ', embed).then(async m => {
+            msg.edit({content:null, embeds: [embed]}).then(async m => {
                 const collector = m.createReactionCollector(filters, {time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
@@ -283,7 +283,7 @@ module.exports = class Test extends Command {
                             `)
 
 
-                        msg.edit(' ', embed).catch((err) => {
+                        msg.edit({content:null, embeds: [embed]}).catch((err) => {
                             if (err.toString().includes('Invalid Form Body')) {
                                 return message.channel.send("Il y a trop de salons à visualiser sur cette backup")
                             }
@@ -302,7 +302,7 @@ module.exports = class Test extends Command {
                         `)
 
                         try {
-                            msg.edit(' ', embed)
+                            msg.edit({content:null, embeds: [embed]})
                         } catch (err) {
                             if (err.toString().includes('Invalid Form Body')) {
                                 return message.channel.send("Il y a trop de roles à visualiser sur cette backup")
@@ -338,7 +338,7 @@ module.exports = class Test extends Command {
             dd.setColor(`${color}`)
             dd.setTimestamp()
             dd.setFooter(client.user.username);
-            msg.edit(dd)
+            msg.edit({embeds : [dd]})
         }
     }
 }

@@ -9,7 +9,7 @@ const spammer = new Collection()
 module.exports = class Message extends Event{
     constructor() {
         super({
-            name: 'message',
+            name: 'messageCreate',
         });
     }
     async run(client, message){
@@ -28,7 +28,8 @@ module.exports = class Message extends Event{
 
 
         if (message.author.id === client.user.id) return
-        if(message.guild.ownerID === message.author.id) return
+        if(message.guild.ownerId
+ === message.author.id) return
 
         let isGuildOwner = guildData.isGuildOwner(message.author.id);
         let isBotOwner = client.isOwner(message.author.id);
@@ -64,7 +65,7 @@ module.exports = class Message extends Event{
                         await member.roles.add(muteRole);
                         message.channel.send(`${message.member}, vous avez été mute car vous spammez`)
                         const channel = message.guild.channels.cache.get(antiraidLog);
-                        if(channel && !channel.deleted) channel.send(logs.antiSpam(message.member, message.channel.id, color, 'mute'))
+                        if(channel && !channel.deleted) channel.send({embeds : [logs.antiSpam(message.member, message.channel.id, color, 'mute')]})
                     } else {
                         userData.msgCount = msgCount;
                         spammer.set(message.author.id, userData);

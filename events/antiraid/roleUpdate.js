@@ -10,7 +10,7 @@ module.exports = class roleUpdate extends Event {
     async run(client, oldRole, newRole) {
         if (oldRole === newRole) return;
         const guild = oldRole.guild;
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         if (oldRole.managed && newRole.managed) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         const color = guildData.get('color')
@@ -29,7 +29,8 @@ module.exports = class roleUpdate extends Event {
         console.log(diff)
         if (diff >= 500) return
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `roleUpdate`, 'pink');
-        if (guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `roleUpdate`, 'pink');
+        if (guild.ownerId
+ === action.executor.id) return Logger.log(`No sanction crown`, `roleUpdate`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
@@ -58,7 +59,7 @@ module.exports = class roleUpdate extends Event {
                 if (e.toString().toLowerCase().includes('missing permissions')) {
 
                     if (channel && !channel.deleted) {
-                        channel.send(logs.edtionRole(member, oldRole.id, oldRole.name, newRole.name, color, "Je n'ai pas assé de permissions"))
+                        channel.send({embeds : [logs.edtionRole(member, oldRole.id, oldRole.name, newRole.name, color, "Je n'ai pas assé de permissions")]})
 
                     }
 
@@ -92,12 +93,12 @@ module.exports = class roleUpdate extends Event {
 
 
                 if (channel && !channel.deleted) {
-                    channel.send(logs.edtionRole(member, oldRole.id, oldRole.name, newRole.name, color, sanction))
+                    channel.send({embeds : [logs.edtionRole(member, oldRole.id, oldRole.name, newRole.name, color, sanction)]})
                 }
 
             } else {
                 if (channel && !channel.deleted) {
-                    channel.send(logs.edtionRole(member, oldRole.id, oldRole.name, newRole.name, color, "Je n'ai pas assé de permissions"))
+                    channel.send({embeds: [logs.edtionRole(member, oldRole.id, oldRole.name, newRole.name, color, "Je n'ai pas assé de permissions")]})
 
                 }
 

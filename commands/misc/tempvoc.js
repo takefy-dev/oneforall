@@ -42,8 +42,8 @@ module.exports = class Test extends Command {
             dureefiltrer = response => {
                 return response.author.id === message.author.id
             };
-        msg.edit(" ", embed).then(async m => {
-            const collector = m.createReactionCollector(filter, {time: 900000});
+        msg.edit({content:null, embeds: [embed]}).then(async m => {
+            const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                 await r.users.remove(message.author);
                 if (r.emoji.name === emojis[0]) {
@@ -155,7 +155,7 @@ module.exports = class Test extends Command {
 
                 function updateEmbed() {
                     embed.setDescription(lang.tempvoc.embedDescription(tempVoc.channelName, client.functions.enableEmoji(tempVoc.enable)))
-                    msg.edit(embed)
+                    msg.edit({embeds: [embed]})
 
 
                 }

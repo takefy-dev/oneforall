@@ -31,7 +31,7 @@ module.exports = class Test extends Command {
             .setDescription(lb.map((user, i) => `${i + 1} . <@${user.userId}> : ${user.coins.toFixed(2)} coins <a:coinsoneforall:823538178622488616>`))
             .setFooter(`OneForAll coins`)
             .setColor(color)
-        message.channel.send(embed)
+        message.channel.send({embeds: [embed]})
 
 
     }

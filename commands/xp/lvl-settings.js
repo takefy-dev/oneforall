@@ -27,14 +27,14 @@ module.exports = class Test extends Command {
                 return response.author.id === message.author.id
             };
         for (const em of emojis) await fistMsg.react(em)
-        fistMsg.edit('', lang.levelSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.cumulRoles)).setColor(color)).then(async m => {
-            const collector = m.createReactionCollector(filter, {time: 900000});
+        fistMsg.edit({content: null,embeds : [lang.levelSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.cumulRoles)).setColor(color)]}).then(async m => {
+            const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                 await r.users.remove(message.author);
                 if (r.emoji.name === emojis[0]) {
                     message.channel.send(lang.levelSettings.question.channelQuestion).then(mp => {
                         let channel;
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(cld => {
                                 const msg = cld.first();
                                 if (msg.content === 'cancel') {
@@ -58,7 +58,7 @@ module.exports = class Test extends Command {
                                 })
 
                                 message.channel.send(lang.levelSettings.question.messageQuestion).then(mps => {
-                                    mps.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                                    mps.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                         .then(cld => {
                                             const msg = cld.first();
 
@@ -85,7 +85,7 @@ module.exports = class Test extends Command {
                 if(r.emoji.name === emojis[1]){
                     message.channel.send(lang.levelSettings.question.roleQuestion).then(mp => {
                         let role;
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(async cld => {
                                 const msg = cld.first();
                                 if (msg.content === 'cancel') {
@@ -132,7 +132,7 @@ module.exports = class Test extends Command {
                                     }, 3000)
                                 })
                                 message.channel.send(lang.levelSettings.question.levelQuestion(role.name)).then(mps => {
-                                    mps.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                                    mps.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                         .then(cld => {
                                             const msg = cld.first();
                                             if(isNaN(msg.content)) return message.channel.send(lang.levelSettings.error.notNumber).then((rp) => {
@@ -158,7 +158,7 @@ module.exports = class Test extends Command {
                 }
                 if(r.emoji.name === emojis[2]){
                     message.channel.send(lang.levelSettings.question.roleQuestionRm).then(mp => {
-                        mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(cld => {
                                 const msg = cld.first();
                                 if (msg.content === 'cancel') {
@@ -220,7 +220,7 @@ module.exports = class Test extends Command {
         })
 
         function updateEmbed() {
-            fistMsg.edit(lang.levelSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.cumulRoles)).setColor(color))
+            fistMsg.edit({embeds : [lang.levelSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.cumulRoles)).setColor(color)]})
         }
     }
 

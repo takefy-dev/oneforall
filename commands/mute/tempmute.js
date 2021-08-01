@@ -63,7 +63,7 @@ module.exports = class Test extends Command {
             const {modLog} = guildData.get('logs').mod;
             const channel = message.guild.channels.cache.get(modLog);
             if (channel && !channel.deleted) {
-                channel.send(logs.mute(message.member, member.user, time, color, "tempmute"))
+                channel.send({embeds :[logs.mute(message.member, member.user, time, color, "tempmute")]})
             }
 
         })

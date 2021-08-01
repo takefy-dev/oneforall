@@ -21,10 +21,8 @@ module.exports = class Test extends Command {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
-        // if(!message.member.hasPermission('BAN_MEMBERS')) return message.channel.send("<:720681441670725645:780539422479351809> \`ERREUR\` Vous n'avez pas la permission requise \`BAN_MEMBERS\`")
-        const color = guildData.get('color')
         if (args[0] === 'all') {
-            const bans = await message.guild.fetchBans();
+            const bans = await message.guild.bans.fetch();
             if (bans.size < 1) return message.channel.send(lang.unban.noUnBanAll)
             bans.forEach(ban => {
                 message.guild.members.unban(ban.user.id, `Unban all par ${message.author.username}`)
@@ -38,7 +36,7 @@ module.exports = class Test extends Command {
             if (user.id === message.author.id) {
                 return await message.channel.send(lang.unban.unbanSelf)
             }
-            const banned = await message.guild.fetchBans();
+            const banned = await message.guild.bans.fetch();
             if (!banned.has(user.id)) {
                 return message.channel.send(lang.unban.notBan(user))
             }

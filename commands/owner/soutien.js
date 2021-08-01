@@ -44,7 +44,7 @@ module.exports = class Test extends Command {
                 .setTimestamp()
                 .setColor(`${color}`)
                 .setFooter(client.user.username);
-            msg.edit(" ", embed)
+            msg.edit({content:null, embeds: [embed]})
             const data_res = msg.createReactionCollector((reaction, user) => user.id === message.author.id);
             data_res.on("collect", async (reaction) => {
                 await reaction.users.remove(message.author);
@@ -154,7 +154,7 @@ module.exports = class Test extends Command {
 
             function updateEmbed() {
                 embed.setDescription(lang.soutien.description(tempConfig.roleId, tempConfig.message, enableEmoji()))
-                msg.edit(embed)
+                msg.edit({embeds: [embed]})
             }
         } else if (count) {
             const rlId = soutienId.get(message.guild.id);

@@ -61,7 +61,8 @@ module.exports = class Test extends Command {
             .setTitle(`${message.guild.name}`)
             .setDescription(`ID: ${message.guild.id}`)
             .setColor(color)
-            .addField(`**OWNERSHIP**:`, `<:771637500967124994:781883946614784011> ${message.guild.owner.user.tag || message.guild.owner.username}\n<@${message.guild.ownerID}>`, true)
+            .addField(`**OWNERSHIP**:`, `<:771637500967124994:781883946614784011> ${message.guild.owner.user.tag || message.guild.owner.username}\n<@${message.guild.ownerId
+}>`, true)
             .addField(`**CHANNELS**:`, `<:channel:817722375562985472> Text: ${channelsGuild.filter(channel => channel.type === 'text').size}\n<:voc:801123036576612353> Voice: ${channelsGuild.filter(channel => channel.type === 'voice').size}`, true)
             .addField(`**REGION:**`, `${regions[message.guild.region]}`, true)
             .addField(`**VERIFICATION LEVE:**`, `${verificationLevels[message.guild.verificationLevel]}`, true)
@@ -77,7 +78,7 @@ module.exports = class Test extends Command {
             .setImage(message.guild.bannerURL({size: 1024}))
             .setTimestamp();
 
-        message.channel.send(embed);
+        message.channel.send({embeds: [embed]});
 
     }
 };

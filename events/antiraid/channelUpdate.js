@@ -10,7 +10,7 @@ module.exports = class channelUpdate extends Event {
     async run(client, oldChannel, newChannel) {
         let guild = oldChannel.guild;
 
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         const color = guildData.get('color')
         let antiraidLog = guildData.get('logs').antiraid;
@@ -27,7 +27,8 @@ module.exports = class channelUpdate extends Event {
         const diff = now - timeOfAction
 
         if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
-        if (guild.ownerID === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+        if (guild.ownerId
+ === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
@@ -48,7 +49,9 @@ module.exports = class channelUpdate extends Event {
                         topic: oldChannel.topic,
                         bitrate: oldChannel.bitrate,
                         position: oldChannel.rawPosition,
-                        parentID: oldChannel.parentID,
+                        parentId
+: oldChannel.parentId
+,
                         userLimit: oldChannel.userLimit,
                         manageable: oldChannel.manageable,
                         rateLimitPerUser: oldChannel.rateLimitPerUser
@@ -56,7 +59,7 @@ module.exports = class channelUpdate extends Event {
                 } catch (e) {
                     if (e.toString().toLowerCase().includes('missing permissions')) {
                         if (channel) {
-                            channel.send(logs.edtionRole(member, oldChannel.id, oldChannel.name, newChannel.name, color, "Je n'ai pas assé de permissions"))
+                            channel.send({embeds : [logs.edtionRole(member, oldChannel.id, oldChannel.name, newChannel.name, color, "Je n'ai pas assé de permissions")]})
 
                         }
                     }
@@ -85,14 +88,14 @@ module.exports = class channelUpdate extends Event {
                     }
 
                     if (channel && !channel.deleted) {
-                        channel.send(logs.edtionRole(member, newChannel.id, oldChannel.name, newChannel.name, color, sanction))
+                        channel.send({embeds : [logs.edtionRole(member, newChannel.id, oldChannel.name, newChannel.name, color, sanction)]})
                     }
 
                 } else {
 
 
                     if (channel && !channel.deleted) {
-                        channel.send(logs.edtionRole(member, newChannel.id, oldChannel.name, newChannel.name, color, "Je n'ai pas assé de permissions"))
+                        channel.send({embeds : [logs.edtionRole(member, newChannel.id, oldChannel.name, newChannel.name, color, "Je n'ai pas assé de permissions")]})
 
                     }
 

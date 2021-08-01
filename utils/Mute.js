@@ -27,7 +27,7 @@ module.exports = {
                         const {modLog} = guildData.get('logs').mod;
                         const channel = guild.channels.cache.get(modLog);
                         if (channel && !channel.deleted) {
-                            channel.send(logs.unmute(member.user, moment(expireAt).tz("Paris").format("DD/MM/YYYY HH:mm:ss"), guildData.get('color')))
+                            channel.send({embeds : [logs.unmute(member.user, moment(expireAt).tz("Paris").format("DD/MM/YYYY HH:mm:ss"), guildData.get('color'))]})
                         }
                     })
 

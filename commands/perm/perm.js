@@ -33,7 +33,7 @@ module.exports = class Test extends Command {
                 .setColor(guildData.get('color'))
                 .setTimestamp()
                 .setFooter(client.user.username, message.author.displayAvatarURL({dynamic: true}))
-            return await message.channel.send(embed)
+            return await message.channel.send({embeds: [embed]})
         }
         if (permToPutCommand !== '1' && permToPutCommand !== '2' && permToPutCommand !== "3" && permToPutCommand !== '4' && permToPutCommand !== "everyone") return message.channel.send(lang.perm.permNotFound);
         if (!commandName) return message.channel.send(lang.perm.commandNotFound)

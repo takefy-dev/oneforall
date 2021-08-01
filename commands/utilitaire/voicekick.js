@@ -27,7 +27,8 @@ module.exports = class Test extends Command {
                 mp.delete()
             }, 2000)
         })
-        if (!member.voice.channelID) return message.channel.send(lang.voicekick.notInVoice).then((mp) => {
+        if (!member.voice.channelId
+) return message.channel.send(lang.voicekick.notInVoice).then((mp) => {
             setTimeout(() => {
                 mp.delete()
             }, 2000)

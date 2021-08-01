@@ -52,7 +52,8 @@ class GuildManager {
             prefix: values.prefix ? values.prefix : '!',
             lang: values.lang ? values.lang : 'fr',
             whitelisted: values.whitelisted ? values.whitelisted : [],
-            owners: values.owners ? values.owners : this.guildManager.OneForAll.botperso ? [] : [this.guildManager.OneForAll.guilds.cache.get(values.guildId).ownerID],
+            owners: values.owners ? values.owners : this.guildManager.OneForAll.botperso ? [] : [this.guildManager.OneForAll.guilds.cache.get(values.guildId).ownerId
+],
             antiraid: values.antiraid ?  merge(this.guildManager.OneForAll.config.defaultAntiraidConfig,values.antiraid) : this.guildManager.OneForAll.config.defaultAntiraidConfig,
             antiraidLimits: values.antiraidLimits ? values.antiraidLimits : {
                 antiToken: {recentJoined : [], counter: 0}

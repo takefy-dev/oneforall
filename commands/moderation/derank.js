@@ -26,7 +26,8 @@ module.exports = class Test extends Command {
         let member = await message.mentions.members.first() || await message.guild.members.resolve(args[0])
         if (!member) return message.channel.send(lang.derank.errorNoMember)
         if (member.user.id === client.user.id) return message.channel.send(lang.derank.errorUnrankMe)
-        if (member.roles.highest.comparePositionTo(message.member.roles.highest) >= 0 && message.guild.ownerID !== message.author.id) return message.channel.send(lang.derank.errorRl(member))
+        if (member.roles.highest.comparePositionTo(message.member.roles.highest) >= 0 && message.guild.ownerId
+ !== message.author.id) return message.channel.send(lang.derank.errorRl(member))
         if (member.user.id === message.author.id) return message.channel.send(lang.derank.errorUnrankSelf);
         let roles = []
         await member.roles.cache
@@ -46,11 +47,7 @@ module.exports = class Test extends Command {
                     .setTimestamp()
                     .setFooter("🕙")
                     .setColor(`${color}`)
-
-                    .setTimestamp()
-                    .setFooter("🕙")
-                    .setColor(`${color}`)
-                logChannel.send(logsEmbed)
+                logChannel.send({embeds: [logsEmbed]})
             }
             return message.channel.send(lang.derank.success(member))
         })

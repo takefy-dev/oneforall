@@ -8,7 +8,7 @@ module.exports = class messageUpdate extends Event {
     }
 
     async run(client, oldMessage, newMessage) {
-        if (!oldMessage.guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!oldMessage.guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         if (!oldMessage.guild) return;
         if (!oldMessage.author) return;
         if (oldMessage.author.bot || newMessage.author.bot) return;
@@ -23,7 +23,7 @@ module.exports = class messageUpdate extends Event {
             const color = guildData.get('color')
             const link = `https://discord.com/channels/${oldMessage.guild.id}/${oldMessage.channel.id}/${oldMessage.id}`
             const executor = await oldMessage.member.fetch()
-            channel.send(logs.editionMsg(executor, oldMessage.content, newMessage.content, color, link))
+            channel.send({embeds : [logs.editionMsg(executor, oldMessage.content, newMessage.content, color, link)]})
         }
     }
 }

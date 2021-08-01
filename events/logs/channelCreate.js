@@ -12,7 +12,7 @@ module.exports = class channelCreate extends Event {
     async run(client, channel) {
         if (channel.type === "dm") return;
         let guild = channel.guild
-        if (!guild.me.hasPermission("VIEW_AUDIT_LOG")) return;
+        if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
         const color = guildData.get('color');
         let modLog = guildData.get('logs').mod;
@@ -27,7 +27,7 @@ module.exports = class channelCreate extends Event {
         const logsChannel = guild.channels.cache.get(modLog)
 
 
-        if (logsChannel && !logsChannel.deleted) logsChannel.send(logs.channelCreate(member, channel.name, channel.id, color))
+        if (logsChannel && !logsChannel.deleted) logsChannel.send({embeds : [logs.channelCreate(member, channel.name, channel.id, color)]})
 
     }
 };

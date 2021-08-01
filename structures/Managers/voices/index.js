@@ -51,8 +51,11 @@ class Voice extends Collection {
                     allowChannels, forbidChannels, multiplerChannels
                 } = guildData.get('xp')
                 if (!enable) break
-                const boost = multiplerChannels ? multiplerChannels.find(boost => boost.channel === value.values.voice.channelID) : undefined
-                if(!allowChannels.includes('all') && !allowChannels.includes( value.values.voice.channelID) || forbidChannels.includes( value.values.voice.channelID)) break
+                const boost = multiplerChannels ? multiplerChannels.find(boost => boost.channel === value.values.voice.channelId
+) : undefined
+                if(!allowChannels.includes('all') && !allowChannels.includes( value.values.voice.channelId
+) || forbidChannels.includes( value.values.voice.channelId
+)) break
 
                 if (typeof xpPerSVoc === 'string') xpPerSVoc = this.OneForAll.functions.getRandomInt(parseInt(xpPerSVoc.split('-')[0]), parseInt(xpPerSVoc.split('-')[1]))
                 let xpGain = xpPerSVoc

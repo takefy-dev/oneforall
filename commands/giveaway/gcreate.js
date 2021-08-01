@@ -76,13 +76,13 @@ module.exports = class Test extends Command {
             const embed = lang.giveaway.create.embed(giveawaysOptions.time, giveawaysOptions.channel, giveawaysOptions.winnerCount, giveawaysOptions.voice, giveawaysOptions.boost, isNaN(giveawaysOptions.reaction) ? giveawaysOptions.reaction : `<${!giveawaysOptions.emoji.animated ? '' : 'a'}:${giveawaysOptions.emoji.name}:${giveawaysOptions.reaction}>`, giveawaysOptions.prize, color).setAuthor(`🎉 ${message.guild.name}`)
             const msg = await message.channel.send(lang.loading)
             for (const em of emojis) await msg.react(em);
-            msg.edit('', embed).then(async m => {
-                const collector = m.createReactionCollector(filter, {time: 900000});
+            msg.edit({embeds : [embed]).then(async m => {
+                const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
                     if (r.emoji.name === emojis[0]) {
                         message.channel.send(lang.giveaway.create.question.time).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(cld => {
                                     const msg = cld.first();
                                     if (!isValideTime(msg.content)) return message.channel.send(lang.giveaway.create.inccorectResponse.time).then((reply) => {
@@ -106,7 +106,7 @@ module.exports = class Test extends Command {
                     }
                     if (r.emoji.name === emojis[1]) {
                         message.channel.send(lang.giveaway.create.question.channel).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(cld => {
                                     const msg = cld.first()
                                     const channel = msg.mentions.channels.first() || message.guild.channels.cache.get(msg.content);
@@ -132,7 +132,7 @@ module.exports = class Test extends Command {
                     }
                     if (r.emoji.name === emojis[2]) {
                         message.channel.send(lang.giveaway.create.question.winnerCount).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(cld => {
                                     const msg = cld.first()
                                     const winner = msg.content
@@ -157,9 +157,11 @@ module.exports = class Test extends Command {
                     }
                     if (r.emoji.name === emojis[3]) {
                         if (!giveawaysOptions.voice === true && giveawaysOptions.boost) {
-                            giveawaysOptions.exemptMembers = new Function('member', `return member.premiumSince === null && member.voice.channelID === null`)
+                            giveawaysOptions.exemptMembers = new Function('member', `return member.premiumSince === null && member.voice.channelId
+ === null`)
                         } else if (!giveawaysOptions.voice === true && !giveawaysOptions.boost) {
-                            giveawaysOptions.exemptMembers = new Function('member', `return member.voice.channelID === null`)
+                            giveawaysOptions.exemptMembers = new Function('member', `return member.voice.channelId
+ === null`)
                         } else {
                            delete giveawaysOptions.exemptMembers
                         }
@@ -168,7 +170,8 @@ module.exports = class Test extends Command {
                     }
                     if (r.emoji.name === emojis[4]) {
                         if (!giveawaysOptions.boost === true && giveawaysOptions.voice) {
-                            giveawaysOptions.exemptMembers = new Function('member', `return  member.premiumSince === null && member.voice.channelID === null`)
+                            giveawaysOptions.exemptMembers = new Function('member', `return  member.premiumSince === null && member.voice.channelId
+ === null`)
                         } else if (!giveawaysOptions.boost === true && !giveawaysOptions.voice) {
                             giveawaysOptions.exemptMembers = new Function('member', `return member.premiumSince === null`)
                         } else {
@@ -179,7 +182,7 @@ module.exports = class Test extends Command {
                     }
                     if (r.emoji.name === emojis[5]) {
                         message.channel.send(lang.giveaway.create.question.reaction).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(async cld => {
                                     const msg = cld.first()
                                     const parseEmoji = Util.parseEmoji(msg.content);
@@ -216,7 +219,7 @@ module.exports = class Test extends Command {
                     }
                     if (r.emoji.name === emojis[6]) {
                         message.channel.send(lang.giveaway.create.question.prize).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(cld => {
                                     const msg = cld.first()
                                     giveawaysOptions.prize = msg.content;

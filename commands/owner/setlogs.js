@@ -40,14 +40,14 @@ module.exports = class Test extends Command {
             .setTimestamp()
             .setColor(`${color}`)
             .setFooter(client.user.username)
-        setlogsMsg.edit(' ', logsEmbed)
+        setlogsMsg.edit({embeds : [logsEmbed]})
             .then(async m => {
-                const collector = m.createReactionCollector(filter, {time: 900000});
+                const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
                     if (r.emoji.name === '1️⃣') {
                         message.channel.send(lang.setlogs.raidChQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(async cld => {
                                     let msg = cld.first();
                                     if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content !== 'off') {
@@ -90,7 +90,7 @@ module.exports = class Test extends Command {
                         })
                     } else if (r.emoji.name === '2️⃣') {
                         message.channel.send(lang.setlogs.modChQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(async cld => {
                                     let msg = cld.first();
                                     if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content !== 'off') {
@@ -133,7 +133,7 @@ module.exports = class Test extends Command {
                         })
                     } else if (r.emoji.name === '3️⃣') {
                         message.channel.send(lang.setlogs.vocChQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(async cld => {
                                     let msg = cld.first();
                                     if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content != 'off') {
@@ -175,7 +175,7 @@ module.exports = class Test extends Command {
                         })
                     } else if (r.emoji.name === '4️⃣') {
                         message.channel.send(lang.setlogs.msgChQ).then(mp => {
-                            mp.channel.awaitMessages(dureefiltrer, {max: 1, time: 30000, errors: ['time']})
+                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                                 .then(async cld => {
                                     let msg = cld.first();
                                     if (!msg.mentions.channels.first() && isNaN(msg.content) && msg.content !== 'off') {

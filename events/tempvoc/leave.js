@@ -12,7 +12,8 @@ module.exports = class Ready extends Event{
         const tempVoc = guildData.get('tempvoc');
         const { channelId, categoryId, enable } = tempVoc;
         if(!enable) return;
-        if(channel.parentID !== categoryId) return
+        if(channel.parentId
+ !== categoryId) return
         if(channel.id === channelId) return
         if(!channel.members.size){
             channel.delete({reason: `Personne dans le salon`})

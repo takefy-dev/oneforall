@@ -50,7 +50,7 @@ module.exports = class Test extends Command {
                     .setTitle(`Coins logs`)
                     .setColor(guildData.get('color'))
                     .setDescription(lang.pay.logs(parseFloat(args[1]), message.member, targetUser))
-                logsChannel.send(logsEmbed)
+                logsChannel.send({embeds: [logsEmbed]})
             }else
                 message.reply(lang.pay.notEnoughtCoins(parseFloat(args[1])))
         }

@@ -33,7 +33,7 @@ module.exports = class Test extends Command {
             .addField("Question", question)
             .addField(lang.ball.reponse, replies[result])
 
-        message.channel.send(ballembed)
+        message.channel.send({embeds :[ballembed]})
 
     }
 };

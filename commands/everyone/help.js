@@ -51,13 +51,13 @@ module.exports = class Test extends Command {
                 .setDescription(lang.help.information2(prefix))
                 .setFooter(client.user.username, message.author.displayAvatarURL({dynamic: true}))
                 .addField(`**Links:**`, `<:verified:824621335858249778> [Top.gg](https://top.gg/bot/780019344511336518)\n<:store_tag:815181746306809877> [Support Server](https://discord.gg/n2EvRECf88)\n<:role:815181750367682580> [Website](https://one4all.fr)\n<:771462923855069204:784471984087236658> [Invite me](https://discord.com/api/oauth2/authorize?client_id=780019344511336518&permissions=8&scope=bot)`)
-            const princMsg = await message.channel.send(embed).then(async m => {
+            const princMsg = await message.channel.send({embeds: [embed]}).then(async m => {
                 await m.react('📄')
-                const collector = m.createReactionCollector(filter, {time: 900000});
+                const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
                     if (r.emoji.name === '📄') {
-                        message.channel.send(helpCommand).then(() => {
+                        message.channel.send({embeds : [helpCommand]}).then(() => {
                             m.reactions.removeAll()
                             collector.stop()
                         })
@@ -71,7 +71,7 @@ module.exports = class Test extends Command {
         if (args[0] === 'commands') {
 
             // .setDescription('**A quoi je sers  ?** \n \n Je suis un atiraid ! je fais des antirole,weebhook,channel etc... (Je suis juste un complément je je vous déconseille de mettre que moi comme bot antiraid , car je suis juste la pour __ANTIRAID__ , je ne fais pas de modération etc... ');
-            message.channel.send(helpCommand)
+            message.channel.send({embeds : [helpCommand]})
         }
         if (args[0] !== 'commands' && args[0]) {
             const cmd = await client.commands.get(args[0].toLowerCase().normalize()) || await client.aliases.get(args[0].toLocaleLowerCase().normalize());
@@ -90,7 +90,7 @@ module.exports = class Test extends Command {
                 .addField('User Permissions', cmd.userPermissions, true)
                 .setColor(`${color}`)
                 .setFooter(`${lang.help.footer} ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
-            message.channel.send(embed)
+            message.channel.send({embeds: [embed]})
         }
     }
 };

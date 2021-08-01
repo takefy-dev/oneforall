@@ -26,11 +26,12 @@ module.exports = class Test extends Command {
             .setTitle(`List of giveaways (${onServer.size})`)
             .setDescription(onServer.size > 0 ? onServer.map((g) => {
 
-                return `**Giveaway#${i++ + 1}** - [${g.prize}](https://discord.com/channels/${g.guildID}/${g.channelID}/${g.messageID})`
+                return `**Giveaway#${i++ + 1}** - [${g.prize}](https://discord.com/channels/${g.guildID}/${g.channelId
+}/${g.messageID})`
             }) : `No giveaways`)
             .setTimestamp()
             .setColor(color)
-        await message.channel.send(embed)
+        await message.channel.send({embeds: [embed]})
 
     }
 };

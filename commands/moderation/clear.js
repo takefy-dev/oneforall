@@ -25,7 +25,7 @@ module.exports = class Test extends Command {
         if(member){
             const channelMessage = await message.channel.messages.fetch();
             const memberMessage = channelMessage.filter((m) => m.author.id === member.id)
-            await message.channel.bulkDelete(memberMessage).then(async () => {
+            await message.channel.bulkDelete(memberMessage, true).then(async () => {
                 const msg = await message.channel.send(`${member} messages cleared`)
                 setTimeout(() => {
 

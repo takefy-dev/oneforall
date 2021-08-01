@@ -36,7 +36,7 @@ module.exports = class Test extends Command {
                 .setColor(color)
                 .setFooter(client.user.username, !warnsMember.user ? client.user.displayAvatarURL({dynamic: true}) : warnedMember.user.displayAvatarURL({dynamic: true}))
             if (warnsMember.length < 1) embed.setDescription(lang.warn.noWarn)
-            await message.channel.send(embed)
+            await message.channel.send({embeds: [embed]})
         } else {
             const allUsers = client.managers.userManager.filter(user => user.get('guildId') === message.guild.id && user.get('warns').length > 0);
             const allWarns = [];
@@ -68,12 +68,12 @@ module.exports = class Test extends Command {
                 const msg = await message.channel.send(lang.loading)
                 for (const em of emojis) await msg.react(em)
                 msg.edit({
-                    content: '',
-                    embed: embedPageChanger(page)
+                    content: null,
+                    embeds: [embedPageChanger(page)]
                 })
 
                 const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id;
-                const collector = msg.createReactionCollector(filter, {time: 900000})
+                const collector = msg.createReactionCollector({filter, time: 900000})
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
                     if (r.emoji.name === emojis[0]) {
@@ -101,8 +101,8 @@ module.exports = class Test extends Command {
                     }
 
                     msg.edit({
-                        embed:
-                            embedPageChanger(page)
+                        embeds:
+                            [embedPageChanger(page)]
 
                     })
                 })
