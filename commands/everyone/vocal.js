@@ -1,26 +1,16 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
-
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'vocal',
-            description: 'Show how many members are in voice chat | Permet de montrer combien de membres sont en vocal',
-            usage: 'vocal',
-            category: 'everyone',
-            aliases: ['voc', 'vc'],
-            clientPermissions: ['SEND_MESSAGES'],
-            cooldown: 5
-
-        });
-    }
-
-    async run(client, message, args) {
+module.exports = {
+    name: 'vocal',
+    description: 'Show how many members are in voice chat | Permet de montrer combien de membres sont en vocal',
+    usage: 'vocal',
+    category: 'everyone',
+    aliases: ['voc', 'vc'],
+    clientPermissions: ['SEND_MESSAGES'],
+    cooldown: 5,
+    run: async (client, message, args) => {
 
         const voiceChannels = message.guild.channels.cache.filter(c => c.type === 'voice');
         const members = message.guild.members.cache.filter(m => !m.bot && m.voice.channelId
- != null);
+            != null);
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
         const lang = guildData.lang;

@@ -1,24 +1,17 @@
 const prettyMilliseconds = require('pretty-ms');
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
-const moment = require('moment')
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'mutelist',
-            description: 'Show the tempmute member of the server | Afficher la liste des membres tempmute du serveur',
-            // Optionnals :
-            usage: 'mutelist',
-            category: 'moderation',
-            userPermissions: ['MUTE_MEMBERS'],
-            clientPermissions: ['ADD_REACTIONS', 'EMBED_LINKS'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'mutelist',
+    description: 'Show the tempmute member of the server | Afficher la liste des membres tempmute du serveur',
+    usage: 'mutelist',
+    category: 'moderation',
+    userPermissions: ['MUTE_MEMBERS'],
+    clientPermissions: ['ADD_REACTIONS', 'EMBED_LINKS'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
         const mutedData = [];
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
@@ -66,7 +59,7 @@ module.exports = class Test extends Command {
                 reac3 = await tdata.react("➡");
             }
 
-            tdata.edit({content:null, embeds: [embed]});
+            tdata.edit({content: null, embeds: [embed]});
 
             const data_res = tdata.createReactionCollector((reaction, user) => user.id === message.author.id);
 

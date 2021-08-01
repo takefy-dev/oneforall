@@ -1,16 +1,6 @@
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
-
-
-module.exports = class Ready extends Event {
-    constructor() {
-        super({
-            name: 'guildMemberRoleAdd',
-        });
-    }
-
-    async run(client, member, role) {
+module.exports = {
+    name: 'guildMemberRoleAdd',
+    run: async (client, member, role) => {
         let {guild} = member;
         if (!role.permissions.has("KICK_MEMBERS") || !role.permissions.has("BAN_MEMBERS") || !role.permissions.has("ADMINISTRATOR") || !role.permissions.has("MANAGE_CHANNELS") || !role.permissions.has("MANAGE_GUILD") || !role.permissions.has("MANAGE_ROLES") || !role.permissions.has("MENTION_EVERYONE")) return;
         if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
@@ -33,7 +23,7 @@ module.exports = class Ready extends Event {
 
 
         if (channel && !channel.deleted) {
-            channel.send({embeds :[logs.memberRole(executor, action.target, role.id, color, '', "ADD")]})
+            channel.send({embeds: [logs.memberRole(executor, action.target, role.id, color, '', "ADD")]})
         }
 
 

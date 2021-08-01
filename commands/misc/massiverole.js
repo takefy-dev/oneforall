@@ -1,29 +1,20 @@
-const ms = require('ms')
-const timer = new Map();
-let member = new Map();
-let counts = new Map();
-let done = new Map();
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
+const ms = require('ms'),
+    Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'massrole',
-            description: "Add / Remove a role to all members in a server | Permet d'ajouter / enlver un rôle a tout les membres d'un serveur",
-            usage: 'massrole < add / remove> <role>',
-            category: 'misc',
-            aliases: ['roleall', 'allrole'],
-            userPermissions: ["MANAGE_ROLES"],
-            clientPermissions: ["MANAGE_ROLES"],
-            cooldown: 5,
-            guildOwnerOnly: true
+module.exports = {
 
-        });
-    }
+    name: 'massrole',
+    description: "Add / Remove a role to all members in a server | Permet d'ajouter / enlver un rôle a tout les membres d'un serveur",
+    usage: 'massrole < add / remove> <role>',
+    category: 'misc',
+    aliases: ['roleall', 'allrole'],
+    userPermissions: ["MANAGE_ROLES"],
+    clientPermissions: ["MANAGE_ROLES"],
+    cooldown: 5,
+    guildOwnerOnly: true,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;

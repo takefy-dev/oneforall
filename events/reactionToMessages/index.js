@@ -1,17 +1,11 @@
-const Event = require('../../structures/Handler/Event');
 const {Collection} = require("discord.js");
 const messages = new Collection()
 let now = new Date()
 
-module.exports = class Ready extends Event {
-    constructor() {
-        super({
-            name: 'messageCreate',
-        });
-    }
-
-    async run(client, message) {
-        if(!message.guild) return
+module.exports = {
+    name: 'messageCreate',
+    run: async (client, message) => {
+        if (!message.guild) return
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const reactionToMessages = guildData.get('reactionsToMessages');
         if (!reactionToMessages.length || message.author.bot) return;

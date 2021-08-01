@@ -1,22 +1,18 @@
-const ms = require('ms');
-const moment = require('moment')
-const Command = require('../../structures/Handler/Command');
+const ms = require('ms'),
+    moment = require('moment')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'tempmute',
-            description: 'Tempmute a members | Tempmute un membre',
-            usage: 'tempmute <mention/id> <time>',
-            category: 'moderation',
-            userPermissions: ['MUTE_MEMBERS'],
-            clientPermissions: ['MUTE_MEMBERS'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'tempmute',
+    description: 'Tempmute a members | Tempmute un membre',
+    usage: 'tempmute <mention/id> <time>',
+    category: 'moderation',
+    userPermissions: ['MUTE_MEMBERS'],
+    clientPermissions: ['MUTE_MEMBERS'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
@@ -58,7 +54,7 @@ module.exports = class Test extends Command {
             const {modLog} = guildData.get('logs').mod;
             const channel = message.guild.channels.cache.get(modLog);
             if (channel && !channel.deleted) {
-                channel.send({embeds :[logs.mute(message.member, member.user, time, color, "tempmute")]})
+                channel.send({embeds: [logs.mute(message.member, member.user, time, color, "tempmute")]})
             }
 
         })

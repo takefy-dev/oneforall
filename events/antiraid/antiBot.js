@@ -1,18 +1,7 @@
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
-const ms = require("ms");
-const moment = require("moment")
-
-module.exports = class AntiBot extends Event {
-    constructor() {
-        super({
-            name: 'guildMemberAdd',
-        });
-    }
-
-    async run(client, member) {
-        if(!member.user.bot) return
+module.exports = {
+    name: 'guildMemberAdd',
+    run: async (client, member) => {
+        if (!member.user.bot) return
         const guild = member.guild;
         if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
@@ -23,8 +12,8 @@ module.exports = class AntiBot extends Event {
         const isOn = antiraidConfig.enable["antiBot"];
         if (!isOn) return;
         let action = await guild.fetchAuditLogs({type: "BOT_ADD"}).then(async (audit) => audit.entries.first());
-        if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `BOT ADD`, 'pink');
-        if (guild.ownerId === action.executor.id) return Logger.log(`No sanction crown`, `BOT ADD`, 'pink');
+        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `BOT ADD`, 'pink');
+        if (guild.ownerId === action.executor.id) return client.Logger.log(`No sanction crown`, `BOT ADD`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
@@ -38,21 +27,21 @@ module.exports = class AntiBot extends Event {
         if (isWlBypass && !isWl || !isWlBypass) {
             const executor = await guild.members.fetch(action.executor.id)
             const channel = guild.channels.cache.get(antiraidLog)
-            if(!guild.me.permissions.has("KICK_MEMBERS")){
+            if (!guild.me.permissions.has("KICK_MEMBERS")) {
                 if (channel && !channel.deleted) {
                     channel.send({
-                        embeds : [logs.botAdd(executor, member.user.username, member.id, color, "Je n'ai pas assé de permissions")]
+                        embeds: [logs.botAdd(executor, member.user.username, member.id, color, "Je n'ai pas assé de permissions")]
                     })
                 }
                 return
-            }else{
+            } else {
                 member.kick(`OneForAll - Type : BotAdd`)
             }
 
 
             let sanction = antiraidConfig.config['antiBot'];
             if (sanction === 'ban') {
-                await guild.members.ban(action.executor.id, {reason:`OneForAll - Type : BotAdd`})
+                await guild.members.ban(action.executor.id, {reason: `OneForAll - Type : BotAdd`})
             } else if (sanction === 'kick') {
                 await executor.kick(
                     `OneForAll - Type: BotAdd `
@@ -68,13 +57,11 @@ module.exports = class AntiBot extends Event {
             if (channel && !channel.deleted) {
 
                 channel.send({
-                    embeds : [logs.botAdd(executor, member.user.username, member.id, color, sanction)]
+                    embeds: [logs.botAdd(executor, member.user.username, member.id, color, sanction)]
                 })
             }
 
 
         }
-
-
     }
 }

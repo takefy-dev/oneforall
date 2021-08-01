@@ -1,13 +1,6 @@
-const Event = require('../../structures/Handler/Event');
-const ms = require("ms");
-module.exports = class antiToken extends Event {
-    constructor() {
-        super({
-            name: 'guildMemberRemove',
-        });
-    }
-
-    async run(client, member) {
+module.exports =  {
+    name: 'guildMemberRemove',
+    run: async (client, member) => {
         const guild = member.guild;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         const antiraidConfig = guildData.get('antiraid');
@@ -17,7 +10,7 @@ module.exports = class antiToken extends Event {
         let isBotOwner = client.isOwner(member.id);
         let isWlBypass = antiraidConfig.bypass["antiToken"];
         if (isWlBypass) var isWl = guildData.isGuildWl(member.id);
-        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `ANTI TOKEN`, 'pink');
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `ANTI TOKEN`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
             const limites = guildData.get('antiraidLimits');
             if(limites.antiToken.recentJoined.includes(member.id)){

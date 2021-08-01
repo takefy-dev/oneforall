@@ -1,23 +1,19 @@
 const {Util} = require('discord.js')
-const Command = require('../../structures/Handler/Command');
 
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'removeemoji',
-            description: 'Remove an emoji | Supprimer un emoji',
-            usage: 'removeemoji <emoji>',
-            category: 'misc',
-            aliases: ['remove', 'emojiremove', 'rmemoji'],
-            userPermissions: ['MANAGE_GUILD'],
-            clientPermissions: ['EMBED_LINKS'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'removeemoji',
+    description: 'Remove an emoji | Supprimer un emoji',
+    usage: 'removeemoji <emoji>',
+    category: 'misc',
+    aliases: ['remove', 'emojiremove', 'rmemoji'],
+    userPermissions: ['MANAGE_GUILD'],
+    clientPermissions: ['EMBED_LINKS'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
         const lang = guildData.lang;

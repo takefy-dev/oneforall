@@ -1,19 +1,17 @@
-const Discord = require('discord.js')
-const Event = require('../../structures/Handler/Event');
+const {MessageEmbed, WebhookClient} = require('discord.js')
 
-module.exports = class guildCreate extends Event {
-    constructor() {
-        super({
-            name: 'guildDelete',
-        });
-    }
+module.exports =  {
 
-    async run(client, guild) {
+    name: 'guildDelete',
+
+    run: async (client, guild) => {
         client.managers.guildManager.getAndCreateIfNotExists(guild.id).deleteGuild();
         client.Logger.info(`${guild.name} ${guild.id}`, `Guild delete`)
-        if (guild.deleted) return
-        const hook = new Discord.WebhookClient('803540682912038952', '7KhZEwqtJ3hZVWF1bGhuAuoSAzqju8e6V3Yv51wfvahtfChaUYhCtEn-Tbe5f7ErJNE6');
-        const embed = new Discord.MessageEmbed()
+        const hook = new WebhookClient({
+            id:'803540682912038952',
+            token:'7KhZEwqtJ3hZVWF1bGhuAuoSAzqju8e6V3Yv51wfvahtfChaUYhCtEn-Tbe5f7ErJNE6'
+        });
+        const embed = new MessageEmbed()
             .setTitle(`J'ai été enlevé d'un nouveau serveur`)
             .setDescription(
                 `<:778353230484471819:780727288903237663> Nom : **${guild.name}**\n

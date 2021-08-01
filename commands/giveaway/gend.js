@@ -1,23 +1,16 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
+module.exports = {
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'gend',
-            description: 'End giveaways',
-            usage: 'gend',
-            category: 'giveaway',
-            aliases: ['gstop'],
-            userPermissions: ['MANAGE_GUILD'],
-            clientPermissions: ['ADMINISTRATOR'],
-            cooldown: 5
+    name: 'gend',
+    description: 'End giveaways',
+    usage: 'gend',
+    category: 'giveaway',
+    aliases: ['gstop'],
+    userPermissions: ['MANAGE_GUILD'],
+    clientPermissions: ['ADMINISTRATOR'],
+    cooldown: 5,
 
-        });
-    }
 
-    async run(client, message, args) {
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const lang = guildData.lang
         const msgId = args[0];
@@ -37,7 +30,7 @@ module.exports = class Test extends Command {
                 message.channel.send('Le giveaway a été **__terminé__**')
             })
             .catch((e) => {
-                    message.channel.send("Ce giveaway est terminé")
+                message.channel.send("Ce giveaway est terminé")
 
             })
 

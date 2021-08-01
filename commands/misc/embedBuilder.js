@@ -1,28 +1,22 @@
-
 const fetch = require('node-fetch');
 const colorNameToHex = require('colornames')
 let hexColorRegex = require('hex-color-regex');
-const Command = require('../../structures/Handler/Command');
-const Discord = require('discord.js')
 const {MessageActionRow, MessageSelectMenu} = require("discord.js");
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'embed',
-            description: "Show the embed creation tool | Affiche l'outil de création d'un embed",
-            usage: 'embed',
-            category: 'misc',
-            aliases: ['embedcreator', 'embed'],
-            tags: ['guildOnly'],
-            clientPermissions: ['EMBED_LINKS'],
-            userPermissions: ['MANAGE_MESSAGES'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'embed',
+    description: "Show the embed creation tool | Affiche l'outil de création d'un embed",
+    usage: 'embed',
+    category: 'misc',
+    aliases: ['embedcreator', 'embed'],
+    tags: ['guildOnly'],
+    clientPermissions: ['EMBED_LINKS'],
+    userPermissions: ['MANAGE_MESSAGES'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
         const lang = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id).lang
         let embed = {
             description: lang.embedBuilder.descriptionRequired,
@@ -57,13 +51,13 @@ module.exports = class Test extends Command {
                 page = 0;
                 return updateOptions(interaction)
             }
-            if(value.includes('copy')){
-                if(value === 'copy'){
+            if (value.includes('copy')) {
+                if (value === 'copy') {
                     options = lang.embedBuilder.copyOptions
                     page = 1
                     placeHolder = lang.embedBuilder.copyPlaceHolder
                 }
-                if(value === 'copy-channel'){
+                if (value === 'copy-channel') {
                     const msg = await message.channel.send(lang.embedBuilder.copyMsg);
                     row.components[0].setDisabled(true)
                     await panel.edit({
@@ -91,8 +85,8 @@ module.exports = class Test extends Command {
                         })
                     })
                 }
-                if(value === 'copy-id'){
-                    if(! tempCopy.channel) return message.channel.send(lang.embedBuilder.errorChannel)
+                if (value === 'copy-id') {
+                    if (!tempCopy.channel) return message.channel.send(lang.embedBuilder.errorChannel)
                     const msg = await message.channel.send(lang.embedBuilder.messageId);
                     row.components[0].setDisabled(true)
                     await panel.edit({
@@ -119,8 +113,8 @@ module.exports = class Test extends Command {
                         })
                     })
                 }
-                if(value === 'copy-valid'){
-                    if(!tempCopy.message) return message.channel.send(lang.embedBuilder.errorMessage(tempCopy.channel ? tempCopy.channel : 'Non définie'));
+                if (value === 'copy-valid') {
+                    if (!tempCopy.message) return message.channel.send(lang.embedBuilder.errorMessage(tempCopy.channel ? tempCopy.channel : 'Non définie'));
                     embed = tempCopy.message.embeds[0];
                     updateEmbed()
                     interaction.deferUpdate()
@@ -359,17 +353,17 @@ module.exports = class Test extends Command {
                                         embed[value].url = receivedMsg.content
                                     }
                                 }
-                            } else if(value === 'color'){
+                            } else if (value === 'color') {
                                 const color = colorNameToHex(receivedMsg.content.toLowerCase()) || hexColorCheck(receivedMsg.content)
                                 if (!color) message.channel.send(lang.embedBuilder.errorColor)
                                 embed[value] = color
-                            }else{
+                            } else {
                                 embed[value] = receivedMsg.content
 
                             }
-                            if(value === 'send'){
+                            if (value === 'send') {
                                 const channel = receivedMsg.mentions.channels.first() || message.guild.channels.cache.get(receivedMsg.content);
-                                if(channel){
+                                if (channel) {
                                     channel.send({embeds: [embed]})
                                 }
                             }

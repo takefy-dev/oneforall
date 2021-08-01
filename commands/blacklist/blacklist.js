@@ -1,26 +1,21 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'blacklist',
-            description: 'Manage the blacklist of the server | Gérer la blacklist du serveur',
-            // Optionnals :
-            usage: 'blacklist <remove / add /list / on /off>',
-            category: 'blacklist',
-            aliases: ['bl'],
-            userPermissions: ['ADMINISTRATOR'],
-            clientPermissions: ['BAN_MEMBERS'],
-            guildOwnerOnly: true,
-        });
-    }
+module.exports = {
 
-    async run(client, message, args) {
+    name: 'blacklist',
+    description: 'Manage the blacklist of the server | Gérer la blacklist du serveur',
+    usage: 'blacklist <remove / add /list / on /off>',
+    category: 'blacklist',
+    aliases: ['bl'],
+    userPermissions: ['ADMINISTRATOR'],
+    clientPermissions: ['BAN_MEMBERS'],
+    guildOwnerOnly: true,
+
+
+    run: async (client, message, args) => {
 
         let owner = !client.botperso ? message.guild.ownerId
- : client.buyer;
+            : client.buyer;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const blacklistData = client.managers.blackListManager.getAndCreateIfNotExists(owner);
         let tempdata = blacklistData.get('blacklisted')
@@ -63,10 +58,10 @@ module.exports = class Test extends Command {
             if (!memberUser) return message.channel.send(lang.blacklist.errorSyntaxAdd)
             let isTargetOwner = client.isOwner(message.guild.id, memberUser.id)
             if (isTargetOwner && message.author.id !== owner) return message.channel.send(lang.blacklist.errorTryBlOwner(memberUser))
-            
+
             if (tempdata.includes(memberUser.id)) return message.channel.send(lang.blacklist.errorAlreadyBl(memberUser))
             while (tempdata[0] === '') {
-                await tempdata  .shift()
+                await tempdata.shift()
             }
             if (!tempdata.includes(memberUser.id)) {
                 tempdata.push(memberUser.id);
@@ -122,12 +117,12 @@ module.exports = class Test extends Command {
 
 
             if (memberUser.id === owner && memberUser === message.guild.ownerId
-) return message.channel.send(lang.blacklist.errorCrown)
+            ) return message.channel.send(lang.blacklist.errorCrown)
             if (memberUser.id === client.user.id) return message.channel.send(lang.blacklist.errorMe)
             if (!memberUser) return message.channel.send(lang.blacklist.errorSyntaxAdd)
             let isTargetOwner = client.isOwner(message.guild.id, memberUser.id)
             if (isTargetOwner && message.author.id !== owner) return message.channel.send(lang.blacklist.errorTryUnBlOwner(memberUser))
-            
+
 
             if (!tempdata.includes(memberUser.id)) return message.channel.send(lang.blacklist.errorNotBl(memberUser))
 
@@ -178,8 +173,9 @@ module.exports = class Test extends Command {
             })
         } else if (list) {
             const usersTag = []
-            for(const id of tempdata){
-                const user = await client.users.fetch(id).catch(() => {})
+            for (const id of tempdata) {
+                const user = await client.users.fetch(id).catch(() => {
+                })
                 usersTag.push(user.tag)
             }
             const tempdataEmbed = {
@@ -208,36 +204,36 @@ module.exports = class Test extends Command {
                     return tempdataEmbed
                 }
                 const msg = await message.channel.send(lang.loading)
-                for(const em of emojis) await msg.react(em)
+                for (const em of emojis) await msg.react(em)
                 msg.edit({
                     content: null,
                     embeds: [embedPageChanger(page)]
                 })
 
                 const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id;
-                const collector = msg.createReactionCollector( {filter, time: 900000})
+                const collector = msg.createReactionCollector({filter, time: 900000})
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
-                    if(r.emoji.name === emojis[0]){
-                        page = page === 0 ? page = totalPage - 1 : page <= totalPage - 1 ? page-=1 : page+=1
+                    if (r.emoji.name === emojis[0]) {
+                        page = page === 0 ? page = totalPage - 1 : page <= totalPage - 1 ? page -= 1 : page += 1
                         slicerIndicatorMin -= maxPerPage
                         slicerIndicatorMax -= maxPerPage
 
 
                     }
-                    if(r.emoji.name === emojis[2]){
-                        page = page !== totalPage - 1 ? page+=1 : page = 0
+                    if (r.emoji.name === emojis[2]) {
+                        page = page !== totalPage - 1 ? page += 1 : page = 0
                         slicerIndicatorMin += maxPerPage
                         slicerIndicatorMax += maxPerPage
 
                     }
-                    if(r.emoji.name === emojis[1]){
+                    if (r.emoji.name === emojis[1]) {
                         collector.stop()
                     }
-                    if(slicerIndicatorMax < 0 || slicerIndicatorMin < 0) {
+                    if (slicerIndicatorMax < 0 || slicerIndicatorMin < 0) {
                         slicerIndicatorMin += maxPerPage * totalPage
                         slicerIndicatorMax += maxPerPage * totalPage
-                    }else if((slicerIndicatorMax >= maxPerPage * totalPage || slicerIndicatorMin >= maxPerPage * totalPage) && page === 0){
+                    } else if ((slicerIndicatorMax >= maxPerPage * totalPage || slicerIndicatorMin >= maxPerPage * totalPage) && page === 0) {
                         slicerIndicatorMin = 0
                         slicerIndicatorMax = 10
                     }
@@ -248,7 +244,7 @@ module.exports = class Test extends Command {
 
                     })
                 })
-                collector.on('end', async() => {
+                collector.on('end', async () => {
                     await msg.reactions.removeAll()
                 })
 
@@ -257,7 +253,7 @@ module.exports = class Test extends Command {
 
                 return message.channel.send({
                     embeds:
-                    [tempdataEmbed]
+                        [tempdataEmbed]
 
                 })
             }

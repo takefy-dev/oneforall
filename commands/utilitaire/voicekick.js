@@ -1,18 +1,13 @@
-const Command = require('../../structures/Handler/Command');
+module.exports = {
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'voicekick',
-            description: "Kick a user from a voicechannel | Exclure un membre d'un channel vocal",
-            category: 'utils',
-            usage: 'voicekick <member>',
-            userPermissions: ['MOVE_MEMBERS'],
-            cooldown: 15
-        });
-    }
+    name: 'voicekick',
+    description: "Kick a user from a voicechannel | Exclure un membre d'un channel vocal",
+    category: 'utils',
+    usage: 'voicekick <member>',
+    userPermissions: ['MOVE_MEMBERS'],
+    cooldown: 15,
 
-    async run(client, message, args) {
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang
         if (!args[0]) return message.channel.send(lang.voicekick.noMember).then((mp) => {
@@ -28,7 +23,7 @@ module.exports = class Test extends Command {
             }, 2000)
         })
         if (!member.voice.channelId
-) return message.channel.send(lang.voicekick.notInVoice).then((mp) => {
+        ) return message.channel.send(lang.voicekick.notInVoice).then((mp) => {
             setTimeout(() => {
                 mp.delete()
             }, 2000)

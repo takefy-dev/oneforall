@@ -1,13 +1,6 @@
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require("advanced-command-handler");
-module.exports = class guildUpdate extends Event {
-    constructor() {
-        super({
-            name: 'guildUpdate',
-        });
-    }
-
-    async run(client, oldGuild, newGuild) {
+module.exports ={
+    name: 'guildUpdate',
+    run: async (client, oldGuild, newGuild) => {
 
         if (!oldGuild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(oldGuild.id)
@@ -21,16 +14,16 @@ module.exports = class guildUpdate extends Event {
         if (!isOn) return;
         let action = await oldGuild.fetchAuditLogs({type: "GUILD_UPDATE"}).then(async (audit) => audit.entries.first());
         if(action.changes[0].key !== "name") return;
-        if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
+        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
         if (oldGuild.ownerId
- === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+ === action.executor.id) return client.Logger.log(`No sanction crown`, `${this.name}`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
         let isWlBypass = antiraidConfig.bypass["nameUpdate"];
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
-        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `oldGuild owner list or bot owner`}`, `CHANNEL DELETE`, 'pink');
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `oldGuild owner list or bot owner`}`, `CHANNEL DELETE`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
             const member = await oldGuild.members.fetch(action.executor.id)
             const channel = oldGuild.channels.cache.get(antiraidLog)

@@ -1,20 +1,16 @@
-const Command = require('../../structures/Handler/Command');
-const {MessageEmbed} = require("discord.js");
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'inviterole',
-            description: "Add role when member reach certain amount of invites | Ajouter un role quand un membre atteind un certain nombre d'invite",
-            category: 'invite',
-            usage: 'inviterole <add/remove/list/cumul> <role/on/off> <amountInvite/>',
-            aliases: ['roleinvite'],
-            userPermissions: ['ADMINISTRATOR'],
-            guildOwnerOnly: true,
-            cooldown: 4
-        });
-    }
+module.exports = {
 
-    async run(client, message, args) {
+    name: 'inviterole',
+    description: "Add role when member reach certain amount of invites | Ajouter un role quand un membre atteind un certain nombre d'invite",
+    category: 'invite',
+    usage: 'inviterole <add/remove/list/cumul> <role/on/off> <amountInvite/>',
+    aliases: ['roleinvite'],
+    userPermissions: ['ADMINISTRATOR'],
+    guildOwnerOnly: true,
+    cooldown: 4,
+
+
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         let inviteData = guildData.get('invite');
         let {inviteRole, cumulRoles} = inviteData
@@ -22,7 +18,7 @@ module.exports = class Test extends Command {
         const color = guildData.get('color')
         if (args[0] === 'list') {
             return message.channel.send({
-                embeds :[lang.inviteRole.listEmbed(inviteRole).setColor(color).setFooter(client.user.username, message.author.displayAvatarURL({dynamic: true}))]
+                embeds: [lang.inviteRole.listEmbed(inviteRole).setColor(color).setFooter(client.user.username, message.author.displayAvatarURL({dynamic: true}))]
             })
         }
         if (args[0] === 'cumul') {

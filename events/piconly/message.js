@@ -1,19 +1,13 @@
-const Event = require('../../structures/Handler/Event');
-module.exports = class message extends Event {
-    constructor() {
-        super({
-            name: 'messageCreate',
-        });
-    }
-
-    async run(client, message) {
-        if(!message.guild || message.member && message.member.permissions.has("ADMINISTRATOR")) return;
+module.exports = {
+    name: 'messageCreate',
+    run: async (client, message) => {
+        if (!message.guild || message.member && message.member.permissions.has("ADMINISTRATOR")) return;
         let guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const piconly = guildData.get('piconly');
-        if(piconly.includes(message.channel.id) && message.attachments.size <= 0){
-            return message.delete().catch(() => {})
+        if (piconly.includes(message.channel.id) && message.attachments.size <= 0) {
+            return message.delete().catch(() => {
+            })
         }
-
     }
 }
 

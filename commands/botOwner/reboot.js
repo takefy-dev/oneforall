@@ -1,22 +1,20 @@
-require('dotenv').config();
-const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
-const Discord = require('discord.js')
+module.exports = {
 
-module.exports = class Test extends Command{
-    constructor() {
-        super({
-            name: 'reboot',
-            description: 'reboot bot',
-            category: 'botOwner',
-            ownerOnly: true,
-            aliases: ['rb'],
-            cooldown: 20
-        });
-    }
-    async run(client, message,args){
+    name: 'reboot',
+    description: 'reboot bot',
+    category: 'botOwner',
+    ownerOnly: true,
+    aliases: ['rb'],
+    cooldown: 20,
+    run: async (client, message, args) => {
+        if (client.botperso) {
+            const loadBot = require('../../../Discord/loadBot')
+            loadBot(client.buyer, client)
+        } else {
+
+            process.exit()
+        }
         await message.channel.send(`Je suis en train de redémarrer !`)
-        process.exit()
     }
 }
 

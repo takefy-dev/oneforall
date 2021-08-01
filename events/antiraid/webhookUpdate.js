@@ -1,15 +1,7 @@
-const Discord = require('discord.js')
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require("advanced-command-handler");
-
-module.exports = class webhookUpdate extends Event {
-    constructor() {
-        super({
-            name: 'webhookUpdate',
-        });
-    }
-
-    async run(client, channel) {
+const {MessageEmbed} = require("discord.js");
+module.exports =  {
+    name: 'webhookUpdate',
+    run: async (client, channel) => {
         let guild = channel.guild
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
@@ -26,16 +18,16 @@ module.exports = class webhookUpdate extends Event {
             limit: 1
         }).then(async (audit) => audit.entries.first());
 
-        if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
+        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
         if (guild.ownerId
- === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+ === action.executor.id) return client.Logger.log(`No sanction crown`, `${this.name}`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
         let isWlBypass = antiraidConfig.bypass[this.name];
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
-        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `wb update`, 'pink');
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `wb update`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
             const executor = await guild.members.fetch(action.executor.id)
             const logsChannel = guild.channels.cache.get(antiraidLog)
@@ -48,7 +40,7 @@ module.exports = class webhookUpdate extends Event {
                 await newChannel.setPosition(channel.rawPosition)
 
                 if (newChannel) {
-                    const embed = new Discord.MessageEmbed()
+                    const embed = new MessageEmbed()
                         .setDescription('👩‍💻 Une création de webhook a été détecté le channel a donc été renew [oneforall antiraid](https://discord.gg/rdrTpVeGWX)')
                         .setColor(color)
                         .setTimestamp()

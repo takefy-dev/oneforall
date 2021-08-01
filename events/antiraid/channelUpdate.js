@@ -1,14 +1,8 @@
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require("advanced-command-handler");
-module.exports = class channelUpdate extends Event {
-    constructor() {
-        super({
-            name: 'channelUpdate',
-        });
-    }
 
-    async run(client, oldChannel, newChannel) {
-        let guild = oldChannel.guild;
+module.exports =  {
+    name: 'channelUpdate',
+    run: async (client, oldChannel, newChannel) => {
+        let {guild} = oldChannel;
 
         if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
@@ -26,16 +20,15 @@ module.exports = class channelUpdate extends Event {
         const now = new Date().getTime()
         const diff = now - timeOfAction
 
-        if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
-        if (guild.ownerId
- === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
+        if (guild.ownerId === action.executor.id) return client.Logger.log(`No sanction crown`, `${this.name}`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
         let isWlBypass = antiraidConfig.bypass[this.name];
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
-        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL DELETE`, 'pink');
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL DELETE`, 'pink');
         if (diff <= 1000) {
 
             if (isWlBypass && !isWl || !isWlBypass) {

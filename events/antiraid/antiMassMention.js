@@ -1,17 +1,10 @@
-const Event = require('../../structures/Handler/Event');
-const {Collection} = require("discord.js");
 const ms = require("ms");
 
-module.exports = class Message extends Event {
-    constructor() {
-        super({
-            name: 'messageCreate',
-        });
-    }
-
-    async run(client, message) {
+module.exports =  {
+    name: 'messageCreate',
+    run: async(client, message) => {
         if (!message.guild) return;
-        if (message.webhookID) return;
+        if (message.webhookId) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color');
         const antiraidConfig = guildData.get('antiraid');
@@ -19,8 +12,7 @@ module.exports = class Message extends Event {
         let {logs} = guildData.lang
         const isOn = antiraidConfig.enable["antiMassMention"];
         if (!isOn) return;
-        if (message.author.id === client.user.id || message.guild.ownerId
- === message.author.id) return
+        if (message.author.id === client.user.id || message.guild.ownerId === message.author.id) return
         let isGuildOwner = guildData.isGuildOwner(message.author.id);
         let isBotOwner = client.isOwner(message.author.id);
         let isWlBypass = antiraidConfig.bypass["antiMassMention"];

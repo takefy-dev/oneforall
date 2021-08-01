@@ -3,21 +3,17 @@ const backup = require('discord-backup')
 const DateFormat = require('fast-date-format');
 let loadTimeout = new Map();
 let doNotBackup = new Map();
-const Command = require('../../structures/Handler/Command');
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'backup',
-            description: 'Create a backup of the server | Creer un backup du serveur',
-            usage: 'backup <create / list / delete / info>',
-            category: 'backup',
-            userPermissions: ['ADMINISTRATOR'],
-            clientPermissions: ["SEND_MESSAGES", "EMBED_LINKS"],
-        });
-    }
+module.exports = {
 
-    async run(client, message, args) {
+    name: 'backup',
+    description: 'Create a backup of the server | Creer un backup du serveur',
+    usage: 'backup <create / list / delete / info>',
+    category: 'backup',
+    userPermissions: ['ADMINISTRATOR'],
+    clientPermissions: ["SEND_MESSAGES", "EMBED_LINKS"],
+
+    run: async (client, message, args) => {
 
         let configEmbed;
         let msg;
@@ -64,7 +60,7 @@ module.exports = class Test extends Command {
                 .setTimestamp()
                 .setFooter(client.user.username);
 
-            msg.edit({content: null, embeds : [configEmbed]}).then(async m => {
+            msg.edit({content: null, embeds: [configEmbed]}).then(async m => {
                 const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
@@ -160,13 +156,13 @@ module.exports = class Test extends Command {
                             jsonSave: false // so the backup won't be saved to a json file
                         }).then(async (backupData) => {
                             backups.push(backupData)
-                            if(!client.botperso){
+                            if (!client.botperso) {
                                 await client.cluster.broadcastEval(`this.managers.backupManager.getAndCreateIfNotExists('${message.author.id}').set('backup', ${JSON.stringify(backups)}).save()`).then((res) => {
                                     doNotBackup.delete(message.author.id)
 
                                     doing.edit(lang.backup.successCreate(backupData.id))
                                 })
-                            }else{
+                            } else {
                                 userBackup.set('backup', backups).save().then(() => {
                                     doNotBackup.delete(message.author.id)
 
@@ -263,7 +259,7 @@ module.exports = class Test extends Command {
             for (let emo of emoji) {
                 await msg.react(client.emojis.cache.get(emo))
             }
-            msg.edit({content:null, embeds: [embed]}).then(async m => {
+            msg.edit({content: null, embeds: [embed]}).then(async m => {
                 const collector = m.createReactionCollector(filters, {time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
@@ -283,7 +279,7 @@ module.exports = class Test extends Command {
                             `)
 
 
-                        msg.edit({content:null, embeds: [embed]}).catch((err) => {
+                        msg.edit({content: null, embeds: [embed]}).catch((err) => {
                             if (err.toString().includes('Invalid Form Body')) {
                                 return message.channel.send("Il y a trop de salons à visualiser sur cette backup")
                             }
@@ -302,7 +298,7 @@ module.exports = class Test extends Command {
                         `)
 
                         try {
-                            msg.edit({content:null, embeds: [embed]})
+                            msg.edit({content: null, embeds: [embed]})
                         } catch (err) {
                             if (err.toString().includes('Invalid Form Body')) {
                                 return message.channel.send("Il y a trop de roles à visualiser sur cette backup")
@@ -338,7 +334,7 @@ module.exports = class Test extends Command {
             dd.setColor(`${color}`)
             dd.setTimestamp()
             dd.setFooter(client.user.username);
-            msg.edit({embeds : [dd]})
+            msg.edit({embeds: [dd]})
         }
     }
 }

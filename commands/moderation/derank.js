@@ -1,25 +1,18 @@
-const logsChannelId = new Map();
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'derank',
-            description: "Remove all roles of a member | Enlever tout les rôles d'un membre",
-            usage: 'derank <mention / id>',
-            category: 'moderation',
-            aliases: ['unrank'],
-            userPermissions: ['ADMINISTRATOR'],
-            clientPermissions: ['MANAGE_ROLES'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'derank',
+    description: "Remove all roles of a member | Enlever tout les rôles d'un membre",
+    usage: 'derank <mention / id>',
+    category: 'moderation',
+    aliases: ['unrank'],
+    userPermissions: ['ADMINISTRATOR'],
+    clientPermissions: ['MANAGE_ROLES'],
+    cooldown: 5,
 
-    async run(client, message, args) {
 
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
         const color = guildData.get('color')
@@ -27,7 +20,7 @@ module.exports = class Test extends Command {
         if (!member) return message.channel.send(lang.derank.errorNoMember)
         if (member.user.id === client.user.id) return message.channel.send(lang.derank.errorUnrankMe)
         if (member.roles.highest.comparePositionTo(message.member.roles.highest) >= 0 && message.guild.ownerId
- !== message.author.id) return message.channel.send(lang.derank.errorRl(member))
+            !== message.author.id) return message.channel.send(lang.derank.errorRl(member))
         if (member.user.id === message.author.id) return message.channel.send(lang.derank.errorUnrankSelf);
         let roles = []
         await member.roles.cache

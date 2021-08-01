@@ -22,7 +22,7 @@ module.exports = class roleDelete extends Event {
 
         let action = await guild.fetchAuditLogs({type: "ROLE_DELETE"}).then(async (audit) => audit.entries.first());
 
-        if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
+        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
 
         const member = await guild.members.fetch(action.executor.id)
         const channel = guild.channels.cache.get(modLog)

@@ -1,13 +1,6 @@
-const Event = require('../../structures/Handler/Event');
-
-module.exports = class messageUpdate extends Event {
-    constructor() {
-        super({
-            name: 'messageUpdate',
-        });
-    }
-
-    async run(client, oldMessage, newMessage) {
+module.exports = {
+    name: 'messageUpdate',
+    run: async (client, oldMessage, newMessage) => {
         if (!oldMessage.guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         if (!oldMessage.guild) return;
         if (!oldMessage.author) return;

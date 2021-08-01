@@ -1,22 +1,15 @@
-const Event = require('../../structures/Handler/Event');
-
-
-module.exports = class Ready extends Event{
-    constructor() {
-        super({
-            name: 'voiceChannelSwitch',
-        });
-    }
-    async run(client, member, oldChannel, newChannel){
+module.exports = {
+    name: 'voiceChannelSwitch',
+    run: async (client, member, oldChannel, newChannel) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(member.guild.id);
         const tempVoc = guildData.get('tempvoc');
-        const { channelName, channelId, categoryId, enable } = tempVoc;
-        if(!enable) return;
-        if(newChannel.parentId
- !== categoryId && oldChannel.parentId
- !== categoryId) return
+        const {channelName, channelId, categoryId, enable} = tempVoc;
+        if (!enable) return;
+        if (newChannel.parentId
+            !== categoryId && oldChannel.parentId
+            !== categoryId) return
         const chName = `${channelName.replace(/{username}/g, member.user.username)}`
-        if(newChannel.id === channelId){
+        if (newChannel.id === channelId) {
             member.guild.channels.create(chName, {
                 type: 'voice',
                 parent: categoryId,
@@ -29,7 +22,7 @@ module.exports = class Ready extends Event{
                 member.voice.setChannel(c)
             })
         }
-        if(!oldChannel.members.size && oldChannel.id !== channelId){
+        if (!oldChannel.members.size && oldChannel.id !== channelId) {
             oldChannel.delete({reason: `Personne dans le salon`})
         }
     }

@@ -1,22 +1,15 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
+module.exports = {
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'unmute',
-            description: 'Unmute a member | Unmute un membre',
-            usage: 'unmute <mention/id>',
-            category: 'moderation',
-            clientPermissions: ['MUTE_MEMBERS'],
-            userPermissions: ['MUTE_MEMBERS'],
-            cooldown: 5
+    name: 'unmute',
+    description: 'Unmute a member | Unmute un membre',
+    usage: 'unmute <mention/id>',
+    category: 'moderation',
+    clientPermissions: ['MUTE_MEMBERS'],
+    userPermissions: ['MUTE_MEMBERS'],
+    cooldown: 5,
 
-        });
-    }
 
-    async run(client, message, args) {
+    run: async (client, message, args) => {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
@@ -33,7 +26,7 @@ module.exports = class Test extends Command {
             const {modLog} = guildData.get('logs').mod;
             const channel = message.guild.channels.cache.get(modLog);
             if (channel && !channel.deleted) {
-                channel.send({embeds :[logs.unmute(member.user, "commande", color)]})
+                channel.send({embeds: [logs.unmute(member.user, "commande", color)]})
             }
             message.channel.send(lang.unmute.success(member));
             const userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${message.author.id}`)

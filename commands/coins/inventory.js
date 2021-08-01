@@ -1,23 +1,19 @@
-
-const Command = require('../../structures/Handler/Command');
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'inventory',
-            description: 'Show your inventory | Afficher votre inventaire',
-            // Optionnals :
-            usage: 'inventory',
-            category: 'coins',
-            aliases: ['inv', 'bag'],
-            clientPermissions: ['EMBED_LINKS'],
-            cooldown: 4,
-            coinsOnly: true,
-        });
-    }
+module.exports = {
 
-    async run(client, message, args) {
+    name: 'inventory',
+    description: 'Show your inventory | Afficher votre inventaire',
+    // Optionnals :
+    usage: 'inventory',
+    category: 'coins',
+    aliases: ['inv', 'bag'],
+    clientPermissions: ['EMBED_LINKS'],
+    cooldown: 4,
+    coinsOnly: true,
+
+
+    run: async (client, message, args) => {
 
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);

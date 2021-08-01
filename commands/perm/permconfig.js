@@ -1,26 +1,21 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
-const emojiEnable = {
-    true: "<:778348494712340561:781153837850820619>",
-    false: "<:778348495157329930:781189773645578311>"
-}
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'permconfig',
-            description: 'Manage perm role on the serv | Gerer les perms role sur le serveur',
-            category: 'perm',
-            usage: 'permconfig <numberOfPerm> [remove] <roleId/mention> || permconfig <on/off>',
-            aliases: ['permconfig', 'perm-config', 'setup-perm'],
-            clientPermissions: ['EMBED_LINKS'],
-            userPermissions: ['ADMINISTRATOR'],
-            guildOwnerOnly: true,
-            cooldown: 2
-        });
+const Discord = require('discord.js'),
+    emojiEnable = {
+        true: "<:778348494712340561:781153837850820619>",
+        false: "<:778348495157329930:781189773645578311>"
     }
+module.exports = {
+    name: 'permconfig',
+    description: 'Manage perm role on the serv | Gerer les perms role sur le serveur',
+    category: 'perm',
+    usage: 'permconfig <numberOfPerm> [remove] <roleId/mention> || permconfig <on/off>',
+    aliases: ['permconfig', 'perm-config', 'setup-perm'],
+    clientPermissions: ['EMBED_LINKS'],
+    userPermissions: ['ADMINISTRATOR'],
+    guildOwnerOnly: true,
+    cooldown: 2,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
         const permToPutCommand = args[0];
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;

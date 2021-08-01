@@ -1,16 +1,6 @@
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
-
-
-module.exports = class Ready extends Event {
-    constructor() {
-        super({
-            name: 'voiceStateUpdate',
-        });
-    }
-
-    async run(client, oldState, newState) {
+module.exports = {
+    name: 'voiceStateUpdate',
+    run: async (client, oldState, newState) => {
         if (newState.member.user.bot) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(oldState.guild.id);
         const { enable } = guildData.get('coinsSettings');

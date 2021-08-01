@@ -1,21 +1,15 @@
 const discord = require('discord.js')
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'support',
-            description: 'Get the support server | Avoir le serveur de support',
-            usage: 'support',
-            clientPermissions: ['SEND_MESSAGES'],
-            category: 'everyone',
-            cooldown: 2
-        });
-    }
+module.exports = {
 
-    async run(client, message, args) {
+    name: 'support',
+    description: 'Get the support server | Avoir le serveur de support',
+    usage: 'support',
+    clientPermissions: ['SEND_MESSAGES'],
+    category: 'everyone',
+    cooldown: 2,
+
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
         const lang = guildData.lang;

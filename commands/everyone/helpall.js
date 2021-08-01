@@ -2,23 +2,17 @@ const {MessageEmbed} = require("discord.js"),
     pagination = require('discord.js-pagination')
 fs = require("fs");
 
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'helpall',
-            description: 'Affiche toutes les commandes',
-            usage: 'helpall',
-            category: 'everyone',
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'helpall',
+    description: 'Affiche toutes les commandes',
+    usage: 'helpall',
+    category: 'everyone',
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);

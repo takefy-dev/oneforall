@@ -1,24 +1,19 @@
-const ms = require("ms");
-const Command = require('../../structures/Handler/Command');
-const {Util} = require("discord.js");
-const {Collection, MessageEmbed} = require("discord.js");
-const oldGiveawayOptions = new Collection()
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'gcreate',
-            description: 'Create giveaways | Creer des giveaways',
-            usage: 'gcreate <time> [winners] [prize]',
-            category: 'giveaway',
-            aliases: ['gstart'],
-            userPermissions: ['MANAGE_GUILD'],
-            clientPermissions: ['SEND_MESSAGES'],
-            cooldown: 5
+const ms = require("ms"),
+    {Collection, MessageEmbed, Util} = require("discord.js"),
+    oldGiveawayOptions = new Collection()
+module.exports = {
 
-        });
-    }
+    name: 'gcreate',
+    description: 'Create giveaways | Creer des giveaways',
+    usage: 'gcreate <time> [winners] [prize]',
+    category: 'giveaway',
+    aliases: ['gstart'],
+    userPermissions: ['MANAGE_GUILD'],
+    clientPermissions: ['SEND_MESSAGES'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
@@ -35,6 +30,7 @@ module.exports = class Test extends Command {
         const time = args[0]
         let winner = args[1];
         const prize = args.slice(2).join(" ");
+
         function isValideTime(time) {
             return time.endsWith('s') || time.endsWith('m') || time.endsWith('h') || time.endsWith('d')
         }
@@ -76,7 +72,7 @@ module.exports = class Test extends Command {
             const embed = lang.giveaway.create.embed(giveawaysOptions.time, giveawaysOptions.channel, giveawaysOptions.winnerCount, giveawaysOptions.voice, giveawaysOptions.boost, isNaN(giveawaysOptions.reaction) ? giveawaysOptions.reaction : `<${!giveawaysOptions.emoji.animated ? '' : 'a'}:${giveawaysOptions.emoji.name}:${giveawaysOptions.reaction}>`, giveawaysOptions.prize, color).setAuthor(`🎉 ${message.guild.name}`)
             const msg = await message.channel.send(lang.loading)
             for (const em of emojis) await msg.react(em);
-            msg.edit({embeds : [embed]}).then(async m => {
+            msg.edit({embeds: [embed]}).then(async m => {
                 const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
@@ -163,7 +159,7 @@ module.exports = class Test extends Command {
                             giveawaysOptions.exemptMembers = new Function('member', `return member.voice.channelId
  === null`)
                         } else {
-                           delete giveawaysOptions.exemptMembers
+                            delete giveawaysOptions.exemptMembers
                         }
                         giveawaysOptions.voice = !giveawaysOptions.voice
                         updateEmbed();

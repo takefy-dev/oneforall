@@ -1,12 +1,6 @@
-const Event = require('../../structures/Handler/Event');
-module.exports = class messageReactionAdd extends Event {
-    constructor() {
-        super({
-            name: 'messageReactionAdd',
-        });
-    }
-
-    async run(client, reaction, user) {
+module.exports =  {
+    name: 'messageReactionAdd',
+    run: async (client, reaction, user) => {
         if (user.bot) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(reaction.message.guild.id);
         const reactRoles =  guildData.get('reactroles');

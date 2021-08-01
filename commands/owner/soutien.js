@@ -1,26 +1,17 @@
-const soutienId = new Map();
-const soutienMsg = new Map();
-const soutienOn = new Map();
-let SqlString = require('sqlstring');
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'soutien',
-            description: 'Show the menu for the soutient | Affiche le menu pour le soutient',
-            usage: 'soutien <config>',
-            clientPermissions: ['ADD_REACTIONS'],
-            category: 'owners',
-            guildOwnerOnly: true,
-            cooldown: 2
+module.exports = {
 
-        });
-    }
+    name: 'soutien',
+    description: 'Show the menu for the soutient | Affiche le menu pour le soutient',
+    usage: 'soutien <config>',
+    clientPermissions: ['ADD_REACTIONS'],
+    category: 'owners',
+    guildOwnerOnly: true,
+    cooldown: 2,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
         if (!client.botperso) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
@@ -31,8 +22,8 @@ module.exports = class Test extends Command {
         const tempConfig = client.functions.copyObject(guildData.get('soutien'))
         if (config) {
             const msg = await message.channel.send(lang.loading)
-            const emojis = ["1️⃣","2️⃣","3️⃣","❌", "✅"]
-            for(const em of emojis) await msg.react(em);
+            const emojis = ["1️⃣", "2️⃣", "3️⃣", "❌", "✅"]
+            for (const em of emojis) await msg.react(em);
             let enableEmoji = () => {
                 return tempConfig.enable ? '<:778348494712340561:781153837850820619>' : '<:778348495157329930:781189773645578311>'
             }
@@ -44,14 +35,14 @@ module.exports = class Test extends Command {
                 .setTimestamp()
                 .setColor(`${color}`)
                 .setFooter(client.user.username);
-            msg.edit({content:null, embeds: [embed]})
+            msg.edit({content: null, embeds: [embed]})
             const data_res = msg.createReactionCollector({filter: (reaction, user) => user.id === message.author.id});
             data_res.on("collect", async (reaction) => {
                 await reaction.users.remove(message.author);
                 if (reaction.emoji.name === "1️⃣") {
                     let question = await message.channel.send(lang.soutien.roleQ)
                     const filter = m => message.author.id === m.author.id;
-                    message.channel.awaitMessages( {
+                    message.channel.awaitMessages({
                         filter,
                         max: 1,
                         time: 30000,
@@ -135,8 +126,8 @@ module.exports = class Test extends Command {
 
                 } else if (reaction.emoji.name === "3️⃣") {
 
-                      tempConfig.enable = !tempConfig.enable;
-                      updateEmbed()
+                    tempConfig.enable = !tempConfig.enable;
+                    updateEmbed()
 
                 } else if (reaction.emoji.name === "❌") {
 
@@ -149,7 +140,7 @@ module.exports = class Test extends Command {
 
             });
             data_res.on('end', (collected, reason) => {
-                if(reason === 'cancel') message.channel.send(lang.cancel)
+                if (reason === 'cancel') message.channel.send(lang.cancel)
 
             });
 

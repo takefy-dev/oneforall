@@ -1,30 +1,25 @@
-
-const Command = require('../../structures/Handler/Command');
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'warn-config',
-            description: 'Configure the warn system | Configurer le system de warn',
-            // Optionnals :
-            usage: 'warn-config',
-            category: 'warn',
-            aliases: ['setwarn', 'warnconfig', 'warnsetup', 'warn-conf', 'warn config'],
-            userPermissions: ['ADMINISTRATOR'],
-            clientPermissions: ['EMBED_LINKS'],
-            guildOwnerOnly: true,
-            cooldown: 4
-        });
-    }
+module.exports = {
+    name: 'warn-config',
+    description: 'Configure the warn system | Configurer le system de warn',
+    // Optionnals :
+    usage: 'warn-config',
+    category: 'warn',
+    aliases: ['setwarn', 'warnconfig', 'warnsetup', 'warn-conf', 'warn config'],
+    userPermissions: ['ADMINISTRATOR'],
+    clientPermissions: ['EMBED_LINKS'],
+    guildOwnerOnly: true,
+    cooldown: 4,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
         const warn = guildData.get('warns')
 
         const color = guildData.get('color')
-        const warnBan= warn.settings.ban
+        const warnBan = warn.settings.ban
         const warnKick = warn.settings.kick
         const warnMute = warn.settings.mute
         const tempWarn = client.functions.copyObject(warn);
@@ -45,7 +40,7 @@ module.exports = class Test extends Command {
             .setFooter(client.user.tag)
             .setColor(`${color}`)
             .setTimestamp();
-        principalMsg.edit({content:null, embeds: [embed]}).then(async m => {
+        principalMsg.edit({content: null, embeds: [embed]}).then(async m => {
             const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                 await r.users.remove(message.author);

@@ -1,27 +1,19 @@
-const chs = new Map();
-const msgId = new Map();
-const {Util} = require('discord.js')
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
-const {Collection} = require("discord.js");
+const {Util, Collection} = require('discord.js'),
+    Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'reactrole',
-            description: "Show the react role menu création | Affiche le menu de création d'un reactrole",
-            usage: 'reactrole',
-            category: 'moderation',
-            tags: ['guildOnly'],
-            clientPermissions: ['SEND_MESSAGES', 'ADD_REACTIONS', 'EMBED_LINKS'],
-            userPermissions: ['ADMINISTRATOR'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'reactrole',
+    description: "Show the react role menu création | Affiche le menu de création d'un reactrole",
+    usage: 'reactrole',
+    category: 'moderation',
+    tags: ['guildOnly'],
+    clientPermissions: ['SEND_MESSAGES', 'ADD_REACTIONS', 'EMBED_LINKS'],
+    userPermissions: ['ADMINISTRATOR'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         let guildReactRoles = guildData.get('reactroles');
@@ -44,7 +36,7 @@ module.exports = class Test extends Command {
                 return response.author.id === message.author.id
             };
 
-        msg.edit({embeds : [embed]}).then(async m => {
+        msg.edit({embeds: [embed]}).then(async m => {
             const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                     await r.users.remove(message.author);
@@ -166,11 +158,11 @@ module.exports = class Test extends Command {
                                             return await mp.delete()
                                         }, 2000)
                                     }
-                                    if(role && client.functions.roleHasSensiblePermissions(role.permissions)){
+                                    if (role && client.functions.roleHasSensiblePermissions(role.permissions)) {
                                         const replyMsg = await message.channel.send(lang.reactionRole.tryToPermsRole);
                                         const raidLog = guildData.get('logs').antiraid;
                                         const raidLogChannel = message.guild.channels.cache.get(raidLog);
-                                        if(raidLogChannel && !raidLogChannel.deleted){
+                                        if (raidLogChannel && !raidLogChannel.deleted) {
                                             raidLogChannel.send('@everyone', lang.logs.reactRolePerm(message.member, color, msg.id, `https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id}`))
                                         }
                                         return setTimeout(async () => {
@@ -192,7 +184,12 @@ module.exports = class Test extends Command {
                                     }
 
                                     await message.channel.send(lang.reactionRole.emojiQ).then(async mps => {
-                                        mps.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 50000, errors: ['time']})
+                                        mps.channel.awaitMessages({
+                                            filter: dureefiltrer,
+                                            max: 1,
+                                            time: 50000,
+                                            errors: ['time']
+                                        })
                                             .then(async cld => {
                                                 let msg = cld.first();
                                                 let emoji = Util.parseEmoji(msg.content);
@@ -343,8 +340,7 @@ module.exports = class Test extends Command {
                         })
                     } else if (r.emoji.name === emojisReact[4]) {
                         message.channel.send(lang.reactionRole.cancel).then((mp) => {
-                            msgId.delete(message.guild.id);
-                            chs.delete(message.guild.id);
+
                             reactRole.emojiRoleMapping.clear();
                             collector.stop('user_stop');
                             setTimeout(async () => {
@@ -391,7 +387,12 @@ module.exports = class Test extends Command {
                                     })
 
                                     await message.channel.send(lang.reactionRole.msgDeleteQ).then((mp) => {
-                                        mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 50000, errors: ['time']})
+                                        mp.channel.awaitMessages({
+                                            filter: dureefiltrer,
+                                            max: 1,
+                                            time: 50000,
+                                            errors: ['time']
+                                        })
                                             .then(async cld => {
                                                 let msg = cld.first();
                                                 if (msg.content.toLowerCase() === "cancel") {
@@ -435,7 +436,7 @@ module.exports = class Test extends Command {
 
                         })
                     } else if (r.emoji.name === emojisReact[6]) {
-                        if (msgId.get(message.guild.id) === "Non définie") {
+                        if (reactRole.message === "Non définie") {
                             return await message.channel.send(lang.reactionRole.noMsg).then(async (replyMSG) => {
                                 setTimeout(async () => {
                                     return await replyMSG.delete();
@@ -486,7 +487,7 @@ module.exports = class Test extends Command {
 
                                         } else {
                                             await client.cluster.broadcastEval(`this.emojis.cache.get('${key}')`).then((result) => {
-                                                const ee  = result.filter(em => em !== null)[0]
+                                                const ee = result.filter(em => em !== null)[0]
                                                 if (ee.animated) {
                                                     emojis = `<a:${ee.name}:${ee.id}>・<@&${value}>\n`
                                                 } else {

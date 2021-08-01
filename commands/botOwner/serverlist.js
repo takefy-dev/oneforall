@@ -1,22 +1,17 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'serverlist',
-            description: 'Show all the server of the bot | Affiche tout les serveurs du bot',
-            category: 'botOwner',
-            usage: 'serverlist [guildId]',
-            clientPermissions: ['EMBED_LINKS'],
-            ownerOnly: true,
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'serverlist',
+    description: 'Show all the server of the bot | Affiche tout les serveurs du bot',
+    category: 'botOwner',
+    usage: 'serverlist [guildId]',
+    clientPermissions: ['EMBED_LINKS'],
+    ownerOnly: true,
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
 
         let tempName = [];
@@ -57,7 +52,7 @@ module.exports = class Test extends Command {
                     reac3 = await tdata.react("➡");
                 }
 
-                tdata.edit({content:null, embeds: [embed]});
+                tdata.edit({content: null, embeds: [embed]});
 
                 const data_res = tdata.createReactionCollector((reaction, user) => user.id === message.author.id);
 

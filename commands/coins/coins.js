@@ -1,13 +1,8 @@
 
-const userCoins = new Map();
-const coinSettings = new Map();
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
+module.exports =  {
+
             name: 'coins',
             description: 'Show how many coins you have | Affiche le nombre de coins que vous avez',
             // Optionnals :
@@ -17,11 +12,10 @@ module.exports = class Test extends Command {
             aliases: ['balance', 'argent', 'money'],
             clientPermissions: ['EMBED_LINKS'],
             coinsOnly : true,
-            cooldown: 4
-        });
-    }
+            cooldown: 4,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
         let member = message.mentions.members.first()  || await message.guild.members.fetch(args[0])
         if(!args[0]) member = message.member;
 

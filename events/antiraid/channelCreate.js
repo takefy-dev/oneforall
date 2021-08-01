@@ -1,16 +1,7 @@
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require('advanced-command-handler')
-
-
-module.exports = class channelCreate extends Event {
-    constructor() {
-        super({
-            name: 'channelCreate',
-        });
-    }
-
-    async run(client, channel) {
-        let guild = channel.guild
+module.exports =  {
+    name: 'channelCreate',
+    run: async (client, channel) => {
+        let {guild} = channel
         if (channel.type === "dm") return;
         if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
@@ -23,9 +14,8 @@ module.exports = class channelCreate extends Event {
 
         let action = await channel.guild.fetchAuditLogs({type: "CHANNEL_CREATE"}).then(async (audit) => audit.entries.first());
 
-        if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `CHANNEL Create`, 'pink');
-        if (guild.ownerId
- === action.executor.id) return Logger.log(`No sanction crown`, `CHANNEL Create`, 'pink');
+        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `CHANNEL Create`, 'pink');
+        if (guild.ownerId === action.executor.id) return client.Logger.log(`No sanction crown`, `CHANNEL Create`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
@@ -33,7 +23,7 @@ module.exports = class channelCreate extends Event {
 
         let isWlBypass = antiraidConfig.bypass[this.name];
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
-        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
 
 
         if (isWlBypass && !isWl || !isWlBypass) {

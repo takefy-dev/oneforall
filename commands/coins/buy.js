@@ -1,23 +1,20 @@
-const Command = require('../../structures/Handler/Command');
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'buy',
-            description: 'Buy an item from the shop | Acheter un item du magasin',
-            // Optionnals :
-            usage: 'buy <itemId>',
-            category: 'coins',
-            tags: ['guildOnly'],
-            aliases: ['acheter'],
-            clientPermissions: ['EMBED_LINKS'],
-            coinsonly: true,
-            cooldown: 4
-        });
-    }
+module.exports = {
 
-    async run(client, message, args) {
+    name: 'buy',
+    description: 'Buy an item from the shop | Acheter un item du magasin',
+    // Optionnals :
+    usage: 'buy <itemId>',
+    category: 'coins',
+    tags: ['guildOnly'],
+    aliases: ['acheter'],
+    clientPermissions: ['EMBED_LINKS'],
+    coinsonly: true,
+    cooldown: 4,
+
+
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
         const lang = guildData.lang;
@@ -87,7 +84,7 @@ module.exports = class Test extends Command {
                     userData.set('inventory', memberInvetory).save()
                 } else {
                     console.log('created')
-                    userData.set('inventory',[itemBuyed]).save()
+                    userData.set('inventory', [itemBuyed]).save()
                 }
 
 

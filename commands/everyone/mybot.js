@@ -2,22 +2,17 @@ const prettyMilliseconds = require('pretty-ms');
 
 const fetch = require('node-fetch')
 
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'mybot',
-            category: 'botperso',
-            aliases: ['mybots', 'mesbot'],
-            clientPermissions: ['EMBED_LINKS'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'mybot',
+    category: 'botperso',
+    aliases: ['mybots', 'mesbot'],
+    clientPermissions: ['EMBED_LINKS'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
@@ -89,7 +84,7 @@ module.exports = class Test extends Command {
                     .setTimestamp()
                     .setColor(`${color}`)
                     .setFooter(message.author.tag, avatar)
-                msg.edit({embeds : [embed]})
+                msg.edit({embeds: [embed]})
 
             }
         })

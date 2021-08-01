@@ -1,15 +1,8 @@
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require('advanced-command-handler')
 
 
-module.exports = class channelDelete extends Event {
-    constructor() {
-        super({
-            name: 'channelDelete',
-        });
-    }
-
-    async run(client, channel) {
+module.exports =  {
+    name: 'channelDelete',
+     run: async (client, channel) => {
         if (channel.type === "dm") return;
         let guild = channel.guild
         if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;

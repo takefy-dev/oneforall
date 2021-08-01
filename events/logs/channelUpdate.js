@@ -1,15 +1,6 @@
-const Event = require('../../structures/Handler/Event');
-const { Logger } = require('advanced-command-handler')
-const Discord = require('discord.js')
-
-
-module.exports = class Ready extends Event{
-    constructor() {
-        super({
-            name: 'channelUpdate',
-        });
-    }
-    async run(client, oldChannel, newChannel){
+module.exports ={
+    name: 'channelUpdate',
+    run: async (client, oldChannel, newChannel) =>{
         const guild = oldChannel.guild;
         if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)

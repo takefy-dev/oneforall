@@ -1,21 +1,16 @@
+const Discord = require('discord.js'),
+    moment = require('moment')
+module.exports = {
 
-const Command = require('../../structures/Handler/Command');
-const Discord = require('discord.js')
-const moment = require('moment')
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'serverinfo',
-            description: 'Get information about the server | Avoir des information concernant le serveur',
-            category: 'info',
-            clientPermissions: ['SEND_MESSAGES'],
-            aliases: ['infoserver', 'si'],
-            cooldown: 5
+    name: 'serverinfo',
+    description: 'Get information about the server | Avoir des information concernant le serveur',
+    category: 'info',
+    clientPermissions: ['SEND_MESSAGES'],
+    aliases: ['infoserver', 'si'],
+    cooldown: 5,
 
-        });
-    }
 
-    async run(client, message, args) {
+    run: async (client, message, args) => {
         const verificationLevels = {
             NONE: 'NONE',
             LOW: 'LOW',
@@ -62,7 +57,7 @@ module.exports = class Test extends Command {
             .setDescription(`ID: ${message.guild.id}`)
             .setColor(color)
             .addField(`**OWNERSHIP**:`, `<:771637500967124994:781883946614784011> ${message.guild.owner.user.tag || message.guild.owner.username}\n<@${message.guild.ownerId
-}>`, true)
+            }>`, true)
             .addField(`**CHANNELS**:`, `<:channel:817722375562985472> Text: ${channelsGuild.filter(channel => channel.type === 'text').size}\n<:voc:801123036576612353> Voice: ${channelsGuild.filter(channel => channel.type === 'voice').size}`, true)
             .addField(`**REGION:**`, `${regions[message.guild.region]}`, true)
             .addField(`**VERIFICATION LEVE:**`, `${verificationLevels[message.guild.verificationLevel]}`, true)

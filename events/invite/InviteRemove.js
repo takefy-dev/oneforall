@@ -1,14 +1,11 @@
-const Event = require('../../structures/Handler/Event');
 
-module.exports = class Ready extends Event{
-    constructor() {
-        super({
-            name: 'guildMemberRemove',
-        });
-    }
-    async run(client, member){
+
+module.exports = {
+
+    name: 'guildMemberRemove',
+    run: async (client, member) =>{
         const {guild} = member;
-        const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
+        const guildData =await client.managers.guildManager.getAndCreateIfNotExists(guild.id);
         const guildInv = await guild.invites.fetch()
         for(const [code, invite] of guildInv){
             guildData.cachedInv.set(code, invite)

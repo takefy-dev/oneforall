@@ -1,19 +1,16 @@
-const Command = require('../../structures/Handler/Command');
 const {Util} = require('discord.js')
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'reaction',
-            description: 'Add reactions to messages sent in a channel | Ajoute des reactions aux messages envoyé dans un salon',
-            category: 'misc',
-            usage: 'reaction <add / remove> <channel/id> <reactions up to 3>',
-            clientPermissions: [''],
-            userPermissions: ['MANAGE_MESSAGES'],
-            cooldown: 2
-        });
-    }
+module.exports = {
 
-    async run(client, message, args) {
+    name: 'reaction',
+    description: 'Add reactions to messages sent in a channel | Ajoute des reactions aux messages envoyé dans un salon',
+    category: 'misc',
+    usage: 'reaction <add / remove> <channel/id> <reactions up to 3>',
+    clientPermissions: [''],
+    userPermissions: ['MANAGE_MESSAGES'],
+    cooldown: 2,
+
+
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
         let reactionsToMessages = guildData.get('reactionsToMessages');
@@ -55,7 +52,7 @@ module.exports = class Test extends Command {
                 })
             })
         }
-        if(args[0] === "remove"){
+        if (args[0] === "remove") {
             guildData.set('reactionsToMessages', reactionsToMessages.filter(react => react.channel !== channel.id)).save().then(() => {
                 return message.channel.send(lang.reactionsToMessages.successDelete(channel)).then((mp) => {
                     setTimeout(() => {

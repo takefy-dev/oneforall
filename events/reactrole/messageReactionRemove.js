@@ -1,16 +1,9 @@
-const Event = require('../../structures/Handler/Event');
-
-module.exports = class messageReactionRemove extends Event {
-    constructor() {
-        super({
-            name: 'messageReactionRemove',
-        });
-    }
-
-    async run(client, reaction, user) {
+module.exports = {
+    name: 'messageReactionRemove',
+    run: async (client, reaction, user) => {
         if (user.bot) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(reaction.message.guild.id);
-        const reactRoles =  guildData.get('reactroles');
+        const reactRoles = guildData.get('reactroles');
         if (reactRoles.length < 1) return
         if (reaction.message.partial) await reaction.message.fetch();
         if (reaction.partial) await reaction.fetch();
@@ -32,11 +25,6 @@ module.exports = class messageReactionRemove extends Event {
             }
 
         }
-
-
-
-        // }
-
 
     }
 }

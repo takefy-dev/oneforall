@@ -1,19 +1,14 @@
-const Command = require('../../structures/Handler/Command');
+module.exports = {
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'bringall',
-            description: "Bring all members from a voicechannel | Apporter tout les gens en vocal",
-            category: 'utils',
-            usage: 'bringall <channel>',
-            aliases: ['voicemove'],
-            userPermissions: ['MOVE_MEMBERS'],
-            cooldown: 10
-        });
-    }
+    name: 'bringall',
+    description: "Bring all members from a voicechannel | Apporter tout les gens en vocal",
+    category: 'utils',
+    usage: 'bringall <channel>',
+    aliases: ['voicemove'],
+    userPermissions: ['MOVE_MEMBERS'],
+    cooldown: 10,
 
-    async run(client, message, args) {
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang
         const channelInput = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]) || message.channel;
@@ -24,8 +19,9 @@ module.exports = class Test extends Command {
         })
         const channels = message.guild.channels.cache.filter(ch => ch.id !== channelInput.id && ch.type === "text" && ch.members.size > 0)
         for await(const [_, channel] of channels)
-            for await(const [_, member] of channel.members){
-                await member.voice.setChannel(channelInput, `Bringall by ${message.author.tag}`).catch(() => {})
+            for await(const [_, member] of channel.members) {
+                await member.voice.setChannel(channelInput, `Bringall by ${message.author.tag}`).catch(() => {
+                })
             }
 
     }

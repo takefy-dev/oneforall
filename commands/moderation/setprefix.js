@@ -1,23 +1,16 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
+module.exports = {
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'setprefix',
-            description: 'Change the prefix | Changer le prefix',
-            usage: 'setprefix <prefix>',
-            category: 'moderation',
-            tags: ['guildOnly'],
-            clientPermissions: ['SEND_MESSAGES'],
-            guildOwnerOnly: true,
-            cooldown: 5
+    name: 'setprefix',
+    description: 'Change the prefix | Changer le prefix',
+    usage: 'setprefix <prefix>',
+    category: 'moderation',
+    tags: ['guildOnly'],
+    clientPermissions: ['SEND_MESSAGES'],
+    guildOwnerOnly: true,
+    cooldown: 5,
 
-        });
-    }
 
-    async run(client, message, args) {
+    run: async (client, message, args) => {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;

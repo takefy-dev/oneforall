@@ -1,22 +1,16 @@
-const Command = require('../../structures/Handler/Command');
 const Discord = require("discord.js");
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'blacklist-role',
-            description: 'Blacklist a role from being added | Blacklist un role qui ne peuvent pas être ajouté',
-            category: 'blacklist',
-            usage: 'blacklist-role <add/remove/list> <mention/id>',
-            aliases: ['blrole', 'bl-role'],
-            clientPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
-            userPermissions: ['ADMINISTRATOR'],
-            guildOwnerOnly: true,
-            cooldown: 4
-        });
-    }
-
-    async run(client, message, args) {
+module.exports = {
+    name: 'blacklist-role',
+    description: 'Blacklist a role from being added | Blacklist un role qui ne peuvent pas être ajouté',
+    category: 'blacklist',
+    usage: 'blacklist-role <add/remove/list> <mention/id>',
+    aliases: ['blrole', 'bl-role'],
+    clientPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
+    userPermissions: ['ADMINISTRATOR'],
+    guildOwnerOnly: true,
+    cooldown: 4,
+    run: async (client, message, args) => {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         let {enable, blacklistedRoles} = guildData.get('blacklistRole')
@@ -53,7 +47,7 @@ module.exports = class Test extends Command {
                 message.channel.send(lang.blacklistRole.successBl(role.name)).then(async () => {
                     const members = await message.guild.members.fetch();
                     const memberToRemoveRole = members.filter(member => member.roles.cache.has(role.id))
-                    if(memberToRemoveRole.size > 0){
+                    if (memberToRemoveRole.size > 0) {
                         for await (const [_, member] of memberToRemoveRole) {
                             await member.roles.remove(role.id);
                             await client.functions.sleep(1000 * 12)
@@ -74,7 +68,7 @@ module.exports = class Test extends Command {
                 message.channel.send(lang.blacklistedRoles.successRemove(role.name))
             })
         } else if (list) {
-        
+
             const tempdataEmbed = {
                 title: `List of blacklisted roles (${blacklistedRoles.length})`,
                 timestamp: new Date(),
@@ -150,7 +144,7 @@ module.exports = class Test extends Command {
 
                 return message.channel.send({
                     embeds:
-                    [tempdataEmbed]
+                        [tempdataEmbed]
 
                 })
             }

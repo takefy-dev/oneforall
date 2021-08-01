@@ -1,24 +1,17 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const NumberFromEmoji = require('../../utils/emojiToNumber')
 const emojiEnable = {
     true: "<:778348494712340561:781153837850820619>",
     false: "<:778348495157329930:781189773645578311>"
 }
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'antiraid',
-            description: "Setup the antiraid | Configurer l'antiraid",
-            usage: 'antiraid',
-            clientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
-            category: 'antiraid',
-            guildOwnerOnly: true,
-            onlyTopGg: true
-        });
-    }
-
-    async run(client, message, args) {
+module.exports = {
+    name: 'antiraid',
+    description: "Setup the antiraid | Configurer l'antiraid",
+    usage: 'antiraid',
+    clientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
+    category: 'antiraid',
+    guildOwnerOnly: true,
+    onlyTopGg: true,
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         let lang = guildData.lang;
 
@@ -187,10 +180,10 @@ module.exports = class Test extends Command {
             let totalPage = Math.ceil(arrayEnable.length / maxPerPage)
             let embed = (page) => {
                 initFields(true)
-                if(slicerIndicatorMax < 0 || slicerIndicatorMin < 0) {
+                if (slicerIndicatorMax < 0 || slicerIndicatorMin < 0) {
                     slicerIndicatorMin += maxPerPage * totalPage
                     slicerIndicatorMax += maxPerPage * totalPage
-                }else if((slicerIndicatorMax >= maxPerPage * totalPage || slicerIndicatorMin >= maxPerPage * totalPage) && page === 0){
+                } else if ((slicerIndicatorMax >= maxPerPage * totalPage || slicerIndicatorMin >= maxPerPage * totalPage) && page === 0) {
                     slicerIndicatorMin = 0
                     slicerIndicatorMax = maxPerPage
                 }
@@ -233,7 +226,7 @@ module.exports = class Test extends Command {
 
                 await subMenu.edit({
                     content: null,
-                    embeds:[ {
+                    embeds: [{
                         title: name,
                         description: pageSection[index].value,
                         color,
@@ -274,7 +267,7 @@ module.exports = class Test extends Command {
 
                     if (r.emoji.name === indispensableEmoji[0]) {
 
-                        subMenu.edit({content: null,embeds: [embed(page)[0]]})
+                        subMenu.edit({content: null, embeds: [embed(page)[0]]})
                         await subMenu.reactions.removeAll()
                         for (const em of emojis) {
                             await subMenu.react(em)
@@ -304,14 +297,14 @@ module.exports = class Test extends Command {
                                             if (isNaN(msg.content.split('')[0]) || !msg.content.endsWith('s') || !msg.content.endsWith('m') || !msg.content.endsWith('h') || !msg.content.endsWith('d') || !msg.content.endsWith('w') || !msg.content.endsWith('y')) {
                                                 return message.channel.send(lang.antiraidConfig.antiDcError)
                                             }
-                                        }else if(eventName === 'antiToken' || eventName === 'antiMassMention') {
+                                        } else if (eventName === 'antiToken' || eventName === 'antiMassMention') {
                                             if (!msg.content.endsWith('s') && !msg.content.endsWith('m') && !msg.content.endsWith('h') && !msg.content.endsWith('d') && !msg.content.endsWith('w') && !msg.content.endsWith('y')) {
                                                 return message.channel.send(lang.antiraidConfig.antiTokenError)
                                             }
                                             const args = msg.content.split('/')
                                             const limit = args[0];
                                             const time = args[1];
-                                            if(!limit && !time && isNaN(limit)){
+                                            if (!limit && !time && isNaN(limit)) {
                                                 return message.channel.send(lang.antiraidConfig.antiTokenError)
                                             }
 
@@ -392,7 +385,7 @@ module.exports = class Test extends Command {
                 }
             });
 
-            msg.edit({content: null,embeds: [embed(page)[0]]}).then(async m => {
+            msg.edit({content: null, embeds: [embed(page)[0]]}).then(async m => {
                 const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('collect', async r => {
                     await r.users.remove(message.author);
@@ -401,14 +394,14 @@ module.exports = class Test extends Command {
                         page = page === 0 ? page = totalPage - 1 : page <= totalPage - 1 ? page -= 1 : page += 1
                         slicerIndicatorMin -= maxPerPage
                         slicerIndicatorMax -= maxPerPage
-                        return msg.edit({content: null,embeds: [embed(page)[0]]})
+                        return msg.edit({content: null, embeds: [embed(page)[0]]})
                     } else if (r.emoji.name === emojis[emojis.length - 2]) {
                         page = page !== totalPage - 1 ? page += 1 : page = 0
                         slicerIndicatorMin += maxPerPage
                         slicerIndicatorMax += maxPerPage
 
 
-                        return msg.edit({content: null,embeds: [embed(page)[0]]})
+                        return msg.edit({content: null, embeds: [embed(page)[0]]})
                     } else if (r.emoji.name === emojis[emojis.length - 1]) {
                         msg.delete()
                         saveCollector.stop()

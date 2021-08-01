@@ -4,28 +4,20 @@ const gdate = require('gdate')
 require('dotenv').config();
 const prettyMilliseconds = require('pretty-ms');
 const dateFormater = require('pm-date-formater');
-const importer = require('node-mysql-importer')
 const password = require('secure-random-password');
 const fetch = require('node-fetch')
-const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
 const Discord = require('discord.js')
-module.exports = class Test extends Command{
-    constructor() {
-        super({
+module.exports = {
+
             name: 'botperso',
             description: 'Create bot perso',
             category: 'botOwner',
             usage: 'botperso',
             userPermissions: ['ADMINISTRATOR'],
-            cooldown: 5
-
-        });
-    }
-    async run(client, message,args) {
+            cooldown: 5,
 
 
-        this.botperso = BotPerso.botperso;
+    run: async (client, message,args) =>  {
         const moderatorAuthorisation = {
             '659038301331783680': {
                 name: 'baby',
@@ -57,8 +49,6 @@ module.exports = class Test extends Command{
         let yyyy = now.getFullYear();
         const today = yyyy + '-' + mm + '-' + dd;
         if (create) {
-            const randomPassword = password.randomPassword({length: 8})
-            let hashPass = await bcrypt.hash(randomPassword, 8)
             message.channel.send("<:720681705219817534:780540043033837622> \`SUCCÈS\` Mentionne le client !(timeout dans 30s & \`cancel\` pour annuler)")
             const responseClient = await message.channel.awaitMessages(m => m.author.id === message.author.id, {
                 max: 1,
@@ -74,7 +64,8 @@ module.exports = class Test extends Command{
 
 
             message.channel.send("<:720681705219817534:780540043033837622> \`SUCCÈS\` Veuillez écrire une durée de l'abonnement en jours !(timeout dans 30s & \`cancel\` pour annuler)")
-            const responseTime = await message.channel.awaitMessages(m => m.author.id === message.author.id, {
+            const responseTime = await message.channel.awaitMessages( {
+                filter:m => m.author.id === message.author.id,
                 max: 1,
                 timeout: 30000
             }).catch(() => {
@@ -82,7 +73,7 @@ module.exports = class Test extends Command{
             })
             const CollectedTime = responseTime.first().content.toLowerCase();
 
-            if (CollectedTime == "cancel") return message.channel.send("L'opération a été annulée");
+            if (CollectedTime === "cancel") return message.channel.send("L'opération a été annulée");
             if (isNaN(ms(CollectedTime))) return message.channel.send("Mets une durée valide !");
             const dur = prettyMilliseconds(ms(CollectedTime)).replace("d", " ")
 
@@ -99,8 +90,7 @@ module.exports = class Test extends Command{
             const formattime = dateFormater.formatDate(new Date(time), 'yyyy-MM-dd');
             console.log(time)
             const discordName = !member.nickname ? member.user.username : member.nickname;
-            const botpersoSqlPath = `/home/oneforall/assets/botperso.sql`
-          
+
 
             try {
                 const newBot = {
@@ -139,7 +129,8 @@ module.exports = class Test extends Command{
         } else if (del) {
             try {
                 message.channel.send("<:720681705219817534:780540043033837622> \`SUCCÈS\` Mentionne le client !(timeout dans 30s & \`cancel\` pour annuler)")
-                const responseClient = await message.channel.awaitMessages(m => m.author.id === message.author.id, {
+                const responseClient = await message.channel.awaitMessages( {
+                    filter: m => m.author.id === message.author.id,
                     max: 1,
                     timeout: 30000
                 }).catch(() => {
@@ -224,19 +215,7 @@ module.exports = class Test extends Command{
 
 
             }
-            try {
-                this.botperso.query(`
-                UPDATE client set expireAt = STR_TO_DATE('${time}','%Y-%m-%d') WHERE discordId = '${member.user.id}'
-            `).then(async () => {
-                    time = dateFormater.formatDate(new Date(time), 'dd-MM-yyyy');
-                    return message.channel.send(`J'ai changer le temps de l'abonnement à ${member.user.tag} qui expire maintenant le ${time}`)
-                }).catch((err) => {
-                    console.log(err);
-                    return message.channel.send('Je ne suis pas arrivé a changé le temps restant du client');
-                })
-            } catch (err) {
-                console.log(err)
-            }
+
 
         }
 

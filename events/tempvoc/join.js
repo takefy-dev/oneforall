@@ -1,21 +1,15 @@
-const Event = require('../../structures/Handler/Event');
+module.exports = {
+    name: 'voiceChannelJoin',
 
-
-module.exports = class Ready extends Event{
-    constructor() {
-        super({
-            name: 'voiceChannelJoin',
-        });
-    }
-    async run(client, member, channel){
+    run: async (client, member, channel) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(member.guild.id);
         const tempVoc = guildData.get('tempvoc');
-        const { channelName, channelId, categoryId, enable } = tempVoc;
-        if(!enable) return;
-        if(channel.parentId
- !== categoryId) return
+        const {channelName, channelId, categoryId, enable} = tempVoc;
+        if (!enable) return;
+        if (channel.parentId
+            !== categoryId) return
         const chName = `${channelName.replace(/{username}/g, member.user.username)}`
-        if(channel.id === channelId){
+        if (channel.id === channelId) {
             member.guild.channels.create(chName, {
                 type: 'voice',
                 parent: categoryId,

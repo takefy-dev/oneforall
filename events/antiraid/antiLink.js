@@ -1,19 +1,10 @@
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
-const {Collection} = require("discord.js");
-
-const spammer = new Collection()
-module.exports = class Message extends Event {
-    constructor() {
-        super({
-            name: 'messageCreate',
-        });
-    }
-
-    async run(client, message) {
+const {Collection, MessageEmbed} = require("discord.js"),
+    spammer = new Collection()
+module.exports = {
+    name: 'messageCreate',
+    run: async (client, message) => {
         if (!message.guild) return;
-        if (message.webhookID) return;
+        if (message.webhookId) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const muteRoleId = guildData.get('muteRoleId');
         const muteRole = message.guild.roles.cache.get(muteRoleId);
@@ -25,7 +16,7 @@ module.exports = class Message extends Event {
         if (!isOn) return;
         if (message.author.id === client.user.id) return
         if (message.guild.ownerId
- === message.author.id) return
+            === message.author.id) return
 
         let isGuildOwner = guildData.isGuildOwner(message.author.id);
         let isBotOwner = client.isOwner(message.author.id);
@@ -33,7 +24,7 @@ module.exports = class Message extends Event {
 
         let isWlBypass = antiraidConfig.bypass["antiLink"];
         if (isWlBypass) var isWl = guildData.isGuildWl(message.author.id);
-        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
 
 
         if (isWlBypass && !isWl || !isWlBypass) {
@@ -45,12 +36,12 @@ module.exports = class Message extends Event {
                 if (message.deletable) message.delete().catch(e => {
                 })
                 let msg = `${message.author}, vous n'êtes pas autorisé à poster des liens`
-                let embed = new Discord.MessageEmbed()
+                let embed = new MessageEmbed()
                     .setColor(color)
                     .setDescription(msg);
                 message.channel.send({embeds: [embed]}).then(m => m.delete({timeout: 2000}))
                 if (channel && !channel.deleted) {
-                    return channel.send({embeds : [logs.antiLink(member, message.channel.id, message.content, color, 'delete')]})
+                    return channel.send({embeds: [logs.antiLink(member, message.channel.id, message.content, color, 'delete')]})
                 }
                 if (!muteRoleId || !muteRole || muteRole.deleted || muteRole.managed) return;
 
@@ -67,7 +58,7 @@ module.exports = class Message extends Event {
                     await message.member.roles.add(muteRole, `Oneforall - anti spam link`)
                     message.channel.send(`Vous avez été mute car vous postez trop de lien`)
                     if (channel && !channel.deleted) {
-                        return channel.send({embeds : [logs.antiLink(member, message.channel.id, message.content, color, 'mute')]})
+                        return channel.send({embeds: [logs.antiLink(member, message.channel.id, message.content, color, 'mute')]})
                     }
                 }
 

@@ -1,21 +1,16 @@
-const Command = require('../../structures/Handler/Command');
+module.exports = {
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'lvl-settings',
-            description: 'Manage the settings for levels | Gerer les paramètre pour le système de levels',
-            category: 'xp',
-            usage: 'lvl-settings',
-            aliases: ['lvl-config', 'lvl-setting'],
-            clientPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
-            userPermissions: ['ADMINISTRATOR'],
-            guildOwnerOnly: true,
-            cooldown: 4
-        });
-    }
+    name: 'lvl-settings',
+    description: 'Manage the settings for levels | Gerer les paramètre pour le système de levels',
+    category: 'xp',
+    usage: 'lvl-settings',
+    aliases: ['lvl-config', 'lvl-setting'],
+    clientPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
+    userPermissions: ['ADMINISTRATOR'],
+    guildOwnerOnly: true,
+    cooldown: 4,
 
-    async run(client, message, args) {
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const lang = guildData.lang;
         const color = guildData.get('color');
@@ -27,7 +22,10 @@ module.exports = class Test extends Command {
                 return response.author.id === message.author.id
             };
         for (const em of emojis) await fistMsg.react(em)
-        fistMsg.edit({content: null,embeds : [lang.levelSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.cumulRoles)).setColor(color)]}).then(async m => {
+        fistMsg.edit({
+            content: null,
+            embeds: [lang.levelSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.cumulRoles)).setColor(color)]
+        }).then(async m => {
             const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                 await r.users.remove(message.author);
@@ -58,7 +56,12 @@ module.exports = class Test extends Command {
                                 })
 
                                 message.channel.send(lang.levelSettings.question.messageQuestion).then(mps => {
-                                    mps.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
+                                    mps.channel.awaitMessages({
+                                        filter: dureefiltrer,
+                                        max: 1,
+                                        time: 30000,
+                                        errors: ['time']
+                                    })
                                         .then(cld => {
                                             const msg = cld.first();
 
@@ -82,7 +85,7 @@ module.exports = class Test extends Command {
                             })
                     })
                 }
-                if(r.emoji.name === emojis[1]){
+                if (r.emoji.name === emojis[1]) {
                     message.channel.send(lang.levelSettings.question.roleQuestion).then(mp => {
                         let role;
                         mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
@@ -109,11 +112,11 @@ module.exports = class Test extends Command {
                                         return await mp.delete()
                                     }, 2000)
                                 }
-                                if(client.functions.roleHasSensiblePermissions(role.permissions)){
+                                if (client.functions.roleHasSensiblePermissions(role.permissions)) {
                                     const replyMsg = await message.channel.send(lang.reactionRole.tryToPermsRole);
                                     const raidLog = guildData.get('logs').antiraid;
                                     const raidLogChannel = message.guild.channels.cache.get(raidLog);
-                                    if(raidLogChannel && !raidLogChannel.deleted){
+                                    if (raidLogChannel && !raidLogChannel.deleted) {
                                         raidLogChannel.send('@everyone', lang.logs.reactRolePerm(message.member, color, msg.id, `https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id}`))
                                     }
                                     return setTimeout(async () => {
@@ -124,7 +127,7 @@ module.exports = class Test extends Command {
                                 }
 
                                 const roleLevel = tempConfig.roleLevel.find(roleLvl => roleLvl.role === role.id)
-                                if(roleLevel) return message.channel.send(lang.levelSettings.error.roleAlready(role.name)).then((rp) => {
+                                if (roleLevel) return message.channel.send(lang.levelSettings.error.roleAlready(role.name)).then((rp) => {
                                     setTimeout(() => {
                                         mp.delete()
                                         rp.delete()
@@ -132,10 +135,15 @@ module.exports = class Test extends Command {
                                     }, 3000)
                                 })
                                 message.channel.send(lang.levelSettings.question.levelQuestion(role.name)).then(mps => {
-                                    mps.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
+                                    mps.channel.awaitMessages({
+                                        filter: dureefiltrer,
+                                        max: 1,
+                                        time: 30000,
+                                        errors: ['time']
+                                    })
                                         .then(cld => {
                                             const msg = cld.first();
-                                            if(isNaN(msg.content)) return message.channel.send(lang.levelSettings.error.notNumber).then((rp) => {
+                                            if (isNaN(msg.content)) return message.channel.send(lang.levelSettings.error.notNumber).then((rp) => {
                                                 setTimeout(() => {
                                                     mp.delete()
                                                     rp.delete()
@@ -143,7 +151,7 @@ module.exports = class Test extends Command {
                                                 }, 3000)
 
                                             })
-                                            tempConfig.roleLevel.push({role: role.id, level : msg.content})
+                                            tempConfig.roleLevel.push({role: role.id, level: msg.content})
                                             updateEmbed()
                                             setTimeout(() => {
                                                 mp.delete()
@@ -156,7 +164,7 @@ module.exports = class Test extends Command {
                             })
                     })
                 }
-                if(r.emoji.name === emojis[2]){
+                if (r.emoji.name === emojis[2]) {
                     message.channel.send(lang.levelSettings.question.roleQuestionRm).then(mp => {
                         mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
                             .then(cld => {
@@ -175,7 +183,7 @@ module.exports = class Test extends Command {
                                     }, 3000)
                                 })
                                 const roleLevel = tempConfig.roleLevel.find(roleLvl => roleLvl.role === role.id)
-                                if(!roleLevel) return message.channel.send(lang.levelSettings.error.roleNot(role.name)).then((rp) => {
+                                if (!roleLevel) return message.channel.send(lang.levelSettings.error.roleNot(role.name)).then((rp) => {
                                     setTimeout(() => {
                                         mp.delete()
                                         rp.delete()
@@ -191,14 +199,14 @@ module.exports = class Test extends Command {
                             })
                     })
                 }
-                if(r.emoji.name === emojis[3]){
+                if (r.emoji.name === emojis[3]) {
                     tempConfig.cumulRoles = !tempConfig.cumulRoles
                     updateEmbed()
                 }
-                if(r.emoji.name === emojis[4]){
+                if (r.emoji.name === emojis[4]) {
                     collector.stop('cancel')
                 }
-                if(r.emoji.name === emojis[5]){
+                if (r.emoji.name === emojis[5]) {
                     guildData.set('level', tempConfig).save().then(() => {
                         message.channel.send(lang.xpSettings.save)
                         fistMsg.delete()
@@ -220,7 +228,7 @@ module.exports = class Test extends Command {
         })
 
         function updateEmbed() {
-            fistMsg.edit({embeds : [lang.levelSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.cumulRoles)).setColor(color)]})
+            fistMsg.edit({embeds: [lang.levelSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.cumulRoles)).setColor(color)]})
         }
     }
 

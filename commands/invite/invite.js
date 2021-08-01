@@ -1,25 +1,17 @@
-const inviteChannel = new Map();
-const inviteMsg = new Map();
-const inviteOn = new Map();
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'invite',
-            description: "Setup the invite system or show the number of invitation of a member | Configurer le system d'invitation ou afficher le nombre d'invitation d'un membre",
-            usage: 'invite [config / mention/ id]',
-            category: 'invite',
-            clientPermissions: ['ADD_REACTIONS'],
-            aliases: ['welcome'],
-            cooldown: 4
+module.exports = {
 
-        });
-    }
+    name: 'invite',
+    description: "Setup the invite system or show the number of invitation of a member | Configurer le system d'invitation ou afficher le nombre d'invitation d'un membre",
+    usage: 'invite [config / mention/ id]',
+    category: 'invite',
+    clientPermissions: ['ADD_REACTIONS'],
+    aliases: ['welcome'],
+    cooldown: 4,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
@@ -39,7 +31,7 @@ module.exports = class Test extends Command {
                 .setColor(`${color}`)
                 .setTimestamp()
                 .setFooter(client.user.tag)
-            message.reply({embeds :[embed]});
+            message.reply({embeds: [embed]});
         } else if (message.mentions.members.first() || !isNaN(args[0])) {
             const member = await message.mentions.members.first() || await message.guild.members.fetch(args[0]).catch(async err => {
             })
@@ -79,7 +71,7 @@ module.exports = class Test extends Command {
                 .setTimestamp()
                 .setColor(`${color}`)
                 .setFooter(client.user.username);
-            msg.edit({content:null, embeds: [embed]}).then(async m => {
+            msg.edit({content: null, embeds: [embed]}).then(async m => {
                 const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('end', () => {
                     m.delete()
@@ -178,7 +170,12 @@ module.exports = class Test extends Command {
 
             }
             for (const [id, count] of invitesCount) {
-                userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${id}`).set('invite', {join: count, leave: 0, fake: 0, bonus: 0}).save()
+                userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${id}`).set('invite', {
+                    join: count,
+                    leave: 0,
+                    fake: 0,
+                    bonus: 0
+                }).save()
             }
             invitesCount.clear()
 

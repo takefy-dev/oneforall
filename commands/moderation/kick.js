@@ -1,21 +1,16 @@
-const Command = require('../../structures/Handler/Command');
 const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'kick',
-            description: 'Kick a member | Kick un membre',
-            usage: 'kick <mention/id>',
-            category: 'moderation',
-            userPermissions: ['KICK_MEMBERS'],
-            clientPermissions: ['KICK_MEMBERS'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'kick',
+    description: 'Kick a member | Kick un membre',
+    usage: 'kick <mention/id>',
+    category: 'moderation',
+    userPermissions: ['KICK_MEMBERS'],
+    clientPermissions: ['KICK_MEMBERS'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
@@ -40,7 +35,7 @@ module.exports = class Test extends Command {
             const color = guildData.get('color');
 
             if (channel && !channel.deleted) {
-                channel.send(channel.send({embeds : [logs.targetExecutorLogs("kick", message.member, member, color)]}))
+                channel.send(channel.send({embeds: [logs.targetExecutorLogs("kick", message.member, member, color)]}))
             }
             const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
             const antiraidConfig = guildData.get('antiraid');
@@ -48,7 +43,7 @@ module.exports = class Test extends Command {
             const isOn = antiraidConfig.enable["antiMassKick"];
             if (!isOn) return;
             if (guild.ownerId
- === message.author.id) return Logger.log(`No sanction crown`, `kick`, 'pink');
+                === message.author.id) return Logger.log(`No sanction crown`, `kick`, 'pink');
             let isGuildOwner = guildData.isGuildOwner(message.author.id);
             let isBotOwner = client.isOwner(message.author.id);
 
@@ -69,7 +64,7 @@ module.exports = class Test extends Command {
                 if (antiraidLimit.kick < kickLimit) {
                     antiraidLimit.kick += 1
                     if (logsChannel && !logsChannel.deleted) {
-                        logsChannel.send({embeds : [logs.targetExecutorLogs("kick", message.member, member, color, `${antiraidLimit.kick + 1 === kickLimit ? `Aucun kick restant` : `${antiraidLimit.kick + 1}/${kickLimit}`} before sanction`)]})
+                        logsChannel.send({embeds: [logs.targetExecutorLogs("kick", message.member, member, color, `${antiraidLimit.kick + 1 === kickLimit ? `Aucun kick restant` : `${antiraidLimit.kick + 1}/${kickLimit}`} before sanction`)]})
                     }
                 } else {
                     let sanction = antiraidConfig.config["antiMassKick"];
@@ -91,13 +86,13 @@ module.exports = class Test extends Command {
 
                         }
                         if (logsChannel && !logsChannel.deleted) {
-                            logsChannel.send({embeds : [logs.targetExecutorLogs("kick", message.member, member, color, sanction)]})
+                            logsChannel.send({embeds: [logs.targetExecutorLogs("kick", message.member, member, color, sanction)]})
                         }
                         antiraidLimit.kick = 0
 
                     } else {
                         if (logsChannel && !logsChannel.deleted) {
-                            logsChannel.send({embeds : [logs.targetExecutorLogs("kick", message.member, member, color, "Je n'ai pas assé de permissions")]})
+                            logsChannel.send({embeds: [logs.targetExecutorLogs("kick", message.member, member, color, "Je n'ai pas assé de permissions")]})
                         }
                         antiraidLimit.kick = 0
 

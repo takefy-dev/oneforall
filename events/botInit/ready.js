@@ -1,16 +1,8 @@
-﻿const {DateTime} = require('luxon');
-const Event = require('../../structures/Handler/Event');
-const Discord = require('discord.js')
-const {Logger} = require("advanced-command-handler");
+﻿
 const cron = require('node-cron')
-module.exports = class Ready extends Event {
-    constructor() {
-        super({
-            name: 'ready',
-        });
-    }
-
-    async run(client) {
+module.exports = {
+    name: 'ready',
+    run: async (client)=> {
         client.finishLoad = true
         await client.functions.sleep(1000)
         await client.managers.voiceManager.load();
@@ -24,7 +16,7 @@ module.exports = class Ready extends Event {
         }
         // client.oneforallSocket.emit('send-commands', client.commands.filter(cm => cm.category !== "botOwner" && cm.category !== "test" && cm.category !== "botperso"))
 
-        Logger.info(`${client.user.tag} logged in`, `CLIENT LOGIN`);
+        client.Logger.info(`${client.user.tag} logged in`, `CLIENT LOGIN`);
         // launc check mute
         const checkMute = require('../../utils/Mute')
         await checkMute.startChecking(client)
@@ -63,9 +55,9 @@ module.exports = class Ready extends Event {
          */
 
 
-        Logger.event(
-            Logger.setColor('#c0433f', `Client online ! Client ${Logger.setColor('orange', client.user.username, '#c0433f')} has ${client.guilds.cache.size + Logger.setColor('#c0433f')
-            } guilds, it sees ${client.users.cache.size + Logger.setColor('#c0433f')
+        client.Logger.event(
+            client.Logger.setColor('#c0433f', `Client online ! Client ${client.Logger.setColor('orange', client.user.username, '#c0433f')} has ${client.guilds.cache.size + client.Logger.setColor('#c0433f')
+            } guilds, it sees ${client.users.cache.size + client.Logger.setColor('#c0433f')
             } users.`)
         );
         if(!client.botperso && !client.config.dev){
@@ -89,7 +81,7 @@ module.exports = class Ready extends Event {
 
 
         cron.schedule('*/10 * * * *', () => {
-            Logger.log('Counter starting', 'EDITING CHANNEL', 'red')
+            client.Logger.log('Counter starting', 'EDITING CHANNEL', 'red')
             client.guilds.cache.forEach(async guild => {
                 const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
                 const {member, voice, online, offline, bot, channel, role, booster} = guildData.get('counter')
@@ -99,17 +91,17 @@ module.exports = class Ready extends Event {
                     const channel = guild.channels.cache.get(member.id);
                     if (!channel) {
                         try {
-                            Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
+                            client.Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guildData.values.counter.member = {name: 'Non définie'}
                                 
                             return guildData.save()
 
                         } catch (err) {
-                            Logger.error(`Counter error mysql`, `Member count error`);
+                            client.Logger.error(`Counter error mysql`, `Member count error`);
                             return console.log(err);
                         }
                     }
-                    if (!channel.manageable) return Logger.warn(`Try to edit a channel but not manageable`, `Try editing channel`);
+                    if (!channel.manageable) return client.Logger.warn(`Try to edit a channel but not manageable`, `Try editing channel`);
                     if (channel.name !== `${member.name} ${guild.memberCount.toLocaleString()}`) {
                         await channel.setName(`${member.name} ${guild.memberCount.toLocaleString()}`, `MemberCount`);
                     }
@@ -120,12 +112,12 @@ module.exports = class Ready extends Event {
                     const channel = guild.channels.cache.get(bot.id);
                     if (!channel) {
                         try {
-                            Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
+                            client.Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guildData.values.bot = {name: 'Non définie'}
                             return guildData.save()
 
                         } catch (err) {
-                            Logger.error(`Counter error mysql`, `Bot count error`);
+                            client.Logger.error(`Counter error mysql`, `Bot count error`);
                             return console.log(err);
                         }
                     }
@@ -143,13 +135,13 @@ module.exports = class Ready extends Event {
                     const channel = guild.channels.cache.get(voice.id);
                     if (!channel) {
                         try {
-                            Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
+                            client.Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guildData.values.voice = {name: 'Non définie'}
                             return guildData.save()
 
 
                         } catch (err) {
-                            Logger.error(`Counter error mysql`, `Voice count error`);
+                            client.Logger.error(`Counter error mysql`, `Voice count error`);
                             return console.log(err);
                         }
                     }
@@ -168,12 +160,12 @@ module.exports = class Ready extends Event {
                     const channel = guild.channels.cache.get(online.id);
                     if (!channel) {
                         try {
-                            Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
+                            client.Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guildData.values.online = {name: 'Non définie'}
                             return guildData.save()
 
                         } catch (err) {
-                            Logger.error(`Counter error mysql`, `Online count error`);
+                            client.Logger.error(`Counter error mysql`, `Online count error`);
                             return console.log(err);
                         }
                     }
@@ -189,11 +181,11 @@ module.exports = class Ready extends Event {
                     const channel = guild.channels.cache.get(offline.id);
                     if (!channel) {
                         try {
-                            Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
+                            client.Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guildData.values.offline = {name: 'Non définie'}
                             return guildData.save()
                         } catch (err) {
-                            Logger.error(`Counter error mysql`, `Offline count error`);
+                            client.Logger.error(`Counter error mysql`, `Offline count error`);
                             return console.log(err);
                         }
                     }
@@ -211,11 +203,11 @@ module.exports = class Ready extends Event {
                     const channel = guild.channels.cache.get(channel.id);
                     if (!channel) {
                         try {
-                            Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
+                            client.Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guildData.values.channel = {name: 'Non définie'}
                             return guildData.save()
                         } catch (err) {
-                            Logger.error(`Counter error mysql`, `Channel count error`);
+                            client.Logger.error(`Counter error mysql`, `Channel count error`);
                             return console.log(err);
                         }
                     }
@@ -232,11 +224,11 @@ module.exports = class Ready extends Event {
                     const channel = guild.channels.cache.get(role.id);
                     if (!channel) {
                         try {
-                            Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
+                            client.Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guildData.values.role = {name: 'Non définie'}
                             return guildData.save()
                         } catch (err) {
-                            Logger.error(`Counter error mysql`, `role count error`);
+                            client.Logger.error(`Counter error mysql`, `role count error`);
                             return console.log(err);
                         }
                     }
@@ -250,11 +242,11 @@ module.exports = class Ready extends Event {
                     const channel = guild.channels.cache.get(booster.id);
                     if (!channel) {
                         try {
-                            Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
+                            client.Logger.log(`Channel invalid deleting in db`, `INVALIDE COUNTER CHANNEL`, `red`)
                             guildData.values.booster = {name: 'Non définie'}
                             return guildData.save()
                         } catch (err) {
-                            Logger.error(`Counter error mysql`, `Boost count error`);
+                            client.Logger.error(`Counter error mysql`, `Boost count error`);
                             return console.log(err);
                         }
                     }

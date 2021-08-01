@@ -1,21 +1,16 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'alladmins',
-            description: 'Show all members with administator permissions | Afficher tout les membres avec les perm admin',
-            usage: 'alladmins',
-            category: 'moderation',
-            userPermissions: ['ADMINISTRATOR'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'alladmins',
+    description: 'Show all members with administator permissions | Afficher tout les membres avec les perm admin',
+    usage: 'alladmins',
+    category: 'moderation',
+    userPermissions: ['ADMINISTRATOR'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
         const tempdata = []
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
@@ -66,7 +61,7 @@ module.exports = class Test extends Command {
                 reac3 = await tdata.react("➡");
             }
 
-            tdata.edit({content:null, embeds: [embed]});
+            tdata.edit({content: null, embeds: [embed]});
 
             const data_res = tdata.createReactionCollector((reaction, user) => user.id === message.author.id);
 

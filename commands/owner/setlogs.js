@@ -1,21 +1,16 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'setlogs',
-            description: 'Setup the logs channel | Configurer le logs',
-            usage: 'setlogs',
-            tags: ['guildOnly'],
-            category: 'owners',
-            guildOwnerOnly: true,
-            cooldown: 4
-        });
-    }
+module.exports = {
 
-    async run(client, message, args) {
+    name: 'setlogs',
+    description: 'Setup the logs channel | Configurer le logs',
+    usage: 'setlogs',
+    tags: ['guildOnly'],
+    category: 'owners',
+    guildOwnerOnly: true,
+    cooldown: 4,
+
+    run: async (client, message, args) => {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const tempLogs = client.functions.copyObject(guildData.get('logs'))
@@ -40,7 +35,7 @@ module.exports = class Test extends Command {
             .setTimestamp()
             .setColor(`${color}`)
             .setFooter(client.user.username)
-        setlogsMsg.edit({embeds : [logsEmbed]})
+        setlogsMsg.edit({embeds: [logsEmbed]})
             .then(async m => {
                 const collector = m.createReactionCollector({filter, time: 900000});
                 collector.on('collect', async r => {

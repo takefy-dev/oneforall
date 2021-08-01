@@ -1,27 +1,21 @@
-const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
-const Discord = require('discord.js')
+module.exports = {
 
-module.exports = class Test extends Command{
-    constructor() {
-        super({
-            name: 'addinvite',
-            description: 'Add some invites to a member | Ajouter des invites a un membre',
-            category: 'invite',
-            aliases: ['addinv', 'addinvites'],
-            usage: 'addinvite <mention/ping> <amount>',
-            userPermissions: ['ADMINISTRATOR'],
-            cooldown: 3
-        });
-    }
-    async run(client, message,args){
+    name: 'addinvite',
+    description: 'Add some invites to a member | Ajouter des invites a un membre',
+    category: 'invite',
+    aliases: ['addinv', 'addinvites'],
+    usage: 'addinvite <mention/ping> <amount>',
+    userPermissions: ['ADMINISTRATOR'],
+    cooldown: 3,
+
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
         const member = message.mentions.members.first() || await message.guild.members.resolve(args[0]);
 
-        if(!member) return message.channel.send(lang.addinvite.noMember)
+        if (!member) return message.channel.send(lang.addinvite.noMember)
         const numberToAdd = args[1];
-        if(!numberToAdd) return message.channel.send(lang.addinvite.noNumber)
+        if (!numberToAdd) return message.channel.send(lang.addinvite.noNumber)
         let userData = client.managers.userManager.getAndCreateIfNotExists(`${message.guild.id}-${member.user.id}`)
         const count = userData.get('invite');
         count.join += parseInt(numberToAdd);

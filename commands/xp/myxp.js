@@ -1,20 +1,16 @@
-const Command = require('../../structures/Handler/Command');
 const Discord = require('discord.js')
 const canvacord = require("canvacord");
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'xp',
-            description: "Show your xp or a xp member | Affiche votre xp ou celui d'un membre",
-            category: 'xp',
-            usage: 'xp [mention/id]',
-            aliases: ['lvl'],
-            clientPermissions: ['ATTACH_FILES'],
-            cooldown: 4
-        });
-    }
+module.exports = {
 
-    async run(client, message, args) {
+    name: 'xp',
+    description: "Show your xp or a xp member | Affiche votre xp ou celui d'un membre",
+    category: 'xp',
+    usage: 'xp [mention/id]',
+    aliases: ['lvl'],
+    clientPermissions: ['ATTACH_FILES'],
+    cooldown: 4,
+
+    run: async (client, message, args) => {
         if (args[0])
             args[0] = args[0].startsWith("<@") && args[0].endsWith(">") ? args[0].replace(/!/, '').slice(2, -1) : args[0];
         else args[0] = message.author.id

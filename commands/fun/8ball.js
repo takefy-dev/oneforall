@@ -1,23 +1,18 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: '8ball',
-            description: 'Answer to your question. | Répond a votre question.',
-            usage: '8ball <question>',
-            category: 'fun',
-            tags: ['guildOnly'],
-            aliases: ['8b'],
-            clientPermissions: ['EMBED_LINKS'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: '8ball',
+    description: 'Answer to your question. | Répond a votre question.',
+    usage: '8ball <question>',
+    category: 'fun',
+    tags: ['guildOnly'],
+    aliases: ['8b'],
+    clientPermissions: ['EMBED_LINKS'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
@@ -33,7 +28,7 @@ module.exports = class Test extends Command {
             .addField("Question", question)
             .addField(lang.ball.reponse, replies[result])
 
-        message.channel.send({embeds :[ballembed]})
+        message.channel.send({embeds: [ballembed]})
 
     }
 };

@@ -1,13 +1,8 @@
-// let all = new Map();
-const Event = require('../../structures/Handler/Event');
-module.exports = class connect extends Event {
-    constructor() {
-        super({
-            name: 'get-status',
-        });
-    }
+module.exports = {
 
-    async run(websocket, client, cb) {
+    name: 'get-status',
+
+    run: async (websocket, client, cb) => {
         console.log("getting status in bot")
         const upTime = client.uptime
         const apiLatency = Math.round(client.ws.ping)

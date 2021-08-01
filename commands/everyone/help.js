@@ -1,20 +1,15 @@
-const Command = require('../../structures/Handler/Command');
 const Discord = require('discord.js')
-module.exports = class Test extends Command {
-    constructor() {
-        super({
+module.exports = {
+
             name: 'help',
             description: 'Show the command | Affiche les commandes',
             category: 'everyone',
             usage: 'help [commandName]',
             aliases: ['h'],
             clientPermissions: ['EMBED_LINKS'],
-            cooldown: 4
+            cooldown: 4,
 
-        });
-    }
-
-    async run(client, message, args) {
+    run: async (client, message, args) => {
 
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);

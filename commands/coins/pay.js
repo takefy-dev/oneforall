@@ -1,25 +1,17 @@
-
-const coinSettings = new Map();
-const userCoins = new Map();
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
 const {MessageEmbed} = require("discord.js");
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'pay',
-            description: 'Pay a member | Payer un membre',
-            // Optionnals :
-            usage: 'pay <mention / id> <number coins>',
-            category: 'coins',
-            coinsOnly: true,
-            cooldown: 2
-        });
-    }
+module.exports = {
 
-    async run(client, message, args) {
+    name: 'pay',
+    description: 'Pay a member | Payer un membre',
+    // Optionnals :
+    usage: 'pay <mention / id> <number coins>',
+    category: 'coins',
+    coinsOnly: true,
+    cooldown: 2,
+
+
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const lang = guildData.lang
         if (args[0])
@@ -45,13 +37,13 @@ module.exports = class Test extends Command {
                 message.channel.send(lang.pay.giveCoins(parseFloat(args[1]), targetUser));
                 const {logs} = guildData.get('coinsSettings')
                 const logsChannel = message.guild.channels.cache.get(logs);
-                if(!logsChannel && logsChannel.deleted) return;
+                if (!logsChannel && logsChannel.deleted) return;
                 const logsEmbed = new MessageEmbed()
                     .setTitle(`Coins logs`)
                     .setColor(guildData.get('color'))
                     .setDescription(lang.pay.logs(parseFloat(args[1]), message.member, targetUser))
                 logsChannel.send({embeds: [logsEmbed]})
-            }else
+            } else
                 message.reply(lang.pay.notEnoughtCoins(parseFloat(args[1])))
         }
 

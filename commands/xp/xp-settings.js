@@ -1,22 +1,17 @@
-const Command = require('../../structures/Handler/Command');
+module.exports = {
+
+    name: 'xp-settings',
+    description: 'Configure the settings for the xp (amount per msg/amount per s voc) | Configure les paramètre pour le gain xp (gain par msg/gain par s voc',
+    category: 'xp',
+    usage: 'xp-settings',
+    aliases: ['xp-setting', 'xp-config'],
+    clientPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
+    userPermissions: ['ADMINISTRATOR'],
+    guildOwnerOnly: true,
+    cooldown: 4,
 
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'xp-settings',
-            description: 'Configure the settings for the xp (amount per msg/amount per s voc) | Configure les paramètre pour le gain xp (gain par msg/gain par s voc',
-            category: 'xp',
-            usage: 'xp-settings',
-            aliases: ['xp-setting', 'xp-config'],
-            clientPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
-            userPermissions: ['ADMINISTRATOR'],
-            guildOwnerOnly: true,
-            cooldown: 4
-        });
-    }
-
-    async run(client, message, args) {
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const lang = guildData.lang;
         const color = guildData.get('color');
@@ -28,7 +23,10 @@ module.exports = class Test extends Command {
                 return response.author.id === message.author.id
             };
         for (const em of emojis) await fistMsg.react(em)
-        fistMsg.edit({content:null, embeds : [lang.xpSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.enable)).setColor(color)]}).then(async m => {
+        fistMsg.edit({
+            content: null,
+            embeds: [lang.xpSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.enable)).setColor(color)]
+        }).then(async m => {
             const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                 await r.users.remove(message.author);
@@ -211,7 +209,12 @@ module.exports = class Test extends Command {
                                 })
                                 temp.channel = channel.id
                                 message.channel.send(lang.xpSettings.question.multiplier).then(mp => {
-                                    mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
+                                    mp.channel.awaitMessages({
+                                        filter: dureefiltrer,
+                                        max: 1,
+                                        time: 30000,
+                                        errors: ['time']
+                                    })
                                         .then(cld => {
                                             const msg = cld.first();
                                             if (msg.content === 'cancel') {
@@ -253,7 +256,7 @@ module.exports = class Test extends Command {
 
                                             tempConfig.multiplerChannels = tempConfig.multiplerChannels.filter(boost => boost.channel !== temp.channel)
 
-                                            if(temp.boost !== 0){
+                                            if (temp.boost !== 0) {
                                                 tempConfig.multiplerChannels.push(temp)
 
                                             }
@@ -271,19 +274,19 @@ module.exports = class Test extends Command {
                 if (r.emoji.name === emojis[5]) {
                     tempConfig.enable = !tempConfig.enable
                     message.guild.channels.cache.filter(channel => channel.type === "voice" && channel.members.size > 0).map(channel => channel.members).forEach(members => members.forEach(member => {
-                        if(tempConfig.enable)
+                        if (tempConfig.enable)
                             client.managers.voiceManager.addVoice(`${message.guild.id}-${member.id}`, member);
                         else
-                            client.managers.voiceManager.delete(`${message.guild.id}-${member.id}`  );
+                            client.managers.voiceManager.delete(`${message.guild.id}-${member.id}`);
 
                     }))
 
                     updateEmbed()
                 }
-                if(r.emoji.name === emojis[6]){
+                if (r.emoji.name === emojis[6]) {
                     collector.stop('cancel')
                 }
-                if(r.emoji.name === emojis[7]){
+                if (r.emoji.name === emojis[7]) {
                     guildData.set('xp', tempConfig).save().then(() => {
                         message.channel.send(lang.xpSettings.save)
                         fistMsg.delete()
@@ -303,7 +306,7 @@ module.exports = class Test extends Command {
         })
 
         function updateEmbed() {
-            fistMsg.edit({embeds : [lang.xpSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.enable)).setColor(color)]})
+            fistMsg.edit({embeds: [lang.xpSettings.embed(tempConfig, client.functions.enableEmoji(tempConfig.enable)).setColor(color)]})
         }
 
 

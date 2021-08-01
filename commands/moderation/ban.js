@@ -1,20 +1,13 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'ban',
-            description: 'Ban a user from the server | Bannir un membre du serveur',
-            usage: 'ban <mention / id> [reason]',
-            category: 'moderation',
-            userPermissions: ['BAN_MEMBERS'],
-            clientPermissions: ['BAN_MEMBERS'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
-
-    async run(client, message, args) {
+    name: 'ban',
+    description: 'Ban a user from the server | Bannir un membre du serveur',
+    usage: 'ban <mention / id> [reason]',
+    category: 'moderation',
+    userPermissions: ['BAN_MEMBERS'],
+    clientPermissions: ['BAN_MEMBERS'],
+    cooldown: 5,
+    run: async (client, message, args) => {
 
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
@@ -37,7 +30,7 @@ module.exports = class Test extends Command {
             const memberPosition = member.roles.highest.position;
             const moderationPosition = message.member.roles.highest.position;
             if (message.guild.ownerId
- !== message.author.id && !(moderationPosition > memberPosition) && !client.isOwner(message.author.id)) {
+                !== message.author.id && !(moderationPosition > memberPosition) && !client.isOwner(message.author.id)) {
                 return message.channel.send(lang.ban.errorRl(user)).then(mp => mp.delete({timeout: 4000}));
             }
             if (!member.bannable) {
@@ -65,21 +58,21 @@ module.exports = class Test extends Command {
             const color = guildData.get('color');
 
             if (channel && !channel.deleted) {
-                channel.send(channel.send({embeds : [logs.targetExecutorLogs("ban", message.member, user, color)]}))
+                channel.send(channel.send({embeds: [logs.targetExecutorLogs("ban", message.member, user, color)]}))
             }
             const antiraidConfig = guildData.get('antiraid');
             let antiraidLog = guildData.get('logs').antiraid;
             const isOn = antiraidConfig.enable["antiMassBan"];
             if (!isOn) return;
             if (guild.ownerId
- === message.author.id) return Logger.log(`No sanction crown`, `MassBAN`, 'pink');
+                === message.author.id) return client.Logger.log(`No sanction crown`, `MassBAN`, 'pink');
             let isGuildOwner = guildData.isGuildOwner(message.author.id);
             let isBotOwner = client.isOwner(message.author.id);
 
 
             let isWlBypass = antiraidConfig.bypass["antiMassBan"];
             if (isWlBypass) var isWl = guildData.isGuildWl(message.author.id);
-            if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
+            if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
 
 
             if (isWlBypass && !isWl || !isWlBypass) {
@@ -95,7 +88,7 @@ module.exports = class Test extends Command {
                 if (antiraidLimit.ban < banLimit) {
                     antiraidLimit.ban += 1
                     if (logsChannel && !logsChannel.deleted) {
-                        logsChannel.send({embeds : [logs.targetExecutorLogs("ban", message.member, member, color, `${antiraidLimit.ban + 1 === banLimit ? `Aucun ban restant` : `${antiraidLimit.ban + 1}/${banLimit}`} before sanction`)]})
+                        logsChannel.send({embeds: [logs.targetExecutorLogs("ban", message.member, member, color, `${antiraidLimit.ban + 1 === banLimit ? `Aucun ban restant` : `${antiraidLimit.ban + 1}/${banLimit}`} before sanction`)]})
                     }
                 } else {
                     let sanction = antiraidConfig.config["antiMassBan"];
@@ -117,13 +110,13 @@ module.exports = class Test extends Command {
 
                         }
                         if (logsChannel && !logsChannel.deleted) {
-                            logsChannel.send({embeds : [logs.targetExecutorLogs("ban", message.member, user, color, sanction)]})
+                            logsChannel.send({embeds: [logs.targetExecutorLogs("ban", message.member, user, color, sanction)]})
                         }
                         antiraidLimit.ban = 0
 
                     } else {
                         if (logsChannel && !logsChannel.deleted) {
-                            logsChannel.send({embeds : [logs.targetExecutorLogs("ban", message.member, user, color, "Je n'ai pas assé de permissions")]})
+                            logsChannel.send({embeds: [logs.targetExecutorLogs("ban", message.member, user, color, "Je n'ai pas assé de permissions")]})
                         }
                         antiraidLimit.ban = 0
 

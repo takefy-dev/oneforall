@@ -1,14 +1,9 @@
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require("advanced-command-handler");
 
-module.exports = class roleCreate extends Event {
-    constructor() {
-        super({
-            name: 'roleCreate',
-        });
-    }
+module.exports = {
 
-    async run(client, role) {
+    name: 'roleCreate',
+
+    run: async (client, role) => {
         if (role.managed) return;
         let guild = role.guild;
         if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
@@ -23,16 +18,16 @@ module.exports = class roleCreate extends Event {
         if (!isOn) return;
         let action = await guild.fetchAuditLogs({type: "ROLE_CREATE"}).then(async (audit) => audit.entries.first());
 
-        if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
+        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
         if (guild.ownerId
- === action.executor.id) return Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+ === action.executor.id) return client.Logger.log(`No sanction crown`, `${this.name}`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
         let isWlBypass = antiraidConfig.bypass[this.name];
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
-        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `ROLE_CREATEE`, 'pink');
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `ROLE_CREATEE`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
             const member = await guild.members.fetch(action.executor.id)
             const channel = guild.channels.cache.get(antiraidLog)

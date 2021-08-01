@@ -1,28 +1,18 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
+module.exports = {
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'clear',
-            description: 'Delete a number of message | Supprimer un nombre de messages',
-            usage: 'clear <number/member>',
-            category: 'moderation',
-            userPermissions: ['MANAGE_MESSAGES'],
-            clientPermissions: ['MANAGE_MESSAGES'],
-            cooldown: 5
-
-        });
-    }
-
-    async run(client, message, args) {
-
+    name: 'clear',
+    description: 'Delete a number of message | Supprimer un nombre de messages',
+    usage: 'clear <number/member>',
+    category: 'moderation',
+    userPermissions: ['MANAGE_MESSAGES'],
+    clientPermissions: ['MANAGE_MESSAGES'],
+    cooldown: 5,
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
         const lang = guildData.lang;
         const member = message.mentions.members.first();
-        if(member){
+        if (member) {
             const channelMessage = await message.channel.messages.fetch();
             const memberMessage = channelMessage.filter((m) => m.author.id === member.id)
             await message.channel.bulkDelete(memberMessage, true).then(async () => {
@@ -32,7 +22,7 @@ module.exports = class Test extends Command {
                     msg.delete()
                 }, 2000)
             })
-        }else{
+        } else {
             let deleteAmount = parseInt(args[0]);
 
             if (isNaN(args[0]) || parseInt(args[0]) <= 0) {
@@ -60,6 +50,7 @@ module.exports = class Test extends Command {
             setTimeout(() => {
                 msg.delete();
             }, 5000)
+
             async function clearMoreThan100(channel, limit) {
                 let collected = await channel.messages.fetch({limit});
                 let deletedMsg = 0;

@@ -1,23 +1,18 @@
-const Command = require('../../structures/Handler/Command');
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'counter',
-            description: "Show the counter creation menu | Afficher le menu de création d'un compteur",
-            // Optionnals :
-            usage: 'counter',
-            category: 'misc',
-            aliases: ['compteur'],
-            userPermissions: ['ADMINISTRATOR'],
-            clientPermissions: ['ADD_REACTIONS', 'EMBED_LINKS'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'counter',
+    description: "Show the counter creation menu | Afficher le menu de création d'un compteur",
+    // Optionnals :
+    usage: 'counter',
+    category: 'misc',
+    aliases: ['compteur'],
+    userPermissions: ['ADMINISTRATOR'],
+    clientPermissions: ['ADD_REACTIONS', 'EMBED_LINKS'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color');
         const lang = guildData.lang;
@@ -37,7 +32,7 @@ module.exports = class Test extends Command {
             .setTimestamp()
             .setColor(color)
             .setFooter(client.user.username)
-        msg.edit({content:null, embeds: [embed]}).then(async m => {
+        msg.edit({content: null, embeds: [embed]}).then(async m => {
             const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                 await r.users.remove(message.author);

@@ -1,21 +1,15 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
+module.exports = {
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'unwarn',
-            description: "Remove warns of a member | Enlève les warns d'un membre",
-            category: 'warn',
-            usage: 'unwarn <mention/id> [numeroWarn]',
-            clientPermissions: ['EMBED_LINKS', 'SEND_MESSAGES'],
-            userPermissions: ['BAN_MEMBERS'],
-            cooldown: 4
-        });
-    }
+    name: 'unwarn',
+    description: "Remove warns of a member | Enlève les warns d'un membre",
+    category: 'warn',
+    usage: 'unwarn <mention/id> [numeroWarn]',
+    clientPermissions: ['EMBED_LINKS', 'SEND_MESSAGES'],
+    userPermissions: ['BAN_MEMBERS'],
+    cooldown: 4,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
 

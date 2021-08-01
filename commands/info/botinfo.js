@@ -1,34 +1,29 @@
-const { version } = require('../../package.json');
-const { utc } = require('moment');
-const {version: djsversion } = require('discord.js');
-const os = require('os')
-const ms = require('ms')
-const Discord = require('discord.js')
-const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
+const {version} = require('../../package.json'),
+    {utc} = require('moment'),
+    {version: djsversion} = require('discord.js'),
+    os = require('os'),
+    ms = require('ms'),
+    Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'botinfo',
-            description: 'Get the information about the bot | Avoir les informations concernant le bot',
-            category: 'info',
-            clientPermissions: ['SEND_MESSAGES'],
-            aliases: ['infobot', 'bot'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'botinfo',
+    description: 'Get the information about the bot | Avoir les informations concernant le bot',
+    category: 'info',
+    clientPermissions: ['SEND_MESSAGES'],
+    aliases: ['infobot', 'bot'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const color = guildData.get('color')
         let guildArray;
         let guildCount;
         let channelArray;
         const takefy = await client.users.fetch('708047733994553344')
-        const baby =  await client.users.fetch('659038301331783680')
-        const kpri =  await client.users.fetch('295947937756872709')
+        const baby = await client.users.fetch('659038301331783680')
+        const kpri = await client.users.fetch('295947937756872709')
         let userArray;
         await client.cluster.fetchClientValues("guilds.cache.size").then((res) => {
             guildArray = res
@@ -73,7 +68,7 @@ module.exports = class Test extends Command {
 
             .setTimestamp();
 
-        message.channel.send({embeds :[embedBot]});
+        message.channel.send({embeds: [embedBot]});
     }
 };
 

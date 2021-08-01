@@ -1,13 +1,8 @@
-const Event = require('../../structures/Handler/Event');
+module.exports = {
 
-module.exports = class presenceUpdate extends Event {
-    constructor() {
-        super({
-            name: 'presenceUpdate',
-        });
-    }
+    name: 'presenceUpdate',
 
-    async run(client, oldMember, newMember) {
+    run: async (client, oldMember, newMember) => {
         if (!client.botperso) return;
         client.guilds.cache.filter(g => client.managers.guildManager.getAndCreateIfNotExists(g.id).get('soutien').enable).forEach(guild => {
             if (!oldMember && !newMember) return;

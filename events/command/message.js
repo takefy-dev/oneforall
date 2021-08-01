@@ -1,14 +1,8 @@
 ﻿const Event = require('../../structures/Handler/Event');
-const {Logger} = require("advanced-command-handler");
 const DBL = require("dblapi.js");
-module.exports = class message extends Event {
-    constructor() {
-        super({
-            name: 'messageCreate',
-        });
-    }
-
-    async run(client, message) {
+module.exports =  {
+    name: 'messageCreate',
+    run: async (client, message) => {
         if(!message.guild) return;
         let guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
         const prefix = guildData.get('prefix')
@@ -24,16 +18,11 @@ module.exports = class message extends Event {
         if (message.author.bot || message.system) return;
 
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
-        const cmd = await client.commands.get(args[0].toLowerCase().normalize()) || await client.aliases.get(args[0].toLocaleLowerCase().normalize());
+        const cmd = client.commands.get(args[0].toLowerCase().normalize()) || client.commands.get(client.aliases.get(args[0].toLocaleLowerCase().normalize()));
         args.shift();
-        if (prefix && cmd && message.guild) {
-            if(message.author.id === "723249126833127537") return;
-            if(message.author.id === "836749611862982686") return;
-            if(message.author.id === "770026109294739476") return;
-            
-            
+        if (prefix && cmd) {
             if (client.isOwner(message.author.id)) {
-                Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white')
+                client.Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white')
                 return cmd.run(client, message, args)
             }
 
@@ -91,19 +80,19 @@ module.exports = class message extends Event {
             }
             if (cmd.ownerOnly) {
                 if (client.isOwner(message.author.id)) {
-                    Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white')
+                    client.Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white')
 
                     return cmd.run(client, message, args);
                 } else {
-                    Logger.warn(`${message.author.tag} ${Logger.setColor(`white`, `tried the ownerOnly command: ${cmd.name}`)} `, `COMMAND`)
+                    client.Logger.warn(`${message.author.tag} ${client.Logger.setColor(`white`, `tried the ownerOnly command: ${cmd.name}`)} `, `COMMAND`)
                     return await message.channel.send(lang.error.ownerOnly);
                 }
             } else if (cmd.guildOwnerOnly  && !enable || !permHasCommand && cmd.guildOwnerOnly) {
                 if (guildData.isGuildOwner(message.author.id)) {
-                    Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white');
+                    client.Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white');
                     return cmd.run(client, message, args);
                 } else {
-                    Logger.warn(`${message.author.tag} ${Logger.setColor(`white`, `tried the guildOwnerOnly command: ${cmd.name}`)} `, `COMMAND`)
+                    client.Logger.warn(`${message.author.tag} ${client.Logger.setColor(`white`, `tried the guildOwnerOnly command: ${cmd.name}`)} `, `COMMAND`)
                     return await message.channel.send(lang.error.notListOwner)
 
                 }
@@ -113,7 +102,7 @@ module.exports = class message extends Event {
                 if(owner !== message.author.id){
                     return message.channel.send(lang.error.notGuildOwner)
                 }else{
-                    Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white');
+                    client.Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name}`, `COMMAND`, 'white');
                     return cmd.run(client, message, args);
                 }
             } else {
@@ -131,7 +120,7 @@ module.exports = class message extends Event {
                     }
                 }
                 cmd.run(client, message, args);
-                Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name} ${args.join(' ')}`, `COMMAND`, 'white');
+                client.Logger.log(`${message.author.tag} execued the command: ${cmd.name} in ${message.guild.name} ${args.join(' ')}`, `COMMAND`, 'white');
 
             }
 

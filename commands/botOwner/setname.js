@@ -1,24 +1,15 @@
+module.exports = {
 
+    name: 'setname',
+    description: 'definir le nom du bot',
+    usage: 'setname dd',
+    category: 'botOwner',
+    aliases: ['setname', 'setprenom', 'setnom'],
+    clientPermissions: ['EMBED_LINKS'],
+    ownerOnly: true,
+    cooldown: 20,
 
-const Command = require('../../structures/Handler/Command');
-const { Logger } = require('advanced-command-handler')
-const Discord = require('discord.js')
-
-module.exports = class Test extends Command{
-    constructor() {
-        super({
-            name: 'setname',
-            description: 'definir le nom du bot',
-            usage: 'setname dd',
-            category: 'botOwner',
-            aliases: ['setname', 'setprenom', 'setnom'],
-            clientPermissions: ['EMBED_LINKS'],
-            ownerOnly: true,
-            cooldown: 20
-        });
-    }
-    async run(client, message,args) {
-
+    run: async (client, message, args) => {
 
 
         if (args.length) {

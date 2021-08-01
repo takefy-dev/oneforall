@@ -1,21 +1,18 @@
-const Command = require('../../structures/Handler/Command');
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'warnlist',
-            description: "Show the server warns or of a specif member | Affiche les warns du serveur ou d'un membre en particulier",
-            category: 'warn',
-            usage: 'warnlist [member/id]',
-            aliases: ['warn-list', 'serverwarn'],
-            clientPermissions: ['EMBED_LINKS'],
-            userPermissions: ['BAN_MEMBERS'],
-            cooldown: 4
-        });
-    }
+module.exports = {
 
-    async run(client, message, args) {
+    name: 'warnlist',
+    description: "Show the server warns or of a specif member | Affiche les warns du serveur ou d'un membre en particulier",
+    category: 'warn',
+    usage: 'warnlist [member/id]',
+    aliases: ['warn-list', 'serverwarn'],
+    clientPermissions: ['EMBED_LINKS'],
+    userPermissions: ['BAN_MEMBERS'],
+    cooldown: 4,
+
+
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
         let warnedMember
@@ -114,7 +111,7 @@ module.exports = class Test extends Command {
                 warnsEmbed.description = allWarns.map((warn, i) => `${i + 1} ・ <@${warn.userId}> - Raison : ${warn.reason.join(', ')}`).join('\n')
                 return message.channel.send({
                     embeds:
-                    [warnsEmbed]
+                        [warnsEmbed]
 
                 })
             }

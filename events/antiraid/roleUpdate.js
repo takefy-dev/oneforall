@@ -1,15 +1,8 @@
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require('advanced-command-handler')
-module.exports = class roleUpdate extends Event {
-    constructor() {
-        super({
-            name: 'roleUpdate',
-        });
-    }
-
-    async run(client, oldRole, newRole) {
+module.exports =  {
+    name: 'roleUpdate',
+    run: async (client, oldRole, newRole) => {
         if (oldRole === newRole) return;
-        const guild = oldRole.guild;
+        const {guild} = oldRole;
         if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         if (oldRole.managed && newRole.managed) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
@@ -28,9 +21,9 @@ module.exports = class roleUpdate extends Event {
         const diff = now - timeOfAction
         console.log(diff)
         if (diff >= 500) return
-        if (action.executor.id === client.user.id) return Logger.log(`No sanction oneforall`, `roleUpdate`, 'pink');
+        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `roleUpdate`, 'pink');
         if (guild.ownerId
- === action.executor.id) return Logger.log(`No sanction crown`, `roleUpdate`, 'pink');
+ === action.executor.id) return client.Logger.log(`No sanction crown`, `roleUpdate`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);

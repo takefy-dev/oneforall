@@ -1,17 +1,9 @@
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
 const ms = require("ms");
 const moment = require("moment")
 
-module.exports = class AntiDc extends Event {
-    constructor() {
-        super({
-            name: 'guildMemberAdd',
-        });
-    }
-
-    async run(client, member) {
+module.exports = {
+    name: 'guildMemberAdd',
+    run: async(client, member) => {
         const guild = member.guild;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
         const color = guildData.get('color');

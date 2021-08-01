@@ -1,21 +1,11 @@
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
-const ms = require("ms");
-const moment = require("moment")
 
-module.exports = class AntiBot extends Event {
-    constructor() {
-        super({
-            name: 'guildMemberAdd',
-        });
-    }
-
-    async run(client, member) {
+module.exports =  {
+    name: 'guildMemberAdd',
+    run: async (client, member)=> {
         if(member.user.id === client.user.id) return;
         const guild = member.guild;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
-        const owner = client.botperso ? client.owners[client.owners.length - 1] : guild.ownerId
+        const owner = client.botperso ? client.buyer : guild.ownerId
 
         const blacklistData =client.managers.blackListManager.getAndCreateIfNotExists(owner);
         const isOn = blacklistData.get('enable');

@@ -1,22 +1,17 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'perm',
-            description: 'Manage perm on the serv | Gerer les perms sur le serveur',
-            category: 'perm',
-            usage: 'perm <numberOfPerm (1/2/3/4/everyone)> <commandName>',
-            aliases: ['setperm'],
-            userPermissions: ['ADMINISTRATOR'],
-            guildOwnerOnly: true,
-            cooldown: 4
-        });
-    }
+module.exports = {
 
-    async run(client, message, args) {
+    name: 'perm',
+    description: 'Manage perm on the serv | Gerer les perms sur le serveur',
+    category: 'perm',
+    usage: 'perm <numberOfPerm (1/2/3/4/everyone)> <commandName>',
+    aliases: ['setperm'],
+    userPermissions: ['ADMINISTRATOR'],
+    guildOwnerOnly: true,
+    cooldown: 4,
+
+    run: async (client, message, args) => {
         const permToPutCommand = args[0];
         let commandName = args[1];
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);

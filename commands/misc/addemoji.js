@@ -1,24 +1,16 @@
 const {Util} = require('discord.js')
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'addemoji',
-            description: 'Add a emoji | Ajouter un emoji',
-            usage: 'addemoji <emoji> <name>',
-            category: 'misc',
-            aliases: ['create', 'emojicreate'],
-            userPermissions: ['MANAGE_GUILD'],
-            clientPermissions: ["SEND_MESSAGES", "EMBED_LINKS"],
-            cooldown: 5
+module.exports = {
+    name: 'addemoji',
+    description: 'Add a emoji | Ajouter un emoji',
+    usage: 'addemoji <emoji> <name>',
+    category: 'misc',
+    aliases: ['create', 'emojicreate'],
+    userPermissions: ['MANAGE_GUILD'],
+    clientPermissions: ["SEND_MESSAGES", "EMBED_LINKS"],
+    cooldown: 5,
 
-        });
-    }
-
-    async run(client, message, args) {
+    run: async (client, message, args) => {
 
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
@@ -47,7 +39,7 @@ module.exports = class Test extends Command {
         }
         message.guild.emojis.create(link, name, {reason: `emoji add par ${message.author.username}`}).then(() => {
             message.channel.send(lang.addemoji.success(name))
-            Logger.log(`${Logger.setColor('teal')}${message.author.tag} a ajouté un emoji`, 'Success add emoji')
+            client.Logger.log(`${client.Logger.setColor('teal')}${message.author.tag} a ajouté un emoji`, 'Success add emoji')
         })
     }
 }

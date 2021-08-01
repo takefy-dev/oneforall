@@ -1,23 +1,16 @@
-const guildLang = new Map();
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
+module.exports = {
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'nuke',
-            description: "Clear all messages of a channel | Supprimer tout les messages d'un salon",
-            usage: 'nuke',
-            category: 'moderation',
-            aliases: ['renew', 'clearall'],
-            userPermissions: ['MANAGE_MESSAGES'],
-            clientPermissions: ['MANAGE_CHANNELS'],
-            cooldown: 5
-        });
-    }
+    name: 'nuke',
+    description: "Clear all messages of a channel | Supprimer tout les messages d'un salon",
+    usage: 'nuke',
+    category: 'moderation',
+    aliases: ['renew', 'clearall'],
+    userPermissions: ['MANAGE_MESSAGES'],
+    clientPermissions: ['MANAGE_CHANNELS'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;

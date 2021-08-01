@@ -1,22 +1,16 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
+module.exports = {
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'setavatar',
-            description: 'setavatar <link or image>',
-            usage: 'setavatar <link or image>',
-            category: 'botOwner',
-            aliases: ['setphoto', 'setimage', 'seticon'],
-            clientPermissions: ['EMBED_LINKS'],
-            ownerOnly: true,
-            cooldown: 10
-        });
-    }
+    name: 'setavatar',
+    description: 'setavatar <link or image>',
+    usage: 'setavatar <link or image>',
+    category: 'botOwner',
+    aliases: ['setphoto', 'setimage', 'seticon'],
+    clientPermissions: ['EMBED_LINKS'],
+    ownerOnly: true,
+    cooldown: 10,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
         if (!message.guild) return;
         if (message.attachments.size > 0) {
             message.attachments.forEach(attachment => {

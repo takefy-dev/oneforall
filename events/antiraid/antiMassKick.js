@@ -1,13 +1,6 @@
-const Event = require('../../structures/Handler/Event');
-const { Logger } = require('advanced-command-handler')
-
-module.exports = class Ready extends Event{
-    constructor() {
-        super({
-            name: 'guildMemberRemove',
-        });
-    }
-    async run(client, member){
+module.exports = {
+    name: 'guildMemberRemove',
+    run:async (client, member) => {
         const guild = member.guild;
         if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id)
@@ -22,9 +15,8 @@ module.exports = class Ready extends Event{
         const now = new Date().getTime()
         const diff = now - timeOfAction
         if(diff >= 600) return
-        if (action.executor.id === client.user.id)  return Logger.log(`No sanction oneforall`, `masskick`, 'pink');
-        if(guild.ownerId
- === action.executor.id) return Logger.log(`No sanction crown`, `masskick`, 'pink');
+        if (action.executor.id === client.user.id)  return client.Logger.log(`No sanction oneforall`, `masskick`, 'pink');
+        if(guild.ownerId === action.executor.id) return client.Logger.log(`No sanction crown`, `masskick`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
@@ -32,7 +24,7 @@ module.exports = class Ready extends Event{
 
         let isWlBypass = antiraidConfig.bypass[this.name];
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
-        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
 
 
         if (isWlBypass && !isWl || !isWlBypass) {

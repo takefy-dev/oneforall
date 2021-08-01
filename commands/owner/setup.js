@@ -1,20 +1,14 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
+module.exports = {
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'setup',
-            description: 'Setup the role for the bot to work perfectly | Configurer les rôles indispensable pour la fonctionnalitée du bot',
-            usage: 'setup',
-            category: 'owners',
-            guildOwnerOnly: true,
-            cooldown: 5
-        });
-    }
+    name: 'setup',
+    description: 'Setup the role for the bot to work perfectly | Configurer les rôles indispensable pour la fonctionnalitée du bot',
+    usage: 'setup',
+    category: 'owners',
+    guildOwnerOnly: true,
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
@@ -22,7 +16,7 @@ module.exports = class Test extends Command {
 
 
         message.channel.send(lang.setup.muteQ)
-        const responseMuteRole = await message.channel.awaitMessages( {
+        const responseMuteRole = await message.channel.awaitMessages({
             filter: m => m.author.id === message.author.id,
             max: 1,
             timeout: 30000,
@@ -35,7 +29,7 @@ module.exports = class Test extends Command {
 
 
         message.channel.send(lang.setup.memberRoleQ)
-        const responseMembreRole = await message.channel.awaitMessages( {
+        const responseMembreRole = await message.channel.awaitMessages({
             filter: m => m.author.id === message.author.id,
             max: 1,
             timeout: 30000,

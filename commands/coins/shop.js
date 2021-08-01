@@ -1,24 +1,18 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'shop',
-            description: 'Show the shop / Manage item to the shop | Afficher le magasin / Montrer le shop / Gerer les objets dans le shop',
-            // Optionnals :
-            usage: 'shop [create/delete/add/edit/remove] [item/itemId] [prix]',
-            category: 'coins',
-            aliases: ['store', 'magasin'],
-            clientPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
-            cooldown: 2,
-            coinsOnly: true,
-            guildOwnerOnly: true
-        });
-    }
+module.exports = {
+    name: 'shop',
+    description: 'Show the shop / Manage item to the shop | Afficher le magasin / Montrer le shop / Gerer les objets dans le shop',
+    // Optionnals :
+    usage: 'shop [create/delete/add/edit/remove] [item/itemId] [prix]',
+    category: 'coins',
+    aliases: ['store', 'magasin'],
+    clientPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
+    cooldown: 2,
+    coinsOnly: true,
+    guildOwnerOnly: true,
 
-    async run(client, message, args) {
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
         const lang = guildData.lang;
@@ -113,7 +107,7 @@ module.exports = class Test extends Command {
                 }, 4000)
             })
             if (isNaN(args[1])) return message.channel.send(lang.addShop.onlyNumber).then(mp => mp.delete({timeout: 4000}))
-            if (!actualShop.find(shop => shop.id === parseInt(args[1]))) return message.channel.send(lang.addShop.notFoundItem).then(mp =>  setTimeout(() => {
+            if (!actualShop.find(shop => shop.id === parseInt(args[1]))) return message.channel.send(lang.addShop.notFoundItem).then(mp => setTimeout(() => {
                 mp.delete()
             }, 4000))
             const itemToEdit = actualShop.filter(shop => shop.id === parseInt(args[1]));

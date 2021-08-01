@@ -1,23 +1,17 @@
-const Command = require('../../structures/Handler/Command');
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'tempvoc',
-            description: 'Show the tempvoc menu | Afficher le menu de vocal temporaire',
-            usage: 'tempvoc',
-            category: 'misc',
-            userPermissions: ['ADMINISTRATOR'],
-            clientPermissions: ['EMBED_LINKS'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
-
-    async run(client, message, args) {
+    name: 'tempvoc',
+    description: 'Show the tempvoc menu | Afficher le menu de vocal temporaire',
+    usage: 'tempvoc',
+    category: 'misc',
+    userPermissions: ['ADMINISTRATOR'],
+    clientPermissions: ['EMBED_LINKS'],
+    cooldown: 5,
 
 
+    run: async (client, message, args) => {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const color = guildData.get('color')
         const lang = guildData.lang;
@@ -38,7 +32,7 @@ module.exports = class Test extends Command {
             dureefiltrer = response => {
                 return response.author.id === message.author.id
             };
-        msg.edit({content:null, embeds: [embed]}).then(async m => {
+        msg.edit({content: null, embeds: [embed]}).then(async m => {
             const collector = m.createReactionCollector({filter, time: 900000});
             collector.on('collect', async r => {
                 await r.users.remove(message.author);
@@ -52,7 +46,7 @@ module.exports = class Test extends Command {
                             }],
                             reason: `Auto config tempvoc`
                         }).then(c => {
-                                tempVoc.categoryId = c.id
+                            tempVoc.categoryId = c.id
                             c.guild.channels.create(lang.tempvoc.autoChName, {
                                 type: 'voice',
                                 parent: c.id,
@@ -107,7 +101,7 @@ module.exports = class Test extends Command {
                     updateEmbed()
                 }
                 if (r.emoji.name === emojis[3]) {
-                    guildData.set('tempvoc',  {
+                    guildData.set('tempvoc', {
                         categoryId: 'Non définie',
                         channelId: 'Non définie',
                         channelName: 'Non définie',

@@ -174,9 +174,7 @@ module.exports = {
     async loadBackupRole(guild, {backupData}) {
         for (const memberBackup of backupData) {
             const member = await guild.members.fetch(memberBackup.id);
-
             if (member) {
-
                 let count = 0;
                 while (count < memberBackup.roles.length) {
                     const roleBackup = memberBackup.roles[count];

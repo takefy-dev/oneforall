@@ -1,22 +1,15 @@
+module.exports = {
 
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
+    name: 'setactivity',
+    description: 'defininr activite',
+    usage: 'setactivity',
+    category: 'botOwner',
+    ownerOnly: true,
+    clientPermissions: ['EMBED_LINKS'],
+    cooldown: 10,
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'setactivity',
-            description: 'defininr activite',
-            usage: 'setactivity',
-            category: 'botOwner',
-            ownerOnly: true,
-            clientPermissions: ['EMBED_LINKS'],
-            cooldown: 10
-        });
-    }
 
-    async run(client, message, args) {
+    run: async (client, message, args) => {
 
 
         const activityName = args.join(" ");

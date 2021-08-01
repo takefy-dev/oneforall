@@ -1,15 +1,6 @@
-
-
-const Event = require('../../structures/Handler/Event');
-
-module.exports = class messageDelete extends Event {
-    constructor() {
-        super({
-            name: 'messageDelete',
-        });
-    }
-
-    async run(client, message) {
+module.exports =  {
+    name: 'messageDelete',
+    run: async (client, message) => {
         if (!message.author) return;
         if (message.author.bot) return;
         if (!message.guild) return;

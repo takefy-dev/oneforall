@@ -1,19 +1,16 @@
-const Command = require('../../structures/Handler/Command');
 const {MessageEmbed} = require('discord.js')
 
-module.exports = class Test extends Command{
-    constructor() {
-        super({
-            name: 'topxp',
-            description: 'Show the top 10 best lvl',
-            category: 'xp',
-            usage: 'topxp',
-            aliases: ['top-xp', 'xplb', 'xb-leaderboard'],
-            clientPermissions : ['EMBED_LINKS'],
-            cooldown: 2
-        });
-    }
-    async run(client, message,args){
+module.exports = {
+
+    name: 'topxp',
+    description: 'Show the top 10 best lvl',
+    category: 'xp',
+    usage: 'topxp',
+    aliases: ['top-xp', 'xplb', 'xb-leaderboard'],
+    clientPermissions: ['EMBED_LINKS'],
+    cooldown: 2,
+
+    run: async (client, message, args) => {
         const rawLeaderboard = await client.levels.fetchLeaderboard(message.guild.id, 10)
         const lb = await client.levels.computeLeaderboard(rawLeaderboard, true)
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)

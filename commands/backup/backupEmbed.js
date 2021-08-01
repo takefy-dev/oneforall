@@ -1,22 +1,18 @@
-const Command = require('../../structures/Handler/Command');
 const {MessageEmbed} = require("discord.js");
 const {SnowflakeUtil} = require('discord.js')
 const DateFormat = require('fast-date-format');
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
+module.exports ={
+
             name: 'backup-embed',
             description: 'Manage embed backups | Gérer les backup embeds',
             category: 'backup',
             usage: 'backup-embed <create/load/info/delete>',
             aliases: ['embed-backup'],
             userPermissions: ['ADMINISTRATOR'],
-            cooldown: 4
-        });
-    }
+            cooldown: 4,
 
-    async run(client, message, args) {
+    run: async (client, message, args) => {
         const userBackup = client.managers.backupManager.getAndCreateIfNotExists(message.author.id)
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;

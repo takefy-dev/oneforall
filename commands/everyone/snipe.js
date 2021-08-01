@@ -1,21 +1,16 @@
-const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
-module.exports = class Test extends Command {
-    constructor() {
-        super({
-            name: 'snipe',
-            description: 'Show the last deleted message in a channel',
-            usage: 'snipe',
-            category: 'everyone',
-            userPermissions: ['MANAGE_MESSAGES'],
-            cooldown: 5
+module.exports = {
 
-        });
-    }
+    name: 'snipe',
+    description: 'Show the last deleted message in a channel',
+    usage: 'snipe',
+    category: 'everyone',
+    userPermissions: ['MANAGE_MESSAGES'],
+    cooldown: 5,
 
-    async run(client, message, args) {
+
+    run: async (client, message, args) => {
 
 
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
