@@ -8,7 +8,7 @@ module.exports = {
     no: 'geen',
     cancel: 'Operasie gekanselleer',
     loading: `Laai tans ... <a:2366_Loading_Pixels:784472554328555571>`,
-    descriptionTimeLeft: timeLeft => `🕙 __Temps restant__ : **${ prettyMilliseconds(timeLeft) }**`,
+    descriptionTimeLeft: timeLeft => `__Tyd oor__:**${ prettyMilliseconds(timeLeft) }**`,
     error: {
         YesNo: `Veuillez répondre par \`oui ou non\` uniquement !`,
         timeout: `Temps écoulé !`,
