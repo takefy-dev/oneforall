@@ -2,75 +2,75 @@ const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms');
 const Discord = require('discord.js');
 module.exports = {
-    maintenance: `Le bot est en maintenance pendant quelques minutes`,
-    clic: 'Clique ici',
-    yes: 'oui',
-    no: 'non',
-    cancel: 'Opération annulé',
-    loading: `Chargement... <a:2366_Loading_Pixels:784472554328555571>`,
-    descriptionTimeLeft: timeLeft => `🕙 __Temps restant__ : **${ prettyMilliseconds(timeLeft) }**`,
+    maintenance: `Der Bot ist für ein paar Minuten in Wartung`,
+    clic: 'Hier klicken',
+    yes: 'ya',
+    no: 'nein',
+    cancel: 'Vorgang abgebrochen',
+    loading: `Wird geladen... <a:2366_Loading_Pixels:784472554328555571>`,
+    descriptionTimeLeft: timeLeft => `🕙 __Verbleibende Zeit__: **${ prettyMilliseconds(timeLeft) }**`,
     error: {
-        YesNo: `Veuillez répondre par \`oui ou non\` uniquement !`,
-        timeout: `Temps écoulé !`,
-        cooldown: time => `Veuillez executer la commande dans \`${ time }\` secondes.`,
-        noSetup: 'Vous devez setup le bot pour pouvoir utiliser cette commande (!setup)',
-        NoYes: 'Vous devez répondre uniquement avec oui ou non !',
-        ownerOnly: `Seulement le propriétaire du bot peut faire cette commande`,
-        notListOwner: `Vous n'êtes pas dans la liste des owners`,
-        notGuildOwner: `Seulement le propiétaire du serveur ou l'acheteur du bot peut executer cette action`,
-        voiceChat: `Vous devez être dans un salon vocal pour executer cette commande`,
-        MissingPermission: `Désolé je ne suis pas arrivé à faire cela je n'ai pas assé de permission.`,
-        includesEveryoneMention: `Vous ne pouvez pas me faire dire un message qui contient un mention everyone ou here`,
-        userPermissions: perm => `Vous n'avez pas la permission requise \`${ perm }\``,
-        clientPermissions: perm => `Je n'ai pas la permission requise \`${ perm }\``,
-        managed: `Vous ne pouvez pas choisir de role gérer par une extension`
+        YesNo: `Bitte nur mit \`ja oder nein\` antworten!`,
+        timeout: `Verstrichene Zeit !`,
+        cooldown: time => `Bitte führen Sie den Befehl in aus \`${ time }\` sekunden.`,
+        noSetup: 'Sie müssen den Bot einrichten, um diesen Befehl verwenden zu können (!setup)',
+        NoYes: 'Sie müssen nur mit Ja oder Nein antworten!',
+        ownerOnly: `Nur der Bot-Besitzer kann diesen Befehl ausführen`,
+        notListOwner: `Sie sind nicht in der Eigentümerliste`,
+        notGuildOwner: `Nur der Serverbesitzer oder Bot-Käufer kann diese Aktion ausführen`,
+        voiceChat: `Nur der Serverbesitzer oder Bot-Käufer can this Aktion ausführen`,
+        MissingPermission: `Es tut mir leid, dass ich es nicht geschafft habe, dass ich nicht genug Erlaubnis hatte.`,
+        includesEveryoneMention: `Sie können mich nicht zwingen, eine Nachricht zu sagen, die alle oder hier enthält`,
+        userPermissions: perm => `Sie haben nicht die erforderliche Berechtigung \`${ perm }\``,
+        clientPermissions: perm => `Ich habe nicht die erforderliche Berechtigung \`${ perm }\``,
+        managed: `Sie können keine Rolle auswählen, die von einer Erweiterung verwaltet werden soll`
     },
     ping: {
-        pinging: 'Pinging...',
-        success: (ping, client) => `Latence du bot: \`${ ping }\` ms, Latence de l'api: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
+        pinging: 'Ping...',
+        success: (ping, client) => `Bot-Latenz: \`${ ping }\` ms, Api-Latenz: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
     },
     help: {
-        information2: prefix => `<:778353230484471819:780727288903237663> Le préfixe de ce serveur est \`${ prefix }\`.\n<:desc2:783422775821729792> Pour obtenir plus d'informations sur une commande, tapez simplement \`${ prefix }help\` \`commands\`.\n<:folder:783422648196923452> Vous pouvez également taper \`${ prefix }help commands\` ou réagir avec 📄 pour obtenir toutes mes commandes.`,
-        noCommand: args => `Je ne trouve pas la commande **__${ args }__** dans mes commandes`,
-        information: `Information and commands`,
-        noAliases: `Pas d'aliases`,
-        cmdTitle: `Aide sur la commande`,
-        footer: `Demandé par`,
-        titleNoArgs: `Page d'aide général`,
-        command: `Afficher toutes les commandes`,
-        search: `Chercher une aide détaillé sur un commande`,
-        noUsage: `Pas d'usage en particuler`,
-        requiredOrNot: `\`< >\` sont les arguments requis et \`[ ]\` sont les arguments optionnel`
+        information2: prefix => `<:778353230484471819: 780727288903237663> Das Präfix für diesen Server ist \`${ prefix }\`.\n <: desc2: 783422775821729792> Um weitere Informationen zu einem Befehl zu erhalten, geben Sie einfach \`${ prefix }help\` \`commands\`.\n<:folder:783422648196923452> Sie können auch eingeben \`${ prefix }help commands\` oder reagiere mit 📄 um alle meine Bestellungen zu bekommen.`,
+        noCommand: args => `Ich kann den Befehl nicht finden ** __${ args }__ ** in meinen Bestellungen`,
+        information: `Informationen und Befehle`,
+        noAliases: `Keine Aliase`,
+        cmdTitle: `Hilfe bestellen`,
+        footer: `Fragen Sie nach`,
+        titleNoArgs: `Allgemeine Hilfeseite`,
+        command: `Alle Bestellungen anzeigen`,
+        search: `Detaillierte Hilfe zu einer Bestellung finden`,
+        noUsage: `Keine besondere Verwendung`,
+        requiredOrNot: `\`<>\` sind die erforderlichen Argumente und \`[]\` sind die optionalen Argumente`
     },
     helpall: {
-        botOwner: `Liste des commandes de botOwner`,
-        moderation: `Liste des commandes de Modération`,
-        antiriraid: `Liste des commandes de Antiraid`,
-        giveaway: `Liste des commandes de Concours`,
-        reactrole: `Liste des commandes de ReactRole & Embed`,
-        general: `Liste des commandes de Général`
+        botOwner: `Liste der botOwner-Befehle`,
+        moderation: `Liste der Moderationsbefehle`,
+        antiriraid: `Liste der Antiraid-Befehle`,
+        giveaway: `Liste der Wettbewerbsbestellungen`,
+        reactrole: `Liste der ReactRole- und Embed-Befehle`,
+        general: `Liste der allgemeinen Befehle`
     },
     snipe: {
-        error: 'Il n\'y a pas de message delete dans ce channel',
-        link: 'Désolé mais c\'est un lien'
+        error: 'Es gibt keine Löschnachricht in diesem Kanal',
+        link: 'Entschuldigung, aber es ist ein Link'
     },
-    inviteBot: { invite: `Inviter le bot` },
-    support: { support: `Serveur d'assistance` },
+    inviteBot: { invite: `Bot einladen` },
+    support: { support: `Assistenzserver` },
     vocal: {
-        msg: (count, muteCount, streamingCount, muteHeadSetCount, openMicCount) => `<:voc:801123036576612353> Statistique vocal :
-        > <:unmute:801122798629945354> Micro ouvert : **${ openMicCount }**
-        > <:stream:801122725602000946> En Stream : **${ streamingCount }**
-        > <:mutecasque:801123005287628890> Mute casque : **${ muteHeadSetCount }**
-        > <:mutemic:801122908445212723> Mute micro : **${ muteCount }**\n\n<:sageata:788796887121657877> Total de personnes en vocal : **${ count }**`
+        msg: (count, muteCount, streamingCount, muteHeadSetCount, openMicCount) => `<:voc: 801123036576612353> Sprachstatistiken:
+         > <:Stummschaltung aufheben: 801122798629945354> Mikrofon öffnen: **${ openMicCount }**
+         > <:Stream: 801122725602000946> Stream: **${ streamingCount }**
+         > <:Headset-Stummschaltung: 801123005287628890> Headset-Stummschaltung: **${ muteHeadSetCount }**
+         > <:stumm: 801122908445212723> Mikrofon stumm schalten: **${ muteCount }**\n\n<:sageata: 788796887121657877> Gesamtzahl der gesprochenen Personen: **${ count }**`
     },
-    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
+    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll ist ein Bot im Besitz von* \`TAKEFY#9831\`\n\n**Entwickler:**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideen & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Kommunikation\n` },
     alladmins: {
-        error: `Aucun admin sur ce serveur.`,
-        list: `Liste des admins`
+        error: `Kein Administrator auf diesem Server.`,
+        list: `Liste der Admins`
     },
     ban: {
-        noBan: '<:720681441670725645:780539422479351809> `ERREUR` Vous devez spécifier un membre à bannir (`mention / id`)',
-        errorRl: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Vous ne pouvez pas bannir **\`${ member.tag }\`** car ils possèdent plus de permissions que vous`,
+        noBan: '<:720681441670725645: 780539422479351809> `FEHLER` Sie müssen ein zu sperrendes Mitglied angeben (`Erwähnung/ID`)',
+        errorRl: member => `<:720681441670725645: 780539422479351809> \ `FEHLER \` Sie können nicht sperren **\`${ member.tag }\`** weil sie mehr Berechtigungen haben als du`,
         errorBanSelf: '<:720681441670725645:780539422479351809> `ERREUR` Vous ne pouvez pas vous bannir vous-même',
         noReason: 'Aucune raison spécifique',
         success: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${ member.tag } a été ban.`,
@@ -377,7 +377,7 @@ module.exports = {
         newPasswordQ: `Quel doit être le nouveau mot de pass ? (timeout 30 secondes)`,
         successChange: `Vous avez bien modifié votre mot de pass !`
     },
-    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
+    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll ist ein Bot im Besitz von* \`TAKEFY#9831\`\n\n**Entwickler:**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideen & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Kommunikation\n` },
     setlang: { success: lang => `La langue du bot est maintenat définie pour ${ lang }` },
     addemoji: {
         missingUrl: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un emoji`,
