@@ -122,6 +122,12 @@ module.exports = {
                 value: 'author-url',
                 description: 'Change l\'url de l\'auteur',
                 emoji: '🗣'
+            },
+            {
+                label: 'Back',
+                value: 'back',
+                description: 'Go back to the default selection',
+                emoji: '↩'
             }
         ],
         footerOptions: [
@@ -136,6 +142,12 @@ module.exports = {
                 value: 'footer-icon',
                 description: 'Change l\'icon du footer',
                 emoji: '🖍'
+            },
+            {
+                label: 'Back',
+                value: 'back',
+                description: 'Go back to the default selection',
+                emoji: '↩'
             }
         ],
         baseMenu: [
