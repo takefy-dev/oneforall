@@ -1,6 +1,5 @@
 const Discord = require('discord.js')
 const guildEmbedColor = new Map();
-const StateManager = require('../../utils/StateManager');
 let embedsColor = require('../../function/embedsColor');
 const {Command} = require('advanced-command-handler');
 const guildLang = new Map();
@@ -17,7 +16,6 @@ module.exports = new Command({
     cooldown: 3
 }, async(client, message, args) => {
     return;
-    this.connection = StateManager.connection;
     const color = guildData.get('color')
       const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
   const lang = guildData.lang;

@@ -65,13 +65,7 @@ module.exports = class Ready extends Event{
                     } else if (sanction === 'unrank') {
                         await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache) `OneForAll - Type: antiMassKick`).then(async () => antiraidLimit.kick = 0)
                         if (action.executor.bot) {
-                            let botRole = member.roles.cache.filter(r => r.managed)
-
-
-                            for (const [id] of botRole) {
-                                botRole = guild.roles.cache.get(id)
-                            }
-                            await botRole.setPermissions(0, `OneForAll - Type: antiMassKick`)
+                            await member.roles.botRole.setPermissions([], `OneForAll - Type: antiMassKick`)
                         }
                     }
                     if(logsChannel && !logsChannel.deleted){

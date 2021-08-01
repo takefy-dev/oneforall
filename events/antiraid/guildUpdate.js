@@ -67,13 +67,7 @@ module.exports = class guildUpdate extends Event {
 
                     await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `OneForAll - Type: guildUpdate - changeName`)
                     if (action.executor.bot) {
-                        let botRole = member.roles.cache.filter(r => r.managed)
-
-
-                        for (const [id] of botRole) {
-                            botRole = oldGuild.roles.cache.get(id)
-                        }
-                        await botRole.setPermissions(0, `OneForAll - Type: guildUpdate - changeName`)
+                        await member.roles.botRole.setPermissions([], `OneForAll - Type: guildUpdate - changeName`)
                     }
 
 

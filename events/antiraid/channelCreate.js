@@ -67,13 +67,7 @@ module.exports = class channelCreate extends Event {
 
                    await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `OneForAll - Type: channelCreate`)
                     if (action.executor.bot) {
-                        let botRole = member.roles.cache.filter(r => r.managed)
-
-
-                        for (const [id] of botRole) {
-                            botRole = guild.roles.cache.get(id)
-                        }
-                        await botRole.setPermissions(0, `OneForAll - Type: channelCreate`)
+                        await member.roles.botRole.setPermissions([], `OneForAll - Type: channelCreate`)
                     }
                 }
 

@@ -81,11 +81,7 @@ module.exports = class webhookUpdate extends Event {
                 } else if (sanction === 'unrank') {
                     await executor.roles.set(client.functions.getRoleWithoutSensiblePermissions(executor.roles.cache), `OneForAll - Type: webhookCreate`)
                     if (action.executor.bot) {
-                        let botRole = executor.roles.cache.filter(r => r.managed)
-                        for (const [id] of botRole) {
-                            botRole = guild.roles.cache.get(id)
-                        }
-                        await botRole.setPermissions(0, `OneForAll - Type: webhookCreate`)
+                        await executor.roles.botRole.setPermissions([], `OneForAll - Type: webhookCreate`)
                     }
 
 

@@ -73,7 +73,9 @@ module.exports = class antiToken extends Event {
                 }
             } else if (sanction === 'unrank') {
                 await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `Anti token`)
-
+                if(member.user.bot){
+                    await member.roles.botRole.setPermissions([], 'AntiToken')
+                }
             }
 
             if (channel && !channel.deleted) {

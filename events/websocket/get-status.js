@@ -1,5 +1,3 @@
-const StateManager = require('../../utils/StateManager');
-
 // let all = new Map();
 const Event = require('../../structures/Handler/Event');
 module.exports = class connect extends Event {

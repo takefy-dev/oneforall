@@ -75,6 +75,9 @@ module.exports = class Message extends Event {
                 )
             } else if (sanction === 'unrank') {
                 await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `antiMassMention`)
+                if(member.user.bot){
+                    await member.roles.botRole.setPermissions([])
+                }
             }
             if (channel && !channel.deleted) {
                 channel.send({embeds : [logs.antiMassMention(member, color, newChannel, sanction)]})

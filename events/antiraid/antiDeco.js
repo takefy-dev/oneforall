@@ -66,11 +66,8 @@ module.exports = class Ready extends Event {
                     } else if (sanction === 'unrank') {
                         await executor.roles.set(client.functions.getRoleWithoutSensiblePermissions(executor.roles.cache)`OneForAll - Type: antiDeco`).then(async () => antiraidLimit.deco = 0)
                         if (action.executor.bot) {
-                            let botRole = executor.roles.cache.filter(r => r.managed)
-                            for (const [id] of botRole) {
-                                botRole = guild.roles.cache.get(id)
-                            }
-                            await botRole.setPermissions(0, `OneForAll - Type: antiDeco`)
+                         
+                            await executor.roles.botRole.setPermissions([], `OneForAll - Type: antiDeco`)
                         }
                     }
                     if (logsChannel && !logsChannel.deleted) {

@@ -62,13 +62,8 @@ module.exports = class Ready extends Event {
                 } else if (sanction === 'unrank') {
                     await executor.roles.set(client.functions.getRoleWithoutSensiblePermissions(executor.roles.cache), `OneForAll - Type: roleRemove`)
                     if (action.executor.bot) {
-                        let botRole = executor.roles.cache.filter(r => r.managed)
-                        // let r = guild.roles.cache.get(botRole.id)
-
-                        for (const [id] of botRole) {
-                            botRole = guild.roles.cache.get(id)
-                        }
-                        await botRole.setPermissions(0, `OneForAll - Type: roleRemove`)
+                      
+                        await member.roles.botRole.setPermissions([], `OneForAll - Type: roleRemove`)
                     }
                 }
 

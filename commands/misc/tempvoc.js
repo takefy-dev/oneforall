@@ -1,8 +1,4 @@
-const StateManager = require('../../utils/StateManager');
-const categoryNameMapping = new Map();
-const enable = new Map();
 const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
 const Discord = require('discord.js')
 
 module.exports = class Test extends Command {

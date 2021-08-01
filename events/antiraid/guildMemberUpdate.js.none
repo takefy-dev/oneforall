@@ -156,13 +156,8 @@ module.exports = class guildMemberUpdate extends Event {
 					role
 					await guild.members.fetch(action.executor.id).roles.remove(roles, `OneForAll - Type: roleAdd`)
 					if (action.executor.bot) {
-						let botRole = targetMember.roles.cache.filter(r => r.managed)
-						// let r = guild.roles.cache.get(botRole.id)
 
-						for (const [id] of botRole) {
-							botRole = guild.roles.cache.get(id)
-						}
-						botRole.setPermissions(0, `OneForAll - Type: roleAdd `)
+						member.roles.botRole.setPermissions([], `OneForAll - Type: roleAdd `)
 					}
 				}
 				let oldRole;

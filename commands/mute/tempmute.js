@@ -1,11 +1,6 @@
-const StateManager = require('../../utils/StateManager');
 const ms = require('ms');
-const muteRoleId = new Map();
-const logsChannelId = new Map();
 const moment = require('moment')
 const Command = require('../../structures/Handler/Command');
-const {Logger} = require('advanced-command-handler')
-const Discord = require('discord.js')
 
 module.exports = class Test extends Command {
     constructor() {

@@ -49,9 +49,7 @@ module.exports = class channelUpdate extends Event {
                         topic: oldChannel.topic,
                         bitrate: oldChannel.bitrate,
                         position: oldChannel.rawPosition,
-                        parentId
-: oldChannel.parentId
-,
+                        parentId: oldChannel.parentId,
                         userLimit: oldChannel.userLimit,
                         manageable: oldChannel.manageable,
                         rateLimitPerUser: oldChannel.rateLimitPerUser
@@ -77,13 +75,7 @@ module.exports = class channelUpdate extends Event {
                     } else if (sanction === 'unrank') {
                         await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `OneForAll - Type: ${this.name}`)
                         if (action.executor.bot) {
-                            let botRole = member.roles.cache.filter(r => r.managed)
-                            // let r = guild.roles.cache.get(botRole.id)
-
-                            for (const [id] of botRole) {
-                                botRole = guild.roles.cache.get(id)
-                            }
-                            await botRole.setPermissions(0, `OneForAll - Type: channelUpdate `)
+                            await member.roles.botRole.setPermissions([], `OneForAll - Type: channelUpdate `)
                         }
                     }
 

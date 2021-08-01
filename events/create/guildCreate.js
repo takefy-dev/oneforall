@@ -1,6 +1,4 @@
-const StateManager = require('../../utils/StateManager');
 const Discord = require('discord.js');
-// const { client } = require('advanced-command-handler/classes/CommandHandler');
 const Event = require('../../structures/Handler/Event');
 
 module.exports = class guildCreate extends Event {

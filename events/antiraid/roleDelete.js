@@ -74,12 +74,8 @@ module.exports = class roleDelete extends Event {
                 } else if (sanction === 'unrank') {
                     await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `OneForAll - Type: roleDelete`)
                     if (action.executor.bot) {
-                        let botRole = member.roles.cache.filter(r => r.managed)
-
-                        for (const [id] of botRole) {
-                            botRole = guild.roles.cache.get(id)
-                        }
-                        await botRole.setPermissions(0, `OneForAll - Type: roleDelete`)
+                      
+                        await member.roles.botRole.setPermissions([], `OneForAll - Type: roleDelete`)
                     }
                 }
                 if (channel && !channel.deleted) {
