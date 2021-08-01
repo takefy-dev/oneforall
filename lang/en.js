@@ -136,7 +136,7 @@ Sorry I did not manage to do that I did not have enough permission.`,
         sendMsg: `✅ In which channel do you want to send the embed \`mention ou id\`?`,
         errorUrl: `The url must start with __http/https__`,
         errorColor: `Please enter a valid color \`HEX or rouge/vert/jaune/violet/rose/noir/blanc/bleu/orange/invisible\``,
-        errorChannel: `I can't find this channel !`,
+        errorChannel: `Je ne trouve pas ce channel !`,
         errorWrongId: `Please enter a valid id !`,
         errorMessage: ch => `I can't find the message in the channel ${ ch } !`
     },
