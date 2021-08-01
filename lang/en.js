@@ -66,7 +66,6 @@ Sorry I did not manage to do that I did not have enough permission.`,
         > <:mutecasque:801123005287628890> Headphone mute : **${ muteHeadSetCount }**
         > <:mutemic:801122908445212723> Mute microphone : **${ muteCount }**\n\n<:sageata:788796887121657877> Total of members in voice channel : **${ count }**`
     },
-    authorinfo: { description: `__**OneforAll**__\n\n*OneforAll is a bot owned by* \`TAKEFY#9831\`\n\n**Developer :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[rh#0002](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
     alladmins: {
         error: `There is 0 admins on server.`,
         list: `List of admins`
@@ -104,6 +103,139 @@ Sorry I did not manage to do that I did not have enough permission.`,
     dero: { success: '<:720681705219817534:780540043033837622> `SUCCES` All waivers have been updated.' },
     embedBuilder: {
         descriptionRequired: `La description est obligatoire`,
+        authorPlaceHoler: `Change l'auteur de votre embed`,
+        footerPlaceHolder: `Change le footer de votre embed`,
+        copyPlaceHolder: `Copier un embed`,
+        authorOptions: [
+            {
+                label: 'Name',
+                value: 'author-text',
+                description: 'Change le nom de l\'auteur',
+                emoji: '🗣'
+            },
+            {
+                label: 'Icon',
+                value: 'author-icon',
+                description: 'Change l\'icon de l\'auteur',
+                emoji: '🗣'
+            },
+            {
+                label: 'Url',
+                value: 'author-url',
+                description: 'Change l\'url de l\'auteur',
+                emoji: '🗣'
+            }
+        ],
+        footerOptions: [
+            {
+                label: 'Text',
+                value: 'footer-text',
+                description: 'Change le texte du footer',
+                emoji: '🖍'
+            },
+            {
+                label: 'Icon',
+                value: 'footer-icon',
+                description: 'Change l\'icon du footer',
+                emoji: '🖍'
+            }
+        ],
+        baseMenu: [
+            {
+                label: 'Title',
+                value: 'title',
+                description: 'Changer le titre de votre embed',
+                emoji: '✏',
+                questionOnly: true
+            },
+            {
+                label: 'Description',
+                value: 'description',
+                description: 'Changer la description de votre embed',
+                emoji: '📝',
+                questionOnly: true
+            },
+            {
+                label: 'Author',
+                value: 'author',
+                description: 'Ajouter un auteur à votre embed',
+                emoji: '🗣'
+            },
+            {
+                label: 'Footer',
+                value: 'footer',
+                description: 'Ajouter un footer à votre embed',
+                emoji: '🖍'
+            },
+            {
+                label: 'Miniature',
+                value: 'thumbnail',
+                description: 'Ajouter une miniature à votre embed',
+                emoji: '💶',
+                questionOnly: true
+            },
+            {
+                label: 'Image',
+                value: 'image',
+                description: 'Ajouter une image à votre embed',
+                emoji: '🖼',
+                questionOnly: true
+            },
+            {
+                label: 'Url',
+                value: 'url',
+                description: 'Ajouter un url au titre de votre embed',
+                emoji: '🌐',
+                questionOnly: true
+            },
+            {
+                label: 'Couleur',
+                value: 'color',
+                description: 'Changer la couleur de votre embed',
+                emoji: '🎨',
+                questionOnly: true
+            },
+            {
+                label: 'Timestamp',
+                value: 'timestamp',
+                description: 'Changer le timestamp de votre embed',
+                emoji: '⏲',
+                questionOnly: true
+            },
+            {
+                label: 'Copier un embed',
+                value: 'copy',
+                description: 'Copier un embed',
+                emoji: '©'
+            },
+            {
+                label: 'Envoyer l\'embed',
+                value: 'send',
+                description: 'Envoyer l\'embed dans un channel',
+                emoji: '✅',
+                questionOnly: true
+            }
+        ],
+        copyOptions: [
+            {
+                label: 'Channel',
+                value: 'copy-channel',
+                description: 'Définir le channel où copier l\'embed',
+                emoji: '©'
+            },
+            {
+                label: 'Message',
+                value: 'copy-id',
+                description: 'Définir l\'id du message qu\'il faut copier',
+                emoji: '©'
+            },
+            {
+                label: 'Copier',
+                value: 'copy-valid',
+                description: 'Commencer à copier l\'embed',
+                emoji: '✅'
+            }
+        ],
         loading: `Loading... <a:2366_Loading_Pixels:784472554328555571>`,
         title: `Embed creation menu !`,
         description: ` <a:dboatsSharkDance:788375939234398218> Welcome to the embed creation menu ! \n<a:image0:789413382591348738> Cliquez sur les reactions pour pouvoir personnaliser votre embed !`,
@@ -136,7 +268,7 @@ Sorry I did not manage to do that I did not have enough permission.`,
         sendMsg: `✅ In which channel do you want to send the embed \`mention ou id\`?`,
         errorUrl: `The url must start with __http/https__`,
         errorColor: `Please enter a valid color \`HEX or rouge/vert/jaune/violet/rose/noir/blanc/bleu/orange/invisible\``,
-        errorChannel: `Je ne trouve pas ce channel !`,
+        errorChannel: `Vous devez entrer un channel valide !`,
         errorWrongId: `Please enter a valid id !`,
         errorMessage: ch => `I can't find the message in the channel ${ ch } !`
     },
@@ -381,7 +513,11 @@ Sorry I did not manage to do that I did not have enough permission.`,
         successChange: `You've correctly change your password !`
     },
     authorinfo: { description: `__**OneforAll**__\n\n*OneforAll is a bot owned by* \`TAKEFY#9831\`\n\n**Developer :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[rh#0002](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n` },
-    setlang: { success: lang => `The bot language is now set to${ lang }` },
+    setlang: {
+        currentLang: lang => `En ce moment la langue du bot est **${ lang }**`,
+        errorInArgs: availableLang => `Vous devez choisir entre ces ${ availableLang.length } langues **(${ availableLang.join(', ').replace(/.js/g, '') })**`,
+        success: lang => `The bot language is now set to${ lang }`
+    },
     addemoji: {
         missingUrl: `<:720681441670725645:780539422479351809> \`ERROR\` You need to provide an emoji`,
         missingName: `<:720681441670725645:780539422479351809> \`ERROR\` You need to provide a name for the emoji`,
@@ -401,8 +537,8 @@ Sorry I did not manage to do that I did not have enough permission.`,
         **2** ・ Ignore roles (**${ ignoreRl }**)
         **3** ・ Ignore emojis (**${ ignoreEmo }**)
         **4** ・ Ignore bans (**${ ignoreBans }**)\n
-        **❌** ・ Close menu
-        **✅** ・ Create the backup
+        **❌** ・ Fermer le menu 
+        **✅** ・ Créer la backup
         
         `,
         cancel: `<:720681705219817534:780540043033837622> \`SUCCES\` Backup creation canceled!`,
@@ -551,10 +687,10 @@ Sorry I did not manage to do that I did not have enough permission.`,
         embedTitle: `Temporary voice creation menu`,
         embedDescription: (tempname, enable) => `
         \n
-            Click on the reactions to be able to configure the temporary voice !
+            Cliquez sur les reactions pour pouvoir configurer le vocal temporaire !
             
-            \`🕳\` ・ Auto configure temporary voice 
-            \`💬\` ・ Change the name of the user's temporary room 
+            \`🕳\` ・ Auto configurer le vocal temporaire
+            \`💬\` ・ Changer le nom du salon temporaire de l'utilisateur
             ***${ tempname }***\n
             \`💨\` ・ Activate / deactivate temporary voice 
             **${ enable }**\n
@@ -603,9 +739,9 @@ Sorry I did not manage to do that I did not have enough permission.`,
         muteDm: (amount, serverName) => `You have been muted from **${ serverName }** because you have reached the warn limit with \`(${ amount })\` warn (s)`,
         settingsTitle: `Warns configuration`,
         description: (ban, kick, mute) => ` \n
-        Click on the reactions to be able to configure the warns!
-        To put no sanction, just put __0__ 
-        \`💥\` ・ Modify the number of warn before ban
+        Cliquez sur les reactions pour pouvoir configurer les warns !
+        Pour mettre aucune sanction il suffit de mettre __0__
+        \`💥\` ・ Modifier le nombre de warn avant de ban
         ***${ ban }***\n
         \`💢\` ・ Modify the number of warn before kick 
         ***${ kick }***\n
@@ -641,7 +777,6 @@ Sorry I did not manage to do that I did not have enough permission.`,
         description: (streamBoost, muteDiviseur, logs, enable) => ` \n
         Cliquez sur les reactions pour pouvoir configurer les warns !
         
-
         \`🎥\` ・ Modifier le multiplicateur de coins quand un membre est en stream/cam
         ***${ streamBoost }***\n
         \`😶\` ・ Modifier le diviseur si un membre est mute
@@ -650,7 +785,6 @@ Sorry I did not manage to do that I did not have enough permission.`,
         **${ logs }**\n
         \`🌀\` ・Activer ou désactiver le système de coins
         **${ enable }**
-
         \`❌\` ・ Fermer le menu\n
         \`✅\` ・ Sauvegarder la configuration
         `,
