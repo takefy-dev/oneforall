@@ -2,13 +2,13 @@ const prettyMilliseconds = require('pretty-ms');
 const ms = require('ms');
 const Discord = require('discord.js');
 module.exports = {
-    maintenance: `Le bot est en maintenance pendant quelques minutes`,
-    clic: 'Clique ici',
-    yes: 'oui',
-    no: 'non',
-    cancel: 'Opération annulé',
-    loading: `Chargement... <a:2366_Loading_Pixels:784472554328555571>`,
-    descriptionTimeLeft: timeLeft => `🕙 __Temps restant__ : **${ prettyMilliseconds(timeLeft) }**`,
+    maintenance: `Die bot is 'n paar minute in onderhoud`,
+    clic: 'Klik hier',
+    yes: 'Ja',
+    no: 'geen',
+    cancel: 'Operasie gekanselleer',
+    loading: `Laai tans ... <a:2366_Loading_Pixels:784472554328555571>`,
+    descriptionTimeLeft: timeLeft => `__Tyd oor__:**${ prettyMilliseconds(timeLeft) }**`,
     error: {
         YesNo: `Veuillez répondre par \`oui ou non\` uniquement !`,
         timeout: `Temps écoulé !`,
