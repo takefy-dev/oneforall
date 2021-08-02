@@ -635,6 +635,44 @@ module.exports = {
         successBoostCh: ch => `<:720681705219817534:780540043033837622> \`SUCCÈS\` Vous avez défini le salon pour le compteur de booster a ${ ch }`
     },
     reactionRole: {
+        selectMenu: [
+            {
+                label: 'Channel',
+                value: 'channel',
+                description: 'Définir le salon où se situe le reaction role',
+                emoji: '📖'
+            },
+            {
+                label: 'Message',
+                value: 'message',
+                description: 'Définir l\'id du message ou mettre le reaction role',
+                emoji: '🆔'
+            },
+            {
+                label: 'Ajoute un role',
+                value: 'add-role',
+                description: 'Ajouter un role',
+                emoji: '💠'
+            },
+            {
+                label: 'Supprimer un role',
+                value: 'del-role',
+                description: 'Supprimer un role',
+                emoji: '🚫'
+            },
+            {
+                label: 'Supprimer',
+                value: 'delete',
+                description: 'Supprimer un reaction role existant',
+                emoji: '📛'
+            },
+            {
+                label: 'Sauvergarde',
+                value: 'save',
+                description: 'Sauvegarder le reaction role',
+                emoji: '✅'
+            }
+        ],
         embedTitle: `Menu de création du reaction rôle`,
         embedDescription: (channel, id, emoji, role) => `
         \n
@@ -656,6 +694,7 @@ module.exports = {
         notText: `Le salon doit être uniquement du type **text**`,
         chQ: `📖 Quel est le salon où vous voudriez avoir votre reaction rôle ? (\`mention/id\`) (cancel pour annuler)`,
         successCh: ch => `Vous avez définie le salon pour **${ ch }**`,
+        invalidChannel: `Le channel est invalide`,
         msgIdQ: `🆔 Quel est l'id du message pour votre reaction rôle ? (\`id\`) (cancel pour annuler)`,
         notId: `Veuillez entrer une id valide !`,
         noChannel: `Vous n'avez pas défini de channel je n'ai donc pas pu récuperer le message`,
@@ -678,6 +717,7 @@ module.exports = {
         noEmoji: `Vous n'avez pas définie d'emoji et de rôle.`,
         alreadyReact: `Un reaction rôle existe déjà avec ce message`,
         success: `Le reaction rôle a été parfaitement sauvagardé et crée !`,
+        notChannelReactrole: `Il n'y a pas de reactrole dans ce channel`,
         tryToPermsRole: `Vous ne pouvez pas ajouter un role ayant des permissions sensible`
     },
     tempvoc: {
