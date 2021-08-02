@@ -12,7 +12,7 @@ module.exports = {
 
 
     run: async (client, message, args) => {
-        if (!client.botperso) return;
+        if (!client.botperso && !client.config.dev) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
 
@@ -70,7 +70,8 @@ module.exports = {
 
                     let question = await message.channel.send(lang.soutien.msgQ)
                     const filter = m => message.author.id === m.author.id;
-                    message.channel.awaitMessages(filter, {
+                    message.channel.awaitMessages({
+                        filter,
                         max: 1,
                         time: 120000,
                     }).then(async (collected) => {
@@ -91,7 +92,8 @@ module.exports = {
 
                         let question = await message.channel.send(lang.soutien.rmAllRlQ)
                         const filter = m => message.author.id === m.author.id;
-                        message.channel.awaitMessages(filter, {
+                        message.channel.awaitMessages( {
+                            filter,
                             max: 1,
                             time: 120000,
                         }).then(async (collected) => {

@@ -24,7 +24,7 @@ module.exports = {
 
         let isWlBypass = antiraidConfig.bypass["antiLink"];
         if (isWlBypass) var isWl = guildData.isGuildWl(message.author.id);
-        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
 
 
         if (isWlBypass && !isWl || !isWlBypass) {
@@ -52,7 +52,7 @@ module.exports = {
                     spammer.set(message.author.id, data + 1);
                 }
                 if (spammer.get(message.author.id) > 5) {
-                    const {muteRoleId} = message.guild.config;
+                    const muteRoleId = guildData.get('muteRoleId');
                     const muteRole = message.guild.roles.cache.get(muteRoleId);
                     if (!muteRoleId || !muteRole || muteRole.deleted || muteRole.managed) return;
                     await message.member.roles.add(muteRole, `Oneforall - anti spam link`)
