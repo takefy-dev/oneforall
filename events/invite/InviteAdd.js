@@ -4,7 +4,7 @@ module.exports =  {
     run: async (client, member) => {
         const guild = member.guild;
         const guildData = await client.managers.guildManager.getAndCreateIfNotExists(guild.id);
-        const {id, message, enable, inviteRole, cumulRoles, maxRoleInvite} = guildData.get('invite');
+        const {id, message, enable} = guildData.get('invite');
 
         if (!id || !message || !enable) return;
 
@@ -47,18 +47,6 @@ module.exports =  {
                 finalMsg = message.replace(/{invitedMention}/g, member).replace(/{inviterTag}/g, inviter.user.tag || inviter.user.username).replace(/{count}/g, join).replace(/{memberTotal}/g, memberTotal).replace(/{invitedTag}/g, member.user.tag || member.user.username).replace(/{inviterMention}/g, inviter).replace(/{fake}/g, count.fake).replace(/{leave}/g, count.leave).replace(/{creation}/g, moment(member.user.createdAt).format("DD/MM/YYYY"));
                 while (finalMsg.includes("{space}")) {
                     finalMsg.replace(/{space}/g, space)
-                }
-                if(!inviteRole.length) return
-                const roleToAdd = []
-                inviteRole.filter(roleInv => roleInv.invite <= count.join).forEach(role => roleToAdd.push(role.role))
-                if(!roleToAdd.length) return
-                await inviter.roles.add(roleToAdd, `Invite role: ${count.join}`)
-                if(!cumulRoles){
-                    const toRemove = []
-                    inviteRole.filter(roleInv => roleInv.role !== maxRoleInvite.role).forEach(role => {
-                        toRemove.push(role.role)
-                    })
-                    await inviter.roles.remove(toRemove, `Cumul roles off`)
                 }
             }
         }

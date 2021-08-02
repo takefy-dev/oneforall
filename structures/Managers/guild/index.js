@@ -52,7 +52,7 @@ class GuildManager {
             prefix: values.prefix ? values.prefix : '!',
             lang: values.lang ? values.lang : 'fr',
             whitelisted: values.whitelisted ? values.whitelisted : [],
-            owners: values.owners ? values.owners : this.guildManager.OneForAll.botperso ? [] : [this.guildManager.OneForAll.guilds.cache.get(values.guildId).ownerId
+            owners: values.owners ? values.owners : this.guildManager.OneForAll.botperso ? [this.guildManager.OneForAll.buyer] : [this.guildManager.OneForAll.guilds.cache.get(values.guildId).ownerId
 ],
             antiraid: values.antiraid ?  merge(this.guildManager.OneForAll.config.defaultAntiraidConfig,values.antiraid) : this.guildManager.OneForAll.config.defaultAntiraidConfig,
             antiraidLimits: values.antiraidLimits ? values.antiraidLimits : {
@@ -62,7 +62,7 @@ class GuildManager {
             setup: values.setup ? values.setup : false,
             muteRoleId: values.muteRoleId ? values.muteRoleId : null,
             memberRole: values.memberRole ? values.memberRole : null,
-            invite: values.invite ? merge({id: 'Non définie', message: 'Non définie', enable: false, inviteRole: [], cumulRoles: true}, {...values.invite, maxRoleInvite: values.invite.inviteRole.sort((a, b) => b.invite - a.invite)[0]}) : {id: 'Non définie', message: 'Non définie', enable: false, inviteRole: [], cumulRoles: true},
+            invite: values.invite ? values.invite: {id: 'Non définie', message: 'Non définie', enable: false},
             soutien: values.soutien ? values.soutien : {
                 roleId: 'Non définie',
                 message: 'Non définie',
