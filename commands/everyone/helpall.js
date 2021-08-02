@@ -1,8 +1,3 @@
-const {MessageEmbed} = require("discord.js"),
-    pagination = require('discord.js-pagination')
-fs = require("fs");
-
-
 module.exports = {
 
     name: 'helpall',
@@ -18,52 +13,71 @@ module.exports = {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
         const color = guildData.get('color')
+        const embed = {
+            title: `All commands (${client.commands.size})`,
+            timestamp: new Date(),
+            color: color,
+            footer: {
+                text: `Page 1/1`,
+                icon_url: message.author.displayAvatarURL({dynamic: true}) || ''
+            },
 
-        if (!message.guild) return;
-        let embed2 = new MessageEmbed()
-            .setAuthor(lang.helpall.botOwner)
-            .setColor(`${color}`)
-            .setDescription('\`setlang\`\n\`owner add\`\n\`owner remove\`\n\`owner clear\`\n\`owner list\`\n\`setname\`\n\`setavatar\`\n\`setactivity\`\n\`blacklist add\`\n\`blacklist remove\`\n\`blacklist list\`\n\`blacklist on\`\n\`blacklist off\`')
-        //message.channel.send(embed2)
-        let embed3 = new MessageEmbed()
-            .setAuthor(lang.helpall.moderation)
-            .setColor(`${color}`)
-            .setDescription('\`soutien config\`\n\`soutien count\`\n\`invite config\`\n\`allbans\`\n\`alladmins\`\n\`lock all off\`\n\`lock all on\`\n\`lock off\`\n\`lock on\`\n\`clear\`\n\`kick\`\n\`ban\`\n\`unban all\`\n\`tempban\`\n\`tempmute\`\n\`unban\`\n\`massrole add\`\n\`massrole remove\`\n\`role add\`\n\`role remove\`\n\`webhook size\`\n\`webhook delete\`\n\`nuke\`\n\`setcolor\`\n\`setprefix\`\n\`setup\`\n\`dero\`')
-        let embed4 = new MessageEmbed()
-            .setAuthor(lang.helpall.antiriraid)
-            .setColor(`${color}`)
-            .setDescription('\`antiraid on\`\n\`antiraid off\`\n\`antiraid config\`\n\`antiraid opti\`\n\`antiraid antispam on\`\n\`antiraid antispam off\`\n\`antiraid antilink on\`n\`antiraid antilink off\`\n\`setlogs\`\n\`wl add\`\n\`wl remove\`\n\`wl clear\`\n\`\wl list\`\n\`addemoji\`\n\`removeemoji\`')
-        //message.channel.send(embed4)
-        let embed5 = new MessageEmbed()
-            .setAuthor(lang.helpall.giveaway)
-            .setColor(`${color}`)
-            .setDescription('\`gstart\`\n\`greroll\`')
-        let embed6 = new MessageEmbed()
-            .setAuthor(`Liste des commandes de Backup`)
-            .setColor(`${color}`)
-            .setDescription('\`backup create\`\n\`backup delete\`\n\`backup list\`\n\`backup info\`')
-        let embed7 = new MessageEmbed()
-            .setAuthor(lang.helpall.reactrole)
-            .setColor(`${color}`)
-            .setDescription('\`embed\`\n\`reactrole\`')
-        let embed8 = new MessageEmbed()
-            .setAuthor(lang.helpall.general)
-            .setColor(`${color}`)
-            .setDescription('\`support\`\n\`addbot\`\n\`vocal\`\n\`authorinfo\`\n\`pic\`\n\`ping\`\n\`botinfo\`\n\`serverinfo\`\n\`userinfo\`\n\`invite count\`\n\`snipe\`')
-        const pages = [
-            embed2,
-            embed3,
-            embed4,
-            embed5,
-            embed6,
-            embed7,
-            embed8
-        ]
+        }
+        let maxPerPage = 10
+        let page = 0
+        let slicerIndicatorMin = 0,
+            slicerIndicatorMax = 10
 
-        const emojiList = ["⏪", "⏩"];
+        const emojis = ['◀', '❌', '▶']
+        let totalPage = Math.ceil(client.commands.size / maxPerPage)
+        const embedPageChanger = (page) => {
+            embed.description = client.commands.map((cmd) => `\`${cmd.name}\``).slice(slicerIndicatorMin, slicerIndicatorMax).join('\n')
+            embed.footer.text = `Page ${page + 1} / ${totalPage}`
+            return embed
+        }
+        const msg = await message.channel.send(lang.loading)
+        for (const em of emojis) await msg.react(em)
+        msg.edit({
+            content: null,
+            embeds: [embedPageChanger(page)]
+        })
 
-        const timeout = '120000';
+        const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id;
+        const collector = msg.createReactionCollector({filter, time: 900000})
+        collector.on('collect', async r => {
+            await r.users.remove(message.author);
+            if (r.emoji.name === emojis[0]) {
+                page = page === 0 ? page = totalPage - 1 : page <= totalPage - 1 ? page -= 1 : page += 1
+                slicerIndicatorMin -= maxPerPage
+                slicerIndicatorMax -= maxPerPage
 
-        pagination(message, pages, emojiList, timeout)
+
+            }
+            if (r.emoji.name === emojis[2]) {
+                page = page !== totalPage - 1 ? page += 1 : page = 0
+                slicerIndicatorMin += maxPerPage
+                slicerIndicatorMax += maxPerPage
+
+            }
+            if (r.emoji.name === emojis[1]) {
+                collector.stop()
+            }
+            if (slicerIndicatorMax < 0 || slicerIndicatorMin < 0) {
+                slicerIndicatorMin += maxPerPage * totalPage
+                slicerIndicatorMax += maxPerPage * totalPage
+            } else if ((slicerIndicatorMax >= maxPerPage * totalPage || slicerIndicatorMin >= maxPerPage * totalPage) && page === 0) {
+                slicerIndicatorMin = 0
+                slicerIndicatorMax = maxPerPage
+            }
+
+            msg.edit({
+                embeds:
+                    [embedPageChanger(page)]
+
+            })
+        })
+        collector.on('end', async () => {
+            await msg.reactions.removeAll()
+        })
     }
 }
