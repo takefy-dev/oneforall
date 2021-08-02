@@ -465,7 +465,7 @@ module.exports = {
                             const raidLog = guildData.get('logs').antiraid;
                             const raidLogChannel = message.guild.channels.cache.get(raidLog);
                             if (raidLogChannel && !raidLogChannel.deleted) {
-                                raidLogChannel.send('@everyone', lang.logs.reactRolePerm(message.member, color, msg.id, `https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id}`))
+                                raidLogChannel.send({content: '@everyone', embeds : [lang.logs.reactRolePerm(message.member, color, msg.id, `https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id}`)]})
                             }
                             return setTimeout(async () => {
                                 await replyMsg.delete();
@@ -521,7 +521,7 @@ module.exports = {
                                 const raidLog = guildData.get('logs').antiraid;
                                 const raidLogChannel = message.guild.channels.cache.get(raidLog);
                                 if (raidLogChannel && !raidLogChannel.deleted) {
-                                    raidLogChannel.send('@everyone', lang.logs.reactRolePerm(message.member, color, msg.id, `https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id}`))
+                                    raidLogChannel.send({content: '@everyone', embeds :[lang.logs.reactRolePerm(message.member, color, msg.id, `https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id}`)]})
                                 }
                                 return setTimeout(async () => {
                                     await replyMsg.delete();

@@ -89,7 +89,7 @@ module.exports = {
                                     }
                                 } else if (msg.mentions.channels.first()) ch = msg.mentions.channels.first();
 
-                                if (ch.type !== 'text') await message.channel.send(lang.coinSettings.errorNotChannel).then((e) => {
+                                if (!ch.isText()) await message.channel.send(lang.coinSettings.errorNotChannel).then((e) => {
                                     return setTimeout(() => {
                                         e.delete()
                                     }, 2000);

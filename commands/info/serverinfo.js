@@ -58,7 +58,7 @@ module.exports = {
             .setColor(color)
             .addField(`**OWNERSHIP**:`, `<:771637500967124994:781883946614784011> ${message.guild.owner.user.tag || message.guild.owner.username}\n<@${message.guild.ownerId
             }>`, true)
-            .addField(`**CHANNELS**:`, `<:channel:817722375562985472> Text: ${channelsGuild.filter(channel => channel.type === 'text').size}\n<:voc:801123036576612353> Voice: ${channelsGuild.filter(channel => channel.type === 'voice').size}`, true)
+            .addField(`**CHANNELS**:`, `<:channel:817722375562985472> Text: ${channelsGuild.filter(channel => channel.isText()).size}\n<:voc:801123036576612353> Voice: ${channelsGuild.filter(channel => channel.type === 'GUILD_VOICE').size}`, true)
             .addField(`**REGION:**`, `${regions[message.guild.region]}`, true)
             .addField(`**VERIFICATION LEVE:**`, `${verificationLevels[message.guild.verificationLevel]}`, true)
             .addField(`**BOOSTS:**`, `${message.guild.premiumSubscriptionCount || '0'} (${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : 'None'})`, true)

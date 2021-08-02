@@ -273,7 +273,7 @@ module.exports = {
                 }
                 if (r.emoji.name === emojis[5]) {
                     tempConfig.enable = !tempConfig.enable
-                    message.guild.channels.cache.filter(channel => channel.type === "voice" && channel.members.size > 0).map(channel => channel.members).forEach(members => members.forEach(member => {
+                    message.guild.channels.cache.filter(channel => channel.type === "GUILD_VOICE" && channel.members.size > 0).map(channel => channel.members).forEach(members => members.forEach(member => {
                         if (tempConfig.enable)
                             client.managers.voiceManager.addVoice(`${message.guild.id}-${member.id}`, member);
                         else

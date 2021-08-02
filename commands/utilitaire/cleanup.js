@@ -12,7 +12,7 @@ module.exports = {
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang
         const channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]) || message.channel;
-        if (channel.type !== 'voice') return message.channel.send(lang.cleanUp.wrongType).then((mp) => {
+        if (channel.type !== 'GUILD_VOICE') return message.channel.send(lang.cleanUp.wrongType).then((mp) => {
             setTimeout(() => {
                 mp.delete();
             }, 2000)

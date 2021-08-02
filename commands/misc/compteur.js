@@ -67,13 +67,13 @@ module.exports = {
                                     }
                                 } else if (msg.mentions.channels.first() && msg.content !== 'off') ch = msg.mentions.channels.first();
                                 if (msg.content !== "off") {
-                                    if (ch.type !== 'voice') await message.channel.send(lang.counter.notVoice).then((e) => {
+                                    if (ch.type !== 'GUILD_VOICE') await message.channel.send(lang.counter.notVoice).then((e) => {
                                         return setTimeout(() => {
                                             e.delete()
                                         }, 2000);
                                     })
                                 }
-                                if (msg.content !== "off" && ch.type === 'voice') {
+                                if (msg.content !== "off" && ch.type === 'GUILD_VOICE') {
 
                                     const replyMsg = message.channel.send(lang.counter.successMemberCh(ch)).then((replyMSG) => {
                                         setTimeout(async () => {
@@ -144,13 +144,13 @@ module.exports = {
                                     }
                                 } else if (msg.mentions.channels.first() && msg.content !== 'off') ch = msg.mentions.channels.first();
                                 if (msg.content !== "off") {
-                                    if (ch.type !== 'voice') await message.channel.send(lang.counter.notVoice).then((e) => {
+                                    if (ch.type !== 'GUILD_VOICE') await message.channel.send(lang.counter.notVoice).then((e) => {
                                         return setTimeout(() => {
                                             e.delete()
                                         }, 2000);
                                     })
                                 }
-                                if (msg.content !== "off" && ch.type === 'voice') {
+                                if (msg.content !== "off" && ch.type === 'GUILD_VOICE') {
 
                                     const replyMsg = message.channel.send(lang.counter.successBotCh(ch)).then((replyMSG) => {
                                         setTimeout(async () => {

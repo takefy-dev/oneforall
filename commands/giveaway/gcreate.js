@@ -106,7 +106,7 @@ module.exports = {
                                 .then(cld => {
                                     const msg = cld.first()
                                     const channel = msg.mentions.channels.first() || message.guild.channels.cache.get(msg.content);
-                                    if (!channel || channel.type !== 'text') return message.channel.send(lang.giveaway.create.inccorectResponse.channel).then((reply) => {
+                                    if (!channel || !channel.isText()) return message.channel.send(lang.giveaway.create.inccorectResponse.channel).then((reply) => {
                                         setTimeout(() => {
                                             mp.delete()
                                             msg.delete()

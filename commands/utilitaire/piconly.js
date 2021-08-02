@@ -19,7 +19,7 @@ module.exports = {
             guildData.set('piconly', piconlyChannel.filter(ch => ch !== channel.id)).save();
             return message.channel.send(lang.piconly.disable(channel));
         }
-        if (!channel || channel && channel.type !== 'text') {
+        if (!channel || channel && !channel.isText()) {
             return message.channel.send(lang.piconly.wrongType);
         }
         piconlyChannel.push(channel.id);

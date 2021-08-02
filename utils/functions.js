@@ -1,3 +1,4 @@
+
 module.exports = {
     sleep: ms => new Promise(resolve => setTimeout(resolve, ms)),
 
@@ -103,7 +104,7 @@ module.exports = {
     }
     ,
     roleHasSensiblePermissions(permissions) {
-        return permissions.has(268566590, true);
+        return permissions.has(268566598n);
     }
     ,
 
@@ -123,7 +124,7 @@ module.exports = {
 
     },
     async createBackupEmbed(guild) {
-        const channels = guild.channels.cache.filter(channel => channel.type === 'text');
+        const channels = guild.channels.cache.filter(channel => channel.isText());
         const embeds = [] // {channelId: 'id', embeds: ['']}
         for (const [id, channel] of channels) {
             const messages = await channel.messages.fetch({limit: 5});

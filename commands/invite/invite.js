@@ -89,7 +89,7 @@ module.exports = {
                                         return message.channel.send(lang.cancel);
                                     }
                                     const channel = msg.mentions.channels.first() || message.guild.channels.cache.get(msg.content);
-                                    if (channel.type !== 'text') return message.channel.send(`Invalide type of channel`)
+                                    if (!channel.isText()) return message.channel.send(`Invalide type of channel`)
                                     tempInvite.id = channel.id;
                                     await msg.delete()
                                     await mp.delete()
