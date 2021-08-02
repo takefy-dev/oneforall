@@ -638,6 +638,44 @@ Sorry I did not manage to do that I did not have enough permission.`,
         successBoostCh: ch => `<:720681705219817534:780540043033837622> \`SUCCES\` You have defined the channel for the boosts counter to ${ ch }`
     },
     reactionRole: {
+        selectMenu: [
+            {
+                label: 'Channel',
+                value: 'channel',
+                description: 'Définir le salon où se situe le reaction role',
+                emoji: '📖'
+            },
+            {
+                label: 'Message',
+                value: 'message',
+                description: 'Définir l\'id du message ou mettre le reaction role',
+                emoji: '🆔'
+            },
+            {
+                label: 'Ajoute un role',
+                value: 'add-role',
+                description: 'Ajouter un role',
+                emoji: '💠'
+            },
+            {
+                label: 'Supprimer un role',
+                value: 'del-role',
+                description: 'Supprimer un role',
+                emoji: '🚫'
+            },
+            {
+                label: 'Supprimer',
+                value: 'delete',
+                description: 'Supprimer un reaction role existant',
+                emoji: '📛'
+            },
+            {
+                label: 'Sauvergarde',
+                value: 'save',
+                description: 'Sauvegarder le reaction role',
+                emoji: '✅'
+            }
+        ],
         embedTitle: `Role reaction creation menu`,
         embedDescription: (channel, id, emoji, role) => `
         \n
@@ -659,6 +697,7 @@ Sorry I did not manage to do that I did not have enough permission.`,
         notText: `The channel should only be of the type **text**`,
         chQ: `📖 What is the channel where you would like to have your reaction role ? (\`mention/id\`) (cancel to cancel)`,
         successCh: ch => `You have defined the channel to **${ ch }**`,
+        invalidChannel: `Le channel est invalide`,
         msgIdQ: `🆔 What is the message id for your reaction role ? (\`id\`) (cancel to cancel)`,
         notId: `Please enter a valid id !`,
         noChannel: `You have not defined a channel so I could not retrieve the message`,
@@ -681,6 +720,7 @@ Sorry I did not manage to do that I did not have enough permission.`,
         noEmoji: `You haven't set an emoji and role.`,
         alreadyReact: `A reaction role already exists with this message`,
         success: `The reaction role has been perfectly saved and created !`,
+        notChannelReactrole: `Il n'y a pas de reactrole dans ce channel`,
         tryToPermsRole: `You can't add a role with sensible permissions`
     },
     tempvoc: {
