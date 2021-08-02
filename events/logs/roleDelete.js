@@ -1,14 +1,10 @@
-const Event = require('../../structures/Handler/Event');
-const {Logger} = require("advanced-command-handler");
 
-module.exports = class roleDelete extends Event {
-    constructor() {
-        super({
+module.exports = {
+
             name: 'roleDelete',
-        });
-    }
 
-    async run(client, role) {
+
+    run: async (client, role) => {
         if (role.managed) return;
         let guild = role.guild;
         if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;

@@ -52,29 +52,29 @@ class Voice extends Collection {
                 } = guildData.get('xp')
                 if (!enable) break
                 const boost = multiplerChannels ? multiplerChannels.find(boost => boost.channel === value.values.voice.channelId
-) : undefined
-                if(!allowChannels.includes('all') && !allowChannels.includes( value.values.voice.channelId
-) || forbidChannels.includes( value.values.voice.channelId
-)) break
+                ) : undefined
+                if (!allowChannels.includes('all') && !allowChannels.includes(value.values.voice.channelId
+                ) || forbidChannels.includes(value.values.voice.channelId
+                )) break
 
                 if (typeof xpPerSVoc === 'string') xpPerSVoc = this.OneForAll.functions.getRandomInt(parseInt(xpPerSVoc.split('-')[0]), parseInt(xpPerSVoc.split('-')[1]))
                 let xpGain = xpPerSVoc
-                if(boost)
+                if (boost)
                     xpGain += boost.boost
                 const hasLeveledUp = await this.OneForAll.levels.appendXp(value.values.user.id, value.values.guild.id, xpGain)
-                if(!hasLeveledUp) break
-                const { roleLevel, lvlMessage, cumulRoles, maxRoleLvl } = guildData.get('level')
+                if (!hasLeveledUp) break
+                const {roleLevel, lvlMessage, cumulRoles, maxRoleLvl} = guildData.get('level')
                 const channel = value.values.guild.channels.cache.get(lvlMessage.channel);
-                if(!channel && channel.deleted) return
+                if (!channel && channel.deleted) return
                 const userLevel = await this.OneForAll.levels.fetch(value.values.user.id, value.values.guild.id, true);
                 const finalMessage = lvlMessage.message.replace(/{memberMention}/g, value.values.toString()).replace(/{memberLevel}/g, userLevel.level).replace(/{memberXp}/g, userLevel.xp).replace(/{memberLbPosition}/g, userLevel.position).replace(/{memberTag}/g, value.values.user.tag || value.values.user.username)
                 channel.send(finalMessage)
-                if(!roleLevel.length) break
+                if (!roleLevel.length) break
                 const roleToAdd = []
                 roleLevel.filter(roleLvl => roleLvl.level <= userLevel.level).forEach(role => roleToAdd.push(role.role))
-                if(!roleToAdd.length) break
+                if (!roleToAdd.length) break
                 await value.values.roles.add(roleToAdd, `Lvl up ${userLevel.level}`)
-                if(!cumulRoles){
+                if (!cumulRoles) {
                     const toRemove = []
                     roleLevel.filter(roleLvl => roleLvl.role !== maxRoleLvl.role).forEach(role => {
                         toRemove.push(role.role)
@@ -87,6 +87,8 @@ class Voice extends Collection {
 
     async load() {
         this.OneForAll.guilds.cache.filter(g => this.OneForAll.managers.guildManager.getAndCreateIfNotExists(g.id).get('coinsSettings').enable || this.OneForAll.managers.guildManager.getAndCreateIfNotExists(g.id).get('xp').enable).forEach(g => {
+            console.log(this.OneForAll.managers.guildManager.getAndCreateIfNotExists(g.id).get('coinsSettings').enable)
+            console.log(this.OneForAll.managers.guildManager.getAndCreateIfNotExists(g.id).get('xp').enable)
             g.channels.cache.filter(channel => channel.type === "GUILD_VOICE" && channel.members.size > 0).map(channel => channel.members).forEach(members => members.forEach(member => {
                 this.addVoice(`${g.id}-${member.id}`, member);
             }))

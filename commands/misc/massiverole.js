@@ -15,12 +15,13 @@ module.exports = {
 
 
     run: async (client, message, args) => {
-
+        const member = new Map()
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);
         const lang = guildData.lang;
         const color = guildData.get('color')
-
-
+        const counts = new Map()
+        const done = new Map()
+        const timer = new Map()
         let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[1]);
         if (role) {
             if (role.permissions.has("KICK_MEMBERS") || role.permissions.has("BAN_MEMBERS") || role.permissions.has("ADMINISTRATOR") || role.permissions.has("MANAGE_CHANNELS") || role.permissions.has("MANAGE_GUILD") || role.permissions.has("MANAGE_ROLES")) return message.channel.send(lang.massrole.highPermRole(role.name))

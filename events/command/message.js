@@ -1,5 +1,4 @@
-﻿const Event = require('../../structures/Handler/Event');
-const DBL = require("dblapi.js");
+﻿const DBL = require("dblapi.js");
 module.exports =  {
     name: 'messageCreate',
     run: async (client, message) => {
@@ -107,13 +106,13 @@ module.exports =  {
                 }
             } else {
                 if(!enable || !permHasCommand){
-                    for (const commandPermissions of cmd.userPermissions) {
+                    for (const commandPermissions of cmd.userPermissions || []) {
                         if (!message.member.permissions.has(commandPermissions) && message.guild.ownerId
- !== message.author.id) {
+                            !== message.author.id) {
                             return message.channel.send(lang.error.userPermissions(commandPermissions))
                         }
                     }
-                    for (const commandPermissions of cmd.clientPermissions) {
+                    for (const commandPermissions of cmd.clientPermissions || ['SEND_MESSAGES']) {
                         if (!message.guild.me.permissions.has(commandPermissions)) {
                             return message.channel.send(lang.error.clientPermissions(commandPermissions))
                         }

@@ -16,7 +16,7 @@ module.exports = {
         const diff = now - timeOfAction
         if (diff >= 600) return;
 
-        if (action.executor.id === client.user.id) return client.client.Logger.log(`No sanction oneforall`, `Deco`, 'pink');
+        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `Deco`, 'pink');
         if (guild.ownerId
             === action.executor.id) return client.Logger.log(`No sanction crown`, `Deco`, 'pink');
 

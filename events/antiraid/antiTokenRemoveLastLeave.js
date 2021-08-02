@@ -10,7 +10,7 @@ module.exports =  {
         let isBotOwner = client.isOwner(member.id);
         let isWlBypass = antiraidConfig.bypass["antiToken"];
         if (isWlBypass) var isWl = guildData.isGuildWl(member.id);
-        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `ANTI TOKEN`, 'pink');
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `ANTI TOKEN`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
             const limites = guildData.get('antiraidLimits');
             if(limites.antiToken.recentJoined.includes(member.id)){

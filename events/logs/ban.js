@@ -1,6 +1,6 @@
 module.exports = {
     name: 'guildBanAdd',
-    run: async (client, guild, user) =>{
+    run: async (client, {guild}, user) =>{
         if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(guild.id);
         let modLog  = guildData.get('logs').mod;

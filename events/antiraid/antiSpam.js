@@ -30,7 +30,7 @@ module.exports = {
 
         let isWlBypass = antiraidConfig.bypass["antiSpam"];
         if (isWlBypass) var isWl = guildData.isGuildWl(message.author.id);
-        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
 
 
         if (isWlBypass && !isWl || !isWlBypass) {
