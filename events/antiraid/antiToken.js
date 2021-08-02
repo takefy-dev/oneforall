@@ -39,7 +39,7 @@ module.exports = {
                 }
                 antiToken.date = new Date();
                 guildData.save()
-                if (counter < limit) return
+                if (counter < limit || diff >= time) return
 
             } else {
                 antiToken.date = new Date();

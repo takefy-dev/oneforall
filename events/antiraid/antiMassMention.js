@@ -41,7 +41,7 @@ module.exports =  {
                 }
                 mentions.date = new Date();
                 userData.save()
-                if (counter < limit) return
+                if (counter < limit || diff >= time) return
 
             } else {
                 mentions.date = new Date();
