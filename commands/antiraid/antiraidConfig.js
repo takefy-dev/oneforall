@@ -1,4 +1,4 @@
-    const NumberFromEmoji = require('../../utils/emojiToNumber')
+const NumberFromEmoji = require('../../utils/emojiToNumber')
 const emojiEnable = {
     true: "<:778348494712340561:781153837850820619>",
     false: "<:778348495157329930:781189773645578311>"
@@ -260,7 +260,7 @@ module.exports = {
                     dureefiltrer = response => {
                         return response.author.id === message.author.id
                     };
-                const collector = subMenu.createReactionCollector(emojiFilter, {time: 900000});
+                const collector = subMenu.createReactionCollector({filter: emojiFilter,time: 900000});
                 collector.on('collect', async r => {
 
                     await r.users.remove(message.author);
@@ -372,7 +372,7 @@ module.exports = {
             const saveFilter = (reaction, user) => ['✅'].includes(reaction.emoji.name) && user.id === message.author.id;
             const confirMsg = await message.channel.send(lang.antiraidConfig.reactsave)
             await confirMsg.react('✅')
-            const saveCollector = confirMsg.createReactionCollector(saveFilter, {time: 900000});
+            const saveCollector = confirMsg.createReactionCollector({filter: saveFilter,time: 900000});
             saveCollector.on('collect', async r => {
                 await r.users.remove(message.author);
                 if (r.emoji.name === '✅') {

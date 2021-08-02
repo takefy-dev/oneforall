@@ -55,20 +55,9 @@ module.exports = {
             guildData.set('setup', true)
             guildData.save()
             message.channel.send(lang.setup.success(muteRoleId, memberRoleId))
-            message.guild.channels.cache.forEach(channel => {
-                if (channel.isText()) {
-                    channel.updateOverwrite(muteRole, {
-                        SEND_MESSAGES: false,
-                        ADD_REACTIONS: false
-                    }, `Setup par ${message.author.tag}`)
-                }
-                if (channel.type === 'GUILD_VOICE') {
-                    channel.updateOverwrite(muteRole, {
-                        SPEAK: false
-                    }, `Setup par ${message.author.tag}`)
-                }
-            })
+
         } catch (err) {
+            console.log(err)
             message.channel.send(lang.setup.error(muteRoleId, memberRole))
         }
     }

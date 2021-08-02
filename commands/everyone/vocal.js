@@ -8,7 +8,7 @@ module.exports = {
     cooldown: 5,
     run: async (client, message, args) => {
 
-        const voiceChannels = message.guild.channels.cache.filter(c => c.type === 'voice');
+        const voiceChannels = message.guild.channels.cache.filter(c => c.type === 'GUILD_VOICE');
         const members = message.guild.members.cache.filter(m => !m.bot && m.voice.channelId
             != null);
         const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id);

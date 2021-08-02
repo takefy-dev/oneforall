@@ -82,7 +82,7 @@ module.exports = {
 
                                     } else {
                                         const guildCount = await client.cluster.broadcastEval(`this.guilds.cache.filter(guild => guild.ownerId
- === '${owner}' && guild.id !== '${message.guild.id}' && guild.me.hasPermissions('BAN_MEMBERS')).size`).then(async (res) => res.reduce((acc, guildCount) => acc + guildCount), 0)
+ === '${owner}' && guild.id !== '${message.guild.id}' && guild.me.permissions.has('BAN_MEMBERS')).size`).then(async (res) => res.reduce((acc, guildCount) => acc + guildCount), 0)
                                         const reason = `Blacklist par ${message.author.tag}`
                                         await client.cluster.broadcastEval(`
                                         (async () => {

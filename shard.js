@@ -1,8 +1,6 @@
-const { ShardingManager } = require('discord.js');
 const Cluster = require("discord-hybrid-sharding");
 require('dotenv').config();
-const { token } = require('./config.js')
-
+const { token, topGgToken } = require('./config.js')
 const manager = new Cluster.Manager(`${__dirname}/index.js`,{
     totalShards: 'auto' ,
     totalClusters: 'auto',

@@ -69,7 +69,7 @@ module.exports = {
                                                 msg.delete()
                                                 mp.delete()
                                                 mps.delete()
-                                                return message.channel.send(`{memberMention}\n{memberTag}\n{memberLvl}\n{memberXp}\n{memberLbPosition}`)
+                                                return message.channel.send(`{memberMention}\n{memberTag}\n{memberLevel}\n{memberXp}\n{memberLbPosition}`)
                                             }
                                             tempConfig.lvlMessage.message = msg.content
                                             tempConfig.lvlMessage.channel = channel.id;
