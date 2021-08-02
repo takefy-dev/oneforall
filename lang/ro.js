@@ -31,7 +31,7 @@ module.exports = {
         success: (ping, client) => `Latence du bot: \`${ ping }\` ms, Latence de l'api: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
     },
     help: {
-        information2: prefix => `<:778353230484471819:780727288903237663> Le préfixe de ce serveur est \`${ prefix }\`.\n<:desc2:783422775821729792> Pour obtenir plus d'informations sur une commande, tapez simplement \`${ prefix }help\` \`commands\`.\n<:folder:783422648196923452> Vous pouvez également taper \`${ prefix }help commands\` ou réagir avec 📄 pour obtenir toutes mes commandes.`,
+        information2: prefix => `<:778353230484471819:780727288903237663> Le préfixe de ce serveur est \`${ prefix }\`.\n<:desc2:783422775821729792> Pour obtenir plus d'informations sur une commande, tapez simplement \`${ prefix }help\` \`<command>\`.\n<:folder:783422648196923452> Vous pouvez également taper \`${ prefix }help commands\` ou réagir avec 📄 pour obtenir toutes mes commandes.`,
         noCommand: args => `Je ne trouve pas la commande **__${ args }__** dans mes commandes`,
         information: `Information and commands`,
         noAliases: `Pas d'aliases`,
