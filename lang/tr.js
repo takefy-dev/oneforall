@@ -30,7 +30,7 @@ module.exports = {
         success: (ping, client) => `bot gecikmesi: \`${ ping }\`ms, l'api gecikmesi: \`${ Math.round(parseInt(client.ws.ping)) }\` ms`
     },
     help: {
-        information2: prefix => `<:778353230484471819:780727288903237663> Bu sunucunun prefix \`${ prefix }\`.\n<:desc2:783422775821729792> Bir sipariş hakkında daha fazla bilgi almak için yazmanız yeterlidir \` ${ prefix }Yardım\` \`komutlar\`.\n<:folder:783422648196923452> Ayrıca yazabilirsiniz \`${ prefix }Yardım komutlar\` veya tepki ile birlikte📄 tüm siparişlerimi almak için. `,
+        information2: prefix => `<:778353230484471819:780727288903237663> Bu sunucunun prefix \`${ prefix }\`.\n<:desc2:783422775821729792> Bir sipariş hakkında daha fazla bilgi almak için yazmanız yeterlidir \` ${ prefix }help\` \`<command>\`.\n<:folder:783422648196923452> Vous pouvez également taper \`${ prefix }Yardım komutlar\` veya tepki ile birlikte📄 tüm siparişlerimi almak için. `,
         noCommand: args => `siparişi bulamıyorum **__${ args }__** komutlarımda `,
         information: `Bilgi ve komutlar `,
         noAliases: `takma ad yok `,
