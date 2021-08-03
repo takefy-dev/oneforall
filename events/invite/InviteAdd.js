@@ -12,10 +12,9 @@ module.exports =  {
         const lang = guildData.lang;
         const {cachedInv} = guildData;
         const newInv = await guild.invites.fetch()
-
-        const usedInv = newInv.find(inv => cachedInv.get(inv.code) ? cachedInv.get(inv.code).uses < inv.uses : undefined);
+        const usedInv = await newInv.find(inv =>  cachedInv.get(inv.code) < inv.uses );
         for (const [code, invite] of newInv) {
-            cachedInv.set(code, invite)
+            cachedInv.set(code, invite.uses)
         }
         let finalMsg;
         if (!usedInv) {
