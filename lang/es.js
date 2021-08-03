@@ -451,6 +451,48 @@ module.exports = {
         titleList: `<:778353230383546419:781153631881265173> Liste des owners`
     },
     invite: {
+        options: [
+            {
+                label: 'Channel',
+                value: 'channel',
+                description: 'Définir le channel où sera envoyé le message',
+                emoji: '🆔'
+            },
+            {
+                label: 'Message',
+                value: 'message',
+                description: 'Définir le message à envoyer ',
+                emoji: '🕳'
+            },
+            {
+                label: 'Variable',
+                value: 'help',
+                description: 'Affiche les variables possible ',
+                emoji: '❓'
+            },
+            {
+                label: 'Activer',
+                value: 'enable',
+                description: 'Activer ou désactiver les messages de bienvenue',
+                emoji: '💘'
+            },
+            {
+                label: 'Sauvegarder',
+                value: 'save',
+                description: 'Sauvergarder la configuration',
+                emoji: '✅'
+            }
+        ],
+        help: `{invitedTag} ・ Sert à afficher le tag du membre qui a été invité
+                {inviterTag} ・ Sert à afficher le tag du membre qui a invité
+                {inviterMention} ・ Sert à mentionner le membre qui a invité
+                {invitedMention} ・ Sert à mentionner le membre qui a été invité
+                {creation} ・ Sert à afficher quand le membre qui a été invité a créé son compte
+                {count} ・ Sert à afficher le nombre d'invitation que l'inviteur possède
+                {fake}  ・ Sert à afficher le nombre d'invitation fake que l'inviteur possède
+                {leave}  ・ Sert à afficher le nombre d'invitation leave que l'inviteur possède
+                {memberTotal} ・ Sert à afficher le nombre total de membres sur le serveur
+        `,
         countDesc: (tag, userInviteCount, inv) => `
         **${ tag }** possède actuellement : \n
         <:invite_oeople:785494680904138763> **${ userInviteCount }** ${ inv }. `,
@@ -474,17 +516,6 @@ module.exports = {
         errorMsg: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a changer le message de bienvenue en :`,
         timeout2M: '<:720681441670725645:780539422479351809> `ERREUR` Pas de réponse après 2 minutes opération annulé',
         helpTitle: `<:771462923855069204:784471984087236658> __Aide sur la configuration du message de bienvenue__`,
-        helpDesc: (invitedHelp, inviterHelp, invitedMention, inviterMention, accountCreate, countHelp, fakeHelp, leaveHelp, totalMemberHelp, space) => `
-        ${ invitedHelp } \n
-        ${ inviterHelp } \n
-        ${ invitedMention }\n
-        ${ inviterMention }\n
-        ${ accountCreate }\n 
-        ${ countHelp } \n
-        ${ fakeHelp }\n
-        ${ leaveHelp }\n
-        ${ totalMemberHelp } \n
-        ${ space }  `,
         enableQ: `<a:2366_Loading_Pixels:784472554328555571> Voulez-vous activer les messages de bienvenue ? Oui / Non (cancel pour annuler)`,
         successEnable: `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai bien activé les messages de bienvenue !`,
         errorEnable: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a activé les messages de bienvenue ...`,
@@ -1296,18 +1327,6 @@ module.exports = {
         successAll: total => `L'xp de ${ total } membres a été reset`,
         success: member => `L'xp de ${ member } a été reset`,
         errorNothingToReset: `Il n'y a personne a reset`
-    },
-    inviteRole: {
-        noRole: `Vous devez spécifier un role`,
-        noInvite: `Vous devez spécifier un nombre d'invite`,
-        notNumber: `Vous devez spécifier un nombre d'invite valide`,
-        listEmbed: inviteRole => new Discord.MessageEmbed().setDescription(!inviteRole.length ? `Aucun invite role` : inviteRole.map((inv, i) => `${ i + 1 } - <@&${ inv.role }> - ${ inv.invite } invite(s)`).join('\n')).setTimestamp().setTitle(`Liste des invites role (${ inviteRole.length })`),
-        success: (role, invite) => `Le role **${ role }** se maintenant ajouté a partir de *${ invite }* invite(s)`,
-        noOnOff: `Vous devez spécifier on ou off\n \`Exemple: !inviterole cumul on\``,
-        successCumul: isOn => `Le cumules des roles est maintenant **${ isOn }**.`,
-        doestNotExist: `L'invite role n'existe pas`,
-        alreadyExist: `L'invite role existe déjà`,
-        successRm: role => `Le ${ role } a été supprimé des invite role`
     },
     blacklistRole: {
         noRole: `Vous devez spécifier un role`,
