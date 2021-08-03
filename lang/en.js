@@ -454,6 +454,48 @@ Sorry I did not manage to do that I did not have enough permission.`,
         titleList: `<:778353230383546419:781153631881265173> List of owners`
     },
     invite: {
+        options: [
+            {
+                label: 'Channel',
+                value: 'channel',
+                description: 'Définir le channel où sera envoyé le message',
+                emoji: '🆔'
+            },
+            {
+                label: 'Message',
+                value: 'message',
+                description: 'Définir le message à envoyer ',
+                emoji: '🕳'
+            },
+            {
+                label: 'Variable',
+                value: 'help',
+                description: 'Affiche les variables possible ',
+                emoji: '❓'
+            },
+            {
+                label: 'Activer',
+                value: 'enable',
+                description: 'Activer ou désactiver les messages de bienvenue',
+                emoji: '💘'
+            },
+            {
+                label: 'Sauvegarder',
+                value: 'save',
+                description: 'Sauvergarder la configuration',
+                emoji: '✅'
+            }
+        ],
+        help: `{invitedTag} ・ Sert à afficher le tag du membre qui a été invité
+                {inviterTag} ・ Sert à afficher le tag du membre qui a invité
+                {inviterMention} ・ Sert à mentionner le membre qui a invité
+                {invitedMention} ・ Sert à mentionner le membre qui a été invité
+                {creation} ・ Sert à afficher quand le membre qui a été invité a créé son compte
+                {count} ・ Sert à afficher le nombre d'invitation que l'inviteur possède
+                {fake}  ・ Sert à afficher le nombre d'invitation fake que l'inviteur possède
+                {leave}  ・ Sert à afficher le nombre d'invitation leave que l'inviteur possède
+                {memberTotal} ・ Sert à afficher le nombre total de membres sur le serveur
+        `,
         countDesc: (tag, userInviteCount, inv) => `
         **${ tag }** currently owns : \n
         <:invite_oeople:785494680904138763> **${ userInviteCount }** ${ inv }. `,
@@ -476,17 +518,6 @@ Sorry I did not manage to do that I did not have enough permission.`,
         errorMsg: `<:720681441670725645:780539422479351809> \`ERROR\` I have not been able to change the welcome message to :`,
         timeout2M: '<:720681441670725645:780539422479351809> `ERROR` No response after 2 minutes operation will be canceled',
         helpTitle: `<:771462923855069204:784471984087236658> __Help on configuring the welcome message__`,
-        helpDesc: (invitedHelp, inviterHelp, invitedMention, inviterMention, accountCreate, countHelp, fakeHelp, leaveHelp, totalMemberHelp, space) => `
-        ${ invitedHelp } \n
-        ${ inviterHelp } \n
-        ${ invitedMention }\n
-        ${ inviterMention }\n
-        ${ accountCreate }\n 
-        ${ countHelp } \n
-        ${ fakeHelp }\n
-        ${ leaveHelp }\n
-        ${ totalMemberHelp } \n
-        ${ space }  `,
         enableQ: `<a:2366_Loading_Pixels:784472554328555571> Do you want to activate welcome messages? Yes / No (cancel to cancel)`,
         successEnable: `<:720681705219817534:780540043033837622> \`SUCCES\` I have activated the welcome messages !`,
         errorEnable: `<:720681441670725645:780539422479351809> \`ERROR\` I have not arrived to activate the welcome messages...`,
@@ -1298,24 +1329,6 @@ Sorry I did not manage to do that I did not have enough permission.`,
         successAll: total => `L'xp de ${ total } membres a été reset`,
         success: member => `L'xp de ${ member } a été reset`,
         errorNothingToReset: `Il n'y a personne a reset`
-    },
-    inviteRole: {
-        noRole: `You must specify a role`,
-        noInvite: `
-You must specify a prompt number`,
-        notNumber: `
-You must specify a valid prompt number`,
-        listEmbed: inviteRole => new Discord.MessageEmbed().setDescription(!inviteRole.length ? `Aucun invite role` : inviteRole.map((inv, i) => `${ i + 1 } - <@&${ inv.role }> - ${ inv.invite } invite(s)`).join('\n')).setTimestamp().setTitle(`Liste des invites role (${ inviteRole.length })`),
-        success: (role, invite) => `
-The role **${ role }** now added from *${ invite }* invite(s)`,
-        noOnOff: `You must specify on or off \n \`Example: !inviterole cumul on \``,
-        successCumul: isOn => `
-The cumulative roles are now **${ isOn }**.`,
-        doestNotExist: `the invite role does not exist`,
-        alreadyExist: `the invite role already exists`,
-        successRm: role => `
-the${ role }
-has been removed from the invite role`
     },
     blacklistRole: {
         noRole: `Vous devez spécifier un role`,
