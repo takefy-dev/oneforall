@@ -100,10 +100,10 @@ module.exports = {
     dero: {success: '<:720681705219817534:780540043033837622> `SUCCÈS` Toutes les dérogattions ont été mis à jour.'},
     embedBuilder: {
         descriptionRequired: `La description est obligatoire`,
-        authorPlaceHoler : `Change l'auteur de votre embed`,
-        footerPlaceHolder : `Change le footer de votre embed`,
-        copyPlaceHolder : `Copier un embed`,
-        authorOptions :  [
+        authorPlaceHoler: `Change l'auteur de votre embed`,
+        footerPlaceHolder: `Change le footer de votre embed`,
+        copyPlaceHolder: `Copier un embed`,
+        authorOptions: [
             {
                 label: 'Name',
                 value: 'author-text',
@@ -465,6 +465,49 @@ module.exports = {
         titleList: `<:778353230383546419:781153631881265173> Liste des owners`
     },
     invite: {
+        options: [
+            {
+                label: 'Channel',
+                value: 'channel',
+                description: "Définir le channel où sera envoyé le message",
+                emoji: '🆔'
+            },
+            {
+                label: 'Message',
+                value: 'message',
+                description: "Définir le message à envoyer ",
+                emoji: '🕳'
+            },
+            {
+                label: 'Variable',
+                value: 'help',
+                description: "Affiche les variables possible ",
+                emoji: '❓'
+            },
+            {
+                label: 'Activer',
+                value: 'enable',
+                description: "Activer ou désactiver les messages de bienvenue",
+                emoji: '💘'
+            },
+            {
+                label: 'Sauvegarder',
+                value: 'save',
+                description: "Sauvergarder la configuration",
+                emoji: '✅'
+            }
+        ],
+        help: `{invitedTag} ・ Sert à afficher le tag du membre qui a été invité
+                {inviterTag} ・ Sert à afficher le tag du membre qui a invité
+                {inviterMention} ・ Sert à mentionner le membre qui a invité
+                {invitedMention} ・ Sert à mentionner le membre qui a été invité
+                {creation} ・ Sert à afficher quand le membre qui a été invité a créé son compte
+                {count} ・ Sert à afficher le nombre d'invitation que l'inviteur possède
+                {fake}  ・ Sert à afficher le nombre d'invitation fake que l'inviteur possède
+                {leave}  ・ Sert à afficher le nombre d'invitation leave que l'inviteur possède
+                {memberTotal} ・ Sert à afficher le nombre total de membres sur le serveur
+        `,
+
         countDesc: (tag, userInviteCount, inv) => `
         **${tag}** possède actuellement : \n
         <:invite_oeople:785494680904138763> **${userInviteCount}** ${inv}. `,
@@ -487,17 +530,6 @@ module.exports = {
         errorMsg: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a changer le message de bienvenue en :`,
         timeout2M: '<:720681441670725645:780539422479351809> `ERREUR` Pas de réponse après 2 minutes opération annulé',
         helpTitle: `<:771462923855069204:784471984087236658> __Aide sur la configuration du message de bienvenue__`,
-        helpDesc: (invitedHelp, inviterHelp, invitedMention, inviterMention, accountCreate, countHelp, fakeHelp, leaveHelp, totalMemberHelp, space) => `
-        ${invitedHelp} \n
-        ${inviterHelp} \n
-        ${invitedMention}\n
-        ${inviterMention}\n
-        ${accountCreate}\n 
-        ${countHelp} \n
-        ${fakeHelp}\n
-        ${leaveHelp}\n
-        ${totalMemberHelp} \n
-        ${space}  `,
         enableQ: `<a:2366_Loading_Pixels:784472554328555571> Voulez-vous activer les messages de bienvenue ? Oui / Non (cancel pour annuler)`,
         successEnable: `<:720681705219817534:780540043033837622> \`SUCCÈS\` J'ai bien activé les messages de bienvenue !`,
         errorEnable: `<:720681441670725645:780539422479351809> \`ERREUR\` Je ne suis pas arrivé a activé les messages de bienvenue ...`,
@@ -526,8 +558,8 @@ module.exports = {
     authorinfo: {description: `__**OneforAll**__\n\n*OneforAll est un bot appartenant à* \`TAKEFY#9831\`\n\n**Développeurs :**\n[TAKEFY#9831](https://discord.gg/h69YZHB7Nh) -> Bot & Host\n[baby#1337](https://discord.gg/h69YZHB7Nh) -> Ideas & Design\n[qzzzz#0101](https://discord.gg/h69YZHB7Nh) -> Communication\n`},
     setlang: {
         currentLang: (lang) => `En ce moment la langue du bot est **${lang}**`,
-        errorInArgs : (availableLang) => `Vous devez choisir entre ces ${availableLang.length} langues **(${availableLang.join(', ').replace(/.js/g, '')})**`,
-        success: lang => `La langue du bot est maintenat définie pour ${ lang }`
+        errorInArgs: (availableLang) => `Vous devez choisir entre ces ${availableLang.length} langues **(${availableLang.join(', ').replace(/.js/g, '')})**`,
+        success: lang => `La langue du bot est maintenat définie pour ${lang}`
     },
     addemoji: {
         missingUrl: `<:720681441670725645:780539422479351809> \`ERREUR\` Vous devez fournir un emoji`,
@@ -663,25 +695,25 @@ module.exports = {
                 emoji: '🆔',
             },
             {
-                label : 'Ajoute un role',
+                label: 'Ajoute un role',
                 value: 'add-role',
                 description: "Ajouter un role",
                 emoji: '💠',
             },
             {
-                label : 'Supprimer un role',
+                label: 'Supprimer un role',
                 value: 'del-role',
                 description: "Supprimer un role",
                 emoji: '🚫',
             },
             {
-                label : 'Supprimer',
+                label: 'Supprimer',
                 value: 'delete',
                 description: "Supprimer un reaction role existant",
                 emoji: '📛',
             },
             {
-                label : 'Sauvergarde',
+                label: 'Sauvergarde',
                 value: 'save',
                 description: "Sauvegarder le reaction role",
                 emoji: '✅',
@@ -708,7 +740,7 @@ module.exports = {
         notText: `Le salon doit être uniquement du type **text**`,
         chQ: `📖 Quel est le salon où vous voudriez avoir votre reaction rôle ? (\`mention/id\`) (cancel pour annuler)`,
         successCh: ch => `Vous avez définie le salon pour **${ch}**`,
-        invalidChannel : `Le channel est invalide`,
+        invalidChannel: `Le channel est invalide`,
         msgIdQ: `🆔 Quel est l'id du message pour votre reaction rôle ? (\`id\`) (cancel pour annuler)`,
         notId: `Veuillez entrer une id valide !`,
         noChannel: `Vous n'avez pas défini de channel je n'ai donc pas pu récuperer le message`,
@@ -731,7 +763,7 @@ module.exports = {
         noEmoji: `Vous n'avez pas définie d'emoji et de rôle.`,
         alreadyReact: `Un reaction rôle existe déjà avec ce message`,
         success: `Le reaction rôle a été parfaitement sauvagardé et crée !`,
-        notChannelReactrole : `Il n'y a pas de reactrole dans ce channel`,
+        notChannelReactrole: `Il n'y a pas de reactrole dans ce channel`,
 
         tryToPermsRole: `Vous ne pouvez pas ajouter un role ayant des permissions sensible`
     },
@@ -1312,18 +1344,6 @@ module.exports = {
         errorNothingToReset: `Il n'y a personne a reset`
     },
 
-    inviteRole: {
-        noRole: `Vous devez spécifier un role`,
-        noInvite: `Vous devez spécifier un nombre d'invite`,
-        notNumber: `Vous devez spécifier un nombre d'invite valide`,
-        listEmbed: inviteRole => new Discord.MessageEmbed().setDescription(!inviteRole.length ? `Aucun invite role` : inviteRole.map((inv, i) => `${i + 1} - <@&${inv.role}> - ${inv.invite} invite(s)`).join('\n')).setTimestamp().setTitle(`Liste des invites role (${inviteRole.length})`),
-        success: (role, invite) => `Le role **${role}** se maintenant ajouté a partir de *${invite}* invite(s)`,
-        noOnOff: `Vous devez spécifier on ou off\n \`Exemple: !inviterole cumul on\``,
-        successCumul: isOn => `Le cumules des roles est maintenant **${isOn}**.`,
-        doestNotExist: `L'invite role n'existe pas`,
-        alreadyExist: `L'invite role existe déjà`,
-        successRm: role => `Le ${role} a été supprimé des invite role`
-    },
     blacklistRole: {
         noRole: `Vous devez spécifier un role`,
         alreadyBl: role => `Le role **${role}** est déjà dans la blacklist des rôles`,

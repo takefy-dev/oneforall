@@ -88,7 +88,8 @@ class Voice extends Collection {
     async load() {
         this.OneForAll.guilds.cache.filter(g => this.OneForAll.managers.guildManager.getAndCreateIfNotExists(g.id).get('coinsSettings').enable || this.OneForAll.managers.guildManager.getAndCreateIfNotExists(g.id).get('xp').enable).forEach(g => {
             g.channels.cache.filter(channel => channel.type === "GUILD_VOICE" && channel.members.size > 0).map(channel => channel.members).forEach(members => members.forEach(member => {
-                this.addVoice(`${g.id}-${member.id}`, member);
+                if (!member.user.bot)
+                    this.addVoice(`${g.id}-${member.id}`, member);
             }))
         })
         console.log(`Successfully loaded ${this.size} Voice.`)

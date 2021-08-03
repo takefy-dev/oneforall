@@ -58,12 +58,12 @@ module.exports = {
                     placeHolder = lang.embedBuilder.copyPlaceHolder
                 }
                 if (value === 'copy-channel') {
+                    await interaction.deferUpdate()
                     const msg = await message.channel.send(lang.embedBuilder.copyMsg);
                     row.components[0].setDisabled(true)
                     await panel.edit({
                         components: [row]
                     })
-                    await interaction.deferUpdate()
                     await msg.channel.awaitMessages({
                         filter: dureefiltrer,
                         limit: 1,
@@ -87,12 +87,14 @@ module.exports = {
                 }
                 if (value === 'copy-id') {
                     if (!tempCopy.channel) return message.channel.send(lang.embedBuilder.errorChannel)
+
+                    interaction.deferUpdate()
+
                     const msg = await message.channel.send(lang.embedBuilder.messageId);
                     row.components[0].setDisabled(true)
                     await panel.edit({
                         components: [row]
                     })
-                    await interaction.deferUpdate()
                     await msg.channel.awaitMessages({
                         filter: dureefiltrer,
                         limit: 1,
@@ -117,7 +119,6 @@ module.exports = {
                     if (!tempCopy.message) return message.channel.send(lang.embedBuilder.errorMessage(tempCopy.channel ? tempCopy.channel : 'Non définie'));
                     embed = tempCopy.message.embeds[0];
                     updateEmbed()
-                    interaction.deferUpdate()
                 }
 
             }
@@ -128,12 +129,14 @@ module.exports = {
                     placeHolder = lang.embedBuilder.footerPlaceHolder
                 }
                 if (value === 'footer-text') {
+
+                    await interaction.deferUpdate()
                     const msg = await message.channel.send(lang.embedBuilder.footerMsg);
                     row.components[0].setDisabled(true)
                     await panel.edit({
                         components: [row]
                     })
-                    await interaction.deferUpdate()
+
                     await msg.channel.awaitMessages({
                         filter: dureefiltrer,
                         limit: 1,
@@ -157,12 +160,13 @@ module.exports = {
                     })
                 }
                 if (value === 'footer-icon') {
+                    await interaction.deferUpdate()
+
                     const msg = await message.channel.send(lang.embedBuilder.footerUrl);
                     row.components[0].setDisabled(true)
                     await panel.edit({
                         components: [row]
                     })
-                    await interaction.deferUpdate()
                     await msg.channel.awaitMessages({
                         filter: dureefiltrer,
                         limit: 1,
@@ -208,12 +212,12 @@ module.exports = {
 
                 }
                 if (value === 'author-text') {
+                    await interaction.deferUpdate()
                     const msg = await message.channel.send(lang.embedBuilder.authorMsg);
                     row.components[0].setDisabled(true)
                     await panel.edit({
                         components: [row]
                     })
-                    await interaction.deferUpdate()
                     await msg.channel.awaitMessages({
                         filter: dureefiltrer,
                         limit: 1,
@@ -237,12 +241,12 @@ module.exports = {
                     })
                 }
                 if (value === 'author-url') {
+                    await interaction.deferUpdate()
                     const msg = await message.channel.send(lang.embedBuilder.authorUrl);
                     row.components[0].setDisabled(true)
                     await panel.edit({
                         components: [row]
                     })
-                    await interaction.deferUpdate()
                     await msg.channel.awaitMessages({
                         filter: dureefiltrer,
                         limit: 1,
@@ -271,12 +275,13 @@ module.exports = {
                     })
                 }
                 if (value === 'author-icon') {
+
+                    await interaction.deferUpdate()
                     const msg = await message.channel.send(lang.embedBuilder.authorIcon);
                     row.components[0].setDisabled(true)
                     await panel.edit({
                         components: [row]
                     })
-                    await interaction.deferUpdate()
                     await msg.channel.awaitMessages({
                         filter: dureefiltrer,
                         limit: 1,
@@ -318,11 +323,12 @@ module.exports = {
             if (page === 0) {
                 const theOptions = defaultOptions.find(opts => opts.value === value);
                 if (theOptions.questionOnly) {
+                    await interaction.deferUpdate()
                     const toSend = lang.embedBuilder[`${value}Msg`]
                     if (!toSend) {
                         embed.timestamp = new Date()
-                        updateEmbed()
-                        return interaction.deferUpdate()
+                        return updateEmbed()
+
                     }
 
                     const msg = await message.channel.send(toSend)
@@ -330,7 +336,6 @@ module.exports = {
                     await panel.edit({
                         components: [row]
                     })
-                    await interaction.deferUpdate()
                     await msg.channel.awaitMessages({
                         filter: dureefiltrer,
                         limit: 1,
@@ -366,6 +371,7 @@ module.exports = {
                                 if (channel) {
                                     channel.send({embeds: [embed]})
                                 }
+                                collector.stop()
                             }
 
                         } else {

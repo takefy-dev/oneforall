@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const {MessageActionRow, MessageSelectMenu} = require("discord.js");
 
 module.exports = {
 
@@ -50,111 +51,149 @@ module.exports = {
         }
 
         if (config) {
-            const guildData = client.managers.guildManager.getAndCreateIfNotExists(message.guild.id)
             if (!guildData.isGuildOwner(message.author.id)) return message.channel.send(lang.error.notListOwner)
-            const msg = await message.channel.send(lang.loading)
-            const emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '❌', '✅']
-            for (const em of emojis) await msg.react(em)
-            const invite = guildData.get('invite');
-            let tempInvite = client.functions.copyObject(invite);
-            let enableEmoji = (enable) => {
-                return tempInvite.enable ? '<:778348494712340561:781153837850820619>' : '<:778348495157329930:781189773645578311>'
+            const invite = client.functions.copyObject(guildData.get('invite'));
+            const embed = (config) => {
+                return {
+                    title: 'Configuration',
+                    fields: [
+                        {
+                            name: 'Channel',
+                            value: config.id === 'Non définie' ? 'Non définie' : `<#${config.id}>`,
+                        },
+                        {
+                            name: 'Message',
+                            value: config.message
+                        },
+                        {
+                            name: 'Actif',
+                            value: client.functions.enableEmoji(config.enable)
+                        }
+                    ],
+                    color
+                }
             }
-            const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id,
+            const options = lang.invite.options
+            if (invite.enable) options[3].label = 'Désactiver'
+            else options[3].label = 'Activer'
+
+            const row = new MessageActionRow().addComponents(
+                new MessageSelectMenu()
+                    .setCustomId('invite-config')
+                    .setPlaceholder('Configure the invite system')
+                    .addOptions(options)
+            )
+            const panel = await message.channel.send({embeds: [embed(invite)], components: [row]})
+            const filter = (interaction) => interaction.customId === 'invite-config' && interaction.user.id === message.author.id,
                 dureefiltrer = response => {
                     return response.author.id === message.author.id
                 };
+            const collector = panel.channel.createMessageComponentCollector({filter, time: 90000});
+            collector.on('collect', async (interaction) => {
+                const value = interaction.values[0];
+                await interaction.deferUpdate()
+                if (value === "channel") {
+                    const messageQuestion = await message.channel.send(lang.invite.chQ);
+                    row.components[0].setDisabled(true)
+                    await panel.edit({
+                        components: [row]
+                    })
+                    await messageQuestion.channel.awaitMessages({
+                        filter: dureefiltrer,
+                        limit: 1,
+                        max: 1,
+                        time: 60000,
 
-            const embed = new Discord.MessageEmbed()
-                .setTitle(lang.invite.titleConfig)
-                .setDescription(lang.invite.descConfig(tempInvite.id, message.guild, enableEmoji(), tempInvite.message))
-                .setTimestamp()
-                .setColor(`${color}`)
-                .setFooter(client.user.username);
-            msg.edit({content: null, embeds: [embed]}).then(async m => {
-                const collector = m.createReactionCollector({filter, time: 900000});
-                collector.on('end', () => {
-                    m.delete()
-                })
-                collector.on('collect', async r => {
-                    await r.users.remove(message.author);
-                    if (r.emoji.name === emojis[0]) {
-                        message.channel.send(lang.invite.chQ).then(mp => {
-                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
-                                .then(async cld => {
-                                    let msg = cld.first();
-                                    if (msg.content.toLowerCase() === 'cancel') {
-                                        await msg.delete()
-                                        await mp.delete()
-                                        return message.channel.send(lang.cancel);
-                                    }
-                                    const channel = msg.mentions.channels.first() || message.guild.channels.cache.get(msg.content);
-                                    if (!channel.isText()) return message.channel.send(`Invalide type of channel`)
-                                    tempInvite.id = channel.id;
-                                    await msg.delete()
-                                    await mp.delete()
-                                    updateEmbed()
-                                });
+                        errors: ['time']
+                    }).then(async (cld) => {
+                        const msg = cld.first()
+                        await messageQuestion.delete()
+                        await msg.delete()
+                        row.components[0].setDisabled(false)
+                        await panel.edit({
+                            components: [row]
                         })
-                    }
-                    if (r.emoji.name === emojis[1]) {
-                        message.channel.send(lang.invite.msgQ).then(mp => {
-                            mp.channel.awaitMessages({filter: dureefiltrer, max: 1, time: 30000, errors: ['time']})
-                                .then(async cld => {
-                                    let msg = cld.first();
-                                    if (msg.content.toLowerCase() === 'cancel') {
-                                        await msg.delete()
-                                        await mp.delete()
-                                        return message.channel.send(lang.cancel);
-                                    }
+                        if (msg.content !== 'cancel') {
+                            const tempChannel = msg.mentions.channels.first() || message.guild.channels.cache.get(msg.content);
+                            if (!tempChannel || tempChannel.deleted) return message.channel.send(lang.reactionRole.invalidChannel).then((rp) => {
+                                setTimeout(() => {
+                                    rp.delete()
+                                }, 3500)
+                            })
+                            invite.id = tempChannel.id;
+                            updateEmbed()
+                            message.channel.send(lang.reactionRole.successCh(tempChannel)).then((rp) => {
+                                setTimeout(() => {
+                                    rp.delete()
+                                }, 3500)
+                            });
+                        }
+                    })
+                }
+                if(value === "message"){
+                    const messageQuestion = await message.channel.send(lang.invite.msgQ);
+                    row.components[0].setDisabled(true)
+                    await panel.edit({
+                        components: [row]
+                    })
+                    await messageQuestion.channel.awaitMessages({
+                        filter: dureefiltrer,
+                        limit: 1,
+                        max: 1,
+                        time: 60000,
 
-                                    tempInvite.message = msg.content;
-                                    await msg.delete()
-                                    await mp.delete()
-                                    updateEmbed()
-                                });
+                        errors: ['time']
+                    }).then(async (cld) => {
+                        const msg = cld.first()
+                        await messageQuestion.delete()
+                        await msg.delete()
+                        row.components[0].setDisabled(false)
+                        await panel.edit({
+                            components: [row]
                         })
-                    }
-                    if (r.emoji.name === emojis[2]) {
-                        const invitedHelp = '{invitedTag} ・ Sert à afficher le tag du membre qui a été invité'
-                        const inviterHelp = "{inviterTag} ・ Sert à afficher le tag du membre qui a invité"
-                        const inviterMention = "{inviterMention} ・ Sert à mentionner le membre qui a invité"
-                        const invitedMention = "{invitedMention} ・ Sert à mentionner le membre qui a été invité"
-                        const accountCreate = "{creation} ・ Sert à afficher quand le membre qui a été invité a créé son compte"
-                        const countHelp = "{count} ・ Sert à afficher le nombre d'invitation que l'inviteur possède"
-                        const fakeHelp = "{fake}  ・ Sert à afficher le nombre d'invitation fake que l'inviteur possède"
-                        const leaveHelp = "{leave}  ・ Sert à afficher le nombre d'invitation leave que l'inviteur possède"
-                        const totalMemberHelp = "{memberTotal} ・ Sert à afficher le nombre total de membres sur le serveur"
-                        const space = "{space} ・ Sert à faire un retour à la ligne"
-                        const help = new Discord.MessageEmbed()
-                            .setTitle(`Help`)
-                            .setDescription(lang.invite.helpDesc(invitedHelp, inviterHelp, invitedMention, inviterMention, accountCreate, countHelp, fakeHelp, leaveHelp, totalMemberHelp, space))
-                            .setTimestamp()
-                            .setColor(`${color}`)
-                            .setFooter(client.user.username);
-                        message.channel.send(help)
-                    }
-                    if (r.emoji.name === emojis[3]) {
-                        tempInvite.enable = !tempInvite.enable;
-                        updateEmbed()
-                    }
-                    if (r.emoji.name === emojis[4]) {
-                        tempInvite = {};
+                        if (msg.content !== 'cancel') {
+                            invite.message = msg.content
+                            updateEmbed()
+                        }
+                    })
+                }
+                if(value === "help"){
+                    message.channel.send({embeds: [{
+                            description: lang.invite.help,
+                            color
+                        }]})
+                }
+                if(value === 'enable'){
+                    invite.enable = !invite.enable
+                    if (invite.enable) options[3].label = 'Désactiver'
+                    else options[3].label = 'Activer'
+                    row.components[0].options = options
+                    panel.edit({
+                        components: [row]
+                    })
+                    updateEmbed()
+                }
+                if(value === 'save'){
+                    guildData.set('invite', invite).save().then(() => {
+                        message.channel.send(`Configuration saved`)
                         collector.stop()
-
-                    }
-                    if (r.emoji.name === emojis[5]) {
-                        guildData.set('invite', tempInvite).save().then(() => {
-                            message.channel.send(`Configuration saved`)
-                        })
-                    }
-                })
+                    })
+                }
             })
-
+            collector.on('end', async (collected, reason) => {
+                if (reason === 'time') {
+                    const replyMsg = await message.channel.send(lang.error.timeout)
+                    setTimeout(
+                        () => {
+                            replyMsg.delete()
+                        }, 2000
+                    )
+                }
+            })
             function updateEmbed() {
-                embed.setDescription(lang.invite.descConfig(tempInvite.id, message.guild, enableEmoji(), tempInvite.message))
-                msg.edit({embeds: [embed]})
+                panel.edit({embeds: [embed(invite)]})
             }
+
         } else if (args[0] === "sync") {
             const newInv = await message.guild.invites.fetch()
             await message.guild.members.fetch()
