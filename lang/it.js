@@ -12,7 +12,7 @@ module.exports = {
     error: {
         YesNo: `Veuillez répondre par \`oui ou non\` uniquement !`,
         timeout: `Temps écoulé !`,
-        cooldown: time => `Veuillez executer la commande dans \`${ time }\` secondes.`,
+        cooldown: time => `Veuillez executer la commande dans \`${ time }\` secondi.`,
         noSetup: 'Vous devez setup le bot pour pouvoir utiliser cette commande (!setup)',
         NoYes: 'Vous devez répondre uniquement avec oui ou non !',
         ownerOnly: `Seulement le propriétaire du bot peut faire cette commande`,
