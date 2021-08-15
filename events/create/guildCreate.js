@@ -9,7 +9,7 @@ module.exports = {
 
         const newInv = await guild.invites.fetch()
         for (const [code, invite] of newInv) {
-            guildData.cachedInv.set(code, invite)
+            guildData.cachedInv.set(code, invite.uses)
         }
 
         const hook = new WebhookClient({
