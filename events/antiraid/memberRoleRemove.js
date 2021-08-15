@@ -18,16 +18,16 @@ module.exports = {
         const now = new Date().getTime()
         const diff = now - timeOfAction
         if (diff > 600 || action.changes[0].key !== "$remove") return;
-        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
+        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `roleAdd`, 'pink');
         if (guild.ownerId
- === action.executor.id) return client.Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+ === action.executor.id) return client.Logger.log(`No sanction crown`, `roleAdd`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
         let isWlBypass = antiraidConfig.bypass["roleAdd"];
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
-        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `${this.name}`, 'pink');
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `roleAdd`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
             const executor = await guild.members.fetch(action.executor.id)
             const channel = guild.channels.cache.get(antiraidLog)
@@ -52,7 +52,7 @@ module.exports = {
                 } else if (sanction === 'unrank') {
                     await executor.roles.set(client.functions.getRoleWithoutSensiblePermissions(executor.roles.cache), `OneForAll - Type: roleRemove`)
                     if (action.executor.bot) {
-                      
+
                         await member.roles.botRole.setPermissions([], `OneForAll - Type: roleRemove`)
                     }
                 }

@@ -7,9 +7,9 @@ module.exports ={
         if (!enable && !blacklistedRoles.length && !blacklistedRoles.includes(role.id)) return
         if (!guild.me.permissions.has("VIEW_AUDIT_LOG")) return;
         let action = await guild.fetchAuditLogs({type: "MEMBER_ROLE_UPDATE"}).then(async (audit) => audit.entries.first());
-        if (action.executor.id === client.user.id) return  client.Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
+        if (action.executor.id === client.user.id) return  client.Logger.log(`No sanction oneforall`, `bl role`, 'pink');
         if (guild.ownerId
- === action.executor.id) return client.Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+ === action.executor.id) return client.Logger.log(`No sanction crown`, `bl role`, 'pink');
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 

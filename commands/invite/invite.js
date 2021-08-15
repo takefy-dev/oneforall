@@ -44,10 +44,10 @@ module.exports = {
             }
             const embed = new Discord.MessageEmbed()
                 .setDescription(`${lang.invite.countDesc(member.user.tag || member.user.username, count.join - count.leave > 0 ? count.join - count.leave : 0, inv)}\n (__${count.join}__ join, __${count.leave}__ leave, __${count.fake}__ fake, __${count.bonus}__ bonus)`)
-                .setColor(`${color}`)
+                .setColor(color)
                 .setTimestamp()
                 .setFooter(client.user.tag)
-            message.reply(embed);
+            message.reply({embeds: [embed]});
         }
 
         if (config) {

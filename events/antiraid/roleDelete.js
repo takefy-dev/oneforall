@@ -11,18 +11,18 @@ module.exports =  {
 
 
         const antiraidConfig = guildData.get('antiraid');
-        const isOn = antiraidConfig.enable[this.name];
+        const isOn = antiraidConfig.enable['roleDelete'];
         if (!isOn) return;
         let action = await guild.fetchAuditLogs({type: "ROLE_DELETE"}).then(async (audit) => audit.entries.first());
 
-        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
+        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `roleDelete`, 'pink');
         if (guild.ownerId
-            === action.executor.id) return client.Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+            === action.executor.id) return client.Logger.log(`No sanction crown`, `roleDelete`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
-        let isWlBypass = antiraidConfig.bypass[this.name];
+        let isWlBypass = antiraidConfig.bypass['roleDelete'];
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `ROLE_DELETE`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {
@@ -53,7 +53,7 @@ module.exports =  {
                 }
             }
 
-            let sanction = antiraidConfig.config[this.name];
+            let sanction = antiraidConfig.config['roleDelete'];
 
             if (member.roles.highest.comparePositionTo(role.guild.me.roles.highest) <= 0) {
 
@@ -66,7 +66,7 @@ module.exports =  {
                 } else if (sanction === 'unrank') {
                     await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `OneForAll - Type: roleDelete`)
                     if (action.executor.bot) {
-                      
+
                         await member.roles.botRole.setPermissions([], `OneForAll - Type: roleDelete`)
                     }
                 }

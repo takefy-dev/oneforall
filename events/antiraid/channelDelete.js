@@ -9,7 +9,7 @@ module.exports ={
         const antiraidConfig = guildData.get('antiraid');
         let antiraidLog = guildData.get('logs').antiraid;
         let {logs} = guildData.lang
-        const isOn = antiraidConfig.enable[this.name];
+        const isOn = antiraidConfig.enable['channelDelete'];
         if (!isOn) return;
 
         let action = await channel.guild.fetchAuditLogs({type: "CHANNEL_DELETE"}).then(async (audit) => audit.entries.first());
@@ -21,7 +21,7 @@ module.exports ={
         let isBotOwner = client.isOwner(action.executor.id);
 
 
-        let isWlBypass = antiraidConfig.bypass[this.name];
+        let isWlBypass = antiraidConfig.bypass['channelDelete'];
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
 
@@ -32,7 +32,7 @@ module.exports ={
 
             try {
                 await guild.channels.create(channel.name, {
-                    reason: `OneForall - Type : ${this.name}`,
+                    reason: `OneForall - Type : channelDelete`,
                     type: channel.type,
                     topic: channel.topic,
                     nsfw: channel.nsfw,
@@ -52,7 +52,7 @@ module.exports ={
                 }
             }
 
-            let sanction = antiraidConfig.config[this.name];
+            let sanction = antiraidConfig.config['channelDelete'];
 
 
             if (member.roles.highest.comparePositionTo(channel.guild.me.roles.highest) <= 0) {

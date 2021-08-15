@@ -14,9 +14,9 @@ module.exports ={
         if (!isOn) return;
         let action = await oldGuild.fetchAuditLogs({type: "GUILD_UPDATE"}).then(async (audit) => audit.entries.first());
         if(action.changes[0].key !== "name") return;
-        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
+        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `nameUpdate`, 'pink');
         if (oldGuild.ownerId
- === action.executor.id) return client.Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+ === action.executor.id) return client.Logger.log(`No sanction crown`, `nameUpdate`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);

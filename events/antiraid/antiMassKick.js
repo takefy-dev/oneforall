@@ -22,7 +22,7 @@ module.exports = {
         let isBotOwner = client.isOwner(action.executor.id);
 
 
-        let isWlBypass = antiraidConfig.bypass[this.name];
+        let isWlBypass = antiraidConfig.bypass['antiKick'];
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL CREATE`, 'pink');
 

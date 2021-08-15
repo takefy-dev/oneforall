@@ -14,14 +14,14 @@ module.exports =  {
         if (!isOn) return;
         let action = await guild.fetchAuditLogs({type: "GUILD_UPDATE"}).then(async (audit) => audit.entries.first());
         if (action.changes[0].key !== 'vanity_url_code') return;
-        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `${this.name}`, 'pink');
+        if (action.executor.id === client.user.id) return client.Logger.log(`No sanction oneforall`, `vanityUpdate`, 'pink');
         if (guild.ownerId
- === action.executor.id) return client.Logger.log(`No sanction crown`, `${this.name}`, 'pink');
+ === action.executor.id) return client.Logger.log(`No sanction crown`, `vanityUpdate`, 'pink');
 
         let isGuildOwner = guildData.isGuildOwner(action.executor.id);
         let isBotOwner = client.isOwner(action.executor.id);
 
-        let isWlBypass = antiraidConfig.bypass[this.name];
+        let isWlBypass = antiraidConfig.bypass['vanityUpdate'];
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
         if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `VANITY UPDATE`, 'pink');
         if (isWlBypass && !isWl || !isWlBypass) {

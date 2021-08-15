@@ -12,7 +12,7 @@ module.exports =  {
 
 
         const antiraidConfig = guildData.get('antiraid');
-        const isOn = antiraidConfig.enable[this.name];
+        const isOn = antiraidConfig.enable['roleUpdate'];
         if (!isOn) return;
 
         let action = await guild.fetchAuditLogs({type: "ROLE_UPDATE"}).then(async (audit) => audit.entries.first());
@@ -29,9 +29,9 @@ module.exports =  {
         let isBotOwner = client.isOwner(action.executor.id);
 
 
-        let isWlBypass = antiraidConfig.bypass[this.name];
+        let isWlBypass = antiraidConfig.bypass['roleUpdate'];
         if (isWlBypass) var isWl = guildData.isGuildWl(action.executor.id);
-        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL DELETE`, 'pink');
+        if (isGuildOwner || isBotOwner || isWlBypass && isWl) return client.Logger.log(`No sanction  ${isWlBypass && isWl ? `whitelisted` : `guild owner list or bot owner`}`, `CHANNEL DELETE`, 'pink');
 
 
         if (isWlBypass && !isWl || !isWlBypass) {
@@ -46,7 +46,7 @@ module.exports =  {
                     position: oldRole.position,
                     permissions: oldRole.permissions,
                     mentionable: oldRole.mentionable
-                }, `OneForAll - Type : ${this.name}`)
+                }, `OneForAll - Type : roleUpdate`)
 
             } catch (e) {
                 if (e.toString().toLowerCase().includes('missing permissions')) {
@@ -61,12 +61,12 @@ module.exports =  {
             }
 
 
-            let sanction = antiraidConfig.config[this.name];
+            let sanction = antiraidConfig.config['roleUpdate'];
 
             if (member.roles.highest.comparePositionTo(oldRole.guild.me.roles.highest) <= 0) {
 
                 if (sanction === 'ban') {
-                    await guild.members.ban(action.executor.id, {reason: `OneForAll - Type: ${this.name} `})
+                    await guild.members.ban(action.executor.id, {reason: `OneForAll - Type: roleUpdate `})
                 } else if (sanction === 'kick') {
                     await member.kick(
                         `OneForAll - Type: roleUpdate `
@@ -74,7 +74,7 @@ module.exports =  {
                 } else if (sanction === 'unrank') {
                     await member.roles.set(client.functions.getRoleWithoutSensiblePermissions(member.roles.cache), `OneForAll - Type: roleUpdate`)
                     if (action.executor.bot) {
-                        
+
                         await member.roles.botRole.setPermissions([], `OneForAll - Type: roleUpdate`)
                     }
                 }
