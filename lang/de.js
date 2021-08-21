@@ -72,9 +72,9 @@ module.exports = {
         errorRl: member => `<:720681441670725645: 780539422479351809> \ `FEHLER \` Sie können nicht sperren **\`${ member.tag }\`** weil sie mehr Berechtigungen haben als du`,
         errorBanSelf: '<:720681441670725645: 780539422479351809> `FEHLER` Sie können sich nicht selbst sperren',
         noReason: 'Kein konkreter Grund',
-        success: member => `<:720681705219817534:780540043033837622> \`SUCCÈS\` ${ member.tag } a été ban.`,
-        error: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Désolé, je ne suis pas arrivé à bannir ${ member.tag }`,
-        alreadyBan: member => `<:720681441670725645:780539422479351809> \`ERREUR\` **${ member.tag }** est déjà banni`,
+        success: member => `<:720681705219817534:780540043033837622> \`ERFOLG\` ${ member.tag } wurde gesperrt.`,
+        error: member => `<:720681441670725645:780539422479351809> \`FEHLER\` Entschuldigung, das Sperren war nicht erfolgreich ${ member.tag }`,
+        alreadyBan: member => `<:720681441670725645:780539422479351809> \`FEHLER\` **${ member.tag }** ist bereits gesperrt`,
         missingPerm: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Je n'ai pas assé de permission pour bannir **${ member.tag }**`,
         dm: (guildName, bannerName) => `Vous avez été banni de ${ guildName } par ${ bannerName }`
     },
@@ -1195,22 +1195,22 @@ module.exports = {
                 💫 Reaction **-** ${ reaction }
                 🎁 Gain **-** ${ prize }`).setColor(color),
             question: {
-                time: `Quel est la durée du giveaway ?`,
-                channel: `Dans quel channel le giveaway doit être lancé ?`,
-                winnerCount: `Combien doit-il y avoir de gagnants ?`,
-                reaction: `Quel est la reaction pour le giveaway ?`,
-                prize: `Que voulez-vous faire gagner ?`
+                time: `Wie lang ist die Dauer des Giveaways?`,
+                channel: `In welchem Kanal soll das Giveaway stattfinden?`,
+                winnerCount: `Wie viele Gewinner soll es geben?`,
+                reaction: `Wie ist die Reaktion für das Giveaway?`,
+                prize: `Was gibt es zu Gewinnen?`
             },
             inccorectResponse: {
-                time: `La durée n'est pas valide\nExemple : \`30m\``,
-                channel: `Le channel est incorrect`
+                time: `Die Dauer ist nicht zulässig\nBeispiel : \`30m\``,
+                channel: `Der Kanal ist inkorrekt`
             },
             successMessage: {
-                time: time => `Le temps du giveaway est donc prévue pour **${ time }**`,
-                channel: channel => `Le giveaway sera lancé de le salon ${ channel }`,
-                winnerCount: winner => `Le nombre de gagnant est maintenant définie pour **${ winner }**`,
-                prize: prize => `Vous voulez faire gagner **${ prize }**`,
-                reaction: emoji => `La reaction pour le giveaway est maintenant ${ emoji }`
+                time: time => `Das Giveaway ist geplant für: **${ time }**`,
+                channel: channel => `Das Giveaway wird vom Wohnzimmer aus gestartet ${ channel }`,
+                winnerCount: winner => `Die Anzahl der Gewinner ist festgelegt auf **${ winner }**`,
+                prize: prize => `Sie können folgendes gewinnen: **${ prize }**`,
+                reaction: emoji => `Die Reaktion für das Giveaway ist festgelegt auf: ${ emoji }`
             }
         },
         messages: {
