@@ -75,8 +75,8 @@ module.exports = {
         success: member => `<:720681705219817534:780540043033837622> \`ERFOLG\` ${ member.tag } wurde gesperrt.`,
         error: member => `<:720681441670725645:780539422479351809> \`FEHLER\` Entschuldigung, das Sperren war nicht erfolgreich ${ member.tag }`,
         alreadyBan: member => `<:720681441670725645:780539422479351809> \`FEHLER\` **${ member.tag }** ist bereits gesperrt`,
-        missingPerm: member => `<:720681441670725645:780539422479351809> \`ERREUR\` Je n'ai pas assé de permission pour bannir **${ member.tag }**`,
-        dm: (guildName, bannerName) => `Vous avez été banni de ${ guildName } par ${ bannerName }`
+        missingPerm: member => `<:720681441670725645:780539422479351809> \`Fehler\` Ich habe keine ausreichenden Rechte zum sperren **${ member.tag }**`,
+        dm: (guildName, bannerName) => `Sie wurden gesperrt in:${ guildName }von:${ bannerName }`
     },
     banlist: {
         title: guild => `Membre(s) banni sur le serveur __${ guild.name }__`,
