@@ -4,7 +4,7 @@ module.exports = {
     database : {
         user: 'takefydev',
         name: 'oneforall_test',
-        password : 'murphy7777'
+        password : 'x'
     },
     color: '#36393F',
     owners: ['708047733994553344', '659038301331783680', '295947937756872709'],
@@ -100,5 +100,5 @@ module.exports = {
         },
         enable: false
     },
-    topGgToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4MDAxOTM0NDUxMTMzNjUxOCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjI3ODkzODYxfQ.0q6wjgXZLk7TIbLrtBvWJ9w5S8ekQLGeTzOK7GMF0W8"
+    topGgToken: "x8"
 }
